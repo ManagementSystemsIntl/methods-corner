@@ -1,1 +1,1 @@
-# methods-corner.github.io
+# methods-corner
