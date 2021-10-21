@@ -34,9 +34,10 @@ theme.plot <- function(){
                    , panel.background = ggplot2::element_blank()
                    , plot.title.position = "plot" #Pushes the title to the very left of the plot window
                    , plot.title = element_text(size = 26, family = "Corbel", color = "#000000")
+                   , plot.subtitle = element_text(size = 18, family = "Corbel", color = "#CFCDC9")
                    , strip.background = ggplot2::element_rect(fill = "white") 
-                   , axis.text = ggplot2::element_text(size = 12, family = "Corbel", hjust = 0)
-                   , plot.caption = ggplot2::element_text(size = 8, family = "Corbel"))
+                   , axis.text = ggplot2::element_text(size = 12, family = "Corbel", hjust = 0, color = "#000000")
+                   , plot.caption = ggplot2::element_text(size = 8, family = "Corbel", color = "#000000"))
     #The colors below are the cartocolor "Safe" palette plus 3 additional colors pulled from cartocolor.
     , ggplot2::scale_fill_manual(values = c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288",
                                             "#AA4499", "#44AA99", "#999933", "#882255", "#661100",

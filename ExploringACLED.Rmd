@@ -142,7 +142,7 @@ mapsf::mf_layout(title = "West African Countries in Dataset"
 
 An easy way to start is to group the data by a category that is easy to grasp. So, we'll group the data by `event_type` and `country` and generate counts of events. This will show us aggregate numbers for events by type and then by country.  
 
-```{r event type counts}
+```{r event type counts, fig.dim=c(10,7)}
 
 source("prep/packages.R")
 
@@ -202,7 +202,7 @@ ggplot(dat_country
 
 As we can see, Nigeria has as many conflict events recorded in ACLED's dataset as the next five countries combined. We can break down these counts by country and event to see what kinds of conflict are occurring in each country.   
 
-```{r event categories by country, fig.dim=c(10,8)}
+```{r event categories by country, fig.dim=c(12,13)}
 
 #Make an object that groups events by country and event_type
 dat_cntry_evnt <- dat %>% 
@@ -223,7 +223,8 @@ ggplot(dat_cntry_evnt
              , ncol = 2
              , scales = "free")+
   theme.plot() +
-  theme(legend.position = "none") +
+  theme(legend.position = "none"
+        , axis.text.x = element_blank()) +
   ggtitle("Types of Conflict Events by Country") +
        labs(x = ""
        , y = ""
@@ -231,7 +232,7 @@ ggplot(dat_cntry_evnt
  
 ```
 
-Short paragraph here about what we see in the above.
+Coding makes it easy to generate a separate chart for each variable of `event_type`. In five out of the six cases we can see that Nigeria remains the most frequent event country. However, in Strategic Developments Sierra Leone comes out in front. After 
 
 ## Distribution of Conflict by Country Over Time
 Since we're dealing with time it is useful to know if all the events occurred at the same time or if they're distributed over the 24 years in our dataset. We could create a histogram, but they are kind of boring. So, instead we'll combine a plot to show frequency of events over time with a boxplot. This makes it easy to see when and where conflict ebbed and flowed.
