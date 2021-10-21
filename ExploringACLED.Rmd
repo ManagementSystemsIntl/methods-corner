@@ -175,7 +175,7 @@ ggplot(dat_events
 
 There are more than 13,000 events categorized as "Violence against civilians"! How are these events divided up across the countries in our dataset? 
 
-```{r, fig.width = 10, fig.height=11}
+```{r, fig.width = 9, fig.height=10}
 #Make an object that groups events by country
 dat_country <- dat %>% 
   group_by(country) %>% 
@@ -196,11 +196,7 @@ ggplot(dat_country
        labs(x = ""
        , y = ""
        ,caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") +
-  theme(legend.position = "none"
-        , axis.text.x = element_blank()
-        , axis.title.x = element_blank()
-        , axis.ticks.x = element_blank()
-        , plot.title.position = "plot")
+  theme(legend.position = "none")
   
 ```
 
@@ -226,17 +222,12 @@ ggplot(dat_cntry_evnt
              , nrow = 3
              , ncol = 2
              , scales = "free")+
-  theme_clean() +
+  theme.plot() +
   theme(legend.position = "none") +
   ggtitle("Types of Conflict Events by Country") +
        labs(x = ""
        , y = ""
-       , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") +
-  theme(legend.position = "none"
-        , axis.text.x = element_blank()
-        , axis.title.x = element_blank()
-        , axis.ticks.x = element_blank()
-        , plot.title.position = "plot")
+       , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") 
  
 ```
 
