@@ -18,8 +18,6 @@ carto_pal(12, "Safe")
 
 #theme for ggplot2 objects
 theme.plot <- function(){
-  require(extrafont)
-  require(extrafontdb)
   require(ggplot2)
   list(  
     ggplot2::theme(legend.position = "top"
