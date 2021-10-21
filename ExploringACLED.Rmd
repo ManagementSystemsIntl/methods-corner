@@ -231,7 +231,8 @@ ggplot(dat_cntry_evnt
   theme.plot() +
   theme(legend.position = "none"
         , axis.text.x = element_blank()) +
-  ggtitle("Types of Conflict Events by Country") +
+  ggtitle("Types of Conflict Events by Country"
+          , subtitle = "Some explanatory text") +
        labs(x = ""
        , y = ""
        , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") 
