@@ -14,5 +14,32 @@ font_add_google(name = "Open Sans"
 ## custom colors
 my_pal <- rcartocolor::carto_pal(name = "Safe")
 
+carto_pal(12, "Safe")
 
-  
+#theme for ggplot2 objects
+theme.plot <- function(){
+  require(extrafont)
+  require(extrafontdb)
+  require(ggplot2)
+  list(  
+    ggplot2::theme(legend.position = "top"
+                   , legend.background = ggplot2::element_blank()
+                   , legend.title = ggplot2::element_blank()
+                   , legend.key = ggplot2::element_blank() 
+                   , axis.ticks = ggplot2::element_blank()
+                   , axis.line = ggplot2::element_blank()
+                   , panel.grid.minor = ggplot2::element_blank()
+                   , panel.grid.major.y = ggplot2::element_line(color = "#CFCDC9") 
+                   , panel.grid.major.x = ggplot2::element_blank()
+                   , panel.background = ggplot2::element_blank()
+                   , plot.title.position = "plot" #Pushes the title to the very left of the plot window
+                   , text=element_text(size = 26, family = "Open Sans", color = "#6C6463")
+                   , strip.background = ggplot2::element_rect(fill = "white") 
+                   , strip.text = ggplot2::element_text(size = 22, hjust = 0))
+    , ggplot2::scale_fill_manual(values = c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288",
+                                            "#AA4499", "#44AA99", "#999933", "#882255", "#661100",
+                                            "#6699CC", "#888888", "#764E9F", "#ED645A", "#edd9a3"))
+    , ggplot2::scale_color_manual(values = c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288",
+                                             "#AA4499", "#44AA99", "#999933", "#882255", "#661100",
+                                             "#6699CC", "#888888", "#764E9F", "#ED645A", "#edd9a3"))
+  )}
