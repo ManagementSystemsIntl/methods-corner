@@ -16,7 +16,7 @@ output:
 
 }
 
-body{font-family: Open Sans;
+body{font-family: Corbel;
      font-size: 18px;
      background-color: #FDFDFD;
 }
@@ -144,6 +144,8 @@ An easy way to start is to group the data by a category that is easy to grasp. S
 
 ```{r event type counts}
 
+source("prep/packages.R")
+
 #Make an object that groups events by event_type
 dat_events <- dat %>% 
   group_by(event_type) %>% 
@@ -151,31 +153,29 @@ dat_events <- dat %>%
 
 #Plot the object and organize it by Count
 ggplot(dat_events
-         , aes(Count, reorder(event_type, Count)
-               , color = event_type))+
+       , aes(Count, reorder(event_type, Count)
+             , color = event_type))+
   geom_point(size = 14
              , alpha = .3) +
   geom_text(aes(label = Count)
             , color = "black") +
-  theme_clean() +
-  scale_fill_carto_d("Safe") +
+  theme.plot() + #For this plot I still want to alter a few theme elements
   theme(legend.position = "none"
-       , axis.text.x = element_blank()
-       , axis.title.x = element_blank()
-       , axis.ticks.x = element_blank()
-       , plot.title.position = "plot") +
-  labs(title = "Conflict Events in Western Africa, 1997-2021"
-       , subtitle = "Violence Against Civilians is the Most Frequent Conflict Event"
-       , y = "Type of Conflict Event"
+      , axis.text.x = element_blank()
+      , axis.title.y = element_blank())+
+  ggtitle("Conflict Events in Western Africa, 1997-2021"
+       , subtitle = "Violence Against Civilians is the Most Frequent Conflict Event")+
+  labs(y = ""
        , x = ""
        , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com")
+
 
 
 ```
 
 There are more than 13,000 events categorized as "Violence against civilians"! How are these events divided up across the countries in our dataset? 
 
-```{r}
+```{r, fig.width = 10, fig.height=11}
 #Make an object that groups events by country
 dat_country <- dat %>% 
   group_by(country) %>% 
@@ -190,7 +190,7 @@ ggplot(dat_country
   geom_point(size = 14) +
   geom_text(aes(label = Count)
             , color = "black") +
-  theme_clean() +
+  theme.plot() +
   ggtitle("Conflict Events by Country "
        , subtitle="Nigeria Has Nearly 4x as Many Events as the Next Closest Country") +
        labs(x = ""

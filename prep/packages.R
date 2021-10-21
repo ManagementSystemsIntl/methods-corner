@@ -8,9 +8,9 @@ lapply(packages, library, character.only=T)
 
 
 #My font
-font_add_google(name = "Open Sans"
-                , family = "Open Sans")
-
+#font_add_google(name = "Open Sans"
+               # , family = "Open Sans")
+showtext_auto()
 ## custom colors
 my_pal <- rcartocolor::carto_pal(name = "Safe")
 
@@ -18,6 +18,8 @@ carto_pal(12, "Safe")
 
 #theme for ggplot2 objects
 theme.plot <- function(){
+  require(extrafont)
+  require(extrafontdb)
   require(ggplot2)
   list(  
     ggplot2::theme(legend.position = "top"
@@ -31,9 +33,11 @@ theme.plot <- function(){
                    , panel.grid.major.x = ggplot2::element_blank()
                    , panel.background = ggplot2::element_blank()
                    , plot.title.position = "plot" #Pushes the title to the very left of the plot window
-                   , text=element_text(size = 26, family = "Open Sans", color = "black")
-                   , strip.background = ggplot2::element_rect(fill = "white")) 
-                   #, strip.text = ggplot2::element_text(size = 22, hjust = 0))
+                   , plot.title = element_text(size = 26, family = "Corbel", color = "#000000")
+                   , strip.background = ggplot2::element_rect(fill = "white") 
+                   , axis.text = ggplot2::element_text(size = 12, family = "Corbel", hjust = 0)
+                   , plot.caption = ggplot2::element_text(size = 8, family = "Corbel"))
+    #The colors below are the cartocolor "Safe" palette plus 3 additional colors pulled from cartocolor.
     , ggplot2::scale_fill_manual(values = c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288",
                                             "#AA4499", "#44AA99", "#999933", "#882255", "#661100",
                                             "#6699CC", "#888888", "#764E9F", "#ED645A", "#edd9a3"))
