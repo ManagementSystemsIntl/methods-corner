@@ -1,0 +1,354 @@
+---
+title: "Exploring Western Africa Conflict Data With ACLED and R"
+subtitle: "Part 1: Descriptive Statistics Can Be Fun"
+author: "Brian Calhoon"
+date: "10/18/2021"
+output: 
+  html_document:
+    toc: true
+    toc_depth: '5'
+    toc_float: yes
+    code_folding: hide
+
+---
+<style>
+#TOC {border-color: #133469;
+
+}
+
+body{font-family: Open Sans;
+     font-size: 18px;
+     background-color: #FDFDFD;
+}
+
+h1{color: #133469; 
+}
+
+h2{color: #009CA6;
+}
+
+h3{color: #5482AB;
+}
+
+</style>
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F, cache = T, error = T)
+
+```
+
+```{r, include = FALSE}
+#load packages
+source("prep/packages.R")
+
+```
+
+Descriptive statistics do not get too much attention, but they are important. First, they are where an analyst begins to explore their data. Second, when dealing with large data sets, descriptive statistics orient the analyst as well as the audience to the contours of the data. Third, they can make some interesting visuals on their own.  In this first of three posts, they are front and center because for these reasons.    
+
+## The data and code
+To demonstrate these features of descriptive statistics, we're going to use data from The Armed Conflict Location and Event Data (ACLED) database that provides a user-friendly interface to access hundreds of thousands of conflict events around the world. The data, visualizations, and analyses presented here were all coded in the R computer language and the little `code` buttons will provide the code used to generate each graphic or table in the post. The complete code and packages are available on my github/bitbucket/gitlab page, [link]. 
+
+So, we're going to explore ACLED's conflict data set for Western Africa from 1997 - 2021 which includes 49,464 observations across 31 variables. The map below shows the 15 countries that ACLED includes in Western Africa.
+
+```{r}
+
+#read in the data set
+dat <- read_xlsx("data/WAconflicts202001.xlsx")
+
+#shapefiles for countries
+africa <- rnaturalearth::ne_countries(continent = "Africa"
+                       , returnclass = "sf")
+
+
+#Pull all the unique country names from the data set and make a new object, df_countries
+countries <- unique(dat$country) 
+
+#Generate iso codes
+iso <- raster::getData("ISO3")
+
+#ACLED data uses "Ivory Coast" instead of Cote d'Ivoire so we have to change that
+iso[iso == "Côte d'Ivoire"] <- "Ivory Coast"
+
+#subset the iso object using the values in countries
+iso3 <- iso[iso$NAME %in% countries,]
+
+a <- rnaturalearth::ne_countries(returnclass = "sf")
+
+w_africa <- rnaturalearth::ne_countries(country = iso3$NAME,
+                         returnclass = "sf")
+#oops, looks like Guinea Bissau is spelled differently in the shape file
+b <- setdiff(iso3$NAME, w_africa$sovereignt)
+
+#Fix the spelling
+iso3[iso3 == "Guinea-Bissau"] <- "Guinea Bissau"
+
+#rerun the w_africa object
+w_africa <- rnaturalearth::ne_countries(country = iso3$NAME,
+                         returnclass = "sf")
+
+#playing with mapsf
+mapsf::mf_init(x = w_africa
+               , theme = "agolalight"
+               , expandBB = c(0,0,0,.2))
+mapsf::mf_map(x = africa 
+              , var = "sovereignt"
+              , col = "lightgrey"
+              , border = "grey"
+              , add = TRUE)
+mapsf::mf_label(x = africa[!africa$sovereignt %in% w_africa$sovereignt,]
+                , var = "sovereignt" 
+                , col = "grey"
+                , cex = 1
+                , overlap = FALSE)
+mapsf::mf_shadow(w_africa, add = TRUE)
+mapsf::mf_map(x = w_africa
+              , var = "sovereignt"
+              , type = "typo"
+              , pal = "Dynamic"
+              , border = "white"
+              , lwd = 2
+              , leg_pos = "n"
+              , add = TRUE)
+mapsf::mf_label(x = w_africa
+                , var = "sovereignt"
+                , col = "black"
+                , cex = 1
+                , overlap = FALSE)
+mapsf::mf_inset_on(x = "worldmap", pos = "bottomright")
+mapsf::mf_worldmap(x = w_africa
+            , cex = 6
+            , pch = 22)
+mapsf::mf_inset_off()
+mapsf::mf_layout(title = "West African Countries in Dataset"
+                 , credits = paste0("Author: Brian Calhoon\n"
+                                    , "Sources: ACLED, www.acleddata.com;"
+                                    , "rnaturalearth")
+                 , scale = FALSE
+                 , arrow = TRUE
+                 , frame = FALSE
+)
+
+```
+
+
+### Getting the data
+
+ACLED data is easy to access and free for a limited number of exports. With R it is easy to use Christoph Dworschak's and Rob Williams's `acled.api` package to pull the data. It involves a personal security key so I won't share the exact code here, but trust me when I say it is quite simple. 
+
+## The First Exploratory Plots
+
+An easy way to start is to group the data by a category that is easy to grasp. So, we'll group the data by 'event_type' and 'country' and generate counts of events. This will show us aggregate numbers for events by type and then by country.  
+
+```{r event type counts}
+
+#Make an object that groups events by event_type
+dat_events <- dat %>% 
+  group_by(event_type) %>% 
+  summarize(Count = n()) 
+
+#Plot the object and organize it by Count
+ggplot(dat_events
+         , aes(Count, reorder(event_type, Count)
+               , color = event_type))+
+  geom_point(size = 14
+             , alpha = .3) +
+  geom_text(aes(label = Count)
+            , color = "black") +
+  theme_clean() +
+  theme(legend.position = "none"
+        , axis.text.x = element_blank()
+        , axis.title.x = element_blank()
+        , axis.ticks.x = element_blank()
+        , plot.title.position = "plot") +
+  labs(title = "Conflict Events in Western Africa, 1997-2021"
+       , subtitle = "Violence Against Civilians is the Most Frequent Conflict Event"
+       , y = "Type of Conflict Event"
+       , x = ""
+       , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com")
+
+
+```
+
+There are more than 13,000 events categorized as "Violence against civilians"! How are these events divided up across the countries in our dataset? 
+
+```{r}
+#Make an object that groups events by country
+dat_country <- dat %>% 
+  group_by(country) %>% 
+  summarize(Count = n()) 
+
+#Plot the object and organize it by Count
+ggplot(dat_country
+       , aes(Count, reorder(country, Count)
+       , color = country
+       , fill = country
+       , alpha = .3)) +
+  geom_point(size = 14) +
+  geom_text(aes(label = Count)
+            , color = "black") +
+  theme_clean() +
+  ggtitle("Conflict Events by Country "
+       , subtitle="Nigeria Has Nearly 4x as Many Events as the Next Closest Country") +
+       labs(x = ""
+       , y = ""
+       ,caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") +
+  theme(legend.position = "none"
+        , axis.text.x = element_blank()
+        , axis.title.x = element_blank()
+        , axis.ticks.x = element_blank()
+        , plot.title.position = "plot")
+  
+```
+
+As we can see, Nigeria has as many conflict events recorded in ACLED as the next five countries combined. We can break down these counts by country and event to see what kinds of conflict are occuring in each country.   
+
+```{r event categories by country, fig.dim=c(10,8)}
+
+#Make an object that groups events by country and event_type
+dat_cntry_evnt <- dat %>% 
+  group_by(country, event_type) %>% 
+  summarize(Count = n())
+
+#Plot the object and organize it by Count. The facet_wrap function generates six charts, one for each of the event types
+ggplot(dat_cntry_evnt
+       , aes(Count, reorder(country, Count)
+             , color = country
+             , fill = country)) +
+  geom_point(size = 5
+             , alpha = .3) +
+  geom_text(aes(label = Count)
+            , color = "black") +
+  facet_wrap(~event_type
+             , nrow = 3
+             , ncol = 2
+             , scales = "free")+
+  theme_clean() +
+  theme(legend.position = "none") +
+  ggtitle("Types of Conflict Events by Country") +
+       labs(x = ""
+       , y = ""
+       , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") +
+  theme(legend.position = "none"
+        , axis.text.x = element_blank()
+        , axis.title.x = element_blank()
+        , axis.ticks.x = element_blank()
+        , plot.title.position = "plot")
+ 
+
+```
+
+### Distribution of Conflict by Country Over Time
+Since we're dealing with time it is useful to know if all the events occurred at the same time or if they're distributed over the 24 years in our data set. We could create a histogram, but they are kind of boring. So, instead we'll combine a plot to show frequency of events over time with a boxplot. This makes it easy to see when and where conflict ebbed and flowed.
+
+```{r}
+#Add a date column that is formatted as a date column
+dat$dates <- ymd(dat$event_date) 
+
+#Plot conflict over time by country with a box plot over scattered points (sina chart)
+ggplot(dat, aes(x = forcats::fct_infreq(country), y = dates
+                  , color = factor(country)
+                  , fill = factor(country))) +
+  geom_sina(method = "density"
+            , alpha = .3) +
+  geom_boxplot(width = .2
+               , color = "black"
+               , fill = NA
+               , size = .5
+               , outlier.shape = NA
+               , position = position_nudge(.25)) +
+  coord_flip()+
+  theme_clean() +
+  theme(legend.position = "none"
+        , plot.title.position = "plot") +
+  ggtitle("Frequency of Conflict Has Increased Over Time in Most Countries"
+          , subtitle = "This is not True for All Countries") +
+  labs(y = "Year (1997 - 2021)"
+       , x = ""
+       , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com")
+
+```
+
+So, those countries with few events almost have a straight line of dots (near the top). The wider groupings of dense dots means more conflict incidents (Sierra Leone in the late 1990s and Nigeria from 2014 - 2021, for example. By including the boxplot we can easily see where on the timeline a country reaches 50 percent of its conflict total. This provides the reader an easy way to understand the distribution of conflict over time for each country.
+
+Another fun way to view this same distribution is to animate a chart that allows us to see the change over time.
+
+### An Animated Line Chart of Conflict Events
+```{r}
+#Add a date column that is formatted as a date column
+dat$dates <- ymd(dat$event_date) 
+  
+dat_event_daily <- dat %>% 
+  group_by(year, event_type, dates) %>% 
+  summarize(number = n())
+
+time_all_2 <- ggplot(dat_event_daily
+       , aes(dates, number, color = event_type, group = event_type)) +
+  geom_line(size = 1
+            , alpha =.5)+
+  geom_text(aes(x = max(dates)
+                , y = max(number)
+                , label = year)
+             , hjust = 1
+             , vjust = 1
+             , alpha = .2
+             , col = "gray"
+             , size = 20) +
+  theme_clean() +
+  theme(legend.position = "top"
+        , plot.title.position = "plot") +
+  ggtitle("Number of Conflict Events Over Time"
+       , subtitle = "Date: {frame_along}")+
+  labs(x = "Dates"
+       , y = "Number of Conflict Events"
+       , col = "Type of Conflict Event"
+       , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") +
+  transition_reveal(dates) +
+  ease_aes("linear")+
+  view_follow(fixed_x = c("1997-01-01", NA) #This keeps the #x axis at Jan 1, 1997
+              , fixed_y = TRUE)
+
+time_all_2 <-  gganimate::animate(time_all_2
+                     , fps = 4)
+
+anim_save("time_all_2.gif")
+
+time_all_2
+```
+
+
+
+
+
+Another nice way to look at this same data would be by country. We will first look at aggregate totals by country, and then we will look at each event category by country.  
+
+
+
+
+
+
+Now we are beginning to see some contours in our data. It is no surprise that Nigeria leads in most of the categories. Nigeria's population also dwarfs the populations of the other countries, and Boko Haram considers Nigeria its home base.   
+
+```{r, include = F }
+
+df_strat_dev <- dat %>% 
+  filter(event_type == "Strategic developments"
+         , country == "Sierra Leone") %>% 
+  group_by(year) %>% 
+  summarize(Count = n())
+
+ggplot(df_strat_dev
+       , aes(year, Count)
+       , color = my_pal[1]) +
+  geom_line() +
+  geom_text_repel(aes(label = Count)) +
+  scale_x_continuous("Year"
+                     , breaks = 1997:2021) +
+  theme_clean()+
+  theme(axis.text.x = element_text(angle = 45, vjust = .5))
+  
+
+```
+
+That's all for now. As you can see, descriptive statistics can tell us a lot about our dataset and help us move into more complex layers of analysis. In the next post, we'll map the conflict events and do some spatial observations.
