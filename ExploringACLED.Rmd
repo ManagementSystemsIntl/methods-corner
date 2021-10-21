@@ -121,6 +121,7 @@ mapsf::mf_label(x = w_africa
                 , var = "sovereignt"
                 , col = "black"
                 , cex = 1
+                , family = "Corbel"
                 , overlap = FALSE)
 mapsf::mf_inset_on(x = "worldmap", pos = "bottomright")
 mapsf::mf_worldmap(x = w_africa
@@ -158,7 +159,7 @@ ggplot(dat_events
   geom_point(size = 14
              , alpha = .3) +
   geom_text(aes(label = Count)
-            , color = "black") +
+            , color = "#000000") +
   theme.plot() + #For this plot I still want to alter a few theme elements
   theme(legend.position = "none"
       , axis.text.x = element_blank()
@@ -175,7 +176,10 @@ ggplot(dat_events
 
 There are more than 13,000 events categorized as "Violence against civilians"! How are these events divided up across the countries in our dataset? 
 
-```{r, fig.width = 9, fig.height=10}
+```{r, fig.dim = c(9,9)}
+
+source("prep/packages.R")
+
 #Make an object that groups events by country
 dat_country <- dat %>% 
   group_by(country) %>% 
@@ -203,6 +207,8 @@ ggplot(dat_country
 As we can see, Nigeria has as many conflict events recorded in ACLED's dataset as the next five countries combined. We can break down these counts by country and event to see what kinds of conflict are occurring in each country.   
 
 ```{r event categories by country, fig.dim=c(12,13)}
+
+source("prep/packages.R")
 
 #Make an object that groups events by country and event_type
 dat_cntry_evnt <- dat %>% 
@@ -232,12 +238,15 @@ ggplot(dat_cntry_evnt
  
 ```
 
-Coding makes it easy to generate a separate chart for each variable of `event_type`. In five out of the six cases we can see that Nigeria remains the most frequent event country. However, in Strategic Developments Sierra Leone comes out in front. After 
+Coding makes it easy to generate a separate chart for each variable of `event_type`. In five out of the six cases we can see that Nigeria remains the most frequent event country. However, in Strategic Developments Sierra Leone comes out in front. Now we have a sense of what kinds of conflict events occur in each country. 
 
 ## Distribution of Conflict by Country Over Time
-Since we're dealing with time it is useful to know if all the events occurred at the same time or if they're distributed over the 24 years in our dataset. We could create a histogram, but they are kind of boring. So, instead we'll combine a plot to show frequency of events over time with a boxplot. This makes it easy to see when and where conflict ebbed and flowed.
+Since we're dealing with time it is useful to know if all the events occurred at the same time or if they're distributed over the 24 years in our dataset. We could create a histogram, but they are kind of boring. So, instead we'll combine a jittered plot to show frequency of events over time with a boxplot. This makes it easy to see when and where conflict ebbed and flowed.
 
-```{r}
+```{r, fig.dim = c(10,11)}
+
+source("prep/packages.R")
+
 #Add a date column that is formatted as a date column
 dat$dates <- ymd(dat$event_date) 
 
@@ -254,7 +263,7 @@ ggplot(dat, aes(x = forcats::fct_infreq(country), y = dates
                , outlier.shape = NA
                , position = position_nudge(.25)) +
   coord_flip()+
-  theme_clean() +
+  theme.plot() +
   theme(legend.position = "none"
         , plot.title.position = "plot") +
   ggtitle("Frequency of Conflict Has Increased Over Time in Most Countries"
@@ -271,6 +280,9 @@ Another fun way to view this same distribution is to animate a chart that allows
 
 ### An Animated Line Chart of Conflict Events
 ```{r}
+
+source("prep/packages.R")
+
 #Add a date column that is formatted as a date column
 dat$dates <- ymd(dat$event_date) 
   
@@ -292,9 +304,9 @@ time_all_2 <- ggplot(dat_event_daily
              , alpha = .2
              , col = "gray"
              , size = 20) +
-  theme_clean() +
-  scale_color_carto_d("Safe")+
+  theme.plot() +
   theme(legend.position = "top"
+        , legend.title = element_text("Event\n Type")
         , plot.title.position = "plot") +
   ggtitle("Number of Conflict Events Over Time")+
   labs(x = "Dates"
@@ -316,6 +328,7 @@ time_all_2
 
 While you cannot take away precise details from the animation, it tells the basic story of a lot of conflict initially that tapers off for most of the aughts and then ramps back up in the tens and stays high for the start of the twenties. It also catches your eye in a way that a static chart or table does not.
 
-That's all for now. As you can see, descriptive statistics can tell us a lot about our dataset and help us move into more complex layers of analysis. At MSI, we use coding languages like R to ensure ... Dan, Melanie, or Jacob help with a pithy phrase about MSI using code for better stuff....
+## Concluding thoughts
+That's all for now. As you can see, descriptive statistics can tell us a lot about our dataset and help us move into more complex layers of analysis. With a little creativity descriptive statistics can be fun and eye catching. If you are scared of statistics, don't be. The most advanced statistical concept used in this post is addition. At MSI, we use coding languages like R to ensure that our peers can retrace our steps and our clients receive the analysis as well as our final product. 
 
-In the next post, we'll map the conflict events and do some spatial observations. Thanks for reading.
+In the next post, we'll map the conflict events and do some spatial observations. It will get more complicated than addition, but anyone can learn from this and reproduce it because the code is available. Thanks for reading.
