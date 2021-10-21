@@ -33,9 +33,9 @@ theme.plot <- function(){
                    , panel.grid.major.x = ggplot2::element_blank()
                    , panel.background = ggplot2::element_blank()
                    , plot.title.position = "plot" #Pushes the title to the very left of the plot window
-                   , text=element_text(size = 26, family = "Open Sans", color = "#6C6463")
-                   , strip.background = ggplot2::element_rect(fill = "white") 
-                   , strip.text = ggplot2::element_text(size = 22, hjust = 0))
+                   , text=element_text(size = 26, family = "Open Sans", color = "black")
+                   , strip.background = ggplot2::element_rect(fill = "white")) 
+                   #, strip.text = ggplot2::element_text(size = 22, hjust = 0))
     , ggplot2::scale_fill_manual(values = c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288",
                                             "#AA4499", "#44AA99", "#999933", "#882255", "#661100",
                                             "#6699CC", "#888888", "#764E9F", "#ED645A", "#edd9a3"))
