@@ -6,11 +6,6 @@ packages <- c("acled.api", "av", "colorspace",  "cowplot", "DT", "extrafont", "e
 
 lapply(packages, library, character.only=T)
 
-
-#My font
-#font_add_google(name = "Open Sans"
-               # , family = "Open Sans")
-showtext_auto()
 ## custom colors
 my_pal <- rcartocolor::carto_pal(name = "Safe")
 
@@ -33,7 +28,7 @@ theme.plot <- function(){
                    , panel.grid.major.x = ggplot2::element_blank()
                    , panel.background = ggplot2::element_blank()
                    , plot.title.position = "plot" #Pushes the title to the very left of the plot window
-                   , plot.title = element_text(size = 26, family = "Corbel", color = "#000000")
+                   , plot.title = element_text(size = 24, family = "Corbel", color = "#000000")
                    , plot.subtitle = element_text(size = 18, family = "Corbel", color = "#CFCDC9")
                    , strip.background = ggplot2::element_rect(fill = "white") 
                    , axis.text = ggplot2::element_text(size = 12, family = "Corbel", hjust = 0, color = "#000000")
