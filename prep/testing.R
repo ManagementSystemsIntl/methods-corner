@@ -1,7 +1,7 @@
 
 #My type vector
 type <- unique(dat$event_type)
-type
+
 
 #My function for filtering by type
 type_fun <- function(x){
@@ -11,13 +11,8 @@ type_fun <- function(x){
   summarize(Count = n())
 }
 
-#Test the function on one variable
-battle <- type_fun("Battles")
-
 #Now run it for real
 z <-map(type, ~type_fun(.x))
-
-z
 
 #Plot the object and organize it by Count. The facet_wrap function generates six charts, one for each of the event types
 plot_fun <- function(x) {
@@ -38,19 +33,14 @@ ggplot(x
  
 }
 
-
-test_p <- plot_fun(z[[1]])
-
-test_p
-
-
-test_plot <- map(z, ~plot_fun(.x))
-
-test_plot[[1]]
-
+six_plot <- map(z, ~plot_fun(.x))
 
 #This works
-cowplot::plot_grid(plotlist = test_plot)
+plot_row <- cowplot::plot_grid(plotlist = six_plot
+                   , nrow = 3
+                   , nol = 2)
+
+
 
 
 ggtitle("Types of Conflict Events by Country"
