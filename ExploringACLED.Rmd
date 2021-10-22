@@ -39,7 +39,7 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F, cache = T, error = T)
 
 ```
 
-```{r, include = FALSE}
+```{r, include = FALSE, eval = TRUE}
 #load packages
 source("prep/packages.R")
 
@@ -145,8 +145,6 @@ An easy way to start is to group the data by a category that is easy to grasp. S
 
 ```{r event type counts, fig.dim=c(10,7)}
 
-source("prep/packages.R")
-
 #Make an object that groups events by event_type
 dat_events <- dat %>% 
   group_by(event_type) %>% 
@@ -178,8 +176,6 @@ There are more than 13,000 events categorized as "Violence against civilians"! H
 
 ```{r, fig.dim = c(9,9)}
 
-source("prep/packages.R")
-
 #Make an object that groups events by country
 dat_country <- dat %>% 
   group_by(country) %>% 
@@ -208,15 +204,24 @@ As we can see, Nigeria has as many conflict events recorded in ACLED's dataset a
 
 ```{r event categories by country, fig.dim=c(12,13)}
 
-source("prep/packages.R")
+#My type vector
+type <- unique(dat$event_type)
 
-#Make an object that groups events by country and event_type
-dat_cntry_evnt <- dat %>% 
+
+#My function for filtering by type
+type_fun <- function(x){
+  dat %>% 
+  filter(event_type == {{x}}) %>% 
   group_by(country, event_type) %>% 
   summarize(Count = n())
+}
+
+#Now run it for real
+z <-map(type, ~type_fun(.x))
 
 #Plot the object and organize it by Count. The facet_wrap function generates six charts, one for each of the event types
-ggplot(dat_cntry_evnt
+plot_fun <- function(x) {
+ggplot(x
        , aes(Count, reorder(country, Count)
              , color = country
              , fill = country)) +
@@ -224,19 +229,51 @@ ggplot(dat_cntry_evnt
              , alpha = .3) +
   geom_text(aes(label = Count)
             , color = "black") +
-  facet_wrap(~event_type
-             , nrow = 3
-             , ncol = 2
-             , scales = "free")+
   theme.plot() +
   theme(legend.position = "none"
-        , axis.text.x = element_blank()) +
-  ggtitle("Types of Conflict Events by Country"
-          , subtitle = "Some explanatory text") +
-       labs(x = ""
-       , y = ""
-       , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") 
+        , axis.text.x = element_blank())+
+  ggtitle(x[[2]]) +
+  labs(x = ""
+       , y = "")
  
+}
+
+six_plot <- map(z, ~plot_fun(.x))
+
+#This works
+plot_row <- cowplot::plot_grid(plotlist = six_plot
+                   , nrow = 3
+                   , nol = 2)
+
+title <- ggdraw() + 
+  draw_label(
+    "Types of Conflict Events in Each Country",
+    fontface = 'bold',
+    x = 0,
+    hjust = 0
+  ) +
+  theme(
+    # add margin on the left of the drawing canvas,
+    # so title is aligned with left edge of first plot
+    plot.margin = margin(0, 0, 0, 7)
+  )
+
+plot_grid(
+  title, plot_row,
+  ncol = 1,
+  # rel_heights values control vertical title margins
+  rel_heights = c(0.1, 1)
+)
+
+
+
+ggtitle("Types of Conflict Events by Country"
+        , subtitle = "Some explanatory text") +
+labs(caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") 
+
+
+
+
 ```
 
 Coding makes it easy to generate a separate chart for each variable of `event_type`. In five out of the six cases we can see that Nigeria remains the most frequent event country. However, in Strategic Developments Sierra Leone comes out in front. Now we have a sense of what kinds of conflict events occur in each country. 
@@ -281,8 +318,6 @@ Another fun way to view this same distribution is to animate a chart that allows
 
 ### An Animated Line Chart of Conflict Events
 ```{r}
-
-source("prep/packages.R")
 
 #Add a date column that is formatted as a date column
 dat$dates <- ymd(dat$event_date) 
