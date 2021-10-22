@@ -60,6 +60,7 @@ We're going to explore ACLED's conflict dataset for Western Africa from 1997 - 2
 
 ```{r}
 
+
 #read in the data set
 dat <- read_xlsx("data/WAconflicts202001.xlsx")
 
@@ -176,6 +177,8 @@ There are more than 13,000 events categorized as "Violence against civilians"! H
 
 ```{r, fig.dim = c(9,9)}
 
+source("prep/packages.R")
+
 #Make an object that groups events by country
 dat_country <- dat %>% 
   group_by(country) %>% 
@@ -203,6 +206,8 @@ ggplot(dat_country
 As we can see, Nigeria has as many conflict events recorded in ACLED's dataset as the next five countries combined. We can break down these counts by country and event to see what kinds of conflict are occurring in each country.   
 
 ```{r event categories by country, fig.dim=c(12,13)}
+
+source("prep/packages.R")
 
 #My type vector
 type <- unique(dat$event_type)
@@ -267,9 +272,9 @@ plot_grid(
 
 
 
-ggtitle("Types of Conflict Events by Country"
-        , subtitle = "Some explanatory text") +
-labs(caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") 
+#ggtitle("Types of Conflict Events by Country"
+#        , subtitle = "Some explanatory text") #+
+#labs(caption = "Author: Brian Calhoon\n #Source: ACLED, www.acleddata.com") 
 
 
 
@@ -318,6 +323,8 @@ Another fun way to view this same distribution is to animate a chart that allows
 
 ### An Animated Line Chart of Conflict Events
 ```{r}
+
+source("prep/packages.R")
 
 #Add a date column that is formatted as a date column
 dat$dates <- ymd(dat$event_date) 

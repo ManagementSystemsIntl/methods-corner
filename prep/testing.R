@@ -35,12 +35,12 @@ ggplot(x
 
 six_plot <- map(z, ~plot_fun(.x))
 
-#This works
-plot_row <- cowplot::plot_grid(plotlist = six_plot
+
+plots_all <- cowplot::plot_grid(plotlist = six_plot
                    , nrow = 3
                    , nol = 2)
 
-
+plots_all
 
 
 ggtitle("Types of Conflict Events by Country"
