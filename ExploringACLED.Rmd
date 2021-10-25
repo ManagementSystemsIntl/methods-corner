@@ -41,7 +41,7 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F, cache = T, error = T)
 
 ```{r, include = FALSE, eval = TRUE}
 #load packages
-source("prep/packages.R")
+source("prep/packages.R", local = knitr::knit_global())
 
 ```
 ## Descriptive Statistics Say a lot
@@ -159,7 +159,7 @@ ggplot(dat_events
              , alpha = .3) +
   geom_text(aes(label = Count)
             , color = "#000000") +
-  theme.plot() + #For this plot I still want to alter a few theme elements
+  theme.plot() + 
   theme(legend.position = "none"
       , axis.text.x = element_blank()
       , axis.title.y = element_blank())+
@@ -177,7 +177,7 @@ There are more than 13,000 events categorized as "Violence against civilians"! H
 
 ```{r, fig.dim = c(9,9)}
 
-source("prep/packages.R")
+#source("prep/packages.R")
 
 #Make an object that groups events by country
 dat_country <- dat %>% 
@@ -207,7 +207,7 @@ As we can see, Nigeria has as many conflict events recorded in ACLED's dataset a
 
 ```{r event categories by country, fig.dim=c(12,13)}
 
-source("prep/packages.R")
+#source("prep/packages.R")
 
 #My type vector
 type <- unique(dat$event_type)
@@ -288,7 +288,7 @@ Since we're dealing with time it is useful to know if all the events occurred at
 
 ```{r, fig.dim = c(10,11)}
 
-source("prep/packages.R")
+#source("prep/packages.R")
 
 #Add a date column that is formatted as a date column
 dat$dates <- ymd(dat$event_date) 
@@ -324,7 +324,7 @@ Another fun way to view this same distribution is to animate a chart that allows
 ### An Animated Line Chart of Conflict Events
 ```{r}
 
-source("prep/packages.R")
+#source("prep/packages.R")
 
 #Add a date column that is formatted as a date column
 dat$dates <- ymd(dat$event_date) 
