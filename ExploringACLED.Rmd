@@ -274,7 +274,7 @@ caption <- ggdraw() +
              , fontface = "plain"
              , fontfamily = "Corbel"
              , size = 10
-             , hjust = -1)
+             , hjust = -.5)
 
 plot_grid(
   title, plot_row, caption,
