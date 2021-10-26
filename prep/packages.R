@@ -32,7 +32,7 @@ theme.plot <- function(){
                    , plot.subtitle = element_text(size = 18, family = "Corbel", color = "#A9A9A9")
                    , strip.background = ggplot2::element_rect(fill = "white") 
                    , axis.text = ggplot2::element_text(size = 14, family = "Corbel", hjust = 0, color = "#000000")
-                   , plot.caption = ggplot2::element_text(size = 7, family = "Corbel", color = "#000000"))
+                   , plot.caption = ggplot2::element_text(size = 10, family = "Corbel", color = "#000000"))
     #The colors below are from the cartocolor "Safe" palette plus 3 additional colors pulled from cartocolor.
     , ggplot2::scale_fill_manual(values = c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288",
                                             "#AA4499", "#44AA99", "#999933", "#882255", "#661100",

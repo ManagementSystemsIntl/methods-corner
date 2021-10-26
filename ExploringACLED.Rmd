@@ -181,8 +181,6 @@ There are more than 13,000 events categorized as "Violence against civilians"! H
 
 ```{r, fig.dim = c(9,9)}
 
-#source("prep/packages.R")
-
 #Make an object that groups events by country
 dat_country <- dat %>% 
   group_by(country) %>% 
@@ -211,18 +209,17 @@ As we can see, Nigeria has as many conflict events recorded in ACLED's dataset a
 
 ```{r event categories by country, fig.dim=c(12,13)}
 
-#source("prep/packages.R")
+#Here we're going to map 6 plots. I'd use facet_grid(), but I don't know how to make the charts reorder for each facet. So, I use iterate over a ggplot using map()
 
 #My type vector
 type <- unique(dat$event_type)
 
-
 #My function for filtering by type
 type_fun <- function(x){
   dat %>% 
-  filter(event_type == {{x}}) %>% 
-  group_by(country, event_type) %>% 
-  summarize(Count = n())
+    filter(event_type == {{x}}) %>% 
+    group_by(country, event_type) %>% 
+    summarize(Count = n())
 }
 
 #Now run it for real
@@ -230,36 +227,41 @@ z <-map(type, ~type_fun(.x))
 
 #Plot the object and organize it by Count. The facet_wrap function generates six charts, one for each of the event types
 plot_fun <- function(x) {
-ggplot(x
-       , aes(Count, reorder(country, Count)
-             , color = country
-             , fill = country)) +
-  geom_point(size = 5
-             , alpha = .3) +
-  geom_text(aes(label = Count)
-            , color = "black") +
-  theme.plot() +
-  theme(legend.position = "none"
-        , axis.text.x = element_blank())+
-  ggtitle(x[[2]]) +
-  labs(x = ""
-       , y = "")
- 
+  ggplot(x
+         , aes(Count, reorder(country, Count)
+               , color = country
+               , fill = country)) +
+    geom_point(size = 5
+               , alpha = .3) +
+    geom_text(aes(label = Count)
+              , color = "black") +
+    theme.plot() +
+    theme(legend.position = "none"
+          , axis.text.x = element_blank())+
+    ggtitle(x[[2]]) +
+    labs(x = ""
+         , y = "")
+  
 }
 
 six_plot <- map(z, ~plot_fun(.x))
 
 #This works
 plot_row <- cowplot::plot_grid(plotlist = six_plot
-                   , nrow = 3
-                   , nol = 2)
+                               , nrow = 3
+                               , ncol = 2
+                               , label_size = 14
+                               , label_fontface = "plain"
+                               , label_fontfamily = "Corbel")
 
 title <- ggdraw() + 
-  draw_label(
-    "Types of Conflict Events in Each Country",
-    fontface = 'bold',
-    x = 0,
-    hjust = 0
+  cowplot::draw_label(
+    "Types of Conflict Events in Each Country"
+    , fontface = 'plain'
+    , fontfamily = "Corbel"
+    , size = 26
+    , x = 0
+    , hjust = 0
   ) +
   theme(
     # add margin on the left of the drawing canvas,
@@ -267,21 +269,19 @@ title <- ggdraw() +
     plot.margin = margin(0, 0, 0, 7)
   )
 
+caption <- ggdraw() +
+  cowplot::draw_label("Author: Brian Calhoon; Source: ACLED, www.acleddata.com"
+             , fontface = "plain"
+             , fontfamily = "Corbel"
+             , size = 10
+             , hjust = -1)
+
 plot_grid(
-  title, plot_row,
+  title, plot_row, caption,
   ncol = 1,
   # rel_heights values control vertical title margins
   rel_heights = c(0.1, 1)
 )
-
-
-
-#ggtitle("Types of Conflict Events by Country"
-#        , subtitle = "Some explanatory text") #+
-#labs(caption = "Author: Brian Calhoon\n #Source: ACLED, www.acleddata.com") 
-
-
-
 
 ```
 
