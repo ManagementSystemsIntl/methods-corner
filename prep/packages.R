@@ -7,10 +7,10 @@ packages <- c("acled.api", "av", "colorspace",  "cowplot", "DT", "extrafont", "e
 lapply(packages, library, character.only=T)
 
 ## custom colors
-my_pal <- rcartocolor::carto_pal(name = "Safe")
-
-carto_pal(12, "Safe")
-
+my_pal <- c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288",
+           "#AA4499", "#44AA99", "#999933", "#882255", "#661100",
+           "#6699CC", "#888888", "#764E9F", "#ED645A", "#edd9a3")
+  
 #theme for ggplot2 objects
 theme.plot <- function(){
   require(extrafont)
