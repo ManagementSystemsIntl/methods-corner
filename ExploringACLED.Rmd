@@ -113,7 +113,10 @@ mapsf::mf_shadow(w_africa, add = TRUE)
 mapsf::mf_map(x = w_africa
               , var = "sovereignt"
               , type = "typo"
-              , pal = "Dynamic"
+              , pal = c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288",
+                        "#AA4499", "#44AA99", "#999933", "#882255", "#661100",
+                        "#6699CC", "#888888", "#764E9F", "#ED645A", "#edd9a3")
+              , alpha = .6
               , border = "white"
               , lwd = 2
               , leg_pos = "n"
@@ -123,7 +126,8 @@ mapsf::mf_label(x = w_africa
                 , col = "black"
                 , cex = 1
                 , family = "Corbel"
-                , overlap = FALSE)
+                , overlap = FALSE
+                , halo = TRUE)
 mapsf::mf_inset_on(x = "worldmap", pos = "bottomright")
 mapsf::mf_worldmap(x = w_africa
             , cex = 6
