@@ -4,7 +4,8 @@ subtitle: "Part 1: Descriptive Statistics Can Be Fun"
 author: "Brian Calhoon"
 date: "10/18/2021"
 output: 
-  html_document:
+  bookdown::html_document2:
+    fig.caption: T
     toc: true
     toc_depth: '5'
     toc_float: yes
@@ -95,6 +96,11 @@ iso3[iso3 == "Guinea-Bissau"] <- "Guinea Bissau"
 w_africa <- rnaturalearth::ne_countries(country = iso3$NAME,
                          returnclass = "sf")
 
+```
+
+
+```{r echo=F, fig.cap="What a map!"}
+
 #playing with mapsf
 mapsf::mf_init(x = w_africa
                , theme = "agolalight"
@@ -155,6 +161,10 @@ dat_events <- dat %>%
   group_by(event_type) %>% 
   summarize(Count = n()) 
 
+```
+
+```{r echo=F, fig.cap="Note how fig captions require 'echo=F' so the reader won't have the option of looking at the code generating the plot"}
+
 #Plot the object and organize it by Count
 ggplot(dat_events
        , aes(Count, reorder(event_type, Count)
@@ -186,6 +196,10 @@ dat_country <- dat %>%
   group_by(country) %>% 
   summarize(Count = n()) 
 
+```
+
+```{r echo=F, fig.cap="I wish there were a way to add a comma to the numeric label. You might also try using a rectangle geom rather than circle in order to reduce dead space"}
+
 #Plot the object and organize it by Count
 ggplot(dat_country
        , aes(Count, reorder(country, Count)
@@ -207,7 +221,7 @@ ggplot(dat_country
 
 As we can see, Nigeria has as many conflict events recorded in ACLED's dataset as the next five countries combined. We can break down these counts by country and event to see what kinds of conflict are occurring in each country.   
 
-```{r event categories by country, fig.dim=c(12,13)}
+```{r fig.dim=c(12,13), echo=F, fig.cap="So much going on here. I wonder if you could have pivoted longer and used a facet wrap. You could also generate a plot for each type and then put them together using the patchwork package"}
 
 #Here we're going to map 6 plots. I'd use facet_grid(), but I don't know how to make the charts reorder for each facet. So, I use iterate over a ggplot using map()
 
@@ -290,7 +304,7 @@ Coding makes it easy to generate a separate chart for each variable of `event_ty
 ## Distribution of Conflict by Country Over Time
 Since we're dealing with time it is useful to know if all the events occurred at the same time or if they're distributed over the 24 years in our dataset. We could create a histogram, but they are kind of boring. So, instead we'll combine a jittered plot to show frequency of events over time with a boxplot. This makes it easy to see when and where conflict ebbed and flowed.
 
-```{r, fig.dim = c(10,11)}
+```{r, fig.dim = c(10,11), echo=F, fig.cap="Marvelous"}
 
 #source("prep/packages.R")
 
