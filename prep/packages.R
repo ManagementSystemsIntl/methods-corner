@@ -1,7 +1,6 @@
-packages <- c("acled.api", "av", "colorspace",  "cowplot", "DT", "extrafont", "extrafontdb", "haven", "janitor", "lubridate"
-              , "gganimate", "ggdist", "ggforce", "gghalves", "gghighlight", "ggrepel", "ggridges", "ggthemes", "gt", "gtsummary", "htmltools"
-              , "htmlwidgets", "knitr", "leaflet", "leaflet.extras", "leaflet.extras2", "plotly", "raster", "rasterVis", "rcartocolor", "readxl", "readr"
-              , "rgeoboundaries", "rnaturalearth", "rnaturalearthdata", "rworldmap", "sf", "mapsf",  "spatstat", "sysfonts", "systemfonts", "terra", "tidyr", "tidyverse", "viridis", "writexl")
+packages <- c("acled.api", "av", "bookdown", "cowplot", "extrafont", "extrafontdb", "lubridate"
+              , "gganimate", "ggdist", "ggforce", "ggthemes", "knitr", "rcartocolor", "readxl", "readr"
+              , "rnaturalearth", "rnaturalearthdata", "sf", "mapsf", "terra", "tidyverse")
 
 
 lapply(packages, library, character.only=T)
