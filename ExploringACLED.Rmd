@@ -9,8 +9,7 @@ output:
     toc: true
     toc_depth: '5'
     toc_float: yes
-    code_folding: hide
-
+    
 ---
 <style>
 #TOC {border-color: #133469;
@@ -40,7 +39,7 @@ font-size: small;
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T, warning = F, message = F, cache = T, error = T)
+knitr::opts_chunk$set(echo = F, warning = F, message = F, cache = T, error = T)
 
 ```
 
@@ -58,7 +57,7 @@ To demonstrate these features of descriptive statistics, we're going to use data
 ACLED data is easy to access and free for a limited number of exports. With R it is easy to use Christoph Dworschak's and Rob Williams's `acled.api` package to export the data. It involves a personal security key so I won't share the exact code here, but trust me when I say it is quite simple. 
 
 ### The Code
-The data, visualizations, and analyses presented here were all coded in the R computer language and the little `code` buttons allow you to view the code used to generate each graphic or table in the post. The complete code and packages are available on MSI's github page, https://github.com/ManagementSystemsIntl/methods-corner. 
+The data, visualizations, and analyses presented here were all coded in the R computer language. If you're interested, the complete code and list of packages used are available on this github page, https://github.com/ManagementSystemsIntl/methods-corner. 
 
 ### What are we Looking at?
 We're going to explore ACLED's conflict dataset for Western Africa from 1997 - 2021 which includes 49,464 observations across 31 variables. The map below shows the 15 countries that ACLED includes in Western Africa.
@@ -167,7 +166,7 @@ dat_events <- dat %>%
 
 ```
 
-```{r echo=F, fig.cap="There were more cases of violence against civilians than any other type of conflict from 1997-2021."}
+```{r, fig.cap="There were more cases of violence against civilians than any other type of conflict from 1997-2021."}
 
 #Plot the object and organize it by Count
 ggplot(dat_events
@@ -193,16 +192,12 @@ ggplot(dat_events
 
 There are more than 13,000 events categorized as "Violence against civilians"! How are these events divided up across the countries in our dataset? 
 
-```{r, fig.dim = c(9,9)}
+```{r, fig.dim = c(9,10), fig.cap="Nigeria has the most incidents of conflict while Guinea-Bissau and Gambia have the least."}
 
 #Make an object that groups events by country
 dat_country <- dat %>% 
   group_by(country) %>% 
   summarize(Count = n()) 
-
-```
-
-```{r echo=F, fig.cap="Nigeria has the most incidents of conflict while Guinea-Bissau and Gambia have the least."}
 
 #Plot the object and organize it by Count
 ggplot(dat_country
@@ -225,7 +220,7 @@ ggplot(dat_country
 
 As we can see, Nigeria has as many conflict events recorded in ACLED's dataset as the next five countries combined. We can break down these counts by country and event to see what kinds of conflict are occurring in each country.   
 
-```{r fig.dim=c(12,13), echo=F, fig.cap="When looking at the distribution of conflict types by country Nigeria has the highest counts in five of the six categories."}
+```{r fig.dim=c(12,13), fig.cap="When looking at the distribution of conflict types by country Nigeria has the highest counts in five of the six categories."}
 
 #Here we're going to map 6 plots. I'd use facet_grid(), but I don't know how to make the charts reorder for each facet. So, I use iterate over a ggplot using map()
 
@@ -308,9 +303,7 @@ Coding makes it easy to generate a separate chart for each variable of `event_ty
 ## Distribution of Conflict by Country Over Time
 Since we're dealing with time it is useful to know if all the events occurred at the same time or if they're distributed over the 24 years in our dataset. We could create a histogram, but they are kind of boring. So, instead we'll combine a jittered plot to show frequency of events over time with a boxplot. This makes it easy to see when and where conflict ebbed and flowed.
 
-```{r, fig.dim = c(10,11), echo=F, fig.cap="Seeing the distribution of conflict over time and country helps us understand the contours of the dataset better."}
-
-#source("prep/packages.R")
+```{r, fig.dim = c(10,11), fig.cap="Seeing the distribution of conflict over time and country helps us understand the contours of the dataset better."}
 
 #Add a date column that is formatted as a date column
 dat$dates <- ymd(dat$event_date) 
@@ -349,7 +342,7 @@ Another fun way to view this same distribution is to animate a chart that allows
 
 #Add a date column that is formatted as a date column
 dat$dates <- ymd(dat$event_date) 
-  
+
 #create the data object that we need
 dat_event_daily <- dat %>% 
   group_by(year, event_type, dates) %>% 
