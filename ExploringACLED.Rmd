@@ -9,6 +9,7 @@ output:
     toc: true
     toc_depth: '5'
     toc_float: yes
+    code_folding: hide
     
 ---
 <style>
@@ -39,7 +40,7 @@ font-size: small;
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = F, warning = F, message = F, cache = T, error = T)
+knitr::opts_chunk$set(echo = T, warning = F, message = F, cache = T, error = T)
 
 ```
 
@@ -62,7 +63,7 @@ The data, visualizations, and analyses presented here were all coded in the R co
 ### What are we Looking at?
 We're going to explore ACLED's conflict dataset for Western Africa from 1997 - 2021 which includes 49,464 observations across 31 variables. The map below shows the 15 countries that ACLED includes in Western Africa.
 
-```{r}
+```{r, fig.cap="The fifteen countries included in ACLED's Western Africa dataset."}
 
 
 #read in the data set
@@ -99,12 +100,7 @@ iso3[iso3 == "Guinea-Bissau"] <- "Guinea Bissau"
 w_africa <- rnaturalearth::ne_countries(country = iso3$NAME,
                          returnclass = "sf")
 
-```
-
-
-```{r echo=F, fig.cap="The fifteen countries included in ACLED's Western Africa dataset."}
-
-#playing with mapsf
+#Generating a simple map using mapsf package
 mapsf::mf_init(x = w_africa
                , theme = "agolalight"
                , expandBB = c(0,0,0,.2))
@@ -157,16 +153,12 @@ mapsf::mf_layout(title = "West African Countries in Dataset"
 
 An easy way to start is to group the data by a category that is easy to grasp. So, we'll group the data by `event_type` and `country` and generate counts of events. This will show us aggregate numbers for events by type and then by country.  
 
-```{r event type counts, fig.dim=c(10,7)}
+```{r, fig.dim=c(10,7), fig.cap="There were more cases of violence against civilians than any other type of conflict from 1997-2021."}
 
 #Make an object that groups events by event_type
 dat_events <- dat %>% 
   group_by(event_type) %>% 
   summarize(Count = n()) 
-
-```
-
-```{r, fig.cap="There were more cases of violence against civilians than any other type of conflict from 1997-2021."}
 
 #Plot the object and organize it by Count
 ggplot(dat_events
@@ -185,8 +177,6 @@ ggplot(dat_events
   labs(y = ""
        , x = ""
        , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com")
-
-
 
 ```
 
@@ -220,9 +210,9 @@ ggplot(dat_country
 
 As we can see, Nigeria has as many conflict events recorded in ACLED's dataset as the next five countries combined. We can break down these counts by country and event to see what kinds of conflict are occurring in each country.   
 
-```{r fig.dim=c(12,13), fig.cap="When looking at the distribution of conflict types by country Nigeria has the highest counts in five of the six categories."}
+```{r, fig.dim=c(12,13), fig.cap="When looking at the distribution of conflict types by country Nigeria has the highest counts in five of the six categories."}
 
-#Here we're going to map 6 plots. I'd use facet_grid(), but I don't know how to make the charts reorder for each facet. So, I use iterate over a ggplot using map()
+#Here we're going to map 6 plots. I'd use facet_grid(), but I don't know how to make the charts reorder for each facet. So, I iterate over a list of six ggplots using map()
 
 #My type vector
 type <- unique(dat$event_type)
