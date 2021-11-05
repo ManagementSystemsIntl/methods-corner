@@ -61,7 +61,7 @@ ACLED data is easy to access and free for a limited number of exports. With R it
 The data, visualizations, and analyses presented here were all coded in the R computer language. If you're interested, the complete code and list of packages used are available on this github page, https://github.com/ManagementSystemsIntl/methods-corner. 
 
 ### What are we Looking at?
-We're going to explore ACLED's conflict dataset for Western Africa from 1997 - 2021 which includes 49,464 observations across 31 variables. The map below shows the 15 countries that ACLED includes in Western Africa.
+We're going to explore ACLED's conflict dataset for Western Africa from January 1, 1997 - September 10, 2021 which includes 49,464 observations across 31 variables. The map below shows the 15 countries that ACLED includes in Western Africa.
 
 ```{r, fig.cap="The fifteen countries included in ACLED's Western Africa dataset."}
 
