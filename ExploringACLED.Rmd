@@ -13,7 +13,7 @@ output:
     
 ---
 <style>
-#TOC {border-color: #133469;
+TOC {border-color: #133469;
 
 }
 
@@ -49,18 +49,18 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F, cache = T, error = T)
 source("prep/packages.R", local = knitr::knit_global())
 
 ```
-## Descriptive Statistics Say a lot
+# Descriptive Statistics Say a lot
 Descriptive statistics do not get too much attention, but they are important. First, they are where an analyst begins to explore their data. Second, when dealing with large data sets, descriptive statistics orient the analyst as well as the audience to the contours of the data. Third, they can make some interesting visuals on their own.  In this first of three posts, they are front and center.    
 
-### The Data
+## The Data
 To demonstrate these features of descriptive statistics, we're going to use data from The Armed Conflict Location and Event Data (ACLED) database that provides a user-friendly interface to access hundreds of thousands of conflict events around the world. 
 
 ACLED data is easy to access and free for a limited number of exports. With R it is easy to use Christoph Dworschak's and Rob Williams's `acled.api` package to export the data. It involves a personal security key so I won't share the exact code here, but trust me when I say it is quite simple. You can visit their site at www.acleddata.com.    
 
-### The Code
+## The Code
 The data, visualizations, and analyses presented here were all coded in the R computer language. If you're interested, the complete code and list of packages used are available on this github page, https://github.com/ManagementSystemsIntl/methods-corner.   
 
-### What are we Looking at?
+## What are we Looking at?
 We're going to explore ACLED's conflict dataset for Western Africa from January 1, 1997 - September 10, 2021 which includes 49,464 observations across 31 variables. The map below shows the 15 countries that ACLED includes in Western Africa.
 
 ```{r, fig.cap="The fifteen countries included in ACLED's Western Africa dataset."}
@@ -149,7 +149,7 @@ mapsf::mf_layout(title = "West African Countries in Dataset"
 
 ```
 
-## The First Exploratory Plots
+# The First Exploratory Plots
 
 An easy way to start is to group the data by a category that is easy to grasp. So, we'll group the data by `event_type` and `country` and generate counts of events. This will show us aggregate numbers for events by type and then by country.  
 
@@ -326,7 +326,7 @@ So, those countries with few events almost have a straight line of dots (near th
 
 Another fun way to view this same distribution is to animate a chart that allows us to see the change over time.
 
-### An Animated Line Chart of Conflict Events
+## An Animated Line Chart of Conflict Events
 ```{r, fig.cap="Animating the data can draw a viewer's attention to it and highlight peaks and valleys in conflict counts."}
 
 
@@ -375,7 +375,7 @@ time_all_2
 
 While you cannot take away precise details from the animation, it tells the basic story of a lot of conflict initially that tapers off for most of the aughts and then ramps back up in the tens and stays high for the start of the twenties. It also catches your eye in a way that a static chart or table does not.
 
-## Concluding thoughts
+# Concluding thoughts
 That's all for now. As you can see, descriptive statistics can tell us a lot about our dataset and help us move into more complex layers of analysis. With a little creativity descriptive statistics can even be fun and eye catching. If you are scared of statistics, don't be. The most advanced statistical concept used in this post is addition, and the computer did that for me. This is only a glimpse into exploratory data analysis to get us going. Our next post will build on what has already been done by expanding the data exploration and conducting spatial operations. It will get more complicated than addition, but anyone can learn from this and reproduce it because the code is available.
 
 At MSI, we use coding languages like R to ensure that our peers can retrace our steps and our clients receive the analysis as well as our final product. Thanks for reading.
