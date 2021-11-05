@@ -55,10 +55,10 @@ Descriptive statistics do not get too much attention, but they are important. Fi
 ### The Data
 To demonstrate these features of descriptive statistics, we're going to use data from The Armed Conflict Location and Event Data (ACLED) database that provides a user-friendly interface to access hundreds of thousands of conflict events around the world. 
 
-ACLED data is easy to access and free for a limited number of exports. With R it is easy to use Christoph Dworschak's and Rob Williams's `acled.api` package to export the data. It involves a personal security key so I won't share the exact code here, but trust me when I say it is quite simple. 
+ACLED data is easy to access and free for a limited number of exports. With R it is easy to use Christoph Dworschak's and Rob Williams's `acled.api` package to export the data. It involves a personal security key so I won't share the exact code here, but trust me when I say it is quite simple. You can visit their site at www.acleddata.com.    
 
 ### The Code
-The data, visualizations, and analyses presented here were all coded in the R computer language. If you're interested, the complete code and list of packages used are available on this github page, https://github.com/ManagementSystemsIntl/methods-corner. 
+The data, visualizations, and analyses presented here were all coded in the R computer language. If you're interested, the complete code and list of packages used are available on this github page, https://github.com/ManagementSystemsIntl/methods-corner.   
 
 ### What are we Looking at?
 We're going to explore ACLED's conflict dataset for Western Africa from January 1, 1997 - September 10, 2021 which includes 49,464 observations across 31 variables. The map below shows the 15 countries that ACLED includes in Western Africa.
@@ -197,7 +197,7 @@ ggplot(dat_country
        , alpha = .3)) +
   geom_point(size = 14) +
   geom_text(aes(label = Count)
-            , color = "black") +
+            , color = "#000000") +
   theme.plot() +
   ggtitle("Conflict Events by Country "
        , subtitle="Nigeria Has Nearly 4x as Many Events as the Next Closest Country") +
@@ -237,7 +237,7 @@ plot_fun <- function(x) {
     geom_point(size = 5
                , alpha = .3) +
     geom_text(aes(label = Count)
-              , color = "black") +
+              , color = "#000000") +
     theme.plot() +
     theme(legend.position = "none"
           , axis.text.x = element_blank())+
@@ -305,7 +305,7 @@ ggplot(dat, aes(x = forcats::fct_infreq(country), y = dates
   geom_sina(method = "density"
             , alpha = .3) +
   geom_boxplot(width = .2
-               , color = "black"
+               , color = "#000000"
                , fill = NA
                , size = .5
                , outlier.shape = NA
@@ -376,7 +376,7 @@ time_all_2
 While you cannot take away precise details from the animation, it tells the basic story of a lot of conflict initially that tapers off for most of the aughts and then ramps back up in the tens and stays high for the start of the twenties. It also catches your eye in a way that a static chart or table does not.
 
 ## Concluding thoughts
-That's all for now. As you can see, descriptive statistics can tell us a lot about our dataset and help us move into more complex layers of analysis. With a little creativity descriptive statistics can even be fun and eye catching. If you are scared of statistics, don't be. The most advanced statistical concept used in this post is addition, and the computer did that for me. This is only a glimpse into exploratory data analysis to get us going. Our next post will build on this. In the next post, we'll map the conflict events and do some spatial operations. It will get more complicated than addition, but anyone can learn from this and reproduce it because the code is available.
+That's all for now. As you can see, descriptive statistics can tell us a lot about our dataset and help us move into more complex layers of analysis. With a little creativity descriptive statistics can even be fun and eye catching. If you are scared of statistics, don't be. The most advanced statistical concept used in this post is addition, and the computer did that for me. This is only a glimpse into exploratory data analysis to get us going. Our next post will build on what has already been done by expanding the data exploration and conducting spatial operations. It will get more complicated than addition, but anyone can learn from this and reproduce it because the code is available.
 
 At MSI, we use coding languages like R to ensure that our peers can retrace our steps and our clients receive the analysis as well as our final product. Thanks for reading.
 
