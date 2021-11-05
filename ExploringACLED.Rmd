@@ -67,7 +67,7 @@ We're going to explore ACLED's conflict dataset for Western Africa from January 
 
 
 #read in the data set
-dat <- read_xlsx("data/WAconflicts202001.xlsx")
+dat <- read_xlsx("C:/Users/brian.calhoon/Documents/ACLED Sandbox_TT/data/WAconflicts202001.xlsx")
 
 #shapefiles for countries
 africa <- rnaturalearth::ne_countries(continent = "Africa"
