@@ -2,7 +2,7 @@
 title: "Exploring Western Africa Conflict Data With ACLED and R"
 subtitle: "Part 1: Descriptive Statistics Can Be Fun"
 author: "Brian Calhoon"
-date: "10/18/2021"
+date: "11/09/2021"
 output: 
   bookdown::html_document2:
     fig.caption: T
@@ -67,7 +67,7 @@ We're going to explore ACLED's conflict dataset for Western Africa from January 
 
 
 #read in the data set
-dat <- read_xlsx("C:/Users/brian.calhoon/Documents/ACLED Sandbox_TT/data/WAconflicts202001.xlsx")
+dat <- read_xlsx("~/ACLED Sandbox_TT/data/WAconflicts202001.xlsx")
 
 #shapefiles for countries
 africa <- rnaturalearth::ne_countries(continent = "Africa"

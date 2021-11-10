@@ -11,7 +11,7 @@
 
 <meta name="author" content="Brian Calhoon" />
 
-<meta name="date" content="2021-10-18" />
+<meta name="date" content="2021-11-09" />
 
 <title>Exploring Western Africa Conflict Data With ACLED and R</title>
 
@@ -256,7 +256,7 @@ div.tocify {
 <h1 class="title toc-ignore">Exploring Western Africa Conflict Data With ACLED and R</h1>
 <h3 class="subtitle">Part 1: Descriptive Statistics Can Be Fun</h3>
 <h4 class="author">Brian Calhoon</h4>
-<h4 class="date">10/18/2021</h4>
+<h4 class="date">11/09/2021</h4>
 
 </div>
 
@@ -302,7 +302,7 @@ font-size: small;
 <h2><span class="header-section-number">1.3</span> What are we Looking at?</h2>
 <p>We’re going to explore ACLED’s conflict dataset for Western Africa from January 1, 1997 - September 10, 2021 which includes 49,464 observations across 31 variables. The map below shows the 15 countries that ACLED includes in Western Africa.</p>
 <pre class="r"><code>#read in the data set
-dat &lt;- read_xlsx(&quot;C:/Users/brian.calhoon/Documents/ACLED Sandbox_TT/data/WAconflicts202001.xlsx&quot;)
+dat &lt;- read_xlsx(&quot;~/ACLED Sandbox_TT/data/WAconflicts202001.xlsx&quot;)
 
 #shapefiles for countries
 africa &lt;- rnaturalearth::ne_countries(continent = &quot;Africa&quot;
