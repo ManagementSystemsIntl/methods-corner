@@ -128,7 +128,7 @@ ggplot(data = neighbors)+
                 , aes(label = shapeName)) +
   geom_sf(data = states,
           color = "white") +
-  geom_sf(data = events_sf
+  geom_sf(data = st_jitter(events_sf, .2)
           , aes(color = event_type)
           , alpha = .3)+
   geom_sf_text(data = states
@@ -226,10 +226,12 @@ tmap::tm_basemap(c(StreetMap = "OpenStreetMap",
           , popup.vars=c("Event date" = "event_date"
                          , "Sub-event Type"="sub_event_type"
                          , "Actors"= "actor1"
+                         , "Actors" = "actor2"
                          , "Fatalities" = "fatalities"
                          , "Sources" = "source")
           , popup.format=list() 
           , group = "Events"
+          , jitter = .2
           , alpha = .3
           , palette = my_pal)
 ```
