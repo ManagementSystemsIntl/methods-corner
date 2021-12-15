@@ -364,8 +364,8 @@ ggplot(events_type
   theme(legend.position = "none"
       , axis.text.x = element_blank()
       , axis.title.y = element_blank())+
-  ggtitle("Conflict Event Types in South Sudan, 1997-2021"
-       , subtitle = "Battles and Violence Against Civilians are the Most Frequent Conflict Events")+
+  ggtitle("Types of Conflict in /nSouth Sudan, 1997-2021"
+       , subtitle = "Battles and Violence Against Civilians are the Most \nFrequent Conflict Events")+
   labs(y = ""
        , x = ""
        , caption = "Source: ACLED, www.acleddata.com")
