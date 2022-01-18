@@ -1,0 +1,149 @@
+---
+title: "Methods Corner"
+subtitle: "Working with strings to cheat at Wordle"
+author: "Dan Killian"
+date: "1/18/2022"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    theme: paper
+    fig.caption: true
+    code_folding: show
+    df_print: kable
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+# standard figure size and generate clean output
+knitr::opts_chunk$set(fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+
+library(here)
+
+#knitr::opts_knit$set(root.dir="~/South Sudan resilience - MSI") # doesn't seem to work
+
+source(here("../../Dropbox/r prep.R"))
+
+```
+
+Let's use Wordle as an excuse to practice with string manipulation. 
+
+```{r}
+dict <- data.frame(word = read.csv("Collins Scrabble Words (2019).txt", 
+                       header = FALSE, skip = 2)[, 1]) %>%
+                     mutate(word=tolower(word))
+sample_n(dict, 100) %>%
+  unlist() %>%
+  unname()
+```
+
+
+### January 18, 2022
+
+First word 'adieu', all grey!
+
+⬜⬜⬜⬜⬜
+
+Let's filter out all those vowels and the number of characters. 
+
+```{r}
+out <- dict %>%
+  filter(str_detect(word, "a|e|i|u", negate=T),
+         nchar(word)==5)
+nrow(out)
+```
+
+1,200 words to work with 
+
+```{r}
+sample_n(out, 75) %>%
+  unlist() %>%
+  unname()
+```
+
+
+Second try 'strop'. R, o, and p yellow 
+
+⬜⬜🟨🟨🟨
+
+Let's filter for most common consonants, as well as the information from the previous guess. 
+
+```{r}
+
+out2 <- out %>%
+  filter(str_detect(word, "t|n|s"),
+         str_detect(word, "r|o|p"))
+
+nrow(out2)
+
+```
+
+909 words to work with^[I later noticed that the sequential calls to str_detect did some additional filtering]
+
+```{r}
+sample_n(out2, 75) %>%
+  unlist() %>%
+  unname()
+```
+
+
+Third try 'poncy'. p and y green, o yellow.
+
+🟩🟨⬜⬜🟩
+
+In fact that's a regression since I did not choose a word with r or o. 
+
+Let's filter for the first and last letters.
+
+```{r}
+
+out3 <- out2 %>%
+  filter(substr(word, 1,1)=="p",
+         substr(word,5,5)=="y")
+
+nrow(out3)
+
+```
+
+Only 14 words possible. 
+
+```{r}
+out3 %>%
+  unlist() %>%
+  unname()
+```
+
+Next try pygmy, no help. 
+
+🟩⬜⬜⬜🟩
+
+In fact that's an even worse regression because I forgot to use a word that included o and r again. Let's filter for o and r so I won't forget, and also remove the consonants we've used so far. 
+
+```{r}
+out4 <- out3 %>%
+  filter(str_detect(word, "o|r"),
+         str_detect(word, "d|s|t|n|c|g|m", negate=T))
+nrow(out4)
+```
+
+Only two words left. 
+
+```{r}
+out4 %>%
+  unlist() %>%
+  unname()
+```
+
+Tried proxy on fifth attempt, got it!
+
+Zero credit for using any vocabulary skills (I still don't know what strop or poncy mean). But it's a good occasion to do some string manipulation. To keep some skill involved, next time I won't filter for most common consonants, but only filter out based on past guesses. 
+
+Wordle 213 5/6
+
+⬜⬜⬜⬜⬜
+⬜⬜🟨🟨🟨
+🟩🟨⬜⬜🟩
+🟩⬜⬜⬜🟩
+🟩🟩🟩🟩🟩
+
+
