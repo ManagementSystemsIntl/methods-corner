@@ -1,0 +1,62 @@
+##########################################################################################
+#  About this file:
+#  The dataset described in this info file was downloaded in part or in whole
+#  from the Illinois Data Bank.
+#  This info file contains citation information, a permanent digital object identifier (DOI),
+#  and a listing of all data files available for this dataset.
+#  Keep this info file so in the future you'll know where you obtained
+#  the data files you've just downloaded.
+##########################################################################################
+
+[ DOI: ] 10.13012/B2IDB-9651987_V3
+[ Title: ] Cline Center Coup D’état Project Dataset
+[ Creators: ] Peyton, Buddy; Bajjalieh, Joseph; Shalmon, Dan; Martin, Michael; Bonaguro, Jonathan
+[ Publisher: ] University of Illinois at Urbana-Champaign
+[ Publication Year: ] 2021
+
+[ Citation: ] Peyton, Buddy; Bajjalieh, Joseph; Shalmon, Dan; Martin, Michael; Bonaguro, Jonathan (2021): Cline Center Coup D’état Project Dataset. University of Illinois at Urbana-Champaign. https://doi.org/10.13012/B2IDB-9651987_V3
+
+[ Description: ] Coups d'état are important events in the life of a country. They constitute an important subset of irregular transfers of political power that can have significant and enduring consequences for national well-being. There are only a limited number of datasets available to study these events (Powell and Thyne 2011, Marshall and Marshall 2019). Seeking to facilitate research on post-WWII coups by compiling a more comprehensive list and categorization of these events, the Cline Center for Advanced Social Research (previously the Cline Center for Democracy) initiated the Coup D'état Project (CDP) as part of its Societal Infrastructures and Development (SID) project.
+
+More specifically, this dataset identifies the outcomes of coup events (i.e. realized or successful coups, unrealized coup attempts, or thwarted conspiracies) the type of actor(s) who initiated the coup (i.e. military, rebels, etc.), as well as the fate of the deposed leader.
+
+This is version 2.0.0 of this dataset. The first version, <a href="https://clinecenter.illinois.edu/project/research-themes/democracy-and-development/coup-detat-project-cdp ">v.1.0.0</a>, was released in 2013. Since then, the Cline Center has taken several steps to improve on the previously-released data. These changes include:
+<ol> <li>Filling in missing event data values</li> <li>Removing events with no identifiable dates</li> <li>Reconciling event dates from sources that have conflicting information</li> <li>Removing events with insufficient sourcing (each event now has at least two sources)</li> <li>Removing events that were inaccurately coded and did not meet our definition of a coup event</li>   <li>Extending the time period covered from 1945-2005 to 1945-2019</li> <li>Removing certain variables that fell below the threshold of inter-coder reliability required by the project</li> <li>The spreadsheet ‘CoupInventory.xls’ was removed because of inadequate attribution and citation in the event summaries</li></ol>
+
+<b>Items in this Dataset</b>
+1. <i>CDP v.2.0.2 Codebook.pdf</i>
+<ul><li>This 14-page document provides a description of the Cline Center Coup D’état Project Dataset. The first section of this codebook provides a succinct definition of a coup d’état used by the CDP and an overview of the categories used to differentiate the wide array of events that meet the CDP definition. It also defines coup outcomes. The second section describes the methodology used to produce the data. <i>Created November 2020. Revised February 2021 to add some additional information about how the Cline Center edited some values in the COW country codes."</i> </li></ul>
+
+2. <i>Coup_Data_v2.0.0.csv</i>
+<ul><li>This CSV (Comma Separated Values) file contains all of the coup event data from the Cline Center Coup D’etat Project. It contains 29 variables and 943 observations. <i>Created November 2020</i></li></ul> 
+
+3. <i>Source Document v2.0.0.pdf</i>
+<ul><li>This 305-page document provides the sources used for each of the coup events identified in this dataset.  Please use the value in the coup_id variable to identify the sources used to identify each particular event. <i>Created November 2020</i> </li></ul>
+
+4. <i>README.md</i>
+<ul><li>This file contains useful information for the user about the dataset.  It is a text file written in mark down language. <i>Created November 2020</i> </li></ul>
+
+<br>
+
+<b> Citation Guidelines</b>
+
+1) To cite this codebook please use the following citation:
+
+Peyton, Buddy, Joseph Bajjalieh, Dan Shalmon, Michael Martin, and Jonathan Bonaguro. 2021. “Cline Center Coup D’état Project Dataset Codebook”. Cline Center Coup D’état Project Dataset.  Cline Center for Advanced Social Research. V.2.0.2. February 23. University of Illinois Urbana-Champaign. doi: <a href="https://doi.org/10.13012/B2IDB-9651987_V2">10.13012/B2IDB-9651987_V3</a>
+
+
+
+2) To cite the data  please use the following citation:
+
+Peyton, Buddy, Joseph Bajjalieh, Dan Shalmon, Michael Martin, and Jonathan Bonaguro. 2020. Cline Center Coup D’état Project Dataset.  Cline Center for Advanced Social Research. V.2.0.0. November 16. University of Illinois Urbana-Champaign. doi: <a href="https://doi.org/10.13012/B2IDB-9651987_V2">10.13012/B2IDB-9651987_V3</a>
+
+
+[ Keywords: ] Coup d'état; event data; Cline Center; Cline Center for Advanced Social Research; political science
+[ License: ] CC BY - http://creativecommons.org/licenses/by/4.0/
+[ Corresponding Creator: ] Joseph Bajjalieh
+[ Related Website: ] https://clinecenter.illinois.edu/project/research-themes/democracy-and-development/coup-detat-project-cdp
+[ Files (4): ] 
+. CDP v.2.0.2 Codebook.pdf, 433 KB
+. Coup_Data_v2.0.0.csv, 94.1 KB
+. README.md, 4.31 KB
+. Source Document v2.0.0.pdf, 1.16 MB

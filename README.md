@@ -6,3 +6,4 @@ This repository explores a variety of analytical methods applied by MSI staff. F
 
 [Exploring ACLED conflict events in South Sudan](https://managementsystemsintl.github.io/methods-corner/SouthSudan/SouthSudan_conflict.html)
 
+[Working with strings to ~~cheat at~~ help with Wordle](https://managementsystemsintl.github.io/methods-corner/Wordle/wordle.html)
