@@ -54,7 +54,7 @@ source("prep/packages_fonts_styles.R", local = knitr::knit_global())
 ```{r download ACLED data, include = F}
 
 #This is the original object
-events <- read_xlsx("data/SSudanACLED.xlsx") 
+events <- read_xlsx("~/SouthSudan/data/SSudan.xlsx") 
 
 events$admin1 <- events$admin1 %>% 
   recode("Western Bahr El Ghazal" = "Western Bahr el Ghazal")
