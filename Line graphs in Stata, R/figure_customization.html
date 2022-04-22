@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Figure customization in R and Stata</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Gustavo Castillo, Dan Killian" />
+    <script src="figure_customization_files/header-attrs/header-attrs.js"></script>
+    <link href="figure_customization_files/panelset/panelset.css" rel="stylesheet" />
+    <script src="figure_customization_files/panelset/panelset.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Figure customization in R and Stata
+### Gustavo Castillo, Dan Killian
+### June 2021
+
+---
+
+
+
+
+
+
+
+### Session objective
+
+Show finished visualization in R
+
+Narrate construction of visualization step by step (coding out loud)
+
+Compare / contrast against figure construction in Stata
+
+---
+
+### Visualization using a grammar of graphics
+
+The ggplot2 package is based on a specific grammar of graphics. Under this grammar of graphics, a visualization comprises six layers: 
+
+- data
+- mapping (aesthetic)
+- geometry
+- facet
+- statistic
+- theme
+
+---
+
+### Template of a data visualization
+
+All plots require the first three layers:
+
+- data to visualize
+- a mapping of variables from the data to the visualization grid
+  - different types of mappings are referred to as 'aesthetics'
+- a geometry that gives a specific implementation of the specified aesthetic
+
+
+```r
+ggplot(data = [DATASET],
+       mapping = aes(x = [X VARIABLE],
+                     y = [Y VARIABLE])) +
+  geom_SOMETHING() 
+```
+
+---
+
+### Example: Governance trends before and after the Arab Spring
+
+.panelset[
+
+.panel[.panel-name[Raw data]
+
+
+|Country_Name |Indicator                |Subindicator_Type |       1996|       1998|       2000|       2002|
+|:------------|:------------------------|:-----------------|----------:|----------:|----------:|----------:|
+|Egypt        |Voice and Accountability |Estimate          | -0.8441842| -0.9117861| -0.8945062| -1.1022900|
+|Egypt        |Voice and Accountability |StdErr            |  0.2088098|  0.2144461|  0.1929377|  0.1569617|
+|Egypt        |Voice and Accountability |Rank              | 22.0000000| 21.3930300| 22.3880600| 16.4179100|
+|Libya        |Voice and Accountability |Estimate          | -1.4973060| -1.6791560| -1.6886630| -1.8240650|
+|Libya        |Voice and Accountability |StdErr            |  0.2088098|  0.2144461|  0.1972829|  0.1591490|
+|Libya        |Voice and Accountability |Rank              |  9.5000000|  4.4776120|  4.4776120|  2.4875620|
+Let's plot the World Bank Voice and Accountability index for each country, across years
+
+]
+
+.panel[.panel-name[Prepared data]
+.pull-left[
+
+```r
+va1 &lt;- va %&gt;%
+  filter(Subindicator_Type == "Estimate") %&gt;%
+  pivot_longer(!Country_Name &amp;
+                 !Indicator_Id &amp;
+                 !Indicator &amp;
+                 !Subindicator_Type, 
+               names_to = "Year", 
+               values_to = "Estimate") %&gt;%
+  select(1,5,6) %&gt;%
+  filter(Year &gt; 2007,
+         Country_Name == "Egypt"|
+           Country_Name == "Tunisia"|
+           Country_Name == "Libya") %&gt;%
+  mutate(Year=as.numeric(Year)) %&gt;%
+  arrange(Year) %&gt;%
+  as.data.frame()
+kable(va1)
+```
+]
+.pull-right[
+
+|Country_Name | Year|   Estimate|
+|:------------|----:|----------:|
+|Egypt        | 2008| -1.2122390|
+|Libya        | 2008| -1.9414910|
+|Tunisia      | 2008| -1.3505450|
+|Egypt        | 2009| -1.1575010|
+|Libya        | 2009| -1.9102790|
+|Tunisia      | 2009| -1.3583390|
+|Egypt        | 2010| -1.1880540|
+|Libya        | 2010| -1.9404160|
+|Tunisia      | 2010| -1.4161650|
+|Egypt        | 2011| -1.1399830|
+|Libya        | 2011| -1.5944120|
+|Tunisia      | 2011| -0.3705043|
+|Egypt        | 2012| -0.7650635|
+|Libya        | 2012| -0.9007420|
+|Tunisia      | 2012| -0.1716522|
+|Egypt        | 2013| -1.0515590|
+|Libya        | 2013| -0.9716001|
+|Tunisia      | 2013| -0.0844274|
+|Egypt        | 2014| -1.1806000|
+|Libya        | 2014| -1.1137260|
+|Tunisia      | 2014|  0.1927840|
+|Egypt        | 2015| -1.1904170|
+|Libya        | 2015| -1.3416290|
+|Tunisia      | 2015|  0.2414132|
+|Egypt        | 2016| -1.2045020|
+|Libya        | 2016| -1.4300810|
+|Tunisia      | 2016|  0.3045838|
+|Egypt        | 2017| -1.2506860|
+|Libya        | 2017| -1.4426350|
+|Tunisia      | 2017|  0.1620905|
+|Egypt        | 2018| -1.3115360|
+|Libya        | 2018| -1.5224920|
+|Tunisia      | 2018|  0.2107755|
+|Egypt        | 2019| -1.4286730|
+|Libya        | 2019| -1.4583350|
+|Tunisia      | 2019|  0.2814057|
+]
+]
+
+.panel[.panel-name[Finished plot]
+
+
+```r
+include_graphics("Voice and Accountability - R.png")
+```
+
+&lt;img src="Voice and Accountability - R.png" width="60%" /&gt;
+]
+]
+
+---
+
+class: middle
+
+# Coding out loud
+
+- data
+- mapping (aesthetic)
+- geometry
+- facet
+- statistic
+- theme
+
+---
+
+.midi[
+&gt; 1. **Start with the data**
+]
+.pull-left[
+
+```r
+*ggplot(data = va1)
+```
+]
+.pull-right[
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-6-1.png" width="100%" /&gt;
+]
+
+---
+
+.midi[
+&gt; 1. Start with the data,
+&gt; 2. **map year to the x-axis**
+]
+.pull-left[
+
+```r
+ggplot(data = va1,
+*      mapping = aes(x = Year))
+```
+]
+.pull-right[
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-7-1.png" width="100%" /&gt;
+]
+
+---
+
+.midi[
+&gt; 1. Start with the data,
+&gt; 2. map year to the x-axis
+&gt; 3. **map Voice and Accountability Index to y-axis**
+]
+.pull-left[
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year,
+*                    y = Estimate))
+```
+]
+.pull-right[
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-8-1.png" width="100%" /&gt;
+]
+
+---
+
+.midi[
+&gt; 1. Start with the data,
+&gt; 2. map year to the x-axis
+&gt; 3. map Voice and Accountability Index to y-axis
+&gt; 4. **map Country to the color aesthetic**
+]
+.pull-left[
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year,
+                     y = Estimate, 
+*                    color = Country_Name))
+```
+]
+.pull-right[
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-9-1.png" width="100%" /&gt;
+]
+
+---
+
+.midi[
+&gt; 1. Start with the data,
+&gt; 2. map year to the x-axis
+&gt; 3. map Voice and Accountability Index to y-axis
+&gt; 4. map Country to the color aesthetic
+&gt; 5. **assign a point geometry to display the data mapping**
+]
+.pull-left[
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year, 
+                     y = Estimate, 
+                     color = Country_Name)) + 
+*                    geom_point(size=3)
+```
+]
+.pull-right[
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-10-1.png" width="100%" /&gt;
+]
+
+---
+
+.midi[
+&gt; 1. Start with the data,
+&gt; 2. map year to the x-axis
+&gt; 3. map Voice and Accountability Index to y-axis
+&gt; 4. map Country to the color aesthetic
+&gt; 5. assign a point geometry to display the data mapping
+&gt; 6. **assign a line geometry to display the data mapping**
+]
+.pull-left[
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year, 
+                     y = Estimate, 
+                     color = Country_Name)) + 
+       geom_point(size=3) +
+*      geom_line(size=1)
+```
+]
+.pull-right[
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-11-1.png" width="100%" /&gt;
+]
+
+---
+
+.midi[
+&gt; 1. Start with the data,
+&gt; 2. map year to the x-axis
+&gt; 3. map Voice and Accountability Index to y-axis
+&gt; 4. map Country to the color aesthetic
+&gt; 5. assign a point geometry to display the data mapping
+&gt; 6. assign a line geometry to display the data mapping
+&gt; 7. **assign a color blind-friendly palette**
+]
+.pull-left[
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year, 
+                     y = Estimate,
+                     color = Country_Name)) + 
+       geom_point(size=3) +
+       geom_line(size=1) +
+*      scale_color_viridis_d()
+```
+]
+.pull-right[
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-12-1.png" width="100%" /&gt;
+]
+
+---
+
+.midi[
+&gt; 1. Start with the data,
+&gt; 2. map year to the x-axis
+&gt; 3. map Voice and Accountability Index to y-axis
+&gt; 4. map Country to the color aesthetic
+&gt; 5. assign a point geometry to display the data mapping
+&gt; 6. assign a line geometry to display the data mapping
+&gt; 7. assign a color blind-friendly palette
+&gt; 8. **highlight a break in the timeline with a vertical line**
+]
+.pull-left[
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year, 
+                     y = Estimate,
+                     color = Country_Name)) + 
+*      geom_vline(xintercept=2010,
+*                 size=1.2,
+*                 color="darkgrey",
+                  alpha=.8) + #&lt;&lt; add transparency
+       geom_point(size=2) +
+       geom_line(size=1) +
+       scale_color_viridis_d()
+```
+Pop quiz: Why was the new code snippet inserted above the geometries? 
+]
+.pull-right[
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-13-1.png" width="100%" /&gt;
+]
+
+---
+
+.midi[
+&gt; 1. Start with the data,
+&gt; 2. map year to the x-axis
+&gt; 3. map Voice and Accountability Index to y-axis
+&gt; 4. map Country to the color aesthetic
+&gt; 5. assign a point geometry to display the data mapping
+&gt; 6. assign a line geometry to display the data mapping
+&gt; 7. assign a color blind-friendly palette
+&gt; 8. highlight a break in the timeline with a vertical line
+&gt; 9. **format the x-axis**
+]
+.pull-left[
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year, 
+                     y = Estimate,
+                     color = Country_Name)) + 
+       geom_vline(xintercept=2010, 
+                  size=1.2, 
+                  color="darkgrey",
+                  alpha=.8) +
+       geom_point(size=3) +
+       geom_line(size=1) +
+       scale_color_viridis_d() +
+*      scale_x_continuous(limits=c(2008,2019),
+*                         breaks=seq(2008,2018,2),
+*                         labels=c("2008", "Arab\nSpring", "2012", "2014", "2016", "2018"))
+```
+]
+.pull-right[
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-14-1.png" width="100%" /&gt;
+]
+
+---
+
+.midi[
+&gt; 1. Start with the data,
+&gt; 2. map year to the x-axis
+&gt; 3. map Voice and Accountability Index to y-axis
+&gt; 4. map Country to the color aesthetic
+&gt; 5. assign a point geometry to display the data mapping
+&gt; 6. assign a line geometry to display the data mapping
+&gt; 7. assign a color blind-friendly palette
+&gt; 8. highlight a break in the timeline with a vertical line
+&gt; 9. format the x-axis
+&gt; 10. **format the y-axis**
+]
+.pull-left[
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year, 
+                     y = Estimate, 
+                     color=Country_Name)) + 
+       geom_point(size=3) +
+       geom_line(size=1) +
+       scale_color_viridis_d() +
+       scale_x_continuous(limits=c(2008,2019),
+                     breaks=seq(2008,2018,2),
+                     labels=c("2008", "Arab\nSpring", "2012", "2014", "2016", "2018")) +
+*      scale_y_continuous(limits=c(-2.0,0.5),
+*                    breaks=seq(-2.0,1,0.5))
+```
+]
+.pull-right[
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-15-1.png" width="100%" /&gt;
+]
+
+---
+
+.midi[
+.pull-left[
+&gt; 1. Start with the data,
+&gt; 2. map year to the x-axis
+&gt; 3. map Voice and Accountability Index to y-axis
+&gt; 4. map Country to the color aesthetic
+&gt; 5. assign a point geometry to display the data mapping
+&gt; 6. assign a line geometry to display the data mapping
+&gt; 7. assign a color blind-friendly palette
+&gt; 8. highlight a break in the timeline with a vertical line
+&gt; 9. format the x-axis
+&gt; 10. format the y-axis
+&gt; 11. **add end-point labels**
+]
+]
+.pull-right[
+
+```r
+va_name &lt;- va1 %&gt;%
+  group_by(Country_Name) %&gt;%
+  summarise(value1 = last(Estimate),
+            value2 = nth(Estimate,11)) %&gt;%
+  mutate(value3 = c(-1.25, -1.55, .281),
+         color=viridis(3))
+va_name
+```
+
+
+```
+## # A tibble: 3 x 5
+##   Country_Name value1 value2 value3 color    
+##   &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;    
+## 1 Egypt        -1.43  -1.31  -1.25  #440154FF
+## 2 Libya        -1.46  -1.52  -1.55  #21908CFF
+## 3 Tunisia       0.281  0.211  0.281 #FDE725FF
+```
+]
+
+---
+
+.midi[
+.pull-left[
+&gt; 1. Start with the data,
+&gt; 2. map year to the x-axis
+&gt; 3. map Voice and Accountability Index to y-axis
+&gt; 4. map Country to the color aesthetic
+&gt; 5. assign a point geometry to display the data mapping
+&gt; 6. assign a line geometry to display the data mapping
+&gt; 7. assign a color blind-friendly palette
+&gt; 8. highlight a break in the timeline with a vertical line
+&gt; 9. format the x-axis
+&gt; 10. format the y-axis
+&gt; 11. **add end-point labels**
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year, y = Estimate, color=Country_Name, group=Country_Name)) + 
+       geom_vline(xintercept=2010, 
+                  size=1.2, 
+                  color="darkgrey",
+                  alpha=.8) +
+       geom_point(size=3) +
+       geom_line(size=1) +
+       scale_color_viridis_d() # + 
+```
+
+
+]
+.pull-right[
+
+```r
+# continued from left column
+#       scale_x_continuous(limits=c(2008,2019),
+#                     breaks=seq(2008,2018,2),
+#                     labels=c("2008", "Arab\nSpring", "2012", "2014", "2016", "2018")) +
+#       scale_y_continuous(limits=c(-2.0,0.5),
+#                     breaks=seq(-2.0,1,0.5),
+*#                     sec.axis=sec_axis(~.,
+*#                     breaks=va_name$value3,
+*#                     labels=va_name$Country_Name))
+```
+
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-19-1.png" width="100%" /&gt;
+]
+]
+
+---
+.pull-left[
+&gt; 1.  Start with the data,
+&gt; 2.  map year to the x-axis
+&gt; 3.  map Voice and Accountability Index to y-axis
+&gt; 4. map Country to the color aesthetic
+&gt; 5.  assign a point geometry to display the data mapping
+&gt; 6.  assign a line geometry to display the data mapping
+&gt; 7.  assign a color blind-friendly palette
+&gt; 8.  highlight a break in the timeline with a vertical line
+&gt; 9.  format the x-axis
+&gt; 10.  format the y-axis
+&gt; 11. add end-point labels
+&gt; 12. **remove legend**
+]
+.pull-right[
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year, y = Estimate, color=Country_Name, group=Country_Name)) + 
+       geom_vline(xintercept=2010, size=1.2, color="darkgrey", alpha=.8) +
+       geom_point(size=3) +
+       geom_line(size=1) +
+       scale_color_viridis_d() +
+       scale_x_continuous(limits=c(2008,2019),
+                     breaks=seq(2008,2018,2),
+                     labels=c("2008", "Arab\nSpring", "2012", "2014", "2016", "2018")) +
+       scale_y_continuous(limits=c(-2.0,0.5),
+                     breaks=seq(-2.0,1,0.5),
+                     sec.axis=sec_axis(~., 
+                     breaks=va_name$value3, 
+                     labels=va_name$Country_Name)) +
+*      theme(legend.position="NULL")
+```
+
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-20-1.png" width="100%" /&gt;
+]
+---
+.pull-left[
+&gt; 1.  Start with the data,
+&gt; 2.  map year to the x-axis
+&gt; 3.  map Voice and Accountability Index to y-axis
+&gt; 4.  map Country to the color aesthetic
+&gt; 5.  assign a point geometry to display the data mapping
+&gt; 6.  assign a line geometry to display the data mapping
+&gt; 7.  assign a color blind-friendly palette
+&gt; 8.  highlight a break in the timeline with a vertical line
+&gt; 9.  format the x-axis
+&gt; 10. format the y-axis
+&gt; 11. add end-point labels
+&gt; 12. remove legend
+&gt; 13. **apply a thematic style**
+]
+.pull-right[
+
+```r
+base &lt;- theme_bw() + 
+  theme(panel.grid.minor.x=element_blank(),
+        panel.grid.minor.y=element_blank(),
+        plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+        plot.subtitle = element_text(size=16, family="Source Sans Pro"),
+        plot.caption=element_text(size=12, family="Source Sans Pro"),
+        axis.title=element_text(size=16, family="Source Sans Pro"),
+        axis.text=element_text(size=14, family="Source Sans Pro"),
+        legend.text=element_text(size=14, family="Source Sans Pro"),
+        strip.text=element_text(size=14, family="Source Sans Pro"),
+        panel.border=element_blank(),
+        axis.ticks = element_blank())
+```
+]
+
+---
+
+.pull-left[
+&gt; 1.  Start with the data,
+&gt; 2.  map year to the x-axis
+&gt; 3.  map Voice and Accountability Index to y-axis
+&gt; 4.  map Country to the color aesthetic
+&gt; 5.  assign a point geometry to display the data mapping
+&gt; 6.  assign a line geometry to display the data mapping
+&gt; 7.  assign a color blind-friendly palette
+&gt; 8.  highlight a break in the timeline with a vertical line
+&gt; 9.  format the x-axis
+&gt; 10.  format the y-axis
+&gt; 11. add end-point labels
+&gt; 12. remove legend
+&gt; 13. **apply a thematic style**
+
+Pop quiz: why is the theme function placed after calling the base object?
+]
+
+.pull-right[
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year, y = Estimate, color=Country_Name, group=Country_Name)) + 
+  geom_vline(xintercept=2010, size=1.2, color="darkgrey", alpha=.8) +
+  geom_point(size=3) +
+  geom_line(size=1) +
+  scale_color_viridis_d() +
+  scale_x_continuous(limits=c(2008,2019),
+                     breaks=seq(2008,2018,2),
+                     labels=c("2008", "Arab\nSpring", "2012", "2014", "2016", "2018")) +
+  scale_y_continuous(limits=c(-2.0,0.5),
+                     breaks=seq(-2.0,1,0.5),
+                     sec.axis=sec_axis(~.,
+                                       breaks=va_name$value3,
+                                       labels=va_name$Country_Name)) +
+* base +
+  theme(legend.position="NULL") 
+```
+]
+
+---
+
+.pull-left[
+&gt; 1.  Start with the data,
+&gt; 2.  map year to the x-axis
+&gt; 3.  map Voice and Accountability Index to y-axis
+&gt; 4.  map Country to the color aesthetic
+&gt; 5.  assign a point geometry to display the data mapping
+&gt; 6.  assign a line geometry to display the data mapping
+&gt; 7.  assign a color blind-friendly palette
+&gt; 8.  highlight a break in the timeline with a vertical line
+&gt; 9.  format the x-axis
+&gt; 10. format the y-axis
+&gt; 11. add end-point labels
+&gt; 12. remove legend
+&gt; 13. **apply a thematic style**
+]
+
+.pull-right[
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-22-1.png" width="100%" /&gt;
+]
+
+---
+
+.pull-left[
+&gt; 1.  Start with the data,
+&gt; 2.  map year to the x-axis
+&gt; 3.  map Voice and Accountability Index to y-axis
+&gt; 4.  map Country to the color aesthetic
+&gt; 5.  assign a point geometry to display the data mapping
+&gt; 6.  assign a line geometry to display the data mapping
+&gt; 7.  assign a color blind-friendly palette
+&gt; 8.  highlight a break in the timeline with a vertical line
+&gt; 9.  format the x-axis
+&gt; 10. format the y-axis
+&gt; 11. add end-point labels
+&gt; 12. remove legend
+&gt; 13. apply a thematic style
+&gt; 14. **remove axis labels, add title and caption**
+]
+
+.pull-right[
+
+```r
+ggplot(data = va1,
+       mapping = aes(x = Year, y = Estimate, color=Country_Name, group=Country_Name)) + 
+  geom_vline(xintercept=2010, size=1.2, color="darkgrey", alpha=.8) +
+  geom_point(size=3) +
+  geom_line(size=1) +
+  scale_color_viridis_d() +
+  scale_x_continuous(limits=c(2008,2019), breaks=seq(2008,2018,2), labels=c("2008", "Arab\nSpring", "2012", "2014", "2016", "2018")) +
+  scale_y_continuous(limits=c(-2.0,0.5), breaks=seq(-2.0,1,0.5), sec.axis=sec_axis(~., breaks=va_name$value3, labels=va_name$Country_Name)) +
+  base + 
+  theme(legend.position="NULL") +
+  labs(x="",
+       y="",
+       title="Voice and Accountability",
+       caption="Voice and Accountability ranges from -2.5 (weak) to 2.5 (strong)")
+```
+
+&lt;img src="figure_customization_files/figure-html/unnamed-chunk-23-1.png" width="100%" /&gt;
+
+]
+
+---
+
+### Final products
+
+.pull-left[
+
+Stata
+
+&lt;img src="Voice and Accountability - Stata.png" width="80%" /&gt;
+]
+.pull-right[
+
+R
+
+&lt;img src="Voice and Accountability - R.png" width="80%" /&gt;
+]
+
+---
+
+class: center, middle
+
+# Thank you!
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
