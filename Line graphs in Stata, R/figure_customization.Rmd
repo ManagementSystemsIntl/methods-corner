@@ -688,7 +688,7 @@ ggplot(data = va1,
 
 .pull-left[
 
-Stata
+Stata (see separate documentation for tutorial content)
 
 ```{r echo=F}
 include_graphics("Voice and Accountability - Stata.png")
