@@ -1,0 +1,275 @@
+---
+title: "Figure customization in R and Stata"
+subtitle: ""  
+author: 
+  - "Gustavo Castillo, Dan Killian"
+date: "June 2021"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  fig.width=5, fig.height=3, fig.retina=3,
+  out.width = "80%",
+  cache = FALSE,
+  echo = TRUE,
+  message = FALSE, 
+  warning = FALSE,
+  fig.show = TRUE,
+  hiline = TRUE
+)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_light(
+  base_color = "#23395b"
+)
+
+```
+
+```{r include=F}
+library(xaringanExtra)
+library(tidyverse)
+library(here)
+library(readxl)
+library(viridis)
+library(knitr)
+
+use_panelset()
+
+#source(here("prep.r"))
+
+```
+
+### Session objective
+
+Show finished visualization in R
+
+Narrate construction of visualization step by step (coding out loud)
+
+Compare / contrast against figure construction in Stata
+
+------------------------------------------------------------------------
+
+### Visualization using a grammar of graphics
+
+The ggplot2 package is based on a specific grammar of graphics. Under
+this grammar of graphics, a visualization comprises six layers:
+
+-   data
+-   mapping (aesthetic)
+-   geometry
+-   facet
+-   statistic
+-   theme
+
+------------------------------------------------------------------------
+
+### Template of a data visualization
+
+All plots require the first three layers:
+
+-   data to visualize
+-   a mapping of variables from the data to the visualization grid
+    -   different types of mappings are referred to as 'aesthetics'
+-   a geometry that gives a specific implementation of the specified
+    aesthetic
+
+```{r eval = F}
+ggplot(data = [DATASET],
+       mapping = aes(x = [X VARIABLE],
+                     y = [Y VARIABLE])) +
+  geom_SOMETHING() 
+```
+
+------------------------------------------------------------------------
+
+### Example: Governance trends before and after the Arab Spring
+
+.panelset\[\]
+
+------------------------------------------------------------------------
+
+class: middle
+
+# Coding out loud
+
+-   data
+-   mapping (aesthetic)
+-   geometry
+-   facet
+-   statistic
+-   theme
+
+------------------------------------------------------------------------
+
+.midi\[ \> 1. **Start with the data**\] .pull-left\[\] .pull-right\[\]
+
+------------------------------------------------------------------------
+
+.midi\[ \> 1. Start with the data, \> 2. **map year to the x-axis**\]
+.pull-left\[\] .pull-right\[\]
+
+------------------------------------------------------------------------
+
+.midi\[ \> 1. Start with the data, \> 2. map year to the x-axis \> 3.
+**map Voice and Accountability Index to y-axis**\] .pull-left\[\]
+.pull-right\[\]
+
+------------------------------------------------------------------------
+
+.midi\[ \> 1. Start with the data, \> 2. map year to the x-axis \> 3.
+map Voice and Accountability Index to y-axis \> 4. **map Country to the
+color aesthetic**\] .pull-left\[\] .pull-right\[\]
+
+------------------------------------------------------------------------
+
+.midi\[ \> 1. Start with the data, \> 2. map year to the x-axis \> 3.
+map Voice and Accountability Index to y-axis \> 4. map Country to the
+color aesthetic \> 5. **assign a point geometry to display the data
+mapping**\] .pull-left\[\] .pull-right\[\]
+
+------------------------------------------------------------------------
+
+.midi\[ \> 1. Start with the data, \> 2. map year to the x-axis \> 3.
+map Voice and Accountability Index to y-axis \> 4. map Country to the
+color aesthetic \> 5. assign a point geometry to display the data
+mapping \> 6. **assign a line geometry to display the data mapping**\]
+.pull-left\[\] .pull-right\[\]
+
+------------------------------------------------------------------------
+
+.midi\[ \> 1. Start with the data, \> 2. map year to the x-axis \> 3.
+map Voice and Accountability Index to y-axis \> 4. map Country to the
+color aesthetic \> 5. assign a point geometry to display the data
+mapping \> 6. assign a line geometry to display the data mapping \> 7.
+**assign a color blind-friendly palette**\] .pull-left\[\]
+.pull-right\[\]
+
+------------------------------------------------------------------------
+
+.midi\[ \> 1. Start with the data, \> 2. map year to the x-axis \> 3.
+map Voice and Accountability Index to y-axis \> 4. map Country to the
+color aesthetic \> 5. assign a point geometry to display the data
+mapping \> 6. assign a line geometry to display the data mapping \> 7.
+assign a color blind-friendly palette \> 8. **highlight a break in the
+timeline with a vertical line**\] .pull-left\[\] .pull-right\[\]
+
+------------------------------------------------------------------------
+
+.midi\[ \> 1. Start with the data, \> 2. map year to the x-axis \> 3.
+map Voice and Accountability Index to y-axis \> 4. map Country to the
+color aesthetic \> 5. assign a point geometry to display the data
+mapping \> 6. assign a line geometry to display the data mapping \> 7.
+assign a color blind-friendly palette \> 8. highlight a break in the
+timeline with a vertical line \> 9. **format the x-axis**\]
+.pull-left\[\] .pull-right\[\]
+
+------------------------------------------------------------------------
+
+.midi\[ \> 1. Start with the data, \> 2. map year to the x-axis \> 3.
+map Voice and Accountability Index to y-axis \> 4. map Country to the
+color aesthetic \> 5. assign a point geometry to display the data
+mapping \> 6. assign a line geometry to display the data mapping \> 7.
+assign a color blind-friendly palette \> 8. highlight a break in the
+timeline with a vertical line \> 9. format the x-axis \> 10. **format
+the y-axis**\] .pull-left\[\] .pull-right\[\]
+
+------------------------------------------------------------------------
+
+.midi\[ .pull-left\[ \> 1. Start with the data, \> 2. map year to the
+x-axis \> 3. map Voice and Accountability Index to y-axis \> 4. map
+Country to the color aesthetic \> 5. assign a point geometry to display
+the data mapping \> 6. assign a line geometry to display the data
+mapping \> 7. assign a color blind-friendly palette \> 8. highlight a
+break in the timeline with a vertical line \> 9. format the x-axis \>
+10. format the y-axis \> 11. **add end-point labels**\]\]
+.pull-right\[\]
+
+------------------------------------------------------------------------
+
+.midi\[ .pull-left\[ \> 1. Start with the data, \> 2. map year to the
+x-axis \> 3. map Voice and Accountability Index to y-axis \> 4. map
+Country to the color aesthetic \> 5. assign a point geometry to display
+the data mapping \> 6. assign a line geometry to display the data
+mapping \> 7. assign a color blind-friendly palette \> 8. highlight a
+break in the timeline with a vertical line \> 9. format the x-axis \>
+10. format the y-axis \> 11. **add end-point labels**\]
+.pull-right\[\]\]
+
+| .pull-left\[ \> 1. Start with the data, \> 2. map year to the x-axis \> 3. map Voice and Accountability Index to y-axis \> 4. map Country to the color aesthetic \> 5. assign a point geometry to display the data mapping \> 6. assign a line geometry to display the data mapping \> 7. assign a color blind-friendly palette \> 8. highlight a break in the timeline with a vertical line \> 9. format the x-axis \> 10. format the y-axis \> 11. add end-point labels \> 12. **remove legend**\] .pull-right\[\]                               |
+|:----|
+| .pull-left\[ \> 1. Start with the data, \> 2. map year to the x-axis \> 3. map Voice and Accountability Index to y-axis \> 4. map Country to the color aesthetic \> 5. assign a point geometry to display the data mapping \> 6. assign a line geometry to display the data mapping \> 7. assign a color blind-friendly palette \> 8. highlight a break in the timeline with a vertical line \> 9. format the x-axis \> 10. format the y-axis \> 11. add end-point labels \> 12. remove legend \> 13. **apply a thematic style**\] .pull-right\[\] |
+
+.pull-left\[ \> 1. Start with the data, \> 2. map year to the x-axis \>
+3. map Voice and Accountability Index to y-axis \> 4. map Country to the
+color aesthetic \> 5. assign a point geometry to display the data
+mapping \> 6. assign a line geometry to display the data mapping \> 7.
+assign a color blind-friendly palette \> 8. highlight a break in the
+timeline with a vertical line \> 9. format the x-axis \> 10. format the
+y-axis \> 11. add end-point labels \> 12. remove legend \> 13. **apply a
+thematic style**\]
+
+.pull-right\[\]
+
+------------------------------------------------------------------------
+
+.pull-left\[ \> 1. Start with the data, \> 2. map year to the x-axis \>
+3. map Voice and Accountability Index to y-axis \> 4. map Country to the
+color aesthetic \> 5. assign a point geometry to display the data
+mapping \> 6. assign a line geometry to display the data mapping \> 7.
+assign a color blind-friendly palette \> 8. highlight a break in the
+timeline with a vertical line \> 9. format the x-axis \> 10. format the
+y-axis \> 11. add end-point labels \> 12. remove legend \> 13. **apply a
+thematic style**\]
+
+.pull-right\[\]
+
+------------------------------------------------------------------------
+
+.pull-left\[ \> 1. Start with the data, \> 2. map year to the x-axis \>
+3. map Voice and Accountability Index to y-axis \> 4. map Country to the
+color aesthetic \> 5. assign a point geometry to display the data
+mapping \> 6. assign a line geometry to display the data mapping \> 7.
+assign a color blind-friendly palette \> 8. highlight a break in the
+timeline with a vertical line \> 9. format the x-axis \> 10. format the
+y-axis \> 11. add end-point labels \> 12. remove legend \> 13. apply a
+thematic style \> 14. **remove axis labels, add title and caption**\]
+
+.pull-right\[\]
+
+------------------------------------------------------------------------
+
+### Stata, R concordance
+
+How can we accomplish similar output in Stata?
+
+```{r}
+
+conc <- read_xlsx("Stata, R concordance.xlsx")
+conc
+
+```
+
+### Final products
+
+.pull-left\[\] .pull-right\[\]
+
+------------------------------------------------------------------------
+
+class: center, middle
+
+# Thank you!
