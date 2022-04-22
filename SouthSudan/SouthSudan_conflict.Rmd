@@ -52,7 +52,6 @@ source("prep/packages_fonts_styles.R", local = knitr::knit_global())
 # Conflict Across South Sudan
 
 ```{r download ACLED data, include = F}
-getwd()
 #This is the original object
 #events <- read_xlsx("~/SouthSudan/data/SSudan.xlsx") 
 events <- read_xlsx("data/SSudan.xlsx") 
