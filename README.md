@@ -8,5 +8,5 @@ This repository explores a variety of analytical methods applied by MSI staff. F
 
 [Working with strings to ~~cheat at~~ help with Wordle](https://managementsystemsintl.github.io/methods-corner/Wordle/wordle.html)
 
-[Line graphs in R](https://managementsystemsintl.github.io/methods-corner/figure_customization.html)  
+[Line graphs in R](https://managementsystemsintl.github.io/methods-corner/blob/main/Line%20graphs%20in%20Stata%2C%20R/figure_customization.html)  
 Tutorial content on crafting high-quality line graphs in R
