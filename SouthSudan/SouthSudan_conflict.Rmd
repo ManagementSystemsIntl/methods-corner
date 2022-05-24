@@ -219,7 +219,7 @@ tmap::tmap_mode("plot")+
   tmap::tm_shape(st_union(a))+
   tmap::tm_borders(col = "black")+
   tmap::tm_layout(main.title = "Conflict Concentration by Year, 2011 - 2021"
-                  , legend.outside.position = "bottom", legend.position = c(.8, 1.1))
+                  , legend.outside.position = "bottom", legend.position = c(0, 0)) #.8, 1.1
 
 ```
 
