@@ -18,6 +18,7 @@ readr
 rgeoboundaries
 rnaturalearth
 rnaturalearthdata
+rnaturalearthhires
 sf
 mapsf
 terra
