@@ -2,7 +2,7 @@
 title: "South Sudan's Conflict Context"
 subtitle: "Exploring ACLED's Event Database" 
 author: "Brian Calhoon"
-date: "12/8/2021"
+date: "05/23/2021"
 output: 
   bookdown::html_document2:
     fig.caption: T

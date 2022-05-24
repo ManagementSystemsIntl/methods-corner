@@ -1,7 +1,8 @@
 packages <- c("acled.api", "av", "bookdown", "cowplot", "extrafont"
               , "extrafontdb", "lubridate", "gganimate", "ggdist"
               , "ggforce", "ggrepel", "ggthemes", "knitr", "rcartocolor", "readxl"
-              , "readr", "rgeoboundaries", "rnaturalearth", "rnaturalearthdata", "sf"
+              , "readr", "rgeoboundaries", "rnaturalearth", "rnaturalearthdata"
+              , "rnaturalearthhires", "sf"
               , "mapsf", "terra", "tidyverse", "tmap", "writexl")
 
 
