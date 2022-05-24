@@ -88,9 +88,10 @@ SS_admin <- sf::st_join(districts, SS_admin)
 #                      , type = #"populated_places"
 #                      , returnclass = #"sf")
 
+#unzip the files and then read them 
 unzip("data/ne_10m_populated_places.zip", exdir = "data/places")
 
-
+places <- st_read("data/places/ne_10m_populated_places.shp")
 
 #filter for only South Sudan
 places_SS <- places %>% 
@@ -104,21 +105,29 @@ places_SS$FEATURECLA <- case_when(places_SS$FEATURECLA == "Populated place" ~ "c
   
 
 #download water
-water <- ne_download(scale = 10
-                     , type = "rivers_lake_centerlines"
-                     , category = "physical"
-                     , returnclass = "sf") 
+#water <- ne_download(scale = 10
+#                     , type = #"rivers_lake_centerlines"
+#                     , category = #"physical"
+ #                    , returnclass = #"sf") 
+
+#unzip rivers file and read it in
+unzip("data/ne_10m_rivers_lake_centerlines.zip", exdir = "data/rivers")
+
+water <- st_read("data/rivers/ne_10m_rivers_lake_centerlines.shp")
 
 #filter for the region
 water_SS <- water[neighbors,]
 
-#It seems to be missing some rivers
-
 #download lakes
-lakes <- ne_download(scale = 10
-                     , type = "lakes"
-                     , category = "physical"
-                     , returnclass = "sf") 
+#lakes <- ne_download(scale = 10
+#                     , type = "lakes"
+#                     , category = #"physical"
+#                     , returnclass = #"sf") 
+
+#unzip lakes files and read in
+unzip("data/ne_10m_lakes.zip", exdir = "data/lakes")
+
+lakes <- st_read("data/lakes/ne_10m_lakes.shp")
 
 ```
 ACLED's conflict event data from South Sudan dates from July 14, 2011 and goes through December 2, 2021. It includes 7,939 unique conflict events.
