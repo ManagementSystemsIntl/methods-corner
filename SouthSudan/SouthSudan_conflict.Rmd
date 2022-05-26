@@ -50,7 +50,9 @@ source("prep/packages_fonts_styles.R", local = knitr::knit_global())
 
 ```
 # Conflict Across South Sudan
-ACLED's conflict event data from South Sudan dates from July 14, 2011. As of April 14, 2022 it includes 8,296 unique conflict events. Using R, it is relatively straightforward to generate a map of South Sudan that shows these conflict events without switching across software platforms. 
+ACLED's conflict event data from South Sudan dates from July 14, 2011. As of April 14, 2022 it includes 8,296 unique conflict events. Using R, it is relatively straightforward to generate a map of South Sudan that plots these conflict events without switching across software platforms. 
+
+The code to make these maps is embedded in the `code` buttons. If you want a comprehensive guide to generating maps in R check out https://geocompr.robinlovelace.net/. The authors, Robin Lovelave, Jakub Nowosad, and Jannes Muenchow, deserve tons of credit for making an accessible, open-source guide to analyzing, visualizing, and modeling geographic data in the R statistical programming language.    
 
 
 ```{r download ACLED data, include = F}
@@ -76,8 +78,6 @@ SSudan <- geoboundaries(country = "South Sudan")
 #shape files for the counties of South Sudan
 states <- geoboundaries(country = "South Sudan"
                         , adm_lvl = "adm1")
-
-
 
 
 #Get the crs
@@ -119,7 +119,8 @@ districts <- geoboundaries(country = "South Sudan"
                            , adm_lvl = "adm2") %>% 
   st_transform(crs = crs)
 
-#Download places - the ne_download #call isn't working. Using the url to #download manually.
+#The following data come from naturalearth data, but the rnaturalearth::ne_download() call isn't working, so I downloaded the files manually. The hashtagged code that follows should work soon so I'm keeping it here. 
+
 #places <- ne_download(scale = 10
 #                      , type = #"populated_places"
 #                      , returnclass = #"sf")
@@ -169,8 +170,9 @@ lakes <- st_read("data/lakes/ne_10m_lakes.shp") %>%
 
 ```
 
+Point data is useful to see how the points are dispersed across space, but one of the challenges of points is overplotting. The image on the left below shows the points as geocoded by ACLED. I added some opacity to help with the overplotting, but when you have many thousands of points it's hard to show their exact locations. Another trick is to add jitter - or random noise. Are the exact locations that important? With conflict data, probably not. Many of these points are just administrative center points because there aren't data collectors attending live conflicts to ping their exact locations. In this case, adding jitter allows us to see more of the points and get a better sense of where conflict concentrates.
 
-```{r, fig.width=12, fig.height=12, fig.cap = "Conflict events in South Sudan since its inception as a country."}
+```{r, fig.width=12, fig.height=6, fig.cap = "Conflict events in South Sudan since its inception as a country viewed as points."}
 
 #A map of all conflict events plotted
 map_points <- ggplot(data = neighbors_v1)+
@@ -257,7 +259,9 @@ patch <- patchwork::wrap_elements(map_points - map_jitter)
 
 ```
 
-```{r}
+Points aren't the only way to view data. By aggregating data into gridded shapes or administrative units it can help show the differences in how common conflict occurs in a given administrative boundary (figure on the right) or a grid laid over the country (figure on the left). 
+
+```{r fig.width=12, fig.height=6, fig.cap = "Conflict events in South Sudan since its inception as a country aggregated."}
 
 #Same map but rasterized
 
@@ -346,14 +350,15 @@ map_choro <- ggplot(data = neighbors_v1)+
   theme(axis.text = element_blank())
 
 
-patch2 <- patchwork::wrap_elements(map_raster - choro_map)
+patch2 <- patchwork::wrap_elements(map_raster - map_choro)
 
 ```
 
+Another useful approach when dealing with geography and change over time is to facet by years. For this map I switched to the tmap package. Martijn Tennekes and Jakub Nowosad wrote a book on making maps in tmap, https://r-tmap.github.io/tmap-book/, and it's amazing how intuitive it is. 
 
-```{r, fig.width = 10, fig.height =12, fig.cap = "Conflict varies over time across South Sudan. With events concentrating over time in Central Equatoria."}
+```{r, fig.width = 12, fig.height =8, fig.cap = "Conflict varies over time across South Sudan. With events concentrating over time in Central Equatoria."}
 
-a <- a %>%  
+a <- st_join(districts, events_sf, left = T) %>% 
   group_by(shapeName, year) %>% 
   summarize(attacks = log1p(sum(!is.na(event_id_cnty))))
 
@@ -368,8 +373,68 @@ tmap::tmap_mode("plot")+
   tmap::tm_shape(st_union(a))+
   tmap::tm_borders(col = "black")+
   tmap::tm_layout(main.title = "Conflict Concentration by Year, 2011 - 2021"
-                  , legend.outside.position = "bottom", legend.position = c(0, 0)) #.8, 1.1
+                  , legend.outside.position = "bottom", legend.position = c(.8, 1.1)) 
 
 ```
 
+```{r }
 
+map_anim <- ggplot(data = neighbors_v1)+
+  geom_sf(fill = "#F8F0E3") +
+    geom_sf_label(data = neighbors_v1
+                , aes(label = shapeName)) +
+  geom_sf(data = states,
+          color = "white") +
+  geom_sf_text(data = states
+                , aes(label = shapeName)
+                , color = "#565656") +
+  geom_sf(data = SSudan
+          , color = "#000000"
+          , size = .75
+          , fill = NA) +
+  geom_sf(data = places_SS)+
+  geom_sf_text(data = places_SS
+                , aes(label = NAME_ID)
+                , nudge_x = .2
+                , nudge_y = -.1
+                , check_overlap = T
+                , color = "#000000")+
+  geom_sf(data = water
+          , color = "steel blue"
+          , size = .5) +
+  geom_sf(data = lakes
+          , color = "steel blue"
+          , size = .5)+
+  geom_sf(data = st_jitter(events_sf, amount = 500) #Adding in the jittering to see all the points
+          , aes(color = event_type)
+          , alpha = .3)+
+  geom_text(data = events_sf
+            , aes(label = year
+                  , x = min(st_coordinates(geometry)[,1])
+                  , y = max(st_coordinates(geometry)[,2]))
+            , alpha = .2
+             , col = "gray"
+             , size = 20) +
+  coord_sf(xlim = c(bbox[[1]], bbox[[3]])
+           , ylim = c(bbox[[2]], bbox[[4]]))+
+  theme.plot()+
+  labs(title = "South Sudan"
+         , subtitle = "Conflict Events Jittered (2011-2022)"
+         , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth"
+       , x = ""
+       , y = "")+
+  theme(axis.text = element_blank())
+
+anim <- map_anim +
+  gganimate::transition_reveal(year)
+
+              
+
+time_all_2 <-  gganimate::animate(time_all_2
+                     , fps = 4)
+
+anim_save("time_all_2.gif")
+
+time_all_2
+
+```
