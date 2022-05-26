@@ -403,11 +403,15 @@ map_anim <- ggplot(data = neighbors_v1)+
           , aes(geometry = st_jitter(geometry, amount = 500)
           ,  color = event_type)
           , alpha = .3)+
+  geom_text(data = events_sf
+            , aes(x = min(st_coordinates(geometry)[,1])
+                  , y = max(st_coordinates(geometry)[,2])
+                  , label = paste0("Year: ",{as.integer(year)})))+
   coord_sf(xlim = c(bbox[[1]], bbox[[3]])
            , ylim = c(bbox[[2]], bbox[[4]]))+
   theme.plot()+
   labs(title = "South Sudan"
-         , subtitle = "Conflict Events Jittered (2011-2022): {events_sf$year}"
+         , subtitle = "Conflict Events Jittered (2011-2022)"
          , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth"
        , x = ""
        , y = "")+
