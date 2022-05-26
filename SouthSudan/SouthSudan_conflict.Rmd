@@ -257,6 +257,7 @@ map_jitter <- ggplot(data = neighbors_v1)+
 
 patch <- patchwork::wrap_elements(map_points - map_jitter)
 
+patch
 ```
 
 Points aren't the only way to view data. By aggregating data into gridded shapes or administrative units it can help show the differences in how common conflict occurs in a given administrative boundary (figure on the right) or a grid laid over the country (figure on the left). 
@@ -352,6 +353,7 @@ map_choro <- ggplot(data = neighbors_v1)+
 
 patch2 <- patchwork::wrap_elements(map_raster - map_choro)
 
+patch2
 ```
 
 Another useful approach when dealing with geography and change over time is to facet by years. For this map I switched to the tmap package. Martijn Tennekes and Jakub Nowosad wrote a book on making maps in tmap, https://r-tmap.github.io/tmap-book/, and it's amazing how intuitive it is. 
@@ -406,7 +408,10 @@ map_anim <- ggplot(data = neighbors_v1)+
   geom_text(data = events_sf
             , aes(x = min(st_coordinates(geometry)[,1])
                   , y = max(st_coordinates(geometry)[,2])
-                  , label = paste0("Year: ",{as.integer(year)})))+
+                  , label = paste0("Year: ",{as.integer(year)}))
+            , size = 20
+            , color = "#565656"
+            , hjust = 0)+
   coord_sf(xlim = c(bbox[[1]], bbox[[3]])
            , ylim = c(bbox[[2]], bbox[[4]]))+
   theme.plot()+
@@ -416,12 +421,18 @@ map_anim <- ggplot(data = neighbors_v1)+
        , x = ""
        , y = "")+
   theme(axis.text = element_blank()) +
-  gganimate::transition_time(events_sf$year)
-  
+  gganimate::transition_time(events_sf$year) +
+  shadow_mark(color = "#565656"
+              , size = .75
+              , alpha = .3)
+
+num_years <- max(events_sf$year) - min(events_sf$year) +1
+
 SS_ACLED_anim <-  gganimate::animate(map_anim
                 , width = 800
                 , height = 700
-                , fps = 5)
+                , nframes = num_years
+                , fps = 2)
 
 anim_save("SS_ACLED_anim.gif")
 
