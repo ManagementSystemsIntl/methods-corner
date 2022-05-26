@@ -399,42 +399,28 @@ map_anim <- ggplot(data = neighbors_v1)+
                 , nudge_y = -.1
                 , check_overlap = T
                 , color = "#000000")+
-  geom_sf(data = water
-          , color = "steel blue"
-          , size = .5) +
-  geom_sf(data = lakes
-          , color = "steel blue"
-          , size = .5)+
-  geom_sf(data = st_jitter(events_sf, amount = 500) #Adding in the jittering to see all the points
-          , aes(color = event_type)
+  geom_sf(data = events_sf #Adding in the jittering to see all the points
+          , aes(geometry = st_jitter(geometry, amount = 500)
+          ,  color = event_type)
           , alpha = .3)+
-  geom_text(data = events_sf
-            , aes(label = year
-                  , x = min(st_coordinates(geometry)[,1])
-                  , y = max(st_coordinates(geometry)[,2]))
-            , alpha = .2
-             , col = "gray"
-             , size = 20) +
   coord_sf(xlim = c(bbox[[1]], bbox[[3]])
            , ylim = c(bbox[[2]], bbox[[4]]))+
   theme.plot()+
   labs(title = "South Sudan"
-         , subtitle = "Conflict Events Jittered (2011-2022)"
+         , subtitle = "Conflict Events Jittered (2011-2022): {events_sf$year}"
          , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth"
        , x = ""
        , y = "")+
-  theme(axis.text = element_blank())
+  theme(axis.text = element_blank()) +
+  gganimate::transition_time(events_sf$year)
+  
+SS_ACLED_anim <-  gganimate::animate(map_anim
+                , width = 800
+                , height = 700
+                , fps = 5)
 
-anim <- map_anim +
-  gganimate::transition_reveal(year)
+anim_save("SS_ACLED_anim.gif")
 
-              
-
-time_all_2 <-  gganimate::animate(time_all_2
-                     , fps = 4)
-
-anim_save("time_all_2.gif")
-
-time_all_2
+SS_ACLED_anim
 
 ```
