@@ -1,0 +1,375 @@
+---
+title: "South Sudan's Conflict Context"
+subtitle: "Exploring ACLED's Event Database" 
+author: "Brian Calhoon"
+date: "05/23/2021"
+output: 
+  bookdown::html_document2:
+    fig.caption: T
+    toc: true
+    toc_depth: '5'
+    toc_float: yes
+    code_folding: hide
+    
+---
+<style>
+TOC {border-color: #133469;
+
+}
+
+body{font-family: Corbel;
+     font-size: 18px;
+     background-color: #FDFDFD;
+}
+
+h1{color: #133469; 
+}
+
+h2{color: #009CA6;
+}
+
+h3{color: #5482AB;
+}
+
+p.caption{
+font-size: small;
+}
+
+</style>
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F, cache = T, error = T)
+
+```
+
+```{r, include = FALSE, eval = TRUE}
+#load packages
+source("prep/packages_fonts_styles.R", local = knitr::knit_global())
+
+```
+# Conflict Across South Sudan
+ACLED's conflict event data from South Sudan dates from July 14, 2011. As of April 14, 2022 it includes 8,296 unique conflict events. Using R, it is relatively straightforward to generate a map of South Sudan that shows these conflict events without switching across software platforms. 
+
+
+```{r download ACLED data, include = F}
+#The data
+events <- read_xlsx("data/SSudan.xlsx") 
+
+
+events$admin1 <- events$admin1 %>% 
+  recode("Western Bahr El Ghazal" = "Western Bahr el Ghazal")
+
+#This version has a geometry column added to it
+events_sf <- st_as_sf(events, coords = c("longitude", "latitude"), crs = 4326)
+```
+
+```{r, include = F}
+
+#shape files for neighboring countries
+neighbors <- geoboundaries(country = c("Uganda", "Kenya", "Sudan", "Ethiopia", "Central African Republic", "Democratic Republic of the Congo", "South Sudan"))
+
+# Shape file for The border of South Sudan
+SSudan <- geoboundaries(country = "South Sudan")
+
+#shape files for the counties of South Sudan
+states <- geoboundaries(country = "South Sudan"
+                        , adm_lvl = "adm1")
+
+
+
+
+#Get the crs
+crsuggest::suggest_crs(SSudan) #This is a suggested crs for South Sudan, 21096
+
+crs <- 21096
+
+SSudan <- st_transform(SSudan, crs = crs)
+
+bbox <- st_bbox(SSudan) #established the bounding box coordinates
+
+#shape files for neighboring countries
+neighbors <- geoboundaries(country = c("Uganda", "Kenya", "Sudan", "Ethiopia", "Central African Republic", "Democratic Republic of the Congo", "South Sudan")) 
+
+neighbors_v1 <- st_transform(neighbors, crs)
+# Shape file for The border of South Sudan
+SSudan <- geoboundaries(country = "South Sudan") %>% st_transform(crs = crs)
+
+
+
+events_sf <- st_transform(events_sf, crs = crs)
+#shape files for the counties of South Sudan
+states <- geoboundaries(country = "South Sudan"
+                        , adm_lvl = "adm1") %>% 
+  st_transform(crs = crs)
+
+#shape files for the districts of South Sudan
+districts <- geoboundaries(country = "South Sudan"
+                           , adm_lvl = "adm2") %>% 
+  st_transform(crs = crs)
+
+#shape files for the counties of South Sudan
+states <- geoboundaries(country = "South Sudan"
+                        , adm_lvl = "adm1") %>% 
+  st_transform(crs = crs)
+
+#shape files for the districts of South Sudan
+districts <- geoboundaries(country = "South Sudan"
+                           , adm_lvl = "adm2") %>% 
+  st_transform(crs = crs)
+
+#Download places - the ne_download #call isn't working. Using the url to #download manually.
+#places <- ne_download(scale = 10
+#                      , type = #"populated_places"
+#                      , returnclass = #"sf")
+
+#unzip the files and then read them 
+#unzip("data/ne_10m_populated_places.z#ip", exdir = "data/places")
+
+places <- st_read("data/places/ne_10m_populated_places.shp")
+
+#filter for only South Sudan
+places_SS <- places %>% 
+  filter(SOV0NAME == "South Sudan") %>% 
+  st_as_sf(coords = c("LONGITUDE", "LATITUDE")
+           , crs = crs) 
+  
+places_SS$FEATURECLA <- case_when(places_SS$FEATURECLA == "Populated place" ~ "city"
+                                  , places_SS$FEATURECLA != "Populated place" ~ "capital") %>%
+  as.factor()
+  
+
+#download water
+#water <- ne_download(scale = 10
+#                     , type = #"rivers_lake_centerlines"
+#                     , category = #"physical"
+ #                    , returnclass = #"sf") 
+
+#unzip rivers file and read it in
+#unzip("data/ne_10m_rivers_lake_center#lines.zip", exdir = "data/rivers")
+
+water <- st_read("data/rivers/ne_10m_rivers_lake_centerlines.shp") %>% 
+   st_transform(crs = crs)
+
+#filter for the region
+water_SS <- water[neighbors_v1,]
+
+#download lakes
+#lakes <- ne_download(scale = 10
+#                     , type = "lakes"
+#                     , category = #"physical"
+#                     , returnclass = #"sf") 
+
+#unzip lakes files and read in
+#unzip("data/ne_10m_lakes.zip", exdir #= "data/lakes")
+
+lakes <- st_read("data/lakes/ne_10m_lakes.shp") %>% 
+   st_transform(crs = crs)
+
+```
+
+
+```{r, fig.width=12, fig.height=12, fig.cap = "Conflict events in South Sudan since its inception as a country."}
+
+#A map of all conflict events plotted
+map_points <- ggplot(data = neighbors_v1)+
+  geom_sf(fill = "#F8F0E3") +
+    geom_sf_label(data = neighbors_v1
+                , aes(label = shapeName)) +
+  geom_sf(data = states,
+          color = "white") +
+  geom_sf(data = events_sf
+          , aes(color = event_type)
+          , alpha = .3)+
+  geom_sf_text(data = states
+                , aes(label = shapeName)
+                , color = "#565656") +
+  geom_sf(data = SSudan
+          , color = "#000000"
+          , width = 4
+          , fill = NA) +
+  geom_sf(data = places_SS)+
+  geom_sf_text(data = places_SS
+                , aes(label = NAME_ID)
+                , nudge_x = .2
+                , nudge_y = -.1
+                , check_overlap = T
+                , color = "#000000")+
+  geom_sf(data = water
+          , color = "steel blue"
+          , width = 4) +
+  geom_sf(data = lakes
+          , color = "steel blue"
+          , width = 10)+
+  coord_sf(xlim = c(bbox[[1]], bbox[[3]])
+           , ylim = c(bbox[[2]], bbox[[4]]))+
+  theme.plot()+
+  labs(title = "South Sudan"
+         , subtitle = "Conflict Events as geocoded (2011-2022)"
+         , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth"
+       , x = ""
+       , y = "")+
+  theme(axis.text = element_blank())
+
+#A map of the country with all conflict events plotted and jittered
+map_jitter <- ggplot(data = neighbors_v1)+
+  geom_sf(fill = "#F8F0E3") +
+    geom_sf_label(data = neighbors_v1
+                , aes(label = shapeName)) +
+  geom_sf(data = states,
+          color = "white") +
+  geom_sf(data = st_jitter(events_sf, amount = 500) #Adding in the jittering to see all the points
+          , aes(color = event_type)
+          , alpha = .3)+
+  geom_sf_text(data = states
+                , aes(label = shapeName)
+                , color = "#565656") +
+  geom_sf(data = SSudan
+          , color = "#000000"
+          , width = 4
+          , fill = NA) +
+  geom_sf(data = places_SS)+
+  geom_sf_text(data = places_SS
+                , aes(label = NAME_ID)
+                , nudge_x = .2
+                , nudge_y = -.1
+                , check_overlap = T
+                , color = "#000000")+
+  geom_sf(data = water
+          , color = "steel blue"
+          , width = 4) +
+  geom_sf(data = lakes
+          , color = "steel blue"
+          , width = 10)+
+  coord_sf(xlim = c(bbox[[1]], bbox[[3]])
+           , ylim = c(bbox[[2]], bbox[[4]]))+
+  theme.plot()+
+  labs(title = "South Sudan"
+         , subtitle = "Conflict Events Jittered (2011-2022)"
+         , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth"
+       , x = ""
+       , y = "")+
+  theme(axis.text = element_blank())
+
+
+patch <- patchwork::wrap_elements(map_points - map_jitter)
+
+```
+
+```{r}
+
+#Same map but rasterized
+
+raster_template <- rast(ext(SSudan), resolution = 20000,
+                       crs = st_crs(events_sf)$wkt)
+
+raster1 <- rasterize(vect(events_sf)
+                    , raster_template
+                    ,  fun = "length")
+
+raster2 <- terra::as.data.frame(raster1
+                                , xy=TRUE
+                                , cells = TRUE) %>% 
+  select(cell, x, y, Events = lyr.1) %>% 
+  mutate(events_logged = log(Events))
+
+
+map_raster <- ggplot(data = neighbors_v1)+
+  geom_sf(fill = "#F8F0E3") +
+  geom_sf_label(data = neighbors_v1
+                , aes(label = shapeName)) +
+  geom_sf(data = states,
+          color = "white") +
+  geom_tile(data = raster2 #the raster object
+          , aes(x = x
+                , y = y
+                , fill = events_logged))+
+  geom_sf_text(data = states
+               , aes(label = shapeName)
+               , color = "#565656") +
+  geom_sf(data = SSudan
+          , color = "#000000"
+          , size = 1
+          , fill = NA) +
+  geom_sf(data = places_SS)+
+  geom_sf_text(data = places_SS
+               , aes(label = NAME_ID)
+               , nudge_x = .2
+               , nudge_y = -.1
+               , check_overlap = T
+               , color = "#000000")+
+  geom_sf(data = water
+          , color = "steel blue") +
+  geom_sf(data = lakes
+          , color = "steel blue")+
+  coord_sf(xlim = c(bbox[[1]], bbox[[3]])
+           , ylim = c(bbox[[2]], bbox[[4]]))+
+  theme.plot()+
+  scale_fill_gradient(low = "#ffc6c4"
+                      , high = "#672044"
+                      , trans =  "log10")+
+  labs(title = "South Sudan"
+       , subtitle = "Logged-count of conflict events, 20 km grids (2011-2022)"
+       , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth, terra"
+       , x = ""
+       , y = "")+
+  theme(axis.text = element_blank())
+
+#choropleth map by districts
+choro <- st_join(districts, events_sf, left = T) %>% 
+  group_by(shapeName) %>% 
+  summarize(attacks = log1p(sum(!is.na(event_id_cnty))))
+
+map_choro <- ggplot(data = neighbors_v1)+
+  geom_sf(fill = "#F8F0E3") +
+  geom_sf(data = choro
+                  , aes(fill = attacks)
+          , color = "white") +
+  #geom_sf_label(data = neighbors_v1
+  #              , aes(label = shapeName)) +
+   geom_sf(data = water
+          , color = "steel blue") +
+  geom_sf(data = lakes
+          , color = "steel blue")+
+  coord_sf(xlim = c(bbox[[1]], bbox[[3]])
+           , ylim = c(bbox[[2]], bbox[[4]]))+
+  theme.plot()+
+  scale_fill_gradient(low = "#ffc6c4"
+                      , high = "#672044"
+                      , trans =  "log10")+
+  labs(title = "South Sudan"
+       , subtitle = "Logged-count of conflict events by district (2011-2022)"
+       , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth"
+       , x = ""
+       , y = "")+
+  theme(axis.text = element_blank())
+
+
+patch2 <- patchwork::wrap_elements(map_raster - choro_map)
+
+```
+
+
+```{r, fig.width = 10, fig.height =12, fig.cap = "Conflict varies over time across South Sudan. With events concentrating over time in Central Equatoria."}
+
+a <- a %>%  
+  group_by(shapeName, year) %>% 
+  summarize(attacks = log1p(sum(!is.na(event_id_cnty))))
+
+tmap::tmap_mode("plot")+
+  tmap::tm_shape(a
+                 , is.master = T) +
+  tmap::tm_polygons("attacks"
+                    , title = "ACLED\nevents (logged)"
+                    , border.col = "grey"
+                    , style = "cont") +
+  tmap::tm_facets("year") + 
+  tmap::tm_shape(st_union(a))+
+  tmap::tm_borders(col = "black")+
+  tmap::tm_layout(main.title = "Conflict Concentration by Year, 2011 - 2021"
+                  , legend.outside.position = "bottom", legend.position = c(0, 0)) #.8, 1.1
+
+```
+
+
