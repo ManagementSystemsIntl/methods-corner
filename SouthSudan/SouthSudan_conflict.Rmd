@@ -172,7 +172,7 @@ lakes <- st_read("data/lakes/ne_10m_lakes.shp") %>%
 
 Point data is useful to see how the points are dispersed across space, but one of the challenges of points is overplotting. The image on the left below shows the points as geocoded by ACLED. I added some opacity to help with the overplotting, but when you have many thousands of points it's hard to show their exact locations. Another trick is to add jitter - or random noise. Are the exact locations that important? With conflict data, probably not. Many of these points are just administrative center points because there aren't data collectors attending live conflicts to ping their exact locations. In this case, adding jitter allows us to see more of the points and get a better sense of where conflict concentrates.
 
-```{r, fig.width=12, fig.height=6, fig.cap = "Conflict events in South Sudan since its inception as a country viewed as points."}
+```{r, fig.width=12, fig.height=5, fig.cap = "Conflict events in South Sudan since its inception as a country viewed as points."}
 
 #A map of all conflict events plotted
 map_points <- ggplot(data = neighbors_v1)+
@@ -315,7 +315,7 @@ map_raster <- ggplot(data = neighbors_v1)+
                       , high = "#672044"
                       , trans =  "log10")+
   labs(title = "South Sudan"
-       , subtitle = "Logged-count of conflict events, 20 km grids (2011-2022)"
+       , subtitle = "Logged-count of conflict events,\n 20 km grids (2011-2022)"
        , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth, terra"
        , x = ""
        , y = "")+
@@ -344,7 +344,7 @@ map_choro <- ggplot(data = neighbors_v1)+
                       , high = "#672044"
                       , trans =  "log10")+
   labs(title = "South Sudan"
-       , subtitle = "Logged-count of conflict events by district (2011-2022)"
+       , subtitle = "Logged-count of conflict events\nby district (2011-2022)"
        , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth"
        , x = ""
        , y = "")+
@@ -379,6 +379,7 @@ tmap::tmap_mode("plot")+
 
 ```
 
+R also allows us to animate this data over time on a map. 
 ```{r }
 
 map_anim <- ggplot(data = neighbors_v1)+
@@ -411,7 +412,8 @@ map_anim <- ggplot(data = neighbors_v1)+
                   , label = paste0("Year: ",{as.integer(year)}))
             , size = 20
             , color = "#565656"
-            , hjust = 0)+
+            , hjust = 0
+            , vjust = 1)+
   coord_sf(xlim = c(bbox[[1]], bbox[[3]])
            , ylim = c(bbox[[2]], bbox[[4]]))+
   theme.plot()+
@@ -424,7 +426,7 @@ map_anim <- ggplot(data = neighbors_v1)+
   gganimate::transition_time(events_sf$year) +
   shadow_mark(color = "#565656"
               , size = .75
-              , alpha = .3)
+              , alpha = .1)
 
 num_years <- max(events_sf$year) - min(events_sf$year) +1
 
@@ -432,7 +434,7 @@ SS_ACLED_anim <-  gganimate::animate(map_anim
                 , width = 800
                 , height = 700
                 , nframes = num_years
-                , fps = 2)
+                , fps = 1)
 
 anim_save("SS_ACLED_anim.gif")
 
