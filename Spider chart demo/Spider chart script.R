@@ -112,7 +112,7 @@ dat <- tibble(role = c("Role 1"
 
 col_list = c("lfa", "cam", "ic", "cms")
 
-var_width = 30
+var_width = 15
 
 #avg. scores
 dat_sum <- dat %>%
