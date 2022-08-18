@@ -50,6 +50,10 @@ source("prep/packages_fonts_styles.R", local = knitr::knit_global())
 
 ```
 # Conflict Across South Sudan
+ACLED's conflict event data from South Sudan dates from July 14, 2011. As of April 14, 2022 it includes 8,296 unique conflict events. Using R, it is relatively straightforward to generate a map of South Sudan that plots these conflict events without switching across software platforms. 
+
+The code to make these maps is embedded in the `code` buttons. If you want a comprehensive guide to generating maps in R check out https://geocompr.robinlovelace.net/. The authors, Robin Lovelave, Jakub Nowosad, and Jannes Muenchow, deserve tons of credit for making an accessible, open-source guide to analyzing, visualizing, and modeling geographic data in the R statistical programming language.    
+
 
 ```{r download ACLED data, include = F}
 #The data
@@ -75,21 +79,54 @@ SSudan <- geoboundaries(country = "South Sudan")
 states <- geoboundaries(country = "South Sudan"
                         , adm_lvl = "adm1")
 
+
+#Get the crs
+crsuggest::suggest_crs(SSudan) #This is a suggested crs for South Sudan, 21096
+
+crs <- 21096
+
+SSudan <- st_transform(SSudan, crs = crs)
+
+bbox <- st_bbox(SSudan) #established the bounding box coordinates
+
+#shape files for neighboring countries
+neighbors <- geoboundaries(country = c("Uganda", "Kenya", "Sudan", "Ethiopia", "Central African Republic", "Democratic Republic of the Congo", "South Sudan")) 
+
+neighbors_v1 <- st_transform(neighbors, crs)
+# Shape file for The border of South Sudan
+SSudan <- geoboundaries(country = "South Sudan") %>% st_transform(crs = crs)
+
+
+
+events_sf <- st_transform(events_sf, crs = crs)
+#shape files for the counties of South Sudan
+states <- geoboundaries(country = "South Sudan"
+                        , adm_lvl = "adm1") %>% 
+  st_transform(crs = crs)
+
 #shape files for the districts of South Sudan
 districts <- geoboundaries(country = "South Sudan"
-                           , adm_lvl = "adm2")
+                           , adm_lvl = "adm2") %>% 
+  st_transform(crs = crs)
 
-SS_admin <- sf::st_join(states, SSudan)
+#shape files for the counties of South Sudan
+states <- geoboundaries(country = "South Sudan"
+                        , adm_lvl = "adm1") %>% 
+  st_transform(crs = crs)
 
-SS_admin <- sf::st_join(districts, SS_admin)
+#shape files for the districts of South Sudan
+districts <- geoboundaries(country = "South Sudan"
+                           , adm_lvl = "adm2") %>% 
+  st_transform(crs = crs)
 
-#Download places - the ne_download #call isn't working. Using the url to #download manually.
+#The following data come from naturalearth data, but the rnaturalearth::ne_download() call isn't working, so I downloaded the files manually. The hashtagged code that follows should work soon so I'm keeping it here. 
+
 #places <- ne_download(scale = 10
 #                      , type = #"populated_places"
 #                      , returnclass = #"sf")
 
 #unzip the files and then read them 
-unzip("data/ne_10m_populated_places.zip", exdir = "data/places")
+#unzip("data/ne_10m_populated_places.z#ip", exdir = "data/places")
 
 places <- st_read("data/places/ne_10m_populated_places.shp")
 
@@ -97,7 +134,7 @@ places <- st_read("data/places/ne_10m_populated_places.shp")
 places_SS <- places %>% 
   filter(SOV0NAME == "South Sudan") %>% 
   st_as_sf(coords = c("LONGITUDE", "LATITUDE")
-           , crs = 4326) 
+           , crs = crs) 
   
 places_SS$FEATURECLA <- case_when(places_SS$FEATURECLA == "Populated place" ~ "city"
                                   , places_SS$FEATURECLA != "Populated place" ~ "capital") %>%
@@ -111,12 +148,13 @@ places_SS$FEATURECLA <- case_when(places_SS$FEATURECLA == "Populated place" ~ "c
  #                    , returnclass = #"sf") 
 
 #unzip rivers file and read it in
-unzip("data/ne_10m_rivers_lake_centerlines.zip", exdir = "data/rivers")
+#unzip("data/ne_10m_rivers_lake_center#lines.zip", exdir = "data/rivers")
 
-water <- st_read("data/rivers/ne_10m_rivers_lake_centerlines.shp")
+water <- st_read("data/rivers/ne_10m_rivers_lake_centerlines.shp") %>% 
+   st_transform(crs = crs)
 
 #filter for the region
-water_SS <- water[neighbors,]
+water_SS <- water[neighbors_v1,]
 
 #download lakes
 #lakes <- ne_download(scale = 10
@@ -125,23 +163,25 @@ water_SS <- water[neighbors,]
 #                     , returnclass = #"sf") 
 
 #unzip lakes files and read in
-unzip("data/ne_10m_lakes.zip", exdir = "data/lakes")
+#unzip("data/ne_10m_lakes.zip", exdir #= "data/lakes")
 
-lakes <- st_read("data/lakes/ne_10m_lakes.shp")
+lakes <- st_read("data/lakes/ne_10m_lakes.shp") %>% 
+   st_transform(crs = crs)
 
 ```
-ACLED's conflict event data from South Sudan dates from July 14, 2011 and goes through December 2, 2021. It includes 7,939 unique conflict events.
 
-```{r, fig.width=10, fig.height=8, fig.cap = "Conflict events in South Sudan since its inception as a country."}
+Point data is useful to see how the points are dispersed across space, but one of the challenges of points is overplotting. The image on the left below shows the points as geocoded by ACLED. I added some opacity to help with the overplotting, but when you have many thousands of points it's hard to show their exact locations. Another trick is to add jitter - or random noise. Are the exact locations that important? With conflict data, probably not. Many of these points are just administrative center points because there aren't data collectors attending live conflicts to ping their exact locations. In this case, adding jitter allows us to see more of the points and get a better sense of where conflict concentrates.
 
-#A map of the country with all conflict events plotted
-ggplot(data = neighbors)+
+```{r, fig.width=12, fig.height=5, fig.cap = "Conflict events in South Sudan since its inception as a country viewed as points."}
+
+#A map of all conflict events plotted
+map_points <- ggplot(data = neighbors_v1)+
   geom_sf(fill = "#F8F0E3") +
-    geom_sf_label(data = neighbors
+    geom_sf_label(data = neighbors_v1
                 , aes(label = shapeName)) +
   geom_sf(data = states,
           color = "white") +
-  geom_sf(data = st_jitter(events_sf, .2)
+  geom_sf(data = events_sf
           , aes(color = event_type)
           , alpha = .3)+
   geom_sf_text(data = states
@@ -164,47 +204,163 @@ ggplot(data = neighbors)+
   geom_sf(data = lakes
           , color = "steel blue"
           , width = 10)+
-  coord_sf(xlim = c(24.15331, 35.94900)
-           , ylim = c(3.248898, 12.23631))+
+  coord_sf(xlim = c(bbox[[1]], bbox[[3]])
+           , ylim = c(bbox[[2]], bbox[[4]]))+
   theme.plot()+
   labs(title = "South Sudan"
-         , subtitle = ""
-         , caption = "Author: Brian Calhoon; Sources: rgeoboundaries, rnaturalearth"
+         , subtitle = "Conflict Events as geocoded (2011-2022)"
+         , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth"
        , x = ""
        , y = "")+
   theme(axis.text = element_blank())
 
+#A map of the country with all conflict events plotted and jittered
+map_jitter <- ggplot(data = neighbors_v1)+
+  geom_sf(fill = "#F8F0E3") +
+    geom_sf_label(data = neighbors_v1
+                , aes(label = shapeName)) +
+  geom_sf(data = states,
+          color = "white") +
+  geom_sf(data = st_jitter(events_sf, amount = 500) #Adding in the jittering to see all the points
+          , aes(color = event_type)
+          , alpha = .3)+
+  geom_sf_text(data = states
+                , aes(label = shapeName)
+                , color = "#565656") +
+  geom_sf(data = SSudan
+          , color = "#000000"
+          , width = 4
+          , fill = NA) +
+  geom_sf(data = places_SS)+
+  geom_sf_text(data = places_SS
+                , aes(label = NAME_ID)
+                , nudge_x = .2
+                , nudge_y = -.1
+                , check_overlap = T
+                , color = "#000000")+
+  geom_sf(data = water
+          , color = "steel blue"
+          , width = 4) +
+  geom_sf(data = lakes
+          , color = "steel blue"
+          , width = 10)+
+  coord_sf(xlim = c(bbox[[1]], bbox[[3]])
+           , ylim = c(bbox[[2]], bbox[[4]]))+
+  theme.plot()+
+  labs(title = "South Sudan"
+         , subtitle = "Conflict Events Jittered (2011-2022)"
+         , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth"
+       , x = ""
+       , y = "")+
+  theme(axis.text = element_blank())
+
+
+patch <- patchwork::wrap_elements(map_points - map_jitter)
+
+patch
 ```
 
-```{r fig.dim = c(10, 8)}
+Points aren't the only way to view data. By aggregating data into gridded shapes or administrative units it can help show the differences in how common conflict occurs in a given administrative boundary (figure on the right) or a grid laid over the country (figure on the left). 
 
-a <-st_join(SS_admin, events_sf, left = T)
+```{r fig.width=12, fig.height=6, fig.cap = "Conflict events in South Sudan since its inception as a country aggregated."}
 
-#Choropleth map of counties and conflict
-a %>% 
+#Same map but rasterized
+
+raster_template <- rast(ext(SSudan), resolution = 20000,
+                       crs = st_crs(events_sf)$wkt)
+
+raster1 <- rasterize(vect(events_sf)
+                    , raster_template
+                    ,  fun = "length")
+
+raster2 <- terra::as.data.frame(raster1
+                                , xy=TRUE
+                                , cells = TRUE) %>% 
+  select(cell, x, y, Events = lyr.1) %>% 
+  mutate(events_logged = log(Events))
+
+
+map_raster <- ggplot(data = neighbors_v1)+
+  geom_sf(fill = "#F8F0E3") +
+  geom_sf_label(data = neighbors_v1
+                , aes(label = shapeName)) +
+  geom_sf(data = states,
+          color = "white") +
+  geom_tile(data = raster2 #the raster object
+          , aes(x = x
+                , y = y
+                , fill = events_logged))+
+  geom_sf_text(data = states
+               , aes(label = shapeName)
+               , color = "#565656") +
+  geom_sf(data = SSudan
+          , color = "#000000"
+          , size = 1
+          , fill = NA) +
+  geom_sf(data = places_SS)+
+  geom_sf_text(data = places_SS
+               , aes(label = NAME_ID)
+               , nudge_x = .2
+               , nudge_y = -.1
+               , check_overlap = T
+               , color = "#000000")+
+  geom_sf(data = water
+          , color = "steel blue") +
+  geom_sf(data = lakes
+          , color = "steel blue")+
+  coord_sf(xlim = c(bbox[[1]], bbox[[3]])
+           , ylim = c(bbox[[2]], bbox[[4]]))+
+  theme.plot()+
+  scale_fill_gradient(low = "#ffc6c4"
+                      , high = "#672044"
+                      , trans =  "log10")+
+  labs(title = "South Sudan"
+       , subtitle = "Logged-count of conflict events,\n 20 km grids (2011-2022)"
+       , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth, terra"
+       , x = ""
+       , y = "")+
+  theme(axis.text = element_blank())
+
+#choropleth map by districts
+choro <- st_join(districts, events_sf, left = T) %>% 
   group_by(shapeName) %>% 
-  summarize(attacks = log1p(sum(!is.na(event_id_cnty)))) %>% 
-  tmap::tm_shape() +
-  tmap::tm_polygons('attacks', title = 'ACLED\nevents (logged)'
-                    , style = "cont"
-  #, palette = cont_pal
-  , border.col = "white") +
-  tmap::tm_shape(states)+
-  tmap::tm_borders(col = "white"
-             , lwd = 2)+
-  tmap::tm_shape(st_union(a)) +
-  tmap::tm_borders(col = "black"
-             , lwd = 2)+
-  tmap::tm_layout(main.title = "Concentration of Conflict in South Sudan, 2011 - 2021"
-                  , fontfamily = "Corbel"
-                  , legend.outside.position = "bottom"
-                  , legend.position = c(0,0)) +
-  tmap::tm_credits("Source: ACLED")
+  summarize(attacks = log1p(sum(!is.na(event_id_cnty))))
+
+map_choro <- ggplot(data = neighbors_v1)+
+  geom_sf(fill = "#F8F0E3") +
+  geom_sf(data = choro
+                  , aes(fill = attacks)
+          , color = "white") +
+  #geom_sf_label(data = neighbors_v1
+  #              , aes(label = shapeName)) +
+   geom_sf(data = water
+          , color = "steel blue") +
+  geom_sf(data = lakes
+          , color = "steel blue")+
+  coord_sf(xlim = c(bbox[[1]], bbox[[3]])
+           , ylim = c(bbox[[2]], bbox[[4]]))+
+  theme.plot()+
+  scale_fill_gradient(low = "#ffc6c4"
+                      , high = "#672044"
+                      , trans =  "log10")+
+  labs(title = "South Sudan"
+       , subtitle = "Logged-count of conflict events\nby district (2011-2022)"
+       , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth"
+       , x = ""
+       , y = "")+
+  theme(axis.text = element_blank())
+
+
+patch2 <- patchwork::wrap_elements(map_raster - map_choro)
+
+patch2
 ```
 
-```{r, fig.width = 10, fig.height =12, fig.cap = "Conflict varies over time across South Sudan. With events concentrating over time in Central Equatoria."}
+Another useful approach when dealing with geography and change over time is to facet by years. For this map I switched to the tmap package. Martijn Tennekes and Jakub Nowosad wrote a book on making maps in tmap, https://r-tmap.github.io/tmap-book/, and it's amazing how intuitive it is. 
 
-a <- a %>%  
+```{r, fig.width = 12, fig.height =8, fig.cap = "Conflict varies over time across South Sudan. With events concentrating over time in Central Equatoria."}
+
+a <- st_join(districts, events_sf, left = T) %>% 
   group_by(shapeName, year) %>% 
   summarize(attacks = log1p(sum(!is.na(event_id_cnty))))
 
@@ -219,246 +375,69 @@ tmap::tmap_mode("plot")+
   tmap::tm_shape(st_union(a))+
   tmap::tm_borders(col = "black")+
   tmap::tm_layout(main.title = "Conflict Concentration by Year, 2011 - 2021"
-                  , legend.outside.position = "bottom", legend.position = c(0, 0)) #.8, 1.1
+                  , legend.outside.position = "bottom", legend.position = c(.8, 1.1)) 
 
 ```
 
+R also allows us to animate this data over time on a map. 
+```{r }
 
-
-# An interactive map
-Below is a map that you can explore for yourself. If you hover over one of the dots a label will appear, and if you click on it additional information about the event will appear.
-
-```{r, fig.cap = "An interactive map of all conflicts in South Sudan."}
-tmap::tmap_mode("view")
-tmap::tm_basemap(c(StreetMap = "OpenStreetMap",
-             TopoMap = "OpenTopoMap")) +
-  tmap::tm_tiles(c(TonerHybrid = "Stamen.TonerHybrid"))+
-  tmap::tm_shape(events_sf, is.master = TRUE) + 
-  tmap::tm_dots(col = "event_type"
-          , id = "event_type"
-          , popup.vars=c("Event date" = "event_date"
-                         , "Sub-event Type"="sub_event_type"
-                         , "Actors"= "actor1"
-                         , "Actors" = "actor2"
-                         , "Fatalities" = "fatalities"
-                         , "Sources" = "source")
-          , popup.format=list() 
-          , group = "Events"
-          , jitter = .2
-          , alpha = .3
-          , palette = my_pal)
-```
-
-Now that we have a count of the types of conflict, let's look at the which types are occurring in which states.
-
-```{r, fig.width=10, fig.height = 12}
-
-#Here we're going to map 6 plots. So, I iterate over a list of six ggplots using purr::map()
-
-#My type vector
-type <- unique(events$event_type)
-
-#My function for filtering by type
-type_fun <- function(x){
-  events %>% 
-    filter(event_type == {{x}}) %>% 
-    group_by(admin1, event_type) %>% 
-    summarize(Count = n())
-}
-
-#Now run it for real
-z <-map(type, ~type_fun(.x))
-
-#Plot the object and organize it by Count. The facet_wrap function generates six charts, one for each of the event types
-plot_fun <- function(x) {
-  ggplot(x
-         , aes(Count, reorder(admin1, Count)
-               , color = admin1
-               , fill = admin1)) +
-    geom_point(size = 5
-               , alpha = .3) +
-    geom_text(aes(label = Count)
-              , color = "#000000") +
-    theme.plot() +
-    theme(legend.position = "none"
-          , axis.text.x = element_blank())+
-    ggtitle(x[[2]]) +
-    labs(x = ""
-         , y = "")
-  
-}
-
-six_plot <- map(z, ~plot_fun(.x))
-
-#This works
-plot_row <- cowplot::plot_grid(plotlist = six_plot
-                               , nrow = 3
-                               , ncol = 2
-                               , label_size = 14
-                               , label_fontface = "plain"
-                               , label_fontfamily = "Corbel")
-
-title <- ggdraw() + 
-  cowplot::draw_label(
-    "Types of Conflict Events"
-    , fontface = 'plain'
-    , fontfamily = "Corbel"
-    , size = 26
-    , x = 0
-    , hjust = 0
-  ) +
-  theme(
-    # add margin on the left of the drawing canvas,
-    # so title is aligned with left edge of first plot
-    plot.margin = margin(0, 0, 0, 7)
-  )
-
-caption <- ggdraw() +
-  cowplot::draw_label("Source: ACLED, www.acleddata.com"
-             , fontface = "plain"
-             , fontfamily = "Corbel"
-             , size = 10
-             , hjust = -.5)
-
-plot_grid(
-  title, plot_row, caption,
-  ncol = 1,
-  # rel_heights values control vertical title margins
-  rel_heights = c(0.1, 1)
-)
-
-```
-
-
-
-```{r}
-
-events_state <- events %>% 
-  group_by(admin1) %>% 
-  summarize(Count = n()) 
-
-#Plot the object and organize it by Count
-ggplot(events_state
-       , aes(Count, reorder(admin1, Count)
-       , color = admin1
-       , fill = admin1
-       , alpha = .3)) +
-  geom_point(size = 14) +
-  geom_text(aes(label = Count)
-            , color = "#000000") +
-  theme.plot() +
-  ggtitle("Conflict Events by State"
-       , subtitle="The majority of conflict has occurred in four states:\n Central Equatoria, Jonglei, Unity, and Upper Nile") +
-       labs(x = ""
-       , y = ""
-       ,caption = "Source: ACLED, www.acleddata.com") +
-  theme(legend.position = "none")
-
-
-```
-
-The most common types of conflict are:
-
-``` {r}
-#Make an object that groups events by event_type
-events_type <- events %>% 
-  group_by(event_type) %>% 
-  summarize(Count = n()) 
-
-#Plot the object and organize it by Count
-ggplot(events_type
-       , aes(Count, reorder(event_type, Count)
-             , color = event_type))+
-  geom_point(size = 14
-             , alpha = .3) +
-  geom_text(aes(label = Count)
-            , color = "#000000") +
-  theme.plot() + 
-  theme(legend.position = "none"
-      , axis.text.x = element_blank()
-      , axis.title.y = element_blank())+
-  ggtitle("Types of Conflict in \nSouth Sudan, 1997-2021"
-       , subtitle = "Battles and Violence Against Civilians are the Most \nFrequent Conflict Events")+
-  labs(y = ""
+map_anim <- ggplot(data = neighbors_v1)+
+  geom_sf(fill = "#F8F0E3") +
+    geom_sf_label(data = neighbors_v1
+                , aes(label = shapeName)) +
+  geom_sf(data = states,
+          color = "white") +
+  geom_sf_text(data = states
+                , aes(label = shapeName)
+                , color = "#565656") +
+  geom_sf(data = SSudan
+          , color = "#000000"
+          , size = .75
+          , fill = NA) +
+  geom_sf(data = places_SS)+
+  geom_sf_text(data = places_SS
+                , aes(label = NAME_ID)
+                , nudge_x = .2
+                , nudge_y = -.1
+                , check_overlap = T
+                , color = "#000000")+
+  geom_sf(data = events_sf #Adding in the jittering to see all the points
+          , aes(geometry = st_jitter(geometry, amount = 500)
+          ,  color = event_type)
+          , alpha = .3)+
+  geom_text(data = events_sf
+            , aes(x = min(st_coordinates(geometry)[,1])
+                  , y = max(st_coordinates(geometry)[,2])
+                  , label = paste0("Year: ",{as.integer(year)}))
+            , size = 20
+            , color = "#565656"
+            , hjust = 0
+            , vjust = 1)+
+  coord_sf(xlim = c(bbox[[1]], bbox[[3]])
+           , ylim = c(bbox[[2]], bbox[[4]]))+
+  theme.plot()+
+  labs(title = "South Sudan"
+         , subtitle = "Conflict Events Jittered (2011-2022)"
+         , caption = "Author: Brian Calhoon; Sources: ACLED, rgeoboundaries, rnaturalearth"
        , x = ""
-       , caption = "Source: ACLED, www.acleddata.com")
+       , y = "")+
+  theme(axis.text = element_blank()) +
+  gganimate::transition_time(events_sf$year) +
+  shadow_mark(color = "#565656"
+              , size = .75
+              , alpha = .1)
 
-```
+num_years <- max(events_sf$year) - min(events_sf$year) +1
 
+SS_ACLED_anim <-  gganimate::animate(map_anim
+                , width = 800
+                , height = 700
+                , nframes = num_years
+                , fps = 1)
 
-```{r}
+anim_save("SS_ACLED_anim.gif")
 
-#My type vector
-actor1 <- unique(events$actor1)
+SS_ACLED_anim
 
-actor2 <- unique(events$actor2)
-
-#actors in actor2 that are not in actor1
-diff <- unique(actor2[!actor2 %in% actor1])
-
-#How many of these were only involved in 1 event
-actor_single <- events %>% 
-  group_by(actor1) %>% 
-  summarize(Count = n()) %>% 
-  filter(Count == 1)
-
-#How many of these were involved in more than 5 events
-actor_mult <- events %>% 
-  group_by(actor1) %>% 
-  summarize(Count = n()) %>% 
-  filter(Count >5)
-
-#How many of these were only involved in 1 event
-actor_single2 <- events %>% 
-  group_by(actor2) %>% 
-  summarize(Count = n()) %>% 
-  filter(Count == 1)
-
-#How many of these were involved in more than 5 events
-actor_mult2 <- events %>% 
-  group_by(actor2) %>% 
-  summarize(Count = n()) %>% 
-  filter(Count >5)
-
-
-```
-Who is engaged in the conflicts? There are 525 unique conflict actors identified in the dataset. We're going to look at which groups have been most active over the past five years and past year.
-
-```{r}
-
-#actors with more than five events in past 5 years
-actors_5y <- events %>%
-  filter(year > 2015) %>% 
-  group_by(actor1) %>% 
-  summarize(Count = n()) %>% 
-  filter(Count >5)
-
-actors_5y2 <- events %>%
-  filter(year > 2015) %>% 
-  group_by(actor2) %>% 
-  summarize(Count = n()) %>% 
-  filter(Count >5)
-
-#join the two objects together to have a single list of actors
-join_5y <- full_join(actors_5y, actors_5y2) 
-
-#Then aggregate the duplicate entries for 5 years
-actors_5y_agg <- aggregate(Count ~ actor1, join_5y, sum)
-
-#repeat for 1 year of actors
-actors_1y <- events %>%
-  filter(event_date > 2020-12-02) %>% 
-  group_by(actor1) %>% 
-  summarize(Count = n()) %>% 
-  filter(Count >5)
-
-actors_1y2 <- events %>%
-  filter(event_date > 2020-12-02) %>% 
-  group_by(actor2) %>% 
-  summarize(Count = n()) %>% 
-  filter(Count >5)
-
-join_1y <- full_join(actors_1y, actors_1y2) 
-  
-actors_1y_agg <- aggregate(Count ~ actor1, join_1y, sum)
 ```
