@@ -1,4 +1,3 @@
-base
 acled.api
 av
 colorspace
@@ -62,3 +61,4 @@ viridisLite
 viridis
 writexl
 bookdown
+spatstat.random
