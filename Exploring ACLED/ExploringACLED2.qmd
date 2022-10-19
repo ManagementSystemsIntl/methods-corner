@@ -2,7 +2,8 @@
 title: "Exploring Western Africa Conflict Data With ACLED and R"
 subtitle: "Part 1: Descriptive Statistics Can Be Fun"
 author: "Brian Calhoon"
-date: "11/09/2021, updated 10/18/2022"
+date: "11/09/2021"
+date-modified: "10/18/2022"
 format:
   html:
     toc: true
@@ -313,7 +314,7 @@ ggplot(dat, aes(x = forcats::fct_infreq(country), y = dates
   theme.plot() +
   theme(legend.position = "none"
         , plot.title.position = "plot") +
-  ggtitle("Frequency of Conflict Has Increased Over Time in Most Countries"
+  ggtitle("Frequency of Conflict Has Increased Over Time\nin Most Countries"
           , subtitle = "This is not True for All Countries") +
   labs(y = "Year (1997 - 2021)"
        , x = ""
@@ -385,8 +386,8 @@ events_month_gif <- ggplot(dat_event_daily3
 
 #this creates the final animation
 events_month_gif <- gganimate::animate(events_month_gif
-                     , fps = 4
-                     , nframes = nrow(dat_event_daily3)
+                     , fps = 10
+                     , nframes = 250
                      , end_pause = 20)
 
 anim_save("events_month_gif.gif")
