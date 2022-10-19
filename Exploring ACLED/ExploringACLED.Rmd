@@ -67,7 +67,7 @@ We're going to explore ACLED's conflict dataset for Western Africa from January 
 
 
 #read in the data set
-dat <- read_xlsx("~/ACLED Sandbox_TT/data/WAconflicts202001.xlsx")
+dat <- read_xlsx("Y:/Private/brian.calhoon/ACLED data sets/WAconflicts202001.xlsx")
 
 #shapefiles for countries
 africa <- rnaturalearth::ne_countries(continent = "Africa"
@@ -212,7 +212,9 @@ As we can see, Nigeria has as many conflict events recorded in ACLED's dataset a
 
 ```{r, fig.dim=c(12,13), fig.cap="When looking at the distribution of conflict types by country Nigeria has the highest counts in five of the six categories."}
 
-#Here we're going to map 6 plots. I'd use facet_grid(), but I don't know how to make the charts reorder for each facet. So, I iterate over a list of six ggplots using map()
+#Here we're going to map 6 plots. I'd use facet_grid(), but I don't know how to make the charts reorder for each facet. So, I iterate over a list of six ggplots using  purrr::map()
+
+#redefine the object dat
 
 #My type vector
 type <- unique(dat$event_type)
@@ -324,7 +326,9 @@ ggplot(dat, aes(x = forcats::fct_infreq(country), y = dates
 
 So, those countries with few events almost have a straight line of dots (near the top). The wider groupings of dense dots means more conflict incidents (Sierra Leone in the late 1990s and Nigeria from 2014 - 2021, for example). By including the boxplot we can easily see where on the timeline a country reaches half of its total events. This provides the reader an easy way to understand the distribution of conflict over time for each country.
 
-Another fun way to view this same distribution is to animate a chart that allows us to see the change over time.
+Another fun way to view this same distribution is to animate a chart that allows us to see the change over time. 
+
+My first attempt just showed the line graph by day, but that doesn't highlight the long-term trends as well as grouping by month. So, before animating the chart, I did some data wrangling to group by event type, months, and years.
 
 ## An Animated Line Chart of Conflict Events
 ```{r, fig.cap="Animating the data can draw a viewer's attention to it and highlight peaks and valleys in conflict counts."}
@@ -338,39 +342,58 @@ dat_event_daily <- dat %>%
   group_by(year, event_type, dates) %>% 
   summarize(number = n())
 
-#create the chart
-time_all_2 <- ggplot(dat_event_daily
-       , aes(dates, number, color = event_type, group = event_type)) +
+dat_event_daily$dates <- lubridate::ymd(dat_event_daily$dates)
+
+#group by months
+dat_event_daily2 <-  ungroup(dat_event_daily) %>% 
+  mutate(month = lubridate::month(dat_event_daily$dates)
+         , year = lubridate::year(dat_event_daily$dates)
+         , myr = lubridate::my(paste0(month, "-", year))) 
+
+#create the summary column
+dat_event_daily3 <- dat_event_daily2 %>% 
+  group_by(year, myr, event_type) %>% 
+  summarize(count = sum(number))
+
+#make the plot and then animate it
+events_month_gif <- ggplot(dat_event_daily3
+                     , aes(myr, count, color = event_type)) +
   geom_line(size = 1
-            , alpha =.5)+
-  geom_text(aes(x = max(dates) #add in the year on the plot
-                , y = max(number)
-                , label = year)
-             , hjust = 1
-             , vjust = 1
-             , alpha = .2
-             , col = "gray"
-             , size = 20) +
+              , alpha =.5
+              )+
+  geom_text(aes(x = ymd("2005-01-01") #add in the year on the plot
+                , y = 275
+                , label = as.integer(year))
+            , hjust = 1
+            , vjust = 1
+            , alpha = .2
+            , col = "#63666A"
+            , size = 20) +
+  scale_x_date(date_breaks = "5 years"
+               , date_labels = "%Y")+
+  scale_y_continuous(limits = c(0, 350))+
   theme.plot() +
+  guides(color = guide_legend(title = "Event Type"))+
   theme(legend.position = "top"
         , legend.title = element_text("Event\n Type")
         , plot.title.position = "plot") +
   ggtitle("Number of Conflict Events Over Time")+
-  labs(x = "Dates"
+  labs(x = "Years"
        , y = "Number of Conflict Events"
-       , col = "Type of Conflict Event"
+       , col = "Event Type"
        , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") +
-  transition_reveal(dates) +
-  ease_aes("linear")+
-  view_follow(fixed_x = c("1997-01-01", NA) #This keeps the #x axis at Jan 1, 1997
-              , fixed_y = TRUE)
+    transition_reveal(myr) + #first step of the animation
+    ease_aes("linear")
 
-time_all_2 <-  gganimate::animate(time_all_2
-                     , fps = 4)
+#this creates the final animation
+events_month_gif <- gganimate::animate(events_month_gif
+                     , fps = 4
+                     , end_pause = 10)
 
-anim_save("time_all_2.gif")
+anim_save("events_month_gif.gif")
 
-time_all_2
+events_month_gif
+
 ```
 
 While you cannot take away precise details from the animation, it tells the basic story of a lot of conflict initially that tapers off for most of the aughts and then ramps back up in the tens and stays high for the start of the twenties. It also catches your eye in a way that a static chart or table does not.

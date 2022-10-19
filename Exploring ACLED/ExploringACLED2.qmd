@@ -2,7 +2,7 @@
 title: "Exploring Western Africa Conflict Data With ACLED and R"
 subtitle: "Part 1: Descriptive Statistics Can Be Fun"
 author: "Brian Calhoon"
-date: "10/18/2022"
+date: "11/09/2021, updated 10/18/2022"
 format:
   html:
     toc: true
@@ -370,13 +370,14 @@ events_month_gif <- ggplot(dat_event_daily3
                , date_labels = "%Y")+
   scale_y_continuous(limits = c(0, 350))+
   theme.plot() +
-  guides(color = guide_legend(title = "Event Type"))+
+  guides(color = guide_legend(title = "Event\nType"))+
   theme(legend.position = "top"
-        , legend.title = element_text("Event\n Type")
+        , legend.title = element_text(face = "bold")
         , plot.title.position = "plot") +
-  ggtitle("Number of Conflict Events Over Time")+
+  ggtitle("Conflict Events Over Time")+
   labs(x = "Years"
        , y = "Number of Conflict Events"
+       , subtitle = "Grouped by month"
        , col = "Event Type"
        , caption = "Author: Brian Calhoon\n Source: ACLED, www.acleddata.com") +
     transition_reveal(myr) + #first step of the animation
@@ -385,7 +386,8 @@ events_month_gif <- ggplot(dat_event_daily3
 #this creates the final animation
 events_month_gif <- gganimate::animate(events_month_gif
                      , fps = 4
-                     , end_pause = 10)
+                     , nframes = nrow(dat_event_daily3)
+                     , end_pause = 20)
 
 anim_save("events_month_gif.gif")
 
