@@ -314,7 +314,7 @@ ggplot(dat, aes(x = forcats::fct_infreq(country), y = dates
   theme.plot() +
   theme(legend.position = "none"
         , plot.title.position = "plot") +
-  ggtitle("Frequency of Conflict Has Increased Over Time\nin Most Countries"
+  ggtitle("Frequency of Conflict Has Increased Over Time \nin Most Countries"
           , subtitle = "This is not True for All Countries") +
   labs(y = "Year (1997 - 2021)"
        , x = ""

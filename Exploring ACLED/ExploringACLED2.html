@@ -452,7 +452,7 @@ font-size: small;
 <section id="distribution-of-conflict-by-country-over-time" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="distribution-of-conflict-by-country-over-time"><span class="header-section-number">2.1</span> Distribution of Conflict by Country Over Time</h2>
 <p>Since we’re dealing with time it is useful to know if all the events occurred at the same time or if they’re distributed over the 24 years in our dataset. We could create a histogram, but they are kind of boring. So, instead we’ll combine a jittered plot to show frequency of events over time with a boxplot. This makes it easy to see when and where conflict ebbed and flowed.</p>
-<div class="cell" data-fig.dim="[10,11]" data-hash="ExploringACLED2_cache/html/unnamed-chunk-6_6a51ac4c87e6992da493b5a890233647">
+<div class="cell" data-fig.dim="[10,11]" data-hash="ExploringACLED2_cache/html/unnamed-chunk-6_ab6977300d2509f8aed656d908d870a5">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Add a date column that is formatted as a date column</span></span>
@@ -474,7 +474,7 @@ font-size: small;
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme.plot</span>() <span class="sc">+</span></span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span></span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        , <span class="at">plot.title.position =</span> <span class="st">"plot"</span>) <span class="sc">+</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Frequency of Conflict Has Increased Over Time</span><span class="sc">\n</span><span class="st">in Most Countries"</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Frequency of Conflict Has Increased Over Time </span><span class="sc">\n</span><span class="st">in Most Countries"</span></span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>          , <span class="at">subtitle =</span> <span class="st">"This is not True for All Countries"</span>) <span class="sc">+</span></span>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Year (1997 - 2021)"</span></span>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>       , <span class="at">x =</span> <span class="st">""</span></span>
