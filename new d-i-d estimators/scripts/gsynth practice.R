@@ -16,14 +16,20 @@ frq(simdata$D)
 table(simdata$time,
       simdata$D)
 
-panelView(Y ~ D,
+
+??panelView
+library(panelView)
+
+panelview(Y ~ D,
           data=simdata,
           index=c("id","time"))
 
-panelView(Y ~ D, 
+panelview(Y ~ D, 
           data=simdata,
           index=c("id","time"),
           type="outcome")
+
+?gsynth
 
 s1 <- gsynth(Y ~ D + X1 + X2, 
              data=simdata,
@@ -62,8 +68,38 @@ s1_est
 str(s1_est)
 
 ggplot(s1_est, aes(x=period, y=att)) + 
-  stat_smooth(color="dodgerblue2") +
-  nobord
+  stat_smooth(color="dodgerblue2") + 
+  geom_point() #+
+#  geom_line()
+
+
+m1 <- gsynth(Y ~ D + X1 + X2, 
+             data=simdata,
+             index=c("id","time"),
+             force="two-way",
+             CV=T,
+             r=c(0,5),
+             se=T,
+             inference="parametric",
+             nboots=1000,
+             parallel=F)
+
+?gsynth
+
+t1 <- gsynth(stab_std ~ treat_event,
+             data=out2,
+             index=c("village","wave"),
+             force="two-way",
+             cl="village",
+             CV=T,
+             r=c(0,5),
+             se=T,
+             inference="nonparametric",
+             nboots=1000,
+             parallel=T)
+
+
+
 
 # turnout -----------------------------------------------------------------
 
@@ -81,8 +117,9 @@ panelView(turnout ~ policy_edr,
 #dat <- read_excel("C:/Egnyte/Private/dkillian/GIST/GIST analysis/data/MSI survey/revenue/revenue cleaned.xlsx")
 
 
-dat <- read_csv("C:/Egnyte/Private/dkillian/GIST/GIST analysis/data/MSI survey/revenue/revenue converted.csv") 
+dat <- read_csv("Y:/Private/dan.killian/GIST/GIST analysis/data/MSI survey/revenue/revenue converted.csv") 
 
+head(dat)
 names(dat)
 
 dat <- dat %>%
@@ -121,11 +158,11 @@ out2 <- out
 
 out2[,5:13][is.na(out2[,5:13])] <- 0
 
-panelView(revenue ~ winfin,
+panelview(revenue ~ winfin,
           data=dat,
           index=c("name","revyr"))
 
-panelView(revenue ~ finalist,
+panelview(revenue ~ finalist,
           data=dat,
           index=c("name","revyr"),
           type="outcome")

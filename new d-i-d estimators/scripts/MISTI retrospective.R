@@ -1,5 +1,7 @@
 
-source("scripts/prep.r")
+#source("scripts/prep.r")
+
+setwd("new d-i-d estimators")
 
 dat <- read_csv("data/W1-5 long.csv")
 
@@ -7,16 +9,25 @@ names(dat)
 
 class(dat$Wave)
 frq(dat$Wave)
+frq(dat$treat)
+
+dat <- dat %>%
+  arrange(Village.Code, desc(Wave), desc(Total.Activities))
 
 # treatment matrix
 
+str(dat)
+
+frq(dat$region)
+describe(dat$RI2)
+
 dat2 <- dat %>%
-  filter(!(Wave==1 & treatment==1),
-         !(Wave==2 & treatment==1)) %>%
+#  filter(!(Wave==1 & treatment==1),
+#         !(Wave==2 & treatment==1)) %>%
   select(village=1, 
          wave=2,
          treat=3, 
-         SI2,
+         #stab=SI2,
          district=district.x,
          province,
          region,
@@ -25,29 +36,107 @@ dat2 <- dat %>%
          pop,
          lang,
          ethnicity,
-         SI2,
-         RI2,
+         stab=SI2,
+#         resil=RI2,
          SIKA,
          Project) %>%
-  mutate(stability=scale(SI2),
-         resilience=scale(RI2),
-         treat2=ifelse(lag(treat)==1, 1, treat),
-         treat2 = ifelse(is.na(treat2), treat, treat2),
+  mutate(idname=as.numeric(factor(village)),
+         stab_std=scale(stab),
+#         resil_std=scale(resil),
+         #treat2=ifelse(lag(treat)==1, 1, treat),
+         #treat2 = ifelse(is.na(treat2), treat, treat2),
          vil_wave=paste(village, wave)) %>%
   na.omit() %>%
+  arrange(village, wave) %>%
   group_by(village) %>%
-  mutate(treat3=cumsum(treat)) %>%
+  mutate(#wave=as.numeric(wave),
+         treat_cum=cumsum(treat),
+         treat_event=ifelse(treat_cum>0,1,0)) %>%
   ungroup() %>%
-  relocate(treat2, .after=treat) %>%
-  relocate(treat3, .after=treat2) %>%
+  #mutate(prog = case_when()
+  #type = case_when(sum(treat_event)==0 ~ "Never treated",
+  #                         sum(treat_event)==1 ~ "Wave 5 treated",
+  #                         sum(treat_event)==2 ~ "Wave 4 treated",
+  #                         sum(treat_event)==3 ~ "Wave 3 treated",
+  #                         sum(treat_event)==4 ~ "Wave 2 treated",
+  #                         sum(treat_event)==5 ~ "Wave 1 treated"),
+  #        first.treat=case_when(type=="Never treated" ~ 0,
+  #                              type=="Wave 1 treated" ~ 1,
+  #                              type=="Wave 2 treated" ~ 2,
+  #                              type=="Wave 3 treated" ~ 3,
+  #                              type=="Wave 4 treated" ~ 4,
+  #                              type=="Wave 5 treated" ~ 5)) %>%
+  #  relocate(treat2, .after=treat) %>%
+  relocate(treat_cum, .after=treat) %>%
+  relocate(treat_event, .after=treat) %>%
   arrange(village, wave, desc(treat)) %>%
   as.data.frame()
+
+a <- dat2 %>%
+  group_by(village, wave, treat_event) %>%
+  tally()
+
+dat2 %>%
+  group_by(village, wave, treat_event) %>%
+  summarize(arsh = paste(wave))
+
+table(dat$Wave, dat$treatment)
+table(dat2$wave, dat2$treat)
+
+dat2 <- dat2 %>%
+  arrange(village, wave, treat)
+
+dat %>%
+  group_by(Village.Code, Wave) %>%
+  tally()
+
+dat2 %>%
+  group_by(village, wave) %>%
+  tally()
 
 dat2
 str(dat2)
 names(dat)
+frq(dat2$treat3)
 
-       
+dat2 %>%
+  group_by(wave, treat_event) %>%
+  tally()
+
+
+labels(dat2$idname)
+frq(dat2$idname)
+
+as.numeric(factor(letters[1:5]))
+
+%>%
+  as.numeric()
+
+factor(1:5)
+
+as.numeri
+
+f <- as.numeric(f)
+
+
+
+set.seed(432)
+dat_samp <- sample_n(dat2, 500)
+
+ggplot(dat_samp, aes(wave, treat3, group=village, color=village)) + 
+  geom_jitter(height=.2, width=.2) +
+    geom_line() +
+  scale_color_viridis_d(alpha=.4) +
+  theme(legend.position="none")
+
+panelview(stab_std ~ treat_event,
+          data=dat_samp,
+          index=c("village","wave"))
+
+panelview(stab_std ~ treat_event,
+          data=dat2,
+          index=c("village","wave"),
+          type="outcome")
 
 
 
@@ -77,29 +166,47 @@ summary(p1)
 
 dat2
 str(dat2)
+names(dat2)
 
 dat3 <- dat2 %>%
-  select(village, wave, treat, stability, resilience) %>%
+  select(village, wave, treat, stab, stab_std, resil, resil_std) %>%
   group_by(village) %>%
-  mutate(treat2=ifelse(lag(treat)==1, 1, treat),
-         treat2 = ifelse(is.na(treat2), treat, treat2),
-         diff=ifelse(treat != treat2, 1,0)) %>%
-  ungroup() %>%
   na.omit() %>%
-  arrange(village, wave)
+  arrange(village, wave) %>%
+  as.data.frame()
 
+#%>%
+  rename(stability=4,
+         resilience=5)
+
+str(dat3)
+names(dat3)
 dat3
 
+frq(dat3$treat2)
 
 
-wave <- dat3 %>%
-  select(-(4:7)) %>%
+wave_treat <- dat2 %>%
+  select(village, wave, treat) %>%
+  arrange(village, wave) %>%
   pivot_wider(names_from=wave,
               values_from=treat) %>%
-  na.omit() %>%
-  select(1, 4, everything())
+  na.omit() %>% # only villages with five measurements %>%
+  select(1, 4, everything()) # order columns to be 1-5
 
-wave
+wave_treat
+
+wave_treat_event <- dat2 %>%
+  select(village, wave, treat_event) %>%
+  arrange(village, wave) %>%
+  pivot_wider(names_from=wave,
+              values_from=treat_event) %>%
+  na.omit() %>% # only villages with five measurements %>%
+  select(1, 4, everything()) # order columns to be 1-5
+
+wave_treat_event
+
+
 
 wave2 <- dat3 %>%
   select(1,2,6) %>%
@@ -124,16 +231,45 @@ wave3
 write_csv(wave2, "output/MISTI W1-5 treatment raw matrix.csv")
 
 
-out2 <- wave2 %>%
-  pivot_longer(2:6,
+out_wave <- wave_treat %>%
+  na.omit() %>%
+  pivot_longer(3:7,
                names_to="wave",
                values_to="treat")
 
-out2 # has villages that are measured all five waves, treatments in wave 1-2 dropped
+out_wave
 
-treated <- out2 %>%
+
+out_event <- wave_treat_event %>%
+  pivot_longer(2:6,
+               names_to="wave",
+               values_to="treat_event")
+
+out_event # has villages that are measured all five waves, treatments in wave 1-2 dropped, event study treatment
+
+out <- out_wave %>%
+  left_join(out_event)
+
+mutate(type = case_when(sum(treat_event)==0 ~ "Never treated",
+                        sum(treat_event)==1 ~ "Wave 5 treated",
+                        sum(treat_event)==2 ~ "Wave 4 treated",
+                        sum(treat_event)==3 ~ "Wave 3 treated",
+                        sum(treat_event)==4 ~ "Wave 2 treated",
+                        sum(treat_event)==5 ~ "Wave 1 treated"),
+       first.treat=case_when(type=="Never treated" ~ 0,
+                             type=="Wave 1 treated" ~ 1,
+                             type=="Wave 2 treated" ~ 2,
+                             type=="Wave 3 treated" ~ 3,
+                             type=="Wave 4 treated" ~ 4,
+                             type=="Wave 5 treated" ~ 5)) %>%
+  #  relocate(treat2, .after=treat) %>%
+  
+  
+
+treated <- out %>%
   group_by(wave) %>%
   summarize(treat=sum(treat),
+            treat_event=sum(treat_event),
             comparison = 502-treat)
 
 
@@ -173,13 +309,153 @@ describe(si2[,2:3])
 
 out2
 
-dat2 <- dat2 %>%
+dat2_temp <- dat2 %>%
   select(-village, -wave, -treat)
 
-out3 <- out2 %>%
+out2 <- out %>%
   mutate(vil_wave = paste(village, wave)) %>%
-  left_join(dat2, by="vil_wave") %>%
+  left_join(dat2_temp, by=c("vil_wave", "treat_event")) %>%
+  mutate(wave=as.numeric(wave),
+         idname=as.numeric(factor(village))) %>%
   group_by(village) %>%
+  mutate(type = case_when(sum(treat_event)==0 ~ "Never treated",
+                             sum(treat_event)==1 ~ "Wave 5 treated",
+                             sum(treat_event)==2 ~ "Wave 4 treated",
+                             sum(treat_event)==3 ~ "Wave 3 treated",
+                             sum(treat_event)==4 ~ "Wave 2 treated",
+                             sum(treat_event)==5 ~ "Wave 1 treated"),
+         first.treat=case_when(type=="Never treated" ~ 0,
+                               type=="Wave 1 treated" ~ 1,
+                               type=="Wave 2 treated" ~ 2,
+                               type=="Wave 3 treated" ~ 3,
+                               type=="Wave 4 treated" ~ 4,
+                               type=="Wave 5 treated" ~ 5),
+         stab_std=as.numeric(stab_std),
+         resil_std=as.numeric(resil_std)) %>%
+  ungroup() %>%
+  na.omit() %>%
+  as.data.frame()
+
+write_csv(out2, "data/MISTI villages measured all waves.csv")
+write_rds(out2, "data/MISTI villages measured all waves.rds")
+
+mistifull <- read_rds("data/MISTI villages measured all waves.rds")
+
+str(out2)
+names(out2)
+set.seed(432)
+
+out2_samp <- sample_n(out2, 500)
+
+ggplot(out2_samp, aes(wave, stab_std, group=village, color=type)) + 
+  scale_color_viridis_d() + 
+  geom_line() +
+  theme(legend.position="none")
+
+a <- data.frame(frq(out2$village)) 
+
+vil_samp <- sample(a[,2], 50)
+
+vil_samp  
+
+out2_samp <- out2 %>%
+  filter(village %in% vil_samp)
+
+
+
+panelview(stab_std ~ treat_event,
+          data=out2_samp,
+          index=c("village","wave"))
+
+
+ggsave(a, "viz/panelview.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+panelview(stab_std ~ treat_event,
+          data=dat2,
+          index=c("village","wave"),
+          type="outcome")
+
+library(tjbal)
+
+?tjbal
+out.did <- tjbal(stab_std ~ treat, data = out2,   
+                 index = c("village","wave"), Y.match.npre = 0, 
+                 demean = TRUE, vce = "boot", nsims = 200)
+
+out.did
+print(out.did)
+plot(out.did)
+plot(out.did, type="counterfactual")
+
+stab <- out2 %>%
+  group_by(wave, type) %>%
+  summarize(stab=mean(stab_std),
+            se=std.error(stab_std),
+            n=n()) %>%
+  mutate(lower=stab-1.96*se,
+         upper=stab+1.96*se)
+
+stab
+
+ggplot(stab, aes(wave, stab, group=type, color=type)) + 
+  scale_color_viridis_d() +
+  geom_point() + 
+  geom_line()
+
+ggplot(stab, aes(wave, stab, color=type)) + 
+  geom_hline(yintercept=0, color="grey60", size=1, alpha=.5) +
+  scale_color_viridis_d() +
+  geom_point(size=3) + 
+  geom_line() +
+  facet_wrap(~type) +
+  faceted +
+  theme(legend.position="none") +
+  geom_errorbar(aes(ymin=lower, ymax=upper),
+              width=0, size=1)
+
+
+
+
+stab <- out2 %>%
+  group_by(wave, type) %>%
+  summarize(across(c(stab_std, resil_std), list(mean, std.error)))
+            
+                   
+=mean(stab_std),
+            resil=mean(resil_std))
+
+bl
+
+status <- out2 %>%
+  group_by(village) %>%
+  summarize(type = case_when(sum(treat_event)==0 ~ "Never treated",
+                             sum(treat_event)==1 ~ "Wave 5 treated",
+                             sum(treat_event)==2 ~ "Wave 4 treated",
+                             sum(treat_event)==3 ~ "Wave 3 treated",
+                             sum(treat_event)==4 ~ "Wave 2 treated",
+                             sum(treat_event)==5 ~ "Wave 1 treated"))
+    
+status
+frq(status$type)
+    
+type=case_when(wave==1 & treat_event==1 ~ "Wave 1 treated",
+                        wave==2 & treat_event==1 ~ "Wave 2 treated",
+                        wave==3 & treat_event==1 ~ "Wave 3 treated",
+                        wave==4 & treat_event==1 ~ "Wave 4 treated",
+                        wave==5 & treat_event==1 ~ "Wave 5 treated",
+                        wave==5 & treat_event==0 ~ "Never treated"))
+
+status  
+
+out2 %>%
+  group_by(village) %>%
+  summarize(x=first(treat_event))
+  
+group_by(village) %>%
   mutate(type = case_when(sum(treat)==0 ~ "Never treated",
                           sum(treat)==1 ~ "Wave 5 treated",
                           sum(treat)==2 ~ "Wave 4 treated",
@@ -198,11 +474,11 @@ out3 <- out2 %>%
   na.omit() %>%
   as.data.frame()
 
-write_csv(out3, "data/MISTI all villages.csv")
+write_csv(out2, "data/MISTI villages measured all waves.csv")
 
-out3 <- read_csv("data/MISTI all villages.csv")
+out3 <- read_csv("data/MISTI villages measured all waves.csv")
 
-test <- read_csv("data/MISTI all villages.csv")
+#test <- read_csv("data/MISTI all villages.csv")
 
 names(out3)
 str(out3)
@@ -265,39 +541,39 @@ wvTyp <- out3 %>%
   group_by(wave, type)
 
 
-l1 <- lm(stability ~ treat, out3)
+l1 <- lm(stab_std ~ treat, out2)
 
 summary(l1)
 
 
-l2 <- lm(stability ~ treat + as.factor(wave), out3)
+l2 <- lm(stab_std ~ treat + as.factor(wave), out2)
 
 summary(l2)
 
 ?lm_robust
 
-r1 <- lm_robust(stability ~ treat, 
+r1 <- lm_robust(stab_std ~ treat, 
                 clusters=village,
                 fixed_effects=wave,
-                data=out3)
+                data=out2)
 
 summary(r1)
 
 names(out3)
 
-r2 <- lm_robust(stability ~ treat + dist + elevation + pop + lang, 
+r2 <- lm_robust(stab_std ~ treat + dist + elevation + pop + lang, 
                 clusters=village,
-                fixed_effects=wave + village,
-                data=out3)
+                fixed_effects=wave + region,
+                data=out2)
 
 summary(r2)
 
 
 
-r3 <- lm_robust(stability ~ treat + dist + elevation + pop + Project + treat:Project, 
+r3 <- lm_robust(stab_std ~ treat + dist + elevation + pop + Project + treat:Project, 
                 clusters=village,
-                fixed_effects=region,
-                data=out3)
+                fixed_effects=region + wave,
+                data=out2)
 
 summary(r3)
 
@@ -314,12 +590,12 @@ summary(l3)
 
 # w2 ----
 
-w2 <- out3 %>%
+w2 <- out2 %>%
   filter(type=="Wave 2 treated")
 
 w2
 
-ggplot(w2, aes(x=wave, y=stability)) + 
+ggplot(w2, aes(x=wave, y=stab)) + 
   scale_x_discrete() +
   geom_vline(xintercept=1.5, color="darkgoldenrod", size=1.2, alpha=.8) +
   geom_point(aes(color=village), size=3) +
@@ -374,18 +650,31 @@ nrow(distinct(out3, village))
 
 ?distinct
 
-# Callaway and Sant'Anna ---- 
+# Callaway and Sant'Anna (did) ---- 
 
 head(out3)
 str(out3)
 
-callway_1 <- att_gt(yname="stability",
+?att_gt
+
+out2 <- out2 %>%
+  mutate(first.treat=case_when(type=="Never treated" ~ 0,
+                         type=="Wave 1 treated" ~ 1,
+                         type=="Wave 2 treated" ~ 2,
+                         type=="Wave 3 treated" ~ 3,
+                         type=="Wave 4 treated" ~ 4,
+                         type=="Wave 5 treated" ~ 5))
+
+names(out2)
+frq(out2$region)
+
+callway_1 <- att_gt(yname="stab_std",
                     tname="wave",
                     idname="idname",
                     gname="first.treat",
-                    xformla=~1,
+                    xformla=~elevation + pop + lang + province,
                     #anticipation=1,
-                    data=out3)
+                    data=out2)
 
 
 summary(callway_1)
@@ -559,6 +848,8 @@ out2 <- att_gt(yname="lemp",
                data=mpdta)
 summary(out2)
 
+
+# didmultiplegt ---- 
 
 library(DIDmultiplegt)
 
