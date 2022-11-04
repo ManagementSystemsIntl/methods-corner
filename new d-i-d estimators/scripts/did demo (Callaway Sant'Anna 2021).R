@@ -22,7 +22,7 @@ c1 <- att_gt(yname="stab_std",
              xformla=~1,
              #xformla= ~ elevation + pop + lang,
              #anticipation=1,
-             data=m15)
+             data=mistifull)
 
 
 summary(c1)
@@ -150,7 +150,7 @@ m15 %>%
 frq(m15$cohort)
 frq(m15$treated)
 
-ggplot(m15, aes(wave)) + 
+ggplot(mistifull, aes(wave)) + 
   geom_line(aes(y=stab_std, group=village, color=as.factor(treat_event)),
                 size=.3, alpha=.3) +
   facet_wrap(~region) +

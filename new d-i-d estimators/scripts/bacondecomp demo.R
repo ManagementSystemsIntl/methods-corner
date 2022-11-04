@@ -17,6 +17,8 @@ df_bacon <- bacon(l_homicide ~ post,
 coef_bacon <- sum(df_bacon$estimate * df_bacon$weight)
 coef_bacon
 
+
+
 print(paste("Weighted sum of decomposition =", round(coef_bacon, 4)))
 #> [1] "Weighted sum of decomposition = 0.0818"
 
@@ -35,8 +37,15 @@ ggplot(df_bacon) +
 
 ?bacon
 
-mistibacon <- bacon(stab_std ~ treat_event + treat + elevation + pop + lang + region,
-                    data=m15,
+mistibacon <- bacon(stab_std ~ treat_event,
+                    data=mistifull,
+                    id_var="village",
+                    time_var="wave")
+
+head(mistibacon)
+
+mistibacon2 <- bacon(stab_std ~ treat_event + nsp,
+                    data=mistifull,
                     id_var="village",
                     time_var="wave")
 

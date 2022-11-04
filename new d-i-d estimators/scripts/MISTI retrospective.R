@@ -341,6 +341,49 @@ write_rds(out2, "data/MISTI villages measured all waves.rds")
 
 mistifull <- read_rds("data/MISTI villages measured all waves.rds")
 
+# add nsp
+
+names(mistifull)
+
+nsp_num <- read_excel("data/nspGrants.xlsx", 
+                      sheet="num")
+head(nsp_num)
+
+nsp_numL <- nsp_num %>%
+  pivot_longer(cols=2:6,
+               names_to="wave",
+               values_to="nsp") %>%
+  mutate(wave=as.numeric(str_sub(wave, 6,6)))
+
+head(nsp_numL)
+str(nsp_numL)
+
+mistifull <- mistifull %>%
+  left_join(nsp_numL) %>%
+  mutate(nsp=ifelse(is.na(nsp), 0, nsp))
+
+mistifull <- mistifull %>%
+  mutate(ln_dist=log(dist),
+         ln_elevation=log(elevation),
+         ln_pop=log(pop))
+
+write_csv(mistifull, "data/MISTI villages measured all waves.csv")
+write_rds(mistifull, "data/MISTI villages measured all waves.rds")
+
+# misti matched
+
+names(mistifull)
+?matchit
+
+mis <- mistifull %>% 
+  na.omit()
+
+ot <- matchit(treat_event ~ wave + region + dist + elevation + pop + lang + nsp,
+              data=mistifull)
+
+ot
+summary(ot)
+
 str(out2)
 names(out2)
 set.seed(432)

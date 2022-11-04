@@ -32,7 +32,7 @@ st <- did2s(mistifull,
             cluster_var="village")
 
 st
-
+iplot(st)
 summary(st)
 str(st)
 

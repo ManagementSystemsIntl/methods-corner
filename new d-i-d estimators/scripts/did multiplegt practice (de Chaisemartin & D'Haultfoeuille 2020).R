@@ -3,6 +3,8 @@
 
 ?did_multiplegt
 
+here()
+
 mistifull <- read_rds("data/MISTI villages measured all waves.rds")
 
 # stability ---- 
