@@ -4,6 +4,9 @@ library(bacondecomp)
 
 # demo ---- 
 
+cas <- bacondecomp::castle %>%
+  relocate(post, .after=year)
+
 df_bacon <- bacon(l_homicide ~ post,
                   data = bacondecomp::castle,
                   id_var = "state",

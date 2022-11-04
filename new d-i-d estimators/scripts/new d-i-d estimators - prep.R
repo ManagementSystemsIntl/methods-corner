@@ -1,10 +1,13 @@
 # new d-i-d estimators
 # prep
 
-setwd(here("new d-i-d estimators"))
-
-
-packages <- c("arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimatr","extrafont", "extrafontdb", "janitor", "reshape2","tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix", "scales","survey", "srvyr", "sysfonts", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr", "readxl", "sjmisc", "sjPlot", "sjstats", "sjlabelled", "skimr","labelled", "texreg", "janitor","psych","dplyr", "tidyverse", "viridis", "here", "ggridges", "ggthemes", "DT", "jtools", "huxtable", "stringi", "gghighlight", "plm", "texreg","gt","gtsummary","huxtable","stargazer", "panelView", "assertr", "pointblank", "validate", "sandwich") 
+packages <- c("arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimatr","extrafont", "extrafontdb", "janitor", 
+              "reshape2","tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix", 
+              "scales","survey", "srvyr", "sysfonts", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr", "readxl", 
+              "sjmisc", "sjPlot", "sjstats", "sjlabelled", "skimr","labelled", "texreg", "janitor","psych","dplyr", 
+              "tidyverse", "viridis", "here", "ggridges", "ggthemes", "DT", "jtools", "huxtable", "stringi", "gghighlight", 
+              "plm", "texreg","gt","gtsummary","huxtable","stargazer", "panelView", "assertr", "pointblank", "validate", 
+              "sandwich", "here") 
 
 lapply(packages, library, character.only=T)
 
@@ -17,10 +20,11 @@ lapply(iePackages, library, character.only=T)
 bayesPackages <- c("rethinking","brms","rstanarm","tidybayes","cmdstanr")
 lapply(bayesPackages, library, character.only=T)
 
-didPackages <- c("bacondecomp", "staggered","pretrends","HonestDiD", "did", "gsynth", "panelView", "didimputation", "synthdid", "TwoWayFEWeights", "pretrends","fixest", "DRDID", "DIDmultiplegt", "did2s")
+didPackages <- c("bacondecomp", "staggered","pretrends","HonestDiD", "did", "gsynth", "panelView", "didimputation", 
+                 "synthdid", "TwoWayFEWeights","fixest", "DRDID", "DIDmultiplegt", "did2s")
 lapply(didPackages, library, character.only=T)
 
-
+setwd(here("new d-i-d estimators"))
 
 # font_add_google("Source Sans Pro", "sans-serif")
 

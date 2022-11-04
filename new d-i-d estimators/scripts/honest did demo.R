@@ -5,8 +5,8 @@ library(HonestDiD)
 library(pretrends)
 
 data("LWdata_EventStudy")
-
-dat <- LWdata_EventStudy
+hon <- LWdata_EventStudy
+rm(LWdata_EventStudy)
 
 str(dat)
 
