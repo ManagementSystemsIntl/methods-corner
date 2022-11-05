@@ -1,24 +1,24 @@
 ---
-title: "Assessing the new class of d-i-d estimators"
-subtitle: "A replication"
-author:
-  - name: Dan Killian
-format: revealjs
+title: Assessing the new class of d-i-d estimators
+subtitle: A replication
+author: Dan Killian
+format: 
+  revealjs:
+    theme: sky
 editor: visual
 background-color: lightblue
 title-slide-attributes: 
   data-background-image: 'MSI logo.jpg'
-  data-background-size: 15%
-  data-background-position: 2% 2%
+  data-background-size: 10%
+  data-background-position: 1% 1%
 ---
 
 ```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
 
 # standard figure size and generate clean output
-knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=F)
 
-
-packages <- c("arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimatr","extrafont", "extrafontdb", "janitor", "reshape2","tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix", "scales","survey", "srvyr", "sysfonts", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr", "readxl", "sjmisc", "sjPlot", "sjstats", "sjlabelled", "skimr","labelled", "texreg", "janitor","psych","dplyr", "tidyverse", "viridis", "here", "ggridges", "ggthemes", "DT", "jtools", "huxtable", "stringi", "gghighlight", "plm", "texreg","gt","gtsummary","huxtable","stargazer", "panelView", "assertr", "pointblank", "validate", "sandwich") 
+packages <- c("quartostamp", "arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimatr","extrafont", "extrafontdb", "janitor", "reshape2","tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix", "scales","survey", "srvyr", "sysfonts", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr", "readxl", "sjmisc", "sjPlot", "sjstats", "sjlabelled", "skimr","labelled", "texreg", "janitor","psych","dplyr", "tidyverse", "viridis", "here", "ggridges", "ggthemes", "DT", "jtools", "huxtable", "stringi", "gghighlight", "plm", "texreg","gt","gtsummary","huxtable","stargazer", "panelView", "assertr", "pointblank", "validate", "sandwich") 
 
 lapply(packages, library, character.only=T)
 
@@ -87,32 +87,91 @@ mistifull <- read_rds(here("new d-i-d estimators/data/MISTI villages measured al
 
 ```
 
+# Outline
 
+-   Background
+-   Problem
+-   Solutions
+-   Case study - MISTI
+-   Case study - GIST
+-   Final thoughts
 
+# Bottom line up front
 
+-   In certain settings, beware the Two-Way Fixed Effects Estimator!
+-   Don't conflate your modeling approach (TWFE) with your estimation strategy
+-   Examine the different groups created by differential timing
+-   Use event study designs
+-   Specify a fully flexible model (Two-way Mudlak)
+
+------------------------------------------------------------------------
+
+-   **Background**
+-   Problem
+-   Solutions
+-   Case study - MISTI
+-   Case study - GIST
+-   Final thoughts
+
+------------------------------------------------------------------------
 
 ```{r}
 
 
 ```
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.
-
-## Bullets
-
-When you click the **Render** button a document will be generated that includes:
-
--   Content authored with markdown
--   Output from executable code
-
-## Code
-
-When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this: #bibliography: AEA 2022 d-i-d bib.enl author**:** **-** name**:** Norah Jones affiliations**:** **-** Carnegie Mellon University **-** University of Chicago
-
-affiliations: - Management Systems International, a Tetra Tech Company
-
 ```{r}
-1 + 1
+
+```
+
+### D-i-D has a long and storied history
+
+Ignaz Semmelweis - Let's track mortality rates in two maternity wards, one staffed with midwives and the other with medical students (who were busy with cadavers) ![](semmelweis.jpg){.absolute top="300" left="200" width="200"}
+
+------------------------------------------------------------------------
+
+### D-i-D has a long and storied history
+
+John Snow - Let's track cholera infection in two London neighborhoods, one with treated water and one without ![](jon%20snow4.jpg){.absolute top="250" left="250" width="500" height="300"}
+
+------------------------------------------------------------------------
+
+### D-i-D has a long and storied history
+
+Economists - Let's steal repeated measures ANOVA from the statisticians
+
+<!-- -->
+
+"This estimator has been labeled the difference-in-differences estimator in the recent program evaluation literature, although it has a long history in analysis of variance." \[Wooldridge 2010\]
+
+Cross Validated: [Difference in Difference vs repeated measures](https://stats.stackexchange.com/questions/194888/difference-in-difference-vs-repeated-measures)
+
+### So what is the canonical d-i-d setup?
+
+$y=\beta_0+\delta_0Post+\beta_1Treat+\delta_1Post*Treat+\epsilon$
+
+where..
+
+$\beta_0$ is the comparison group at baseline
+
+$\delta_0$ is the secular change from baseline to endline, unrelated to treatment
+
+$\beta_1$ is the difference between the treatment and comparison groups at baseline, and
+
+$\delta_1$ is the treatment effect, the interaction of treatment and time
+
+Algebraically, $\delta_0$ can be expressed as the difference between the pre/post difference in each of the treatment and comparison groups
+
+$\delta_1=(\bar{y}_{POST,TREAT}-\bar{y}_{PRE,TREAT})-(\bar{y}_{POST,COMPARISON}-\bar{y}_{PRE,COMPARISON})$
+
+hence, difference-in-differences (d-i-d or DiD or DD)
+
+------------------------------------------------------------------------
+
+# How does the canonical d-i-d generalize to multiple time periods and/or groups
+
+### Callaway and Sant'Anna (2020)
+
+```{r fig.height=5, fig.width=6}
+include_graphics(here("new d-i-d estimators/viz/Callaway did/stability, by time treated (Callaway c3) 2.png"))
 ```
