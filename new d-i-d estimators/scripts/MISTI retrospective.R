@@ -363,7 +363,7 @@ mistifull <- mistifull %>%
   mutate(nsp=ifelse(is.na(nsp), 0, nsp))
 
 mistifull <- mistifull %>%
-  mutate(ln_dist=log(dist),
+  mutate(ln_dist=log(1+dist),
          ln_elevation=log(elevation),
          ln_pop=log(pop))
 

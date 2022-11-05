@@ -5,7 +5,7 @@ packages <- c("arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimatr
               "reshape2","tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix", 
               "scales","survey", "srvyr", "sysfonts", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr", "readxl", 
               "sjmisc", "sjPlot", "sjstats", "sjlabelled", "skimr","labelled", "texreg", "janitor","psych","dplyr", 
-              "tidyverse", "viridis", "here", "ggridges", "ggthemes", "DT", "jtools", "huxtable", "stringi", "gghighlight", 
+              "tidyverse", "tidylog", "viridis", "here", "ggridges", "ggthemes", "DT", "jtools", "huxtable", "stringi", "gghighlight", 
               "plm", "texreg","gt","gtsummary","huxtable","stargazer", "panelView", "assertr", "pointblank", "validate", 
               "sandwich", "here") 
 
@@ -21,7 +21,7 @@ bayesPackages <- c("rethinking","brms","rstanarm","tidybayes","cmdstanr")
 lapply(bayesPackages, library, character.only=T)
 
 didPackages <- c("bacondecomp", "staggered","pretrends","HonestDiD", "did", "gsynth", "panelView", "didimputation", 
-                 "synthdid", "TwoWayFEWeights","fixest", "DRDID", "DIDmultiplegt", "did2s")
+                 "synthdid", "TwoWayFEWeights","fixest", "DRDID", "DIDmultiplegt", "did2s", "fect")
 lapply(didPackages, library, character.only=T)
 
 setwd(here("new d-i-d estimators"))

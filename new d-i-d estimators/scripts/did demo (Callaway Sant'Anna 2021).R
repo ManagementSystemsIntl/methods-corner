@@ -49,9 +49,9 @@ c2 <- att_gt(yname="stab_std",
              idname="idname",
              gname="first.treat",
              #xformla=~1,
-             xformla= ~ elevation + pop + lang,
+             xformla= ~ nsp,
              #anticipation=1,
-             data=m15)
+             data=mistifull)
 
 
 summary(c2)
@@ -64,9 +64,9 @@ c3 <- att_gt(yname="stab_std",
              idname="idname",
              gname="first.treat",
              #xformla=~1,
-             xformla= ~ elevation + pop + lang + region,
+             xformla= ~ nsp + ln_dist,
              #anticipation=1,
-             data=m15)
+             data=mistifull)
 
 
 summary(c3)
@@ -75,17 +75,61 @@ c2
 c1
 
 
+c3_out <- data.frame(att=c3$att,
+                     se = c3$se,
+                     group=rep(2:5,each=4),
+                     color=rep(viridis(4), each=4),
+                     wave=rep(2:5,4)) %>%
+  mutate(type=ifelse(group==2, "Wave 2 treated",
+                     ifelse(group==3, "Wave 3 treated",
+                            ifelse(group==4, "Wave 4 treated", "Wave 5 treated"))),
+         treat=c(1,1,1,1,0,1,1,1,0,0,1,1,0,0,0,1),
+         lower=att-1.96*se,
+         upper=att+1.96*se,
+         xintercept=rep(c(1.8, 2.8, 3.8, 4.8), each=4))
+
+c3_out
+
+ggplot(c3_out, aes(wave, att, color=as.factor(treat))) + 
+  geom_hline(yintercept=0, color="darkgoldenrod", size=1, alpha=.8) +
+  geom_point(size=3) + 
+  geom_errorbar(aes(ymin=lower, ymax=upper), width=0, size=1) +
+  geom_label(aes(label=round(att,2)),
+             show.legend=F) +
+  scale_color_manual(values=c("firebrick","darkblue"),
+                     labels=c("Untreated","Treated")) +
+  facet_wrap(~type, scales="free") +
+  faceted +
+  theme(legend.position="bottom",
+        legend.title=element_blank()) + 
+  labs(x="", 
+       y="",
+       title="Change in stability, by time treated",
+       caption="Callaway Sant'Anna did
+       Outcomes in standard deviation units") + 
+  scale_x_continuous(limits=c(1.8, 5.2),
+                     breaks=1:5) +
+  scale_y_continuous(limits=c(-1.4,3.95),
+                     breaks=seq(-1,4,1))
+
+ggsave("viz/Callaway did/stability, by time treated (Callaway c3) 2.png",
+       device="png",
+       type="cairo",
+       height=6,
+       width=7)
+
+
 
 c4 <- att_gt(yname="stab_std",
              tname="wave",
              idname="idname",
              gname="first.treat",
              #xformla=~1,
-             xformla= ~ elevation + pop + lang,
+             xformla= ~ nsp + ln_dist + ln_elevation,
              #anticipation=1,
-             data=m15)
+             data=mistifull)
 
-
+names(mistifull)
 summary(c4)
 c4
 c2
@@ -107,6 +151,18 @@ c4_out <- data.frame(att=c4$att,
 c4_out
 
 
+c5 <- att_gt(yname="stab_std",
+             tname="wave",
+             idname="idname",
+             gname="first.treat",
+             #xformla=~1,
+             xformla= ~ nsp + ln_dist + ln_elevation + ln_pop,
+             #anticipation=1,
+             data=mistifull)
+
+names(mistifull)
+summary(c5)
+c5
 
 
 # m25 ---- 

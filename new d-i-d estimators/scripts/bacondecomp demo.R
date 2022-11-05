@@ -20,7 +20,7 @@ df_bacon <- bacon(l_homicide ~ post,
 coef_bacon <- sum(df_bacon$estimate * df_bacon$weight)
 coef_bacon
 
-
+plot(df_bacon)
 
 print(paste("Weighted sum of decomposition =", round(coef_bacon, 4)))
 #> [1] "Weighted sum of decomposition = 0.0818"
