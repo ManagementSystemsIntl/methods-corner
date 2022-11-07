@@ -344,7 +344,7 @@
 <li>Don’t conflate your modeling approach (TWFE) with your estimation strategy</li>
 <li>Examine the different groups created by differential timing</li>
 <li>Use event study designs</li>
-<li>Specify a fully flexible model (Two-way Mudlak)</li>
+<li>Specify a fully flexible model (Two-way Mundlak)</li>
 </ul>
 </section>
 <section class="slide level2">
@@ -367,48 +367,140 @@
 
 </div>
 <h3 id="d-i-d-has-a-long-and-storied-history">D-i-D has a long and storied history</h3>
-<p>Ignaz Semmelweis - Let’s track mortality rates in two maternity wards, one staffed with midwives and the other with medical students (who were busy with cadavers) <img data-src="semmelweis.jpg" class="absolute" style="top: 300px; left: 200px; width: 200px; "></p>
+<ul>
+<li>Ignaz Semmelweis - Let’s track mortality rates in two maternity wards, one staffed with midwives and the other with medical students (who were busy with cadavers) <img data-src="semmelweis.jpg" class="absolute" style="top: 300px; left: 250px; width: 250px; height: 350px; "></li>
+</ul>
 </section>
 <section class="slide level2">
 
 <h3 id="d-i-d-has-a-long-and-storied-history-1">D-i-D has a long and storied history</h3>
-<p>John Snow - Let’s track cholera infection in two London neighborhoods, one with treated water and one without <img data-src="jon%20snow4.jpg" class="absolute" style="top: 250px; left: 250px; width: 500px; height: 300px; "></p>
+<ul>
+<li>John Snow: Let’s track cholera infection in two London neighborhoods, one with treated water and one without</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="john%20snow%20portrait.jpg" width="200" height="300"></p>
+<p></p><figcaption>John Snow</figcaption><p></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="jon%20snow4.jpg" width="500" height="350"></p>
+<p></p><figcaption>Jon Snow</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section class="slide level2">
 
 <h3 id="d-i-d-has-a-long-and-storied-history-2">D-i-D has a long and storied history</h3>
-<p>Economists - Let’s steal repeated measures ANOVA from the statisticians</p>
+<ul>
+<li>Economists - Let’s steal repeated measures ANOVA from the statisticians!</li>
+</ul>
 <!-- -->
-<p>“This estimator has been labeled the difference-in-differences estimator in the recent program evaluation literature, although it has a long history in analysis of variance.” [Wooldridge 2010]</p>
-<p>Cross Validated: <a href="https://stats.stackexchange.com/questions/194888/difference-in-difference-vs-repeated-measures">Difference in Difference vs repeated measures</a></p>
+<ul>
+<li><p>“This estimator has been labeled the difference-in-differences estimator in the recent program evaluation literature, although it has a long history in analysis of variance.” [Wooldridge 2010]</p></li>
+<li><p>Cross Validated: <a href="https://stats.stackexchange.com/questions/194888/difference-in-difference-vs-repeated-measures">Difference in Difference vs repeated measures</a></p></li>
+</ul>
+</section>
+<section class="slide level2">
+
 <h3 id="so-what-is-the-canonical-d-i-d-setup">So what is the canonical d-i-d setup?</h3>
-<p><span class="math inline">\(y=\beta_0+\delta_0Post+\beta_1Treat+\delta_1Post*Treat+\epsilon\)</span></p>
+<p><span class="math inline">\(y_{it}=\beta_0+\delta_{0,t}Post_t+\beta_{1,i}Treat_i+\delta_{1,it}Post_t*Treat_i+\epsilon_{it}\)</span></p>
 <p>where..</p>
 <p><span class="math inline">\(\beta_0\)</span> is the comparison group at baseline</p>
 <p><span class="math inline">\(\delta_0\)</span> is the secular change from baseline to endline, unrelated to treatment</p>
 <p><span class="math inline">\(\beta_1\)</span> is the difference between the treatment and comparison groups at baseline, and</p>
 <p><span class="math inline">\(\delta_1\)</span> is the treatment effect, the interaction of treatment and time</p>
+</section>
+<section class="slide level2">
+
 <p>Algebraically, <span class="math inline">\(\delta_0\)</span> can be expressed as the difference between the pre/post difference in each of the treatment and comparison groups</p>
-<p><span class="math inline">\(\delta_1=(\bar{y}_{POST,TREAT}-\bar{y}_{PRE,TREAT})-(\bar{y}_{POST,COMPARISON}-\bar{y}_{PRE,COMPARISON})\)</span></p>
+<p><span class="math inline">\(\delta_1= (\bar{y}_{POST,TREAT}-\bar{y}_{PRE,TREAT}) - (\bar{y}_{POST,COMPARISON}-\bar{y}_{PRE,COMPARISON})\)</span></p>
 <p>hence, difference-in-differences (d-i-d or DiD or DD)</p>
 </section>
 <section class="slide level2">
 
-</section></section>
-<section>
-<section id="how-does-the-canonical-d-i-d-generalize-to-multiple-time-periods-andor-groups" class="title-slide slide level1 center">
-<h1>How does the canonical d-i-d generalize to multiple time periods and/or groups</h1>
-
+<h3 id="canonical-d-i-d-2x2">Canonical d-i-d, 2x2</h3>
+<p><span class="math inline">\(y_{it}=\beta_0+\delta_{0,t}Post_t+\beta_{1,i}Treat_i+\delta_{1,it}Post_t*Treat_i+\epsilon_{it}\)</span></p>
+<table style="width:100%;">
+<caption>Canonical d-i-d 2x2 setup</caption>
+<colgroup>
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 33%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Pre</th>
+<th>Post</th>
+<th>Post - Pre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Comparison</td>
+<td><span class="math inline">\(\beta_0\)</span></td>
+<td><span class="math inline">\(\beta_0+\delta_0\)</span></td>
+<td><span class="math inline">\(\delta_0\)</span></td>
+</tr>
+<tr class="even">
+<td>Treatment</td>
+<td><span class="math inline">\(\beta_0+\beta_1\)</span></td>
+<td><span class="math inline">\(\beta_0+\delta_0+\beta_1+\delta_1\)</span></td>
+<td><span class="math inline">\(\delta_0+\delta_1\)</span></td>
+</tr>
+<tr class="odd">
+<td>Treatment - Comparison</td>
+<td><span class="math inline">\(\beta_1\)</span></td>
+<td><span class="math inline">\(\beta_1 + \delta_1\)</span></td>
+<td><span class="math inline">\(\delta_1\)</span></td>
+</tr>
+</tbody>
+</table>
 </section>
+<section class="slide level2">
+
+<h3 id="how-does-the-canonical-d-i-d-generalize-to-multiple-time-periods-andor-groups">How does the canonical d-i-d generalize to multiple time periods and/or groups?</h3>
+</section>
+<section class="slide level2">
+
+<p>When we generalize the two-period setup to multiple time periods and/or groups, we have the two-way fixed effect estimator</p>
+<p><span class="math inline">\(y_{it}=\alpha_i+\alpha_t+\beta^{DD}{it}+\epsilon{it}\)</span></p>
+<p>where..</p>
+<p><span class="math inline">\(\alpha_i\)</span> are group fixed effects</p>
+<p><span class="math inline">\(\alpha_t\)</span> are time fixed effects</p>
+<p><span class="math inline">\(B^{DD}_{it}\)</span> indicates whether group <em>i</em> in period <em>t</em> is treated</p>
+</section>
+<section class="slide level2">
+
+<h3 id="but-what-is-betadd_it-actually-telling-us">But what is <span class="math inline">\(\beta^{DD}_{it}\)</span> actually telling us?</h3>
+</section>
+<section class="slide level2">
+
+
+<img data-src="g-b%20treatment%20timing.png" width="444" class="r-stretch quarto-figure-center"><p class="caption">Figure 1 from Goodman-Bacon (2021)</p></section>
+<section class="slide level2">
+
 <h3 id="callaway-and-santanna-2020">Callaway and Sant’Anna (2020)</h3>
-<div class="cell" data-hash="AEA-2022-slides_cache/revealjs/unnamed-chunk-3_a6a51befdca64c5822dccc489513d806">
-<div class="cell-output-display">
-<p><img data-src="../viz/Callaway%20did/stability,%20by%20time%20treated%20(Callaway%20c3)%202.png" width="1050"></p>
+
+<img data-src="../viz/Callaway%20did/stability,%20by%20time%20treated%20(Callaway%20c3)%202.png" width="1050" class="r-stretch"><div class="columns">
+<div class="column" style="width:40%;">
+<p>Left column</p>
+</div><div class="column" style="width:60%;">
+<p>Right column</p>
 </div>
 </div>
 <div class="footer footer-default">
 
-</div></section>
+</div>
+</section></section>
     </div>
   </div>
 

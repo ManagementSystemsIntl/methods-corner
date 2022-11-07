@@ -18,7 +18,8 @@ title-slide-attributes:
 # standard figure size and generate clean output
 knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=F)
 
-packages <- c("quartostamp", "arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimatr","extrafont", "extrafontdb", "janitor", "reshape2","tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix", "scales","survey", "srvyr", "sysfonts", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr", "readxl", "sjmisc", "sjPlot", "sjstats", "sjlabelled", "skimr","labelled", "texreg", "janitor","psych","dplyr", "tidyverse", "viridis", "here", "ggridges", "ggthemes", "DT", "jtools", "huxtable", "stringi", "gghighlight", "plm", "texreg","gt","gtsummary","huxtable","stargazer", "panelView", "assertr", "pointblank", "validate", "sandwich") 
+packages <- c("quartostamp", "arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimatr","extrafont", "extrafontdb", "janitor", "reshape2","tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix", "scales","survey", "srvyr", "sysfonts", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr", "readxl", "sjmisc", "sjPlot", "sjstats", "sjlabelled", "skimr","labelled", "texreg", "janitor","psych","dplyr", "tidyverse",
+              "tidylog", "viridis", "here", "ggridges", "ggthemes", "DT", "jtools", "huxtable", "stringi", "gghighlight", "plm", "texreg","gt","gtsummary","huxtable","stargazer", "panelView", "assertr", "pointblank", "validate", "sandwich") 
 
 lapply(packages, library, character.only=T)
 
@@ -83,7 +84,7 @@ facet_style <- function(){theme_bw() +
 
 
 
-mistifull <- read_rds(here("new d-i-d estimators/data/MISTI villages measured all waves.rds"))
+mistifull <- read_rds(here("new d-i-d estimators/data/misti/MISTI villages measured all waves.rds"))
 
 ```
 
@@ -102,7 +103,7 @@ mistifull <- read_rds(here("new d-i-d estimators/data/MISTI villages measured al
 -   Don't conflate your modeling approach (TWFE) with your estimation strategy
 -   Examine the different groups created by differential timing
 -   Use event study designs
--   Specify a fully flexible model (Two-way Mudlak)
+-   Specify a fully flexible model (Two-way Mundlak)
 
 ------------------------------------------------------------------------
 
@@ -126,29 +127,41 @@ mistifull <- read_rds(here("new d-i-d estimators/data/MISTI villages measured al
 
 ### D-i-D has a long and storied history
 
-Ignaz Semmelweis - Let's track mortality rates in two maternity wards, one staffed with midwives and the other with medical students (who were busy with cadavers) ![](semmelweis.jpg){.absolute top="300" left="200" width="200"}
+-   Ignaz Semmelweis - Let's track mortality rates in two maternity wards, one staffed with midwives and the other with medical students (who were busy with cadavers) ![](semmelweis.jpg){.absolute top="300" left="250" height="350" width="250"}
 
 ------------------------------------------------------------------------
 
 ### D-i-D has a long and storied history
 
-John Snow - Let's track cholera infection in two London neighborhoods, one with treated water and one without ![](jon%20snow4.jpg){.absolute top="250" left="250" width="500" height="300"}
+-   John Snow: Let's track cholera infection in two London neighborhoods, one with treated water and one without
+
+::: columns
+::: {.column width="50%"}
+![John Snow](john%20snow%20portrait.jpg){height="300" width="200"}
+:::
+
+::: {.column width="50%"}
+![Jon Snow](jon%20snow4.jpg){height="350" width="500"}
+:::
+:::
 
 ------------------------------------------------------------------------
 
 ### D-i-D has a long and storied history
 
-Economists - Let's steal repeated measures ANOVA from the statisticians
+-   Economists - Let's steal repeated measures ANOVA from the statisticians!
 
 <!-- -->
 
-"This estimator has been labeled the difference-in-differences estimator in the recent program evaluation literature, although it has a long history in analysis of variance." \[Wooldridge 2010\]
+-   "This estimator has been labeled the difference-in-differences estimator in the recent program evaluation literature, although it has a long history in analysis of variance." \[Wooldridge 2010\]
 
-Cross Validated: [Difference in Difference vs repeated measures](https://stats.stackexchange.com/questions/194888/difference-in-difference-vs-repeated-measures)
+-   Cross Validated: [Difference in Difference vs repeated measures](https://stats.stackexchange.com/questions/194888/difference-in-difference-vs-repeated-measures)
+
+------------------------------------------------------------------------
 
 ### So what is the canonical d-i-d setup?
 
-$y=\beta_0+\delta_0Post+\beta_1Treat+\delta_1Post*Treat+\epsilon$
+$y_{it}=\beta_0+\delta_{0,t}Post_t+\beta_{1,i}Treat_i+\delta_{1,it}Post_t*Treat_i+\epsilon_{it}$
 
 where..
 
@@ -160,18 +173,74 @@ $\beta_1$ is the difference between the treatment and comparison groups at basel
 
 $\delta_1$ is the treatment effect, the interaction of treatment and time
 
+------------------------------------------------------------------------
+
 Algebraically, $\delta_0$ can be expressed as the difference between the pre/post difference in each of the treatment and comparison groups
 
-$\delta_1=(\bar{y}_{POST,TREAT}-\bar{y}_{PRE,TREAT})-(\bar{y}_{POST,COMPARISON}-\bar{y}_{PRE,COMPARISON})$
+$\delta_1=$
+
+$(\bar{y}_{POST,TREAT}-\bar{y}_{PRE,TREAT})$
+
+$-$
+
+$(\bar{y}_{POST,COMPARISON}-\bar{y}_{PRE,COMPARISON})$
 
 hence, difference-in-differences (d-i-d or DiD or DD)
 
 ------------------------------------------------------------------------
 
-# How does the canonical d-i-d generalize to multiple time periods and/or groups
+### Canonical d-i-d, 2x2
+
+$y_{it}=\beta_0+\delta_{0,t}Post_t+\beta_{1,i}Treat_i+\delta_{1,it}Post_t*Treat_i+\epsilon_{it}$
+
+|                        | Pre               | Post                                | Post - Pre          |
+|----------------|----------------|------------------------|----------------|
+| Comparison             | $\beta_0$         | $\beta_0+\delta_0$                  | $\delta_0$          |
+| Treatment              | $\beta_0+\beta_1$ | $\beta_0+\delta_0+\beta_1+\delta_1$ | $\delta_0+\delta_1$ |
+| Treatment - Comparison | $\beta_1$         | $\beta_1 + \delta_1$                | $\delta_1$          |
+
+: Canonical d-i-d 2x2 setup
+
+------------------------------------------------------------------------
+
+### How does the canonical d-i-d generalize to multiple time periods and/or groups?
+
+When we generalize the two-period setup to multiple time periods and/or groups, we have the two-way fixed effect estimator
+
+$y_{it}=\alpha_i+\alpha_t+\beta^{DD}{it}+\epsilon{it}$
+
+where..
+
+$\alpha_i$ are group fixed effects
+
+$\alpha_t$ are time fixed effects
+
+$B^{DD}_{it}$ indicates whether group *i* in period *t* is treated
+
+------------------------------------------------------------------------
+
+### But what is $\beta^{DD}_{it}$ actually telling us?
+
+------------------------------------------------------------------------
+
+```{r fig.cap="Figure 1 from Goodman-Bacon (2021)"}
+include_graphics("g-b treatment timing.png")
+```
+
+------------------------------------------------------------------------
 
 ### Callaway and Sant'Anna (2020)
 
 ```{r fig.height=5, fig.width=6}
 include_graphics(here("new d-i-d estimators/viz/Callaway did/stability, by time treated (Callaway c3) 2.png"))
 ```
+
+::: columns
+::: {.column width="40%"}
+Left column
+:::
+
+::: {.column width="60%"}
+Right column
+:::
+:::
