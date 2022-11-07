@@ -2,15 +2,26 @@
 
 library(bacondecomp)
 
-# demo ---- 
+# castle ---- 
 
 cas <- bacondecomp::castle %>%
   relocate(post, .after=year)
 
-df_bacon <- bacon(l_homicide ~ post,
+castle_bacon <- bacon(l_homicide ~ post,
                   data = bacondecomp::castle,
                   id_var = "state",
                   time_var = "year")
+
+castle_bacon
+summary(castle_bacon)
+
+castle_bacon_sum <- castle_bacon %>%
+  group_by(type) %>%
+  summarize(estimate=mean(estimate),
+            weight=sum(weight))
+
+castle_bacon_sum
+
 
 #>                       type  weight  avg_est
 #> 1 Earlier vs Later Treated 0.05976 -0.00554
@@ -18,6 +29,7 @@ df_bacon <- bacon(l_homicide ~ post,
 #> 3     Treated vs Untreated 0.90834  0.08796
 
 coef_bacon <- sum(df_bacon$estimate * df_bacon$weight)
+
 coef_bacon
 
 plot(df_bacon)
@@ -34,11 +46,39 @@ ggplot(df_bacon) +
   labs(x = "Weight", y = "Estimate", shape = "Type") +
   geom_point()
 
+# divorce ---- 
+
+?panelview
+?bacondecomp::divorce
+
+div <- bacondecomp::divorce 
+%>%
+  relocate(post, .after=year)
+
+names(div)
+str(div)
+
+div_bacon <- bacon(l_homicide ~ post,
+                  data = bacondecomp::castle,
+                  id_var = "state",
+                  time_var = "year")
 
 
 # MISTI ---- 
 
 ?bacon
+?panelview
+
+test <- mistifull %>%
+  filter(wave==1 & treat_event==1)
+
+
+mistifull <- mistifull %>%
+  filter(first.treat!=1)
+
+panelview(stab_std ~ treat_event,
+          data=mistifull,
+          index=c("village","wave"))
 
 mistibacon <- bacon(stab_std ~ treat_event,
                     data=mistifull,
@@ -57,7 +97,8 @@ mistibacon
 
 ggplot(mistibacon) +
   aes(x = weight, y = estimate, shape = factor(type)) +
-  labs(x = "Weight", y = "Estimate", shape = "Type") +
+  labs(x = "Weight", y = "Estimate", shape = "Type", color="Type") +
   geom_point()
+
 
 
