@@ -74,5 +74,5 @@ facet_style <- function(){theme_bw() +
 
 # read data
 
-mistifull <- read_rds(here("new d-i-d estimators/data/MISTI villages measured all waves.rds"))
+mistifull <- read_rds(here("new d-i-d estimators/data/misti/MISTI villages measured all waves.rds"))
 

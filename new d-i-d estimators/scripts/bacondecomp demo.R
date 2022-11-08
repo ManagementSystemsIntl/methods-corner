@@ -17,7 +17,7 @@ summary(castle_bacon)
 
 castle_bacon_sum <- castle_bacon %>%
   group_by(type) %>%
-  summarize(estimate=mean(estimate),
+  summarize(estimate=weighted.mean(estimate, weight),
             weight=sum(weight))
 
 castle_bacon_sum
@@ -28,7 +28,7 @@ castle_bacon_sum
 #> 2 Later vs Earlier Treated 0.03190  0.07032
 #> 3     Treated vs Untreated 0.90834  0.08796
 
-coef_bacon <- sum(df_bacon$estimate * df_bacon$weight)
+coef_bacon <- sum(castle_bacon$estimate * castle_bacon$weight)
 
 coef_bacon
 
@@ -41,10 +41,11 @@ fit_tw <- lm(l_homicide ~ post + factor(state) + factor(year),
              data = bacondecomp::castle)
 print(paste("Two-way FE estimate =", round(fit_tw$coefficients[2], 4)))
 
-ggplot(df_bacon) +
-  aes(x = weight, y = estimate, shape = factor(type)) +
-  labs(x = "Weight", y = "Estimate", shape = "Type") +
-  geom_point()
+ggplot(castle_bacon) +
+  aes(x = weight, y = estimate, shape = factor(type), color=factor(type)) +
+  labs(x = "Weight", y = "Estimate", shape = "Type", color="Type") +
+  geom_point() + 
+  scale_color_viridis_d()
 
 # divorce ---- 
 
@@ -69,6 +70,20 @@ div_bacon <- bacon(l_homicide ~ post,
 ?bacon
 ?panelview
 
+?distinct
+mistifull %>%
+  distinct(village) %>%
+  tally()
+
+mistifull %>%
+  group_by(wave, treat_event) %>%
+  summarize(n=n())
+
+# wave 2 14
+# wave 3 19 / 33
+# wave 4 20 / 53
+# wave 5 32 / 85
+
 test <- mistifull %>%
   filter(wave==1 & treat_event==1)
 
@@ -87,6 +102,13 @@ mistibacon <- bacon(stab_std ~ treat_event,
 
 head(mistibacon)
 
+mistibacon_coef <- sum(mistibacon$estimate * mistibacon$weight)
+mistibacon_coef  
+  
+coef_bacon <- sum(castle_bacon$estimate * castle_bacon$weight)
+
+coef_bacon
+
 mistibacon2 <- bacon(stab_std ~ treat_event + nsp,
                     data=mistifull,
                     id_var="village",
@@ -96,9 +118,25 @@ summary(mistibacon)
 mistibacon
 
 ggplot(mistibacon) +
-  aes(x = weight, y = estimate, shape = factor(type)) +
+  aes(x = weight, y = estimate, shape = factor(type), color=as.factor(type)) +
   labs(x = "Weight", y = "Estimate", shape = "Type", color="Type") +
-  geom_point()
+  geom_point() + 
+  scale_x_continuous(limits=c(0,.3),
+                     breaks=seq(0,.3,.05)) +
+  scale_color_viridis_d() + 
+  faceted + 
+  theme(legend.position="bottom",
+        legend.title=element_blank())
 
+
+
+# misti twfe ---- 
+
+tw <- lm(stab_std ~ treat_event + + nsp + as.factor(village) + as.factor(wave),
+         data=mistifull)
+
+summary(tw)
+coef(tw)[1:3]
+mistibacon_coef
 
 
