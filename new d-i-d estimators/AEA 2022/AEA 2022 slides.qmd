@@ -4,6 +4,7 @@ subtitle: A replication
 author: Dan Killian
 format: 
   revealjs:
+    slide-number: true
     theme: sky
 editor: visual
 background-color: lightblue
@@ -88,16 +89,31 @@ mistifull <- read_rds(here("new d-i-d estimators/data/misti/MISTI villages measu
 
 ```
 
-# Outline
+---
+
+### DALL-E interpretation of my final preparation
+
+```{r fig.cap="Dali", fig.align='left', fig.width=1, fig.height=1}
+#include_graphics("../viz/dalle/dali.jpg")
+```
+
+```{r fig.align='center', fig.width=1, fig.height=1}
+include_graphics("../viz/dalle/van gogh.jpg")
+```
+
+---
+
+### Outline of presentation
 
 -   Background
 -   Problem
 -   Solutions
 -   Case study - MISTI
--   Case study - GIST
 -   Final thoughts
 
-# Bottom line up front
+---
+
+### Bottom line up front
 
 -   In certain settings, beware the Two-Way Fixed Effects Estimator!
 -   Don't conflate your modeling approach (TWFE) with your estimation strategy
@@ -111,19 +127,9 @@ mistifull <- read_rds(here("new d-i-d estimators/data/misti/MISTI villages measu
 -   Problem
 -   Solutions
 -   Case study - MISTI
--   Case study - GIST
 -   Final thoughts
 
 ------------------------------------------------------------------------
-
-```{r}
-
-
-```
-
-```{r}
-
-```
 
 ### D-i-D has a long and storied history
 
@@ -137,11 +143,11 @@ mistifull <- read_rds(here("new d-i-d estimators/data/misti/MISTI villages measu
 
 ::: columns
 ::: {.column width="50%"}
-![John Snow](john%20snow%20portrait.jpg){height="300" width="200"}
+![John Snow](john%20snow%20portrait.jpg){height="250" width="200"}
 :::
 
 ::: {.column width="50%"}
-![Jon Snow](jon%20snow4.jpg){height="350" width="500"}
+![Jon Snow](jon%20snow4.jpg){height="300" width="500"}
 :::
 :::
 
@@ -194,7 +200,7 @@ hence, difference-in-differences (d-i-d or DiD or DD)
 $y_{it}=\beta_0+\delta_{0,t}Post_t+\beta_{1,i}Treat_i+\delta_{1,it}Post_t*Treat_i+\epsilon_{it}$
 
 |                        | Pre               | Post                                | Post - Pre          |
-|----------------|----------------|------------------------|----------------|
+|-----------------|-----------------|----------------------|-----------------|
 | Comparison             | $\beta_0$         | $\beta_0+\delta_0$                  | $\delta_0$          |
 | Treatment              | $\beta_0+\beta_1$ | $\beta_0+\delta_0+\beta_1+\delta_1$ | $\delta_0+\delta_1$ |
 | Treatment - Comparison | $\beta_1$         | $\beta_1 + \delta_1$                | $\delta_1$          |
@@ -205,7 +211,7 @@ $y_{it}=\beta_0+\delta_{0,t}Post_t+\beta_{1,i}Treat_i+\delta_{1,it}Post_t*Treat_
 
 ### How does the canonical d-i-d generalize to multiple time periods and/or groups?
 
-When we generalize the two-period setup to multiple time periods and/or groups, we have the two-way fixed effect estimator
+When we generalize the two-period setup to multiple time periods and/or groups, we have the two-way fixed effect (TWFE) estimator
 
 $y_{it}=\alpha_i+\alpha_t+\beta^{DD}{it}+\epsilon{it}$
 
@@ -217,15 +223,130 @@ $\alpha_t$ are time fixed effects
 
 $B^{DD}_{it}$ indicates whether group *i* in period *t* is treated
 
+---
+
+### TWFE is a workhorse in program evaluation
+
+- 744 d-i-d studies across ten journals in finance and accounting, 2000-2019 [Baker 2022]
+
+- 19 percent of all empirical articles published by the American Economic Review (AER) between 2010 and 2012 used TWFE [de Chaisemartin and D’Haultfoeuille 2020]
+
+------------------------------------------------------------------------
+
+-   Background
+-   **Problem**
+-   Solutions
+-   Case study - MISTI
+-   Final thoughts
+
 ------------------------------------------------------------------------
 
 ### But what is $\beta^{DD}_{it}$ actually telling us?
 
+- For the canonical 2x2, we know exactly what we are estimating
+
+- For *i* groups and *t* time periods, we are getting some average of multiple 2x2s
+
+- But how does this work, exactly? 
+
+- Goodman-Bacon (2021) decided to work it out
+
 ------------------------------------------------------------------------
 
-```{r fig.cap="Figure 1 from Goodman-Bacon (2021)"}
-include_graphics("g-b treatment timing.png")
+###
+
+Let's take a single step from two time periods to three, where treatment can be adopted at either t = 2 or t = 3
+
+```{r}
+#include_graphics("../viz/Goodman Bacon/g-b fig 1 treatment timing.png")
+
+include_graphics("../viz/Baker/Baker fig two timings.png")
 ```
+
+Any design with multiple treatment timings will have $k^2$ groups, where *k* is the number of timings. 
+
+---
+
+```{r}
+include_graphics("../viz/Baker/Baker panel a.png")
+```
+
+
+```{r fig.height=5, fig.width=7}
+#include_graphics("../viz/Goodman Bacon/g-b fig 2 three timings.png")
+
+#include_graphics("../viz/Baker/Baker fig four groups.png")
+```
+
+---
+
+```{r}
+include_graphics("../viz/Baker/Baker panel b.png")
+```
+
+---
+
+```{r}
+include_graphics("../viz/Baker/Baker panel c.png")
+```
+
+---
+
+```{r}
+include_graphics("../viz/Baker/Baker panel d.png")
+```
+
+---
+
+### Where does this leave us? 
+
+- TWFE treats some data that is under treatment status as comparison!
+- Not an issue under constant treatment effect
+  - stable unit treatment value (SUTVA)
+  - no variation in treatment effect for any reason
+  
+--- 
+
+- But TWFE fails under following conditions:
+  - different treatment groups have different treatment effects
+  - treatment effects are dynamic over post-treatment periods
+  - heterogeneous treatment effects across sub-groups within a treated group
+  
+---
+
+```{r}
+include_graphics("../viz/Goodman Bacon/g-b fig 3 trend break.png")
+```
+
+------------------------------------------------------------------------
+
+-   Background
+-   Problem
+-   **Solutions**
+-   Case study - MISTI
+-   Final thoughts
+
+------------------------------------------------------------------------
+
+### Solutions
+
+- We've covered the bad news
+
+- Now, what can be done about it? 
+
+- Start off with a diagnostic
+
+---
+
+
+
+
+
+-   Background
+-   Problem
+-   Solutions
+-   **Case study - MISTI**
+-   Final thoughts
 
 ------------------------------------------------------------------------
 
@@ -235,12 +356,10 @@ include_graphics("g-b treatment timing.png")
 include_graphics(here("new d-i-d estimators/viz/Callaway did/stability, by time treated (Callaway c3) 2.png"))
 ```
 
-::: columns
-::: {.column width="40%"}
-Left column
-:::
+------------------------------------------------------------------------
 
-::: {.column width="60%"}
-Right column
-:::
-:::
+-   Background
+-   Problem
+-   Solutions
+-   Case study - MISTI
+-   **Final thoughts**

@@ -324,21 +324,28 @@
   <p class="author">Dan Killian</p>
 </section>
 
-<section id="outline" class="title-slide slide level1 center">
-<h1>Outline</h1>
+<section class="slide level2">
+
+<h3 id="dall-e-interpretation-of-my-final-preparation">DALL-E interpretation of my final preparation</h3>
+<div class="cell" data-layout-align="left" data-hash="AEA-2022-slides_cache/revealjs/unnamed-chunk-1_a66f91ac74daf18459c3909738cf8be6">
+
+</div>
+
+<img data-src="../viz/dalle/van%20gogh.jpg" width="510" class="r-stretch quarto-figure-center"></section>
+<section class="slide level2">
+
+<h3 id="outline-of-presentation">Outline of presentation</h3>
 <ul>
 <li>Background</li>
 <li>Problem</li>
 <li>Solutions</li>
 <li>Case study - MISTI</li>
-<li>Case study - GIST</li>
 <li>Final thoughts</li>
 </ul>
 </section>
+<section class="slide level2">
 
-<section>
-<section id="bottom-line-up-front" class="title-slide slide level1 center">
-<h1>Bottom line up front</h1>
+<h3 id="bottom-line-up-front">Bottom line up front</h3>
 <ul>
 <li>In certain settings, beware the Two-Way Fixed Effects Estimator!</li>
 <li>Don’t conflate your modeling approach (TWFE) with your estimation strategy</li>
@@ -354,18 +361,11 @@
 <li>Problem</li>
 <li>Solutions</li>
 <li>Case study - MISTI</li>
-<li>Case study - GIST</li>
 <li>Final thoughts</li>
 </ul>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-hash="AEA-2022-slides_cache/revealjs/unnamed-chunk-1_f26c4b7ab0bdac1200c8a560a0f39200">
-
-</div>
-<div class="cell" data-hash="AEA-2022-slides_cache/revealjs/unnamed-chunk-2_9e77429aa689fac2f795288ae9b4fff1">
-
-</div>
 <h3 id="d-i-d-has-a-long-and-storied-history">D-i-D has a long and storied history</h3>
 <ul>
 <li>Ignaz Semmelweis - Let’s track mortality rates in two maternity wards, one staffed with midwives and the other with medical students (who were busy with cadavers) <img data-src="semmelweis.jpg" class="absolute" style="top: 300px; left: 250px; width: 250px; height: 350px; "></li>
@@ -381,14 +381,14 @@
 <div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="john%20snow%20portrait.jpg" width="200" height="300"></p>
+<p><img data-src="john%20snow%20portrait.jpg" width="200" height="250"></p>
 <p></p><figcaption>John Snow</figcaption><p></p>
 </figure>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="jon%20snow4.jpg" width="500" height="350"></p>
+<p><img data-src="jon%20snow4.jpg" width="500" height="300"></p>
 <p></p><figcaption>Jon Snow</figcaption><p></p>
 </figure>
 </div>
@@ -420,20 +420,23 @@
 <section class="slide level2">
 
 <p>Algebraically, <span class="math inline">\(\delta_0\)</span> can be expressed as the difference between the pre/post difference in each of the treatment and comparison groups</p>
-<p><span class="math inline">\(\delta_1= (\bar{y}_{POST,TREAT}-\bar{y}_{PRE,TREAT}) - (\bar{y}_{POST,COMPARISON}-\bar{y}_{PRE,COMPARISON})\)</span></p>
+<p><span class="math inline">\(\delta_1=\)</span></p>
+<p><span class="math inline">\((\bar{y}_{POST,TREAT}-\bar{y}_{PRE,TREAT})\)</span></p>
+<p><span class="math inline">\(-\)</span></p>
+<p><span class="math inline">\((\bar{y}_{POST,COMPARISON}-\bar{y}_{PRE,COMPARISON})\)</span></p>
 <p>hence, difference-in-differences (d-i-d or DiD or DD)</p>
 </section>
 <section class="slide level2">
 
 <h3 id="canonical-d-i-d-2x2">Canonical d-i-d, 2x2</h3>
 <p><span class="math inline">\(y_{it}=\beta_0+\delta_{0,t}Post_t+\beta_{1,i}Treat_i+\delta_{1,it}Post_t*Treat_i+\epsilon_{it}\)</span></p>
-<table style="width:100%;">
+<table>
 <caption>Canonical d-i-d 2x2 setup</caption>
 <colgroup>
-<col style="width: 22%">
-<col style="width: 22%">
-<col style="width: 33%">
-<col style="width: 22%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 23%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -468,10 +471,7 @@
 <section class="slide level2">
 
 <h3 id="how-does-the-canonical-d-i-d-generalize-to-multiple-time-periods-andor-groups">How does the canonical d-i-d generalize to multiple time periods and/or groups?</h3>
-</section>
-<section class="slide level2">
-
-<p>When we generalize the two-period setup to multiple time periods and/or groups, we have the two-way fixed effect estimator</p>
+<p>When we generalize the two-period setup to multiple time periods and/or groups, we have the two-way fixed effect (TWFE) estimator</p>
 <p><span class="math inline">\(y_{it}=\alpha_i+\alpha_t+\beta^{DD}{it}+\epsilon{it}\)</span></p>
 <p>where..</p>
 <p><span class="math inline">\(\alpha_i\)</span> are group fixed effects</p>
@@ -480,27 +480,114 @@
 </section>
 <section class="slide level2">
 
+<h3 id="twfe-is-a-workhorse-in-program-evaluation">TWFE is a workhorse in program evaluation</h3>
+<ul>
+<li><p>744 d-i-d studies across ten journals in finance and accounting, 2000-2019 [Baker 2022]</p></li>
+<li><p>19 percent of all empirical articles published by the American Economic Review (AER) between 2010 and 2012 used TWFE [de Chaisemartin and D’Haultfoeuille 2020]</p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Background</li>
+<li><strong>Problem</strong></li>
+<li>Solutions</li>
+<li>Case study - MISTI</li>
+<li>Final thoughts</li>
+</ul>
+</section>
+<section class="slide level2">
+
 <h3 id="but-what-is-betadd_it-actually-telling-us">But what is <span class="math inline">\(\beta^{DD}_{it}\)</span> actually telling us?</h3>
+<ul>
+<li><p>For the canonical 2x2, we know exactly what we are estimating</p></li>
+<li><p>For <em>i</em> groups and <em>t</em> time periods, we are getting some average of multiple 2x2s</p></li>
+<li><p>But how does this work, exactly?</p></li>
+<li><p>Goodman-Bacon (2021) decided to work it out</p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="section"></h3>
+<p>Let’s take a single step from two time periods to three, where treatment can be adopted at either t = 2 or t = 3</p>
+
+<img data-src="../viz/Baker/Baker%20fig%20two%20timings.png" width="672" class="r-stretch"><p>Any design with multiple treatment timings will have <span class="math inline">\(k^2\)</span> groups, where <em>k</em> is the number of timings.</p>
 </section>
 <section class="slide level2">
 
 
-<img data-src="g-b%20treatment%20timing.png" width="444" class="r-stretch quarto-figure-center"><p class="caption">Figure 1 from Goodman-Bacon (2021)</p></section>
+<img data-src="../viz/Baker/Baker%20panel%20a.png" width="340" class="r-stretch"><div class="cell" data-hash="AEA-2022-slides_cache/revealjs/unnamed-chunk-5_b56290a60ffb042e582696a71bdd8e44">
+
+</div>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../viz/Baker/Baker%20panel%20b.png" width="331" class="r-stretch"></section>
+<section class="slide level2">
+
+
+<img data-src="../viz/Baker/Baker%20panel%20c.png" width="339" class="r-stretch"></section>
+<section class="slide level2">
+
+
+<img data-src="../viz/Baker/Baker%20panel%20d.png" width="331" class="r-stretch"></section>
+<section class="slide level2">
+
+<h3 id="where-does-this-leave-us">Where does this leave us?</h3>
+<ul>
+<li>TWFE treats some data that is under treatment status as comparison!</li>
+<li>Not an issue under constant treatment effect</li>
+<li>But TWFE fails under following conditions:
+<ul>
+<li>different treatment groups have different treatment effects</li>
+<li>treatment effects are dynamic over post-treatment periods</li>
+<li>hetergeneous treatmeent effects across sub-groups within a treated group</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+
+<img data-src="../viz/Goodman%20Bacon/g-b%20fig%203%20trend%20break.png" width="471" class="r-stretch"></section>
+<section class="slide level2">
+
+<ul>
+<li>Background</li>
+<li>Problem</li>
+<li><strong>Solutions</strong></li>
+<li>Case study - MISTI</li>
+<li>Final thoughts</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Background</li>
+<li>Problem</li>
+<li>Solutions</li>
+<li><strong>Case study - MISTI</strong></li>
+<li>Final thoughts</li>
+</ul>
+</section>
 <section class="slide level2">
 
 <h3 id="callaway-and-santanna-2020">Callaway and Sant’Anna (2020)</h3>
 
-<img data-src="../viz/Callaway%20did/stability,%20by%20time%20treated%20(Callaway%20c3)%202.png" width="1050" class="r-stretch"><div class="columns">
-<div class="column" style="width:40%;">
-<p>Left column</p>
-</div><div class="column" style="width:60%;">
-<p>Right column</p>
-</div>
-</div>
+<img data-src="../viz/Callaway%20did/stability,%20by%20time%20treated%20(Callaway%20c3)%202.png" width="1050" class="r-stretch"></section>
+<section class="slide level2">
+
+<ul>
+<li>Background</li>
+<li>Problem</li>
+<li>Solutions</li>
+<li>Case study - MISTI</li>
+<li><strong>Final thoughts</strong></li>
+</ul>
 <div class="footer footer-default">
 
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
@@ -553,7 +640,7 @@
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
