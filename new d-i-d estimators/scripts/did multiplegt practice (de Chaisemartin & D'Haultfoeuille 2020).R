@@ -35,7 +35,7 @@ a_d <- data.frame(a) %>%
 
 a_d
 
-
+?did_multiplegt
 didmult_stab2 <- did_multiplegt(mistifull,
                        Y="stab_std",
                        G = "village",
@@ -46,6 +46,7 @@ didmult_stab2 <- did_multiplegt(mistifull,
                        brep=50,
                        placebo=3,
                        dynamic=3)
+
 didmult_stab2
 
 didmult_stab2_dat <- data.frame(didmult_stab2) %>%

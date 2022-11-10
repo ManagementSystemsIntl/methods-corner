@@ -10,10 +10,53 @@ library(feos)
 
 library(did)
 
+# mistifull ---- 
+
+?conditional_did_pretest
+
+pre <- conditional_did_pretest(yname="stab_std",
+                                tname="wave",
+                                idname="idname",
+                                gname="first.treat",
+                                xformla=~1,
+                                #xformla= ~ elevation + pop + lang,
+                                #anticipation=1,
+                                data=mistifull)
+
+c1 <- att_gt(yname="stab_std",
+             tname="wave",
+             idname="idname",
+             gname="first.treat",
+             #xformla=~1,
+             xformla= ~ elevation + pop + lang,
+             #anticipation=1,
+             data=mistifull)
+
+
+summary(c1)
+c1
+
+
+c1.1 <- att_gt(yname="stab_std",
+             tname="wave",
+             idname="idname",
+             gname="first.treat",
+             xformla=~1,
+             control_group = "notyettreated",
+             data=mistifull)
+
+
+summary(c1.1)
+c1
+
+
+
+
 # m15 ---- 
 
 ?did
 ?att_gt
+?aggte
 
 c1 <- att_gt(yname="stab_std",
              tname="wave",
@@ -117,6 +160,150 @@ ggsave("viz/Callaway did/stability, by time treated (Callaway c3) 2.png",
        type="cairo",
        height=6,
        width=7)
+
+
+c3.1 <- att_gt(yname="stab_std",
+             tname="wave",
+             idname="idname",
+             gname="first.treat",
+             #xformla=~1,
+             xformla= ~ nsp + ln_dist,
+             control_group = "notyettreated",
+             data=mistifull)
+
+
+summary(c3.1)
+c3
+c2
+c1
+
+
+c3_simple <- aggte(c3, type="simple")
+
+c3_dyn <- aggte(c3, type="dynamic")
+c3_dyn
+
+c3_dyn_out <- data.frame(time=-3:3,
+                           att_dyn = c3_dyn$att.egt,
+                           att_dyn_se = c3_dyn$se.egt) %>%
+  mutate(lower=att_dyn - 1.96*att_dyn_se,
+         upper = att_dyn + 1.96*att_dyn_se,
+         col=c(rep("firebrick", 3), rep("darkblue", 4)))
+
+c3_dyn_out
+
+ggplot(c3_dyn_out, aes(x=time, y=att_dyn)) + 
+  geom_hline(yintercept=0, size=1, color="darkgrey", alpha=.6) +
+  geom_point(aes(color=time<0)) + 
+  geom_errorbar(aes(ymin=lower, ymax=upper, color=time<0), width=0, size=1) +
+  geom_label(aes(label=round(att_dyn,2), color=time<0),
+             show.legend=F) +
+  scale_color_manual(values=c("TRUE"="firebrick","FALSE" = "darkblue"),
+                     labels=c("Not yet treated", "Treatment")) +
+  theme(legend.title=element_blank(),
+        legend.position="bottom") +
+  scale_x_continuous(breaks=-3:3) +
+  scale_y_continuous(limits=c(-.5,1.5)) +
+  labs(x="Time to treatment",
+       y="",
+       title="Dynamic treatment effects, Stability",
+       caption="Measured in standard deviation units
+       Callaway Sant'Anna did") 
++ 
+  guides(color=guide_legend(reverse=T))
+
+
+ggsave("viz/Callaway did/stability, dynamic treatment effects (callaway).png",
+       device="png",
+       type="cairo",
+       height=5,
+       width=7)
+
+c3_grp <- aggte(c3.1, type="group")
+c3_grp
+
+
+c3_grp_out <- data.frame(
+  cohort=c("Wave 2 treated","Wave 3 treated","Wave 4 treated","Wave 5 treated", "All waves treated"),
+  att_grp = c(c3_grp$att.egt,c3_grp$overall.att),
+  att_grp_se = c(c3_grp$se.egt, c3_grp$overall.se)) %>%
+  mutate(lower=att_grp - 1.96*att_grp_se,
+         upper = att_grp + 1.96*att_grp_se)
+
+
+ggplot(c3_grp_out, aes(att_grp, fct_rev(cohort))) + #, group=as.factor(group))) + #, color=as.factor(group))) + 
+  geom_vline(xintercept=0, color="darkgrey", size=1.2, alpha=.8) +
+  geom_point(size=3) + 
+  geom_errorbar(aes(xmin=lower, xmax=upper), width=0, size=1, color="darkblue") +
+  geom_label(aes(label=round(att_grp,2)),
+             show.legend=F, color="darkblue") +
+  theme(legend.position="bottom",
+        legend.title=element_blank()) + 
+  labs(x="", 
+       y="",
+       title="Change in stability, by cohort",
+       caption="Measured in standard deviation units
+       Callaway Sant'Anna did") + 
+  scale_x_continuous(limits=c(-1, 1.5),
+                     breaks=seq(-1,1.5,.5))
+
+
+ggsave("viz/Callaway did/stability, by cohort (callaway).png",
+       device="png",
+       type="cairo",
+       height=5,
+       width=7)
+
+c3_cal <- aggte(c3, type="calendar")
+c3_cal
+
+cal_cal_out <- data.frame(
+  cohort=c("Wave 2","Wave 3","Wave 4","Wave 5", "All waves"),
+  att_grp = c(cal_cal$att.egt,cal_cal$overall.att),
+  att_grp_se = c(cal_cal$se.egt, cal_cal$overall.se)) %>%
+  mutate(lower=att_grp - 1.96*att_grp_se,
+         upper = att_grp + 1.96*att_grp_se)
+
+cal_cal_out
+
+
+ggplot(cal_cal_out, aes(att_grp, fct_rev(cohort))) + #, group=as.factor(group))) + #, color=as.factor(group))) + 
+  geom_vline(xintercept=0, color="darkgrey", size=1.2, alpha=.8) +
+  geom_point(size=3) + 
+  geom_errorbar(aes(xmin=lower, xmax=upper), width=0, size=1, color="darkblue") +
+  geom_label(aes(label=round(att_grp,2)),
+             show.legend=F, color="darkblue") +
+  theme(legend.position="bottom",
+        legend.title=element_blank()) + 
+  labs(x="", 
+       y="",
+       title="Change in stability, by calendar time",
+       caption="Measured in standard deviation units
+       Callaway Sant'Anna did") + 
+  scale_x_continuous(limits=c(-.5, 1.5),
+                     breaks=seq(-.5,1.5,.5))
+
+
+
+
+ot <- mistifull %>%
+  group_by(type, wave) %>%
+  summarize(stab=mean(stab_std),
+            se=std.error(stab_std)) %>%
+  mutate(lower=stab-se*1.96,
+         upper=stab+se*1.96)
+
+ggplot(ot, aes(x=wave, y=stab, color=type)) + 
+  geom_point() + 
+  geom_line() + 
+  scale_color_viridis_d()
+
+ggplot(ot, aes(x=wave, y=stab, color=type)) + 
+  geom_point() + 
+  geom_line() + 
+  scale_color_viridis_d() + 
+  facet_wrap(~type) + 
+  faceted
 
 
 

@@ -7,4 +7,27 @@ unnamed-chunk-6	include_graphics
 unnamed-chunk-7	include_graphics
 unnamed-chunk-8	include_graphics
 unnamed-chunk-9	include_graphics
-unnamed-chunk-10	here	include_graphics
+unnamed-chunk-10	include_graphics
+unnamed-chunk-11	include_graphics
+unnamed-chunk-12	
+unnamed-chunk-13	%>%	::	~	arrange	bacon	treated	untreated
+unnamed-chunk-14	castle_bacon	gt
+unnamed-chunk-15	aes	castle_bacon	estimate	factor	geom_point	ggplot	labs	scale_color_viridis_d	type	weight
+unnamed-chunk-16	gt	read_excel
+unnamed-chunk-17	include_graphics
+unnamed-chunk-18	gt	read_excel
+unnamed-chunk-19	%>%	~	lm	mistifull	tidy
+unnamed-chunk-20	$	%>%	~	arrange	bacon	mistifull	sum	treated	untreated
+unnamed-chunk-21	%>%	gt	mistibacon
+unnamed-chunk-22	aes	as.factor	c	element_blank	estimate	faceted	factor	geom_point	ggplot	labs	mistibacon	scale_color_viridis_d	scale_x_continuous	seq	theme	type	weight
+unnamed-chunk-23	~	att_gt	mistifull	summary
+unnamed-chunk-24	$	%>%	~	==	aes	as.factor	att	c	cal	data.frame	element_blank	F	facet_wrap	faceted	geom_errorbar	geom_hline	geom_label	geom_point	ggplot	group	ifelse	labs	lower	mutate	rep	round	scale_color_manual	scale_x_continuous	scale_y_continuous	se	seq	theme	treat	upper	viridis	wave
+unnamed-chunk-25	aggte	cal
+unnamed-chunk-26	aggte	cal
+unnamed-chunk-27	$	%>%	<	aes	att_dyn	att_dyn_se	c	cal_dyn	data.frame	element_blank	F	geom_errorbar	geom_hline	geom_label	geom_point	ggplot	labs	lower	mutate	rep	round	scale_color_manual	scale_x_continuous	scale_y_continuous	theme	time	upper
+unnamed-chunk-28	aggte	cal
+unnamed-chunk-29	$	%>%	aes	att_grp	att_grp_se	c	cal_grp	cohort	data.frame	element_blank	F	fct_rev	geom_errorbar	geom_label	geom_point	geom_vline	ggplot	labs	lower	mutate	round	scale_x_continuous	seq	theme	upper
+unnamed-chunk-30	aggte	cal
+unnamed-chunk-31	$	%>%	aes	att_grp	att_grp_se	c	cal_cal	cohort	data.frame	element_blank	F	fct_rev	geom_errorbar	geom_label	geom_point	geom_vline	ggplot	labs	lower	mutate	round	scale_x_continuous	seq	theme	upper
+unnamed-chunk-32	here	include_graphics
+unnamed-chunk-33	here	include_graphics

@@ -7,6 +7,9 @@ library(bacondecomp)
 cas <- bacondecomp::castle %>%
   relocate(post, .after=year)
 
+describe(cas$l_homicide)
+
+
 castle_bacon <- bacon(l_homicide ~ post,
                   data = bacondecomp::castle,
                   id_var = "state",
@@ -56,8 +59,12 @@ div <- bacondecomp::divorce
 %>%
   relocate(post, .after=year)
 
+describe(div$)
+
 names(div)
 str(div)
+describe(div$suicide)
+describe(div$suicrt)
 
 div_bacon <- bacon(l_homicide ~ post,
                   data = bacondecomp::castle,
@@ -69,6 +76,11 @@ div_bacon <- bacon(l_homicide ~ post,
 
 ?bacon
 ?panelview
+
+mistifull <- mistifull %>%
+  filter(first.treat!=1)
+  mutate(time_treat=ifelse(first.treat>0, wave-first.treat, 999)) %>%
+  relocate(time_treat, .after=first.treat)
 
 ?distinct
 mistifull %>%
@@ -86,10 +98,6 @@ mistifull %>%
 
 test <- mistifull %>%
   filter(wave==1 & treat_event==1)
-
-
-mistifull <- mistifull %>%
-  filter(first.treat!=1)
 
 panelview(stab_std ~ treat_event,
           data=mistifull,
