@@ -450,7 +450,7 @@ include_graphics("MISTI map.jpg")
 wav <- read_excel("MISTI tables.xlsx", sheet="wave outcomes")
 gt(wav)
 ```
-
+---
 
 ### MISTI TWFE
 
@@ -712,7 +712,14 @@ THANK YOU!!
 
 dkillian@msi-inc.com
 
+
+
+
 Please evaluate this session!
+
+The next slide shows two DALL-E narratives
+
+How would you rate the quality of this session, where 1 reflects the scenario on the left, and 5 reflects the scenario on the right? 
 
 ---
 

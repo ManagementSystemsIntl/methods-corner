@@ -10,3 +10,6 @@ This repository explores a variety of analytical methods applied by MSI staff. F
 
 [Line graphs in R](https://managementsystemsintl.github.io/methods-corner/Line%20graphs%20in%20Stata%2C%20R/figure_customization.html)  
 Tutorial content on crafting high-quality line graphs in R
+
+[Aessing the new class of d-i-d estimators](https://managementsystemsintl.github.io/methods-corner/new%20d-i-d%20estimators/AEA%202022/AEA%202022%20slides.html#/52)
+Turns out we've doing a lot of our regressions wrong. The common program evaluation setup of a two-period difference-in-differences generalizes across multiple groups and time periods to the two-way fixed effects estimator, but this estimator has only recently been shown to produce biased estimates in settings of staggered adoption of treatment and/or heterogeneous treatment effects. A new class of d-i-d estimators to the rescue. An MSI presentation at the 2022 American Evaluation Association annual meeting. 
