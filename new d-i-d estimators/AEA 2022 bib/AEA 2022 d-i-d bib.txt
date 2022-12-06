@@ -1,0 +1,11 @@
+﻿@article{RN4,
+   author = {Athey, Susan and Imbens, Guido W.},
+   title = {Design-based analysis in Difference-In-Differences settings with staggered adoption},
+   journal = {Journal of Econometrics},
+   ISSN = {0304-4076},
+   DOI = {https://doi.org/10.1016/j.jeconom.2020.10.012},
+   url = {https://www.sciencedirect.com/science/article/pii/S0304407621000488},
+   year = {2021},
+   type = {Journal Article}
+}
+
