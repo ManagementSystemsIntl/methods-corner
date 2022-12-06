@@ -433,24 +433,25 @@ include_graphics("MISTI map.jpg")
 ### MISTI treatment timings
 
 | Wave | Comparison villages | Treated villages | Treated villages (cumulative) |
-|:---------------:|:---------------:|:---------------:|:-------------------:|
-|  1   |         355         |        0         |              0              |
+|:---------------:|:---------------:|:---------------:|:------------------:|
+|  1   |         355         |        0         |               0               |
 |  2   |         341         |        14        |              14               |
 |  3   |         322         |        19        |              33               |
 |  4   |         302         |        20        |              53               |
 |  5   |         270         |        32        |              85               |
 
----
+------------------------------------------------------------------------
 
 ### Single-wave analysis
 
-  - Final reporting of MISTI relied on a series of single-wave estimations
-  
+-   Final reporting of MISTI relied on a series of single-wave estimations
+
 ```{r echo=F}
 wav <- read_excel("MISTI tables.xlsx", sheet="wave outcomes")
 gt(wav)
 ```
----
+
+------------------------------------------------------------------------
 
 ### MISTI TWFE
 
@@ -463,7 +464,7 @@ twfe[1:2,]
 
 ```
 
----
+------------------------------------------------------------------------
 
 ### MISTI bacondecomp
 
@@ -479,10 +480,9 @@ mistibacon_coef
 
 ```
 
----
+------------------------------------------------------------------------
 
 ::: panel-tabset
-
 ### MISTI bacondecomp 2x2 cells
 
 ```{r echo=F}
@@ -503,21 +503,20 @@ ggplot(mistibacon) +
   faceted + 
   theme(legend.title=element_blank())
 ```
-
 :::
 
----
+------------------------------------------------------------------------
 
 ### Callaway and Sant'Anna (2020)
 
 This estimation gives you multiple outcomes
 
-  - Treatment by treatment group
-  - An overall treatment effect       
-  - Overall dynamic effects / event study
-  - Treatment effects by calendar time
-  
----
+-   Treatment by treatment group
+-   An overall treatment effect\
+-   Overall dynamic effects / event study
+-   Treatment effects by calendar time
+
+------------------------------------------------------------------------
 
 ### Callaway and Sant'Anna replication
 
@@ -531,7 +530,7 @@ cal <- att_gt(yname="stab_std",
 summary(cal)
 ```
 
----
+------------------------------------------------------------------------
 
 ```{r warning=F, echo=F, fig.height=6, fig.width=6}
 cal_out <- data.frame(att=cal$att,
@@ -570,21 +569,21 @@ ggplot(cal_out, aes(wave, att, color=as.factor(treat))) +
                      breaks=seq(-1,4,1))
 ```
 
----
+------------------------------------------------------------------------
 
 ```{r}
 cal_simple <- aggte(cal, type="simple")
 cal_simple
 ```
 
----
+------------------------------------------------------------------------
 
 ```{r}
 cal_dyn <- aggte(cal, type="dynamic")
 cal_dyn
 ```
 
----
+------------------------------------------------------------------------
 
 ```{r warning=F, echo=F}
 cal_dyn_out <- data.frame(time=-3:3,
@@ -613,14 +612,14 @@ ggplot(cal_dyn_out, aes(x=time, y=att_dyn)) +
        Callaway Sant'Anna did") 
 ```
 
----
+------------------------------------------------------------------------
 
 ```{r}
 cal_grp <- aggte(cal, type="group")
 cal_grp
 ```
 
----
+------------------------------------------------------------------------
 
 ```{r echo=F}
 cal_grp_out <- data.frame(
@@ -648,14 +647,14 @@ ggplot(cal_grp_out, aes(att_grp, fct_rev(cohort))) + #, group=as.factor(group)))
                      breaks=seq(-1,1.5,.5))
 ```
 
----
+------------------------------------------------------------------------
 
 ```{r}
 cal_cal <- aggte(cal, type="calendar")
 cal_cal
 ```
 
----
+------------------------------------------------------------------------
 
 ```{r warning=F, echo=F}
 cal_cal_out <- data.frame(
@@ -692,36 +691,33 @@ ggplot(cal_cal_out, aes(att_grp, fct_rev(cohort))) + #, group=as.factor(group)))
 
 ------------------------------------------------------------------------
 
-### What have we learned? 
+### What have we learned?
 
-  - In certain settings, two-way fixed effects estimation is biased in ways that we only recently came to realize
-  - We have to carefully think through the data generating process (logic modeling) for each individual setting
-  - As we get more granular data and ask deeper questions, econometric tools are starting to provide better insight into treatment dynamics
+-   In certain settings, two-way fixed effects estimation is biased in ways that we only recently came to realize
+-   We have to carefully think through the data generating process (logic modeling) for each individual setting
+-   As we get more granular data and ask deeper questions, econometric tools are starting to provide better insight into treatment dynamics
 
----
+------------------------------------------------------------------------
 
-### What should we do? 
+### What should we do?
 
-  - For any two-way fixed effects setting, use the Bacon decomposition to diagnose any problems
-  - Use stacked d-i-d to remove problematic 2x2 cells, or apply any of the new estimators
-  - Go back to your old evaluations!!
+-   For any two-way fixed effects setting, use the Bacon decomposition to diagnose any problems
+-   Use stacked d-i-d to remove problematic 2x2 cells, or apply any of the new estimators
+-   Go back to your old evaluations!!
 
----
+------------------------------------------------------------------------
 
 THANK YOU!!
 
-dkillian@msi-inc.com
-
-
-
+dkillian\@msi-inc.com
 
 Please evaluate this session!
 
 The next slide shows two DALL-E narratives
 
-How would you rate the quality of this session, where 1 reflects the scenario on the left, and 5 reflects the scenario on the right? 
+How would you rate the quality of this session, where 1 reflects the scenario on the left, and 5 reflects the scenario on the right?
 
----
+------------------------------------------------------------------------
 
 ::: columns
 ::: {.column width="50%"}
