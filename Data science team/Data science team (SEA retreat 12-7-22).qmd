@@ -34,9 +34,11 @@ source("prep.R")
 
 ```{r fig.align='center', out.width="20%", fig.show='hold', echo=F}
 
-include_graphics("data science life cycle.png")
+include_graphics("Data science life cycle.png") 
+# need not be case sensitive locally, but is case sensitive for GH Pages
 
 ```
+
 
 ----
 
@@ -88,13 +90,15 @@ include_graphics("dalle data science climbing.png")
 
 - MSI needs to document and build its past performance and capabilities for new business
 
+- Need to justify / defend analytical choices
+
 ---- 
 
 ### Data science and advanced analytics
 
 Three primary areas of action
 
-- Application of technique to extract learning
+- Best practice application of technique to extract learning
 - Build capacity of interested staff
 - Document past practice to help win new business
 
@@ -107,6 +111,7 @@ tech <- read_excel("Analytical techniques.xlsx")
 
 gt(tech)
 ```
+
 ----
 
 ### Build capacity of interested staff
@@ -135,14 +140,11 @@ include_graphics("Quarto website.png")
 
 - Build and maintain trackers of techniques, where they were used, which staff implemented them
 - Identify interested and capable staff
-- Develop white paper on current performance and capabilities
-- Develop bid language on communicating advanced analytics to general audience
+- Develop comms on current performance and capabilities
+- Develop how-to manual / cookbook on analytical workflow
 - Develop content for training and brown bag sessions
 
 ----
-
-
-
 
 ### Where are we headed? 
 
