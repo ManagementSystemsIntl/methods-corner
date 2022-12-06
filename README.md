@@ -2,7 +2,9 @@
 
 This repository explores a variety of analytical methods applied by MSI staff. Follow a link below to explore analytical methods, or a novel dataset, or both. 
 
-[Data science at MSI](https://managementsystemsintl.github.io/methods-corner/Data%20science%20team/Data%20science%20team%20(SEA%20retreat%2012-7-22).html)
+##[Data science at MSI](https://managementsystemsintl.github.io/methods-corner/Data%20science%20team/Data%20science%20team%20(SEA%20retreat%2012-7-22).html)##
+
+[Data science at MSI](https://managementsystemsintl.github.io/methods-corner/Data%20science%20team/Data%20science%20team%20(SEA%20retreat%2012-7-22)
 
 [Exploring ACLED conflict events](https://managementsystemsintl.github.io/methods-corner/Exploring%20ACLED/ExploringACLED2.html)
 
