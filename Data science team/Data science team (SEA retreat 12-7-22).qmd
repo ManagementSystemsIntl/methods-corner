@@ -1,5 +1,5 @@
 ---
-title: MSI Data Science Team
+title: Data Science and Advanced Analytics
 author: Melanie Murphy, Brian Calhoon, Dan Killian
 format: 
   revealjs:
@@ -10,7 +10,7 @@ background-color: lightblue
 title-slide-attributes: 
   data-background-image: 'MSI logo.jpg'
   data-background-size: 20%
-  data-background-position: 50% 10%
+  data-background-position: 50% 5%
 ---
 
 ```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
@@ -24,78 +24,21 @@ source("prep.R")
 
 ```
 
-```{r global options2, include=F, warning=F, message=F, echo=F, error=F}
+------------------------------------------------------------------------
 
-# # standard figure size and generate clean output
-# knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
-# 
-# packages <- c("quartostamp", "arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimatr","extrafont", "extrafontdb", "janitor", "reshape2","tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix", "scales","survey", "srvyr", "sysfonts", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr", "readxl", "sjmisc", "sjPlot", "sjstats", "sjlabelled", "skimr","labelled", "texreg", "janitor","psych","dplyr", "tidyverse",
-#               "tidylog", "viridis", "here", "ggridges", "ggthemes", "DT", "jtools", "huxtable", "stringi", "gghighlight", "plm", "texreg","gt","gtsummary","huxtable","stargazer", "panelView", "assertr", "pointblank", "validate", "sandwich") 
-# 
-# lapply(packages, library, character.only=T)
-# 
-# democracyPackages <- c("democracyData", "vdem", "vdemdata")
-# lapply(packages, library, character.only=T)
-# 
-# iePackages <- c("gsynth", "MatchIt")
-# lapply(iePackages, library, character.only=T)
-# 
-# bayesPackages <- c("rethinking","brms","rstanarm","tidybayes","cmdstanr")
-# lapply(bayesPackages, library, character.only=T)
-# 
-# didPackages <- c("bacondecomp", "staggered","pretrends","HonestDiD", "did", "gsynth", "panelView", "didimputation", "synthdid", "TwoWayFEWeights", "pretrends","fixest", "DRDID", "DIDmultiplegt", "did2s")
-# lapply(didPackages, library, character.only=T)
-# 
-# 
-# 
-# # font_add_google("Source Sans Pro", "sans-serif")
-# 
-# options(brms.backend="cmdstanr")
-# options(digits=3, scipen=6)
-# 
-# # set default
-# base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
-#                            panel.grid.minor.y=element_blank(),
-#                            plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
-#                            plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
-#                            plot.caption=element_text(size=12, family="Gill Sans Mt"),
-#                            axis.title=element_text(size=16, family="Gill Sans Mt"),
-#                            axis.text=element_text(size=14, family="Gill Sans Mt"),
-#                            legend.text=element_text(size=14, family="Gill Sans Mt"),
-#                            strip.text=element_text(size=14, family="Gill Sans Mt"),
-#                            panel.border=element_blank(),
-#                            axis.ticks = element_blank())
-# 
-# theme_set(base)
-# 
-# faceted <- theme_bw() +
-#   theme(panel.grid.minor.x=element_blank(),
-#         panel.grid.minor.y=element_blank(),
-#         plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
-#         plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
-#         plot.caption=element_text(size=12, family="Gill Sans Mt"),
-#         axis.title=element_text(size=16, family="Gill Sans Mt"),
-#         axis.text=element_text(size=14, family="Gill Sans Mt"),
-#         legend.text=element_text(size=14, family="Gill Sans Mt"),
-#         strip.text=element_text(size=14, family="Gill Sans Mt"))
-# 
-# 
-# 
-# facet_style <- function(){theme_bw() +
-#     theme(panel.grid.minor.x=element_blank(),
-#           panel.grid.minor.y=element_blank(),
-#           plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
-#           plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
-#           plot.caption=element_text(size=12, family="Gill Sans Mt"),
-#           axis.title=element_text(size=16, family="Gill Sans Mt"),
-#           axis.text=element_text(size=14, family="Gill Sans Mt"),
-#           legend.text=element_text(size=14, family="Gill Sans Mt"),
-#           strip.text=element_text(size=14, family="Gill Sans Mt"))
-# }
+### What is Data Science? Advanced analytics?
+
+- Data science: The extraction of learning from data
+
+- Advanced analytics: The application of methods that learn from the data
+
+```{r fig.align='center', out.width="20%", fig.show='hold', echo=F}
+
+include_graphics("data science life cycle.png")
 
 ```
 
-------------------------------------------------------------------------
+----
 
 ### DALL-E's view of the MSI data science team
 
@@ -109,7 +52,7 @@ include_graphics("dalle data science climbing.png")
 
 ------------------------------------------------------------------------
 
-### What does AI think of us?
+### 
 
 ::: columns
 ::: {.column width="33%"}
@@ -127,40 +70,84 @@ include_graphics("dalle data science climbing.png")
 
 ------------------------------------------------------------------------
 
-### Outline of presentation
+### Robust external demand for advanced analytics
 
--   Background
--   Problem
--   Solutions
--   Next steps
+- USAID's 2011 evaluation policy remains in force, offering the opportunity for impact evaluations
 
-------------------------------------------------------------------------
+- USAID references analytics in its solicitations (simulation, social network analysis, modeling)
 
--   **Background**
--   Problem
--   Solutions
--   Next steps
+- New data sources require deeper understanding, processing, and analysis
 
 ------------------------------------------------------------------------
 
--   Background
--   **Problem**
--   Solutions
--   Next steps
+### Robust internal demand for advanced analytics
 
-------------------------------------------------------------------------
+- We lost our analysts!
 
--   Background
--   Problem
--   **Solutions**
--   Next steps
+- MSI junior / midlevel staff interested in gaining skills and experience / dedicated experience path
 
-------------------------------------------------------------------------
+- MSI needs to document and build its past performance and capabilities for new business
 
--   Background
--   Problem
--   Solutions
--   **Next steps**
+---- 
+
+### Data science and advanced analytics
+
+Three primary areas of action
+
+- Application of technique to extract learning
+- Build capacity of interested staff
+- Document past practice to help win new business
+
+---- 
+
+### Application of technique to extract learning
+
+```{r echo = F}
+tech <- read_excel("Analytical techniques.xlsx")
+
+gt(tech)
+```
+----
+
+### Build capacity of interested staff
+
+- Structured trainings on-demand, hopefully at least once per year
+- 4-12 brown bag sessions per year
+- Weekly office hours / on-demand consultation
+
+```{r fig.align='center', out.width="40%", fig.show='hold', echo=F}
+
+include_graphics("Quarto website.png")
+
+```
+
+----
+
+### Document past practice and identify new opportunities
+
+- Inventory of techniques, activities, and analysts
+- Review existing task pipeline for opportunities to apply technique
+- Demonstrate new techniques to expand performance and capabilities
+
+---- 
+
+### Tasks
+
+- Build and maintain trackers of techniques, where they were used, which staff implemented them
+- Identify interested and capable staff
+- Develop white paper on current performance and capabilities
+- Develop bid language on communicating advanced analytics to general audience
+- Develop content for training and brown bag sessions
+
+----
+
+
+
+
+### Where are we headed? 
+
+
+The increasing integration of human and machine intelligence to (hopefully) solve problems
 
 ------------------------------------------------------------------------
 
@@ -176,8 +163,7 @@ include_graphics("dalle data science climbing.png")
 :::
 :::
 
-------------------------------------------------------------------------
+----
 
-### Future trends
+### Thank you! {style="text-align: center; vertical-align: middle;"} 
 
-![Working with AI to set up your analyses](gpt-3%20shiny%20app.png){fig-align="center"}

@@ -1,0 +1,183 @@
+---
+title: MSI Data Science Team
+author: Melanie Murphy, Brian Calhoon, Dan Killian
+format: 
+  revealjs:
+    slide-number: true
+    theme: sky
+editor: visual
+background-color: lightblue
+title-slide-attributes: 
+  data-background-image: 'MSI logo.jpg'
+  data-background-size: 20%
+  data-background-position: 50% 10%
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+
+library(here)
+source("prep.R")
+
+
+```
+
+```{r global options2, include=F, warning=F, message=F, echo=F, error=F}
+
+# # standard figure size and generate clean output
+# knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+# 
+# packages <- c("quartostamp", "arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimatr","extrafont", "extrafontdb", "janitor", "reshape2","tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix", "scales","survey", "srvyr", "sysfonts", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr", "readxl", "sjmisc", "sjPlot", "sjstats", "sjlabelled", "skimr","labelled", "texreg", "janitor","psych","dplyr", "tidyverse",
+#               "tidylog", "viridis", "here", "ggridges", "ggthemes", "DT", "jtools", "huxtable", "stringi", "gghighlight", "plm", "texreg","gt","gtsummary","huxtable","stargazer", "panelView", "assertr", "pointblank", "validate", "sandwich") 
+# 
+# lapply(packages, library, character.only=T)
+# 
+# democracyPackages <- c("democracyData", "vdem", "vdemdata")
+# lapply(packages, library, character.only=T)
+# 
+# iePackages <- c("gsynth", "MatchIt")
+# lapply(iePackages, library, character.only=T)
+# 
+# bayesPackages <- c("rethinking","brms","rstanarm","tidybayes","cmdstanr")
+# lapply(bayesPackages, library, character.only=T)
+# 
+# didPackages <- c("bacondecomp", "staggered","pretrends","HonestDiD", "did", "gsynth", "panelView", "didimputation", "synthdid", "TwoWayFEWeights", "pretrends","fixest", "DRDID", "DIDmultiplegt", "did2s")
+# lapply(didPackages, library, character.only=T)
+# 
+# 
+# 
+# # font_add_google("Source Sans Pro", "sans-serif")
+# 
+# options(brms.backend="cmdstanr")
+# options(digits=3, scipen=6)
+# 
+# # set default
+# base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
+#                            panel.grid.minor.y=element_blank(),
+#                            plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
+#                            plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
+#                            plot.caption=element_text(size=12, family="Gill Sans Mt"),
+#                            axis.title=element_text(size=16, family="Gill Sans Mt"),
+#                            axis.text=element_text(size=14, family="Gill Sans Mt"),
+#                            legend.text=element_text(size=14, family="Gill Sans Mt"),
+#                            strip.text=element_text(size=14, family="Gill Sans Mt"),
+#                            panel.border=element_blank(),
+#                            axis.ticks = element_blank())
+# 
+# theme_set(base)
+# 
+# faceted <- theme_bw() +
+#   theme(panel.grid.minor.x=element_blank(),
+#         panel.grid.minor.y=element_blank(),
+#         plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
+#         plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
+#         plot.caption=element_text(size=12, family="Gill Sans Mt"),
+#         axis.title=element_text(size=16, family="Gill Sans Mt"),
+#         axis.text=element_text(size=14, family="Gill Sans Mt"),
+#         legend.text=element_text(size=14, family="Gill Sans Mt"),
+#         strip.text=element_text(size=14, family="Gill Sans Mt"))
+# 
+# 
+# 
+# facet_style <- function(){theme_bw() +
+#     theme(panel.grid.minor.x=element_blank(),
+#           panel.grid.minor.y=element_blank(),
+#           plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
+#           plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
+#           plot.caption=element_text(size=12, family="Gill Sans Mt"),
+#           axis.title=element_text(size=16, family="Gill Sans Mt"),
+#           axis.text=element_text(size=14, family="Gill Sans Mt"),
+#           legend.text=element_text(size=14, family="Gill Sans Mt"),
+#           strip.text=element_text(size=14, family="Gill Sans Mt"))
+# }
+
+```
+
+------------------------------------------------------------------------
+
+### DALL-E's view of the MSI data science team
+
+"a data science team solving complex analytical problems while at the climbing gym, in the style of anime"
+
+```{r fig.align='center', out.width="40%", fig.show='hold', echo=F}
+
+include_graphics("dalle data science climbing.png")
+
+```
+
+------------------------------------------------------------------------
+
+### What does AI think of us?
+
+::: columns
+::: {.column width="33%"}
+![Data science at<br>the World Cup](dalle%20data%20science%20soccer.png){height="250" width="250"}
+:::
+
+::: {.column width="33%"}
+![Data science<br>playing basketball](dalle%20data%20science%20basketball.png){top="100" height="250" width="250"}
+:::
+
+::: {.column width="33%"}
+![Data science at<br>the climbing gym](dalle%20data%20science%20climbing.png){height="250" width="250"}
+:::
+:::
+
+------------------------------------------------------------------------
+
+### Outline of presentation
+
+-   Background
+-   Problem
+-   Solutions
+-   Next steps
+
+------------------------------------------------------------------------
+
+-   **Background**
+-   Problem
+-   Solutions
+-   Next steps
+
+------------------------------------------------------------------------
+
+-   Background
+-   **Problem**
+-   Solutions
+-   Next steps
+
+------------------------------------------------------------------------
+
+-   Background
+-   Problem
+-   **Solutions**
+-   Next steps
+
+------------------------------------------------------------------------
+
+-   Background
+-   Problem
+-   Solutions
+-   **Next steps**
+
+------------------------------------------------------------------------
+
+### Working with AI to set up your analyses
+
+::: columns
+::: {.column width="50%"}
+![Hey GPT,<br>scrape this data](gpt-3%20shiny%20app.png){height="500" width="425"}
+:::
+
+::: {.column width="50%"}
+![Hey GPT, put the data<br>into an interactive dashboard](gpt-3%20shiny2.png)
+:::
+:::
+
+------------------------------------------------------------------------
+
+### Future trends
+
+![Working with AI to set up your analyses](gpt-3%20shiny%20app.png){fig-align="center"}
