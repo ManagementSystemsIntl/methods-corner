@@ -45,14 +45,15 @@ edges_mentor <- edges_mentor |>
 nodes_mentor <- as_tibble(unique(c(unique(edges_mentor$Name)
                             , unique(edges_mentor$to_mentor2)))) |>
   filter(!is.na(value)) |>
-  na.omit()
+  na.omit() |>
+  select('Name' = value)
 
 
 #create a dataframe for the tech question
-edges_tech <- edges |>
+edges_tech <- df |>
   mutate(to_tech2 = strsplit(to_tech_ques, ",")) |>
   unnest("to_tech2") |>
-  select(from, Name, to_tech2)
+  select(Name, to_tech2)
 
 #see what names need to be fixed
 unique(edges_tech$to_tech2)
@@ -93,24 +94,31 @@ sources <- unique(nodes$Name)
 #by the same number in each network
 all_nodes_names <- as_tibble(unique(c(techs, mentors, sources))) |>
   filter(!is.na(value)) |>
-  na.omit() 
-
+  filter(value != "") 
+  
 #The id column in this is the unique id for each name
-all_nodes_names <-  bind_cols(id = 1:nrow(all_nodes_names), all_nodes_names)
+all_nodes_names <-  all_nodes_names |>
+  mutate(id = 1:nrow(all_nodes_names)) |>
+  select(id, 'Name' = value)
 
 #The above vector contains all the nodes.
 
 #Left join them to the mentor nodes object to get the ids
 nodes_mentor2 <- nodes_mentor |>
-  left_join(all_nodes_names)
+  left_join(all_nodes_names) |>
+  select(id, Name)
 
 edges_mentor2 <- edges_mentor |>
-  left_join(all_nodes_names, by = c("Name", "value"))
+  left_join(all_nodes_names) |>
+  select('from' = id, 'Name' = to_mentor2)
 
+edges_mentor2 <- edges_mentor2 |>
+  left_join(all_nodes_names) |>
+  select(from, 'to' = id)
 
-#
-g_mentor <- graph_from_data_frame(edges_mentor
+#This is an igraph object of the network
+g_mentor <- graph_from_data_frame(edges_mentor2
                                   , directed = FALSE
                                   , vertices = nodes_mentor2)
 
-edges_mentor$to_mentor2 %in% nodes_mentor$value
+plot(g_mentor)
