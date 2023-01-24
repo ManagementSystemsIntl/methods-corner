@@ -67,16 +67,18 @@ mentors <- unique(edges_mentor$to_mentor2)
 
 techs <- unique(edges_tech$to_tech2) 
 
-edge_names <- unique(c(mentors, techs)) |>
-  as_tibble()
+sources <- unique(nodes$Name)
 
+edge_names <- unique(c(techs, mentors, sources)) 
+
+#The above vector contains all the nodes.
 #resume here. Putting all the names into the nodes dataset
 test <- bind_rows(nodes, edge_names)
 
 ##Fixing this
 nodes2 <- nodes |>
   mutate(names = case_when(Name %in% edge_names$value ~ Name
-                           , !Name %in% edge_names ~ edge_names))
+                           , !str_detect(Name, edge_names) ~ edge_names))
 
 
 #
