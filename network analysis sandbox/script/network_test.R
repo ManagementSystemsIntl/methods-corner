@@ -37,10 +37,15 @@ edges_mentor$to_mentor2 <- edges_mentor$to_mentor2 |>
          , " Brian Calhoon" = "Brian Calhoon"
          , " Natalya Ghurbanyan" = "Natalya Ghurbanyan")
 
+edges_mentor <- edges_mentor |>
+  filter(!is.na(to_mentor2)) |>
+  select(Name, from, to_mentor2)
+
 #all the names mentioned need to be in a df for nodes
 nodes_mentor <- as_tibble(unique(c(unique(edges_mentor$Name)
                             , unique(edges_mentor$to_mentor2)))) |>
-  filter(!is.na(value))
+  filter(!is.na(value)) |>
+  na.omit()
 
 
 #create a dataframe for the tech question
@@ -88,14 +93,24 @@ sources <- unique(nodes$Name)
 #by the same number in each network
 all_nodes_names <- as_tibble(unique(c(techs, mentors, sources))) |>
   filter(!is.na(value)) |>
-  na.omit()
+  na.omit() 
 
-#remove one blank row
-all_nodes_names <- all_nodes_names[-1,]
+#The id column in this is the unique id for each name
+all_nodes_names <-  bind_cols(id = 1:nrow(all_nodes_names), all_nodes_names)
 
 #The above vector contains all the nodes.
+
+#Left join them to the mentor nodes object to get the ids
+nodes_mentor2 <- nodes_mentor |>
+  left_join(all_nodes_names)
+
+edges_mentor2 <- edges_mentor |>
+  left_join(all_nodes_names, by = c("Name", "value"))
+
 
 #
 g_mentor <- graph_from_data_frame(edges_mentor
                                   , directed = FALSE
-                                  , vertices = nodes_mentor)
+                                  , vertices = nodes_mentor2)
+
+edges_mentor$to_mentor2 %in% nodes_mentor$value
