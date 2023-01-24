@@ -17,34 +17,28 @@ edges_split <- edges |>
   
 
 #reformat `to` columns by splitting them and then pivoting_longer
+
+#create a dataframe for the mentor question  
 edges_mentor <- edges |>
   mutate(to_mentor2 = strsplit(to_mentor, ",")) |>
-  #mutate(to_tech_ques2 = strsplit(to_tech_ques, ",")) |>
   unnest("to_mentor2") |>
-  select(from, to_mentor, to_mentor2)
-  #unnest("to_tech_ques2")
-  #separate(col = "to_tech_ques"
-   #        , into = c("one_tech", "two_tech", "three_tech")
-    #       , sep = ","
-     #      , fill = "right") |>
-  pivot_longer(cols = c("one", "two", "three")
-               , names_to = "names"
-               , values_to = "to_mentor") |>
-  pivot_longer(cols = c("one_tech", "two_tech", "three_tech")
-               , values_to = "to_tech_ques") |>
-  select(from, to_mentor, to_tech_ques)
+  select(from, to_mentor2)
 
-#confirm that I have from and to columns, then split into two edges dataframes
-head(edges_split)
+#create a dataframe for the tech question
+edges_tech <- edges |>
+  mutate(to_tech2 = strsplit(to_tech_ques, ",")) |>
+  unnest("to_tech2") |>
+  select(from, to_tech2)
+
 
 #need to clean up names in to_mentor and to_tech_ques columns
-unique(edges_split$to_mentor)
+unique(edges_mentor$to_mentor2)
 
-edges_split$to_mentor <- edges_split$to_mentor |>
+edges_mentor$to_mentor2 <- edges_mentor$to_mentor2 |>
   recode("Tim R" = "Tim Reilly"
          , " Michelle Adams-Matson" = "Michelle Adams-Matson"
          , "Tim R." = "Tim Reilly"
-         , "Michelle" = "Michelle Adams-Matson"
+         , " Michelle" = "Michelle Adams-Matson"
          , " John Wildgrube" = "John Wildgrube"
          , " Gaelle Simon" = "Gaelle Simon"
          , " George Sarris" = "George Sarris"
@@ -52,27 +46,37 @@ edges_split$to_mentor <- edges_split$to_mentor |>
          , " Brian Calhoon" = "Brian Calhoon"
          , " Natalya Ghurbanyan" = "Natalya Ghurbanyan")
 
-unique(edges_split$to_tech_ques)
+unique(edges_tech$to_tech2)
 
-edges_split$to_tech_ques <- edges_split$to_tech_ques |>
-  recode("No one right now" = NA
+edges_tech$to_tech2 <- edges_tech$to_tech2 |>
+  dplyr::recode("No one right now" = ""
          , " Melanie Murphy"  = "Melanie Murphy"
          , " Tim Reilly" = "Tim Reilly"
          , "Dan" = "Dan Killian"
-         , "David" = "David Hinkle"
+         , " David" = "David Hinkle"
          , " Tim S." = "Tim Schifflet"
+         , " Clare Bambrick" = "Clare Bambrick"
          , " Robert Underwood" = "Robert Underwood"
          , "Dave Hinkle" = "David Hinkle"
          , " Brian Calhoon" = "Brian Calhoon"
-         , "N/A" = "NA")
+         , "N/A" = "")
 
-#edges for the mentor question
-edges_mentor <- edges_split |>
-  select(from, to_mentor)
+#Populate the nodes with edges who are not present in the nodes
 
-#edges for the tech question question
-edges_tech <- edges_split |>
-  select(from, to_tech_ques)
+mentors <- unique(edges_mentor$to_mentor2)
+
+techs <- unique(edges_tech$to_tech2) 
+
+edge_names <- unique(c(mentors, techs)) |>
+  as_tibble()
+
+#resume here. Putting all the names into the nodes dataset
+test <- bind_rows(nodes, edge_names)
+
+##Fixing this
+nodes2 <- nodes |>
+  mutate(names = case_when(Name %in% edge_names$value ~ Name
+                           , !Name %in% edge_names ~ edge_names))
 
 
 #
