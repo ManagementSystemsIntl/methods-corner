@@ -4,6 +4,7 @@
 
 source("network analysis sandbox/prep/prep.R")
 
+set.seed(13287)
 #reading in the nodes - keeping ID and Names column for now
 nodes <- read_xlsx("network analysis sandbox/data/DATA SCIENCE AND ADVANCED ANALYTICS(1-13).xlsx") |>
                   select(ID, Name)
@@ -78,7 +79,8 @@ nodes_tech <- as_tibble(unique(c(unique(edges_tech$Name)
   filter(!is.na(value) 
          | value != "N/A"
          | value == " ") |>
-  na.omit()
+  na.omit() |>
+  rename("Name" = "value")
 
 #remove one blank row
 nodes_tech <- nodes_tech[-13,]
@@ -106,7 +108,10 @@ all_nodes_names <-  all_nodes_names |>
 #Left join them to the mentor nodes object to get the ids
 nodes_mentor2 <- nodes_mentor |>
   left_join(all_nodes_names) |>
-  select(id, Name)
+  select(id) 
+
+writexl::write_xlsx(nodes_mentor2
+                    , "network analysis sandbox/data/nodes_mentor.xlsx")
 
 edges_mentor2 <- edges_mentor |>
   left_join(all_nodes_names) |>
@@ -116,9 +121,40 @@ edges_mentor2 <- edges_mentor2 |>
   left_join(all_nodes_names) |>
   select(from, 'to' = id)
 
+writexl::write_xlsx(edges_mentor2
+                    , "network analysis sandbox/data/nodes_edges.xlsx")
+
+
 #This is an igraph object of the network
 g_mentor <- graph_from_data_frame(edges_mentor2
                                   , directed = FALSE
                                   , vertices = nodes_mentor2)
 
 plot(g_mentor)
+
+#Repeat the above joining fun for the tech question 
+nodes_tech2 <- nodes_tech |>
+  left_join(all_nodes_names) |>
+  select(id) |>
+  na.omit()
+
+writexl::write_xlsx(nodes_tech2,
+           "network analysis sandbox/data/nodes_tech.xlsx")
+
+edges_tech2 <- edges_tech |>
+  left_join(all_nodes_names) |>
+  select('from' = id, 'Name' = to_tech2)
+
+edges_tech2 <- edges_tech2 |>
+  left_join(all_nodes_names) |>
+  select(from, 'to' = id) |>
+  na.omit()
+
+writexl::write_xlsx(edges_tech2,
+                    "network analysis sandbox/data/edges_tech.xlsx")
+
+g_tech <- graph_from_data_frame(edges_tech2
+                                  , directed = FALSE
+                                  , vertices = nodes_tech2)
+
+plot(g_tech)
