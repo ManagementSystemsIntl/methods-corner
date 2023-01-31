@@ -125,7 +125,7 @@ edges_mentor2 <- edges_mentor2 |>
   select(from, 'to' = id)
 
 writexl::write_xlsx(edges_mentor2
-                    , "network analysis sandbox/data/nodes_edges.xlsx")
+                    , "network analysis sandbox/data/edges_mentor.xlsx")
 
 #Repeat the above joining fun for the tech question 
 nodes_tech2 <- nodes_tech |>
