@@ -1,5 +1,5 @@
 packages <- c("bookdown", "cowplot", "extrafont", "extrafontdb", "lubridate"
-              , "igraph", "ggraph", "readxl", "tidyverse", "visNetwork")
+              , "igraph", "ggraph", "reactable", "reactablefmtr", "readxl", "tidyverse", "visNetwork")
 
 
 lapply(packages, library, character.only=T)

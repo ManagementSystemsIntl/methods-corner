@@ -162,3 +162,15 @@ g_tech <- graph_from_data_frame(edges_tech2
 par(mfrow=c(1, 2))
 plot(g_tech, main = "Tech Assistance")
 plot(g_mentor, main = "Mentoring")
+
+V(mentor_edges)
+
+edges.mat <- as.matrix(mentor_edges)
+
+g <- graph.edgelist(edges.mat, directed = F)
+
+V(g)
+
+plot(g)
+
+E(g)
