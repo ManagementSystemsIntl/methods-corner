@@ -1,0 +1,745 @@
+---
+title: Assessing the new class of d-i-d estimators
+subtitle: A replication
+author: Dan Killian
+format: 
+  revealjs:
+    slide-number: true
+    theme: sky
+editor: visual
+background-color: lightblue
+title-slide-attributes: 
+  data-background-image: 'MSI logo.jpg'
+  data-background-size: 10%
+  data-background-position: 1% 1%
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+
+packages <- c("quartostamp", "arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimatr","extrafont", "extrafontdb", "janitor", "reshape2","tidyr","broom", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix", "scales","survey", "srvyr", "sysfonts", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr", "readxl", "sjmisc", "sjPlot", "sjstats", "sjlabelled", "skimr","labelled", "texreg", "janitor","psych","dplyr", "tidyverse",
+              "tidylog", "viridis", "here", "ggridges", "ggthemes", "DT", "jtools", "huxtable", "stringi", "gghighlight", "plm", "texreg","gt","gtsummary","huxtable","stargazer", "panelView", "assertr", "pointblank", "validate", "sandwich", "flextable") 
+
+lapply(packages, library, character.only=T)
+
+democracyPackages <- c("democracyData", "vdem", "vdemdata")
+lapply(packages, library, character.only=T)
+
+iePackages <- c("gsynth", "MatchIt")
+lapply(iePackages, library, character.only=T)
+
+bayesPackages <- c("rethinking","brms","rstanarm","tidybayes","cmdstanr")
+lapply(bayesPackages, library, character.only=T)
+
+didPackages <- c("bacondecomp", "staggered","pretrends","HonestDiD", "did", "gsynth", "panelView", "didimputation", "synthdid", "TwoWayFEWeights", "pretrends","fixest", "DRDID", "DIDmultiplegt", "did2s")
+lapply(didPackages, library, character.only=T)
+
+
+
+# font_add_google("Source Sans Pro", "sans-serif")
+
+options(brms.backend="cmdstanr")
+options(digits=3, scipen=6)
+
+# set default
+base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                           panel.grid.minor.y=element_blank(),
+                           plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
+                           plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
+                           plot.caption=element_text(size=12, family="Gill Sans Mt"),
+                           axis.title=element_text(size=16, family="Gill Sans Mt"),
+                           axis.text=element_text(size=14, family="Gill Sans Mt"),
+                           legend.text=element_text(size=14, family="Gill Sans Mt"),
+                           strip.text=element_text(size=14, family="Gill Sans Mt"),
+                           panel.border=element_blank(),
+                           axis.ticks = element_blank())
+
+theme_set(base)
+
+faceted <- theme_bw() +
+  theme(panel.grid.minor.x=element_blank(),
+        panel.grid.minor.y=element_blank(),
+        plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
+        plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
+        plot.caption=element_text(size=12, family="Gill Sans Mt"),
+        axis.title=element_text(size=16, family="Gill Sans Mt"),
+        axis.text=element_text(size=14, family="Gill Sans Mt"),
+        legend.text=element_text(size=14, family="Gill Sans Mt"),
+        strip.text=element_text(size=14, family="Gill Sans Mt"))
+
+
+
+facet_style <- function(){theme_bw() +
+    theme(panel.grid.minor.x=element_blank(),
+          panel.grid.minor.y=element_blank(),
+          plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
+          plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
+          plot.caption=element_text(size=12, family="Gill Sans Mt"),
+          axis.title=element_text(size=16, family="Gill Sans Mt"),
+          axis.text=element_text(size=14, family="Gill Sans Mt"),
+          legend.text=element_text(size=14, family="Gill Sans Mt"),
+          strip.text=element_text(size=14, family="Gill Sans Mt"))
+}
+
+
+
+mistifull <- read_rds(here("new d-i-d estimators/data/misti/MISTI villages measured all waves.rds"))
+
+
+mistifull <- mistifull %>%
+  filter(first.treat!=1) %>%
+  mutate(time_treat=ifelse(first.treat>0, wave-first.treat, 999)) %>%
+  relocate(time_treat, .after=first.treat)
+
+```
+
+------------------------------------------------------------------------
+
+### DALL-E interpretation of my final preparation
+
+```{r fig.cap="Dali", fig.align='left', fig.width=1, fig.height=1, echo=F}
+#include_graphics("../viz/dalle/dali.jpg")
+```
+
+```{r fig.align='center', fig.width=1, fig.height=1, echo=F}
+include_graphics("../viz/dalle/van gogh.jpg")
+```
+
+------------------------------------------------------------------------
+
+### Outline of presentation
+
+-   Background
+-   Problem
+-   Solutions
+-   Case study - MISTI
+-   Final thoughts
+
+------------------------------------------------------------------------
+
+### Bottom line up front
+
+-   In certain settings, beware the Two-Way Fixed Effects Estimator!
+-   Don't conflate your modeling approach (TWFE) with your estimation strategy
+-   Examine the different groups created by differential timing
+-   Use event study designs - overall and one for each treatment cohort
+-   Specify a fully flexible model (Two-way Mundlak)
+
+------------------------------------------------------------------------
+
+-   **Background**
+-   Problem
+-   Solutions
+-   Case study - MISTI
+-   Final thoughts
+
+------------------------------------------------------------------------
+
+### D-i-D has a long and storied history
+
+-   Ignaz Semmelweis - Let's track mortality rates in two maternity wards, one staffed with midwives and the other with medical students (who were busy with cadavers) ![](semmelweis.jpg){.absolute top="300" left="250" height="350" width="250"}
+
+------------------------------------------------------------------------
+
+### D-i-D has a long and storied history
+
+-   John Snow: Let's track cholera infection in two London neighborhoods, one with treated water and one without
+
+::: columns
+::: {.column width="50%"}
+![John Snow](john%20snow%20portrait.jpg){height="250" width="200"}
+:::
+
+::: {.column width="50%"}
+![Jon Snow](jon%20snow4.jpg){height="300" width="500"}
+:::
+:::
+
+------------------------------------------------------------------------
+
+### D-i-D has a long and storied history
+
+-   Economists - Let's steal repeated measures ANOVA from the statisticians!
+
+<!-- -->
+
+-   "This estimator has been labeled the difference-in-differences estimator in the recent program evaluation literature, although it has a long history in analysis of variance." \[Wooldridge 2010\]
+
+-   Cross Validated: [Difference in Difference vs repeated measures](https://stats.stackexchange.com/questions/194888/difference-in-difference-vs-repeated-measures)
+
+------------------------------------------------------------------------
+
+### So what is the canonical d-i-d setup?
+
+$y_{it}=\beta_0+\delta_{0,t}Post_t+\beta_{1,i}Treat_i+\delta_{1,it}Post_t*Treat_i+\epsilon_{it}$
+
+where..
+
+$\beta_0$ is the comparison group at baseline
+
+$\delta_0$ is the secular change from baseline to endline, unrelated to treatment
+
+$\beta_1$ is the difference between the treatment and comparison groups at baseline, and
+
+$\delta_1$ is the treatment effect, the interaction of treatment and time
+
+------------------------------------------------------------------------
+
+Algebraically, $\delta_0$ can be expressed as the difference between the pre/post difference in each of the treatment and comparison groups
+
+$\delta_1=$
+
+$(\bar{y}_{POST,TREAT}-\bar{y}_{PRE,TREAT})$
+
+$-$
+
+$(\bar{y}_{POST,COMPARISON}-\bar{y}_{PRE,COMPARISON})$
+
+hence, difference-in-differences (d-i-d or DiD or DD)
+
+------------------------------------------------------------------------
+
+### Canonical d-i-d, 2x2
+
+$y_{it}=\beta_0+\delta_{0,t}Post_t+\beta_{1,i}Treat_i+\delta_{1,it}Post_t*Treat_i+\epsilon_{it}$
+
+|                        | Pre               | Post                                | Post - Pre          |
+|------------------------|-------------------|-------------------------------------|---------------------|
+| Comparison             | $\beta_0$         | $\beta_0+\delta_0$                  | $\delta_0$          |
+| Treatment              | $\beta_0+\beta_1$ | $\beta_0+\delta_0+\beta_1+\delta_1$ | $\delta_0+\delta_1$ |
+| Treatment - Comparison | $\beta_1$         | $\beta_1 + \delta_1$                | $\delta_1$          |
+
+: Canonical d-i-d 2x2 setup
+
+------------------------------------------------------------------------
+
+### How does the canonical d-i-d generalize to multiple time periods and/or groups?
+
+When we generalize the two-period setup to multiple time periods and/or groups, we have the two-way fixed effect (TWFE) estimator
+
+$y_{it}=\alpha_i+\alpha_t+\beta^{DD}{it}+\epsilon_{it}$
+
+where..
+
+$\alpha_i$ are group fixed effects
+
+$\alpha_t$ are time fixed effects
+
+$B^{DD}_{it}$ indicates whether group *i* in period *t* is treated
+
+------------------------------------------------------------------------
+
+### TWFE is a workhorse in program evaluation
+
+-   744 d-i-d studies across ten journals in finance and accounting, 2000-2019 \[Baker 2022\]
+
+-   19 percent of all empirical articles published by the American Economic Review (AER) between 2010 and 2012 used TWFE \[de Chaisemartin and D'Haultfoeuille 2020\]
+
+------------------------------------------------------------------------
+
+-   Background
+-   **Problem**
+-   Solutions
+-   Case study - MISTI
+-   Final thoughts
+
+------------------------------------------------------------------------
+
+### But what is $\beta^{DD}_{it}$ actually telling us?
+
+-   For the canonical 2x2, we know exactly what we are estimating
+
+-   For *i* groups and *t* time periods, we are getting some average of multiple 2x2s
+
+-   But how does this work, exactly?
+
+-   Goodman-Bacon (2021) decided to work it out
+
+------------------------------------------------------------------------
+
+Let's take a single step from two time periods to three, where treatment can be adopted at either t = 2 or t = 3
+
+```{r, echo=F}
+#include_graphics("../viz/Goodman Bacon/g-b fig 1 treatment timing.png")
+
+include_graphics("../viz/Baker/Baker fig two timings.png")
+```
+
+Any design with multiple treatment timings will have $k^2$ groups, where *k* is the number of timings.
+
+------------------------------------------------------------------------
+
+```{r, echo=F}
+include_graphics("../viz/Baker/Baker panel a.png")
+```
+
+```{r fig.height=5, fig.width=7, echo=F}
+#include_graphics("../viz/Goodman Bacon/g-b fig 2 three timings.png")
+
+#include_graphics("../viz/Baker/Baker fig four groups.png")
+```
+
+------------------------------------------------------------------------
+
+```{r, echo=F}
+include_graphics("../viz/Baker/Baker panel b.png")
+```
+
+------------------------------------------------------------------------
+
+```{r, echo=F}
+include_graphics("../viz/Baker/Baker panel c.png")
+```
+
+------------------------------------------------------------------------
+
+```{r, echo=F}
+include_graphics("../viz/Baker/Baker panel d.png")
+```
+
+------------------------------------------------------------------------
+
+### Where does this leave us?
+
+-   TWFE treats some data that is under treatment status as comparison!
+-   Not an issue under constant treatment effect
+    -   stable unit treatment value (SUTVA)
+    -   no variation in treatment effect for any reason
+
+------------------------------------------------------------------------
+
+### But TWFE fails under following conditions:
+
+-   different treatment groups have different treatment effects
+-   treatment effects are dynamic over post-treatment periods
+-   heterogeneous treatment effects across sub-groups within a treated group
+
+------------------------------------------------------------------------
+
+```{r, echo=F}
+include_graphics("../viz/Goodman Bacon/g-b fig 3 trend break.png")
+```
+
+------------------------------------------------------------------------
+
+### An example of failure
+
+```{r, echo=F}
+include_graphics("../viz/Goodman Bacon/g-b fig 5 divorce.png")
+```
+
+------------------------------------------------------------------------
+
+```{r echo=F}
+include_graphics("../viz/Goodman Bacon/g-b fig 6 decomp.png")
+```
+
+------------------------------------------------------------------------
+
+-   Background
+-   Problem
+-   **Solutions**
+-   Case study - MISTI
+-   Final thoughts
+
+------------------------------------------------------------------------
+
+### Diagnostic: the Bacon decomposition
+
+-   The Bacon decomposition will take a TWFE model and decompose it into the full array of 2x2 d-i-d cells used to construct the overall estimate
+-   The decomposition will also calculate the variance-weights used in regression to see which 2x2 cells are powering the overall estimate
+
+------------------------------------------------------------------------
+
+```{r include=F}
+#cas <- bacondecomp::castle %>%
+#relocate(post, .after=year)
+
+#ggplot(cas, aes(x=year, y=l_homicide, color=as.factor(post))) + 
+#stat_smooth()
+```
+
+```{r}
+castle_bacon <- bacon(l_homicide ~ post,
+                      data = bacondecomp::castle,
+                      id_var = "state",
+                      time_var = "year") %>%
+  arrange(treated, untreated)
+```
+
+------------------------------------------------------------------------
+
+```{r echo=F}
+#flextable::as_flextable(castle_bacon)
+gt(castle_bacon)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+ggplot(castle_bacon) +
+  aes(x = weight, y = estimate, shape = factor(type), color=factor(type)) +
+  labs(x = "Weight", y = "Estimate", shape = "Type", color="Type") +
+  geom_point() + 
+  scale_color_viridis_d()
+```
+
+------------------------------------------------------------------------
+
+### Adjustment: new estimators
+
+[R packages for new d-i-d estimators](https://asjadnaqvi.github.io/DiD/docs/02_R/)
+
+```{r echo=F}
+didest <- read_excel("did summary.xlsx")
+gt(didest)
+```
+
+------------------------------------------------------------------------
+
+-   Background
+-   Problem
+-   Solutions
+-   **Case study - MISTI**
+-   Final thoughts
+
+------------------------------------------------------------------------
+
+### Measuring Impact of Stabilization Initiatives (MISTI)
+
+Can small scale, community-driven development activities build local government legitimacy in a kinetic conflict-affected environment?
+
+------------------------------------------------------------------------
+
+### MISTI
+
+-   Village panel survey in five waves, Sep 2012 - Nov 2014
+-   \~5,000 villages surveyed across 130 districts and 23 provinces
+-   \~ 30,000 household interviews per wave
+-   860 treated villages at any wave (17%)
+-   355 villages surveyed in all five waves
+-   85 villages treated (24%)
+
+------------------------------------------------------------------------
+
+```{r echo=F}
+include_graphics("MISTI map.jpg")
+```
+
+------------------------------------------------------------------------
+
+### MISTI treatment timings
+
+| Wave | Comparison villages | Treated villages | Treated villages (cumulative) |
+|:----:|:-------------------:|:----------------:|:-----------------------------:|
+|  1   |         355         |        0         |               0               |
+|  2   |         341         |        14        |              14               |
+|  3   |         322         |        19        |              33               |
+|  4   |         302         |        20        |              53               |
+|  5   |         270         |        32        |              85               |
+
+------------------------------------------------------------------------
+
+### Single-wave analysis
+
+-   Final reporting of MISTI relied on a series of single-wave estimations
+
+```{r echo=F}
+wav <- read_excel("MISTI tables.xlsx", sheet="wave outcomes")
+gt(wav)
+```
+
+------------------------------------------------------------------------
+
+### MISTI TWFE
+
+```{r}
+twfe <- lm(stab_std ~ treat_event + as.factor(village) + as.factor(wave),
+           data=mistifull) %>%
+  tidy()
+
+twfe[1:2,]
+
+```
+
+------------------------------------------------------------------------
+
+### MISTI bacondecomp
+
+```{r}
+mistibacon <- bacon(stab_std ~ treat_event,
+                    data=mistifull,
+                    id_var="village",
+                    time_var="wave") %>%
+  arrange(treated, untreated)
+
+mistibacon_coef <- sum(mistibacon$estimate * mistibacon$weight)
+mistibacon_coef 
+
+```
+
+------------------------------------------------------------------------
+
+::: panel-tabset
+### MISTI bacondecomp 2x2 cells
+
+```{r echo=F}
+
+mistibacon %>% gt()
+```
+
+### Plot of 2x2 cells
+
+```{r echo=F, fig.height=4, fig.width=6}
+ggplot(mistibacon) +
+  aes(x = weight, y = estimate, shape = factor(type), color=as.factor(type)) +
+  labs(x = "Weight", y = "Estimate", shape = "Type", color="Type") +
+  geom_point() + 
+  scale_x_continuous(limits=c(0,.3),
+                     breaks=seq(0,.3,.05)) +
+  scale_color_viridis_d() + 
+  faceted + 
+  theme(legend.title=element_blank())
+```
+:::
+
+------------------------------------------------------------------------
+
+### Callaway and Sant'Anna (2020)
+
+This estimation gives you multiple outcomes
+
+-   Treatment by treatment group
+-   An overall treatment effect\
+-   Overall dynamic effects / event study
+-   Treatment effects by calendar time
+
+------------------------------------------------------------------------
+
+### Callaway and Sant'Anna replication
+
+```{r}
+cal <- att_gt(yname="stab_std",
+             tname="wave",
+             idname="idname",
+             gname="first.treat",
+             xformla= ~ nsp + ln_dist,
+             data=mistifull)
+summary(cal)
+```
+
+------------------------------------------------------------------------
+
+```{r warning=F, echo=F, fig.height=6, fig.width=6}
+cal_out <- data.frame(att=cal$att,
+                     se = cal$se,
+                     group=rep(2:5,each=4),
+                     color=rep(viridis(4), each=4),
+                     wave=rep(2:5,4)) %>%
+  mutate(type=ifelse(group==2, "Wave 2 treated",
+                     ifelse(group==3, "Wave 3 treated",
+                            ifelse(group==4, "Wave 4 treated", "Wave 5 treated"))),
+         treat=c(1,1,1,1,0,1,1,1,0,0,1,1,0,0,0,1),
+         lower=att-1.96*se,
+         upper=att+1.96*se,
+         xintercept=rep(c(1.8, 2.8, 3.8, 4.8), each=4))
+
+ggplot(cal_out, aes(wave, att, color=as.factor(treat))) + 
+  geom_hline(yintercept=0, color="darkgoldenrod", size=1, alpha=.8) +
+  geom_point(size=3) + 
+  geom_errorbar(aes(ymin=lower, ymax=upper), width=0, size=1) +
+  geom_label(aes(label=round(att,2)),
+             show.legend=F) +
+  scale_color_manual(values=c("firebrick","darkblue"),
+                     labels=c("Untreated","Treated")) +
+  facet_wrap(~type, scales="free") +
+  faceted +
+  theme(legend.position="bottom",
+        legend.title=element_blank()) + 
+  labs(x="", 
+       y="",
+       title="Change in stability, by time treated",
+       caption="Callaway Sant'Anna did
+       Outcomes in standard deviation units") + 
+  scale_x_continuous(limits=c(1.8, 5.2),
+                     breaks=1:5) +
+  scale_y_continuous(limits=c(-1.4,3.95),
+                     breaks=seq(-1,4,1))
+```
+
+------------------------------------------------------------------------
+
+```{r}
+cal_simple <- aggte(cal, type="simple")
+cal_simple
+```
+
+------------------------------------------------------------------------
+
+```{r}
+cal_dyn <- aggte(cal, type="dynamic")
+cal_dyn
+```
+
+------------------------------------------------------------------------
+
+```{r warning=F, echo=F}
+cal_dyn_out <- data.frame(time=-3:3,
+                           att_dyn = cal_dyn$att.egt,
+                           att_dyn_se = cal_dyn$se.egt) %>%
+  mutate(lower=att_dyn - 1.96*att_dyn_se,
+         upper = att_dyn + 1.96*att_dyn_se,
+         col=c(rep("firebrick", 3), rep("darkblue", 4)))
+
+ggplot(cal_dyn_out, aes(x=time, y=att_dyn)) + 
+  geom_hline(yintercept=0, size=1, color="darkgrey", alpha=.6) +
+  geom_point(aes(color=time<0)) + 
+  geom_errorbar(aes(ymin=lower, ymax=upper, color=time<0), width=0, size=1) +
+  geom_label(aes(label=round(att_dyn,2), color=time<0),
+             show.legend=F) +
+  scale_color_manual(values=c("TRUE"="firebrick","FALSE" = "darkblue"),
+                     labels=c("Not yet treated", "Treatment")) +
+  theme(legend.title=element_blank(),
+        legend.position="bottom") +
+  scale_x_continuous(breaks=-3:3) +
+  scale_y_continuous(limits=c(-.5,1.5)) +
+  labs(x="Time to treatment",
+       y="",
+       title="Dynamic treatment effects, Stability",
+       caption="Measured in standard deviation units
+       Callaway Sant'Anna did") 
+```
+
+------------------------------------------------------------------------
+
+```{r}
+cal_grp <- aggte(cal, type="group")
+cal_grp
+```
+
+------------------------------------------------------------------------
+
+```{r echo=F}
+cal_grp_out <- data.frame(
+  cohort=c("Wave 2 treated","Wave 3 treated","Wave 4 treated","Wave 5 treated", "All waves treated"),
+  att_grp = c(cal_grp$att.egt,cal_grp$overall.att),
+  att_grp_se = c(cal_grp$se.egt, cal_grp$overall.se)) %>%
+  mutate(lower=att_grp - 1.96*att_grp_se,
+         upper = att_grp + 1.96*att_grp_se)
+
+
+ggplot(cal_grp_out, aes(att_grp, fct_rev(cohort))) + #, group=as.factor(group))) + #, color=as.factor(group))) + 
+  geom_vline(xintercept=0, color="darkgrey", size=1.2, alpha=.8) +
+  geom_point(size=3) + 
+  geom_errorbar(aes(xmin=lower, xmax=upper), width=0, size=1, color="darkblue") +
+  geom_label(aes(label=round(att_grp,2)),
+             show.legend=F, color="darkblue") +
+  theme(legend.position="bottom",
+        legend.title=element_blank()) + 
+  labs(x="", 
+       y="",
+       title="Change in stability, by cohort",
+       caption="Measured in standard deviation units
+       Callaway Sant'Anna did") + 
+  scale_x_continuous(limits=c(-1, 1.6),
+                     breaks=seq(-1,1.5,.5))
+```
+
+------------------------------------------------------------------------
+
+```{r}
+cal_cal <- aggte(cal, type="calendar")
+cal_cal
+```
+
+------------------------------------------------------------------------
+
+```{r warning=F, echo=F}
+cal_cal_out <- data.frame(
+  cohort=c("Wave 2","Wave 3","Wave 4","Wave 5", "All waves"),
+  att_grp = c(cal_cal$att.egt,cal_cal$overall.att),
+  att_grp_se = c(cal_cal$se.egt, cal_cal$overall.se)) %>%
+  mutate(lower=att_grp - 1.96*att_grp_se,
+         upper = att_grp + 1.96*att_grp_se)
+
+ggplot(cal_cal_out, aes(att_grp, fct_rev(cohort))) + #, group=as.factor(group))) + #, color=as.factor(group))) + 
+  geom_vline(xintercept=0, color="darkgrey", size=1.2, alpha=.8) +
+  geom_point(size=3) + 
+  geom_errorbar(aes(xmin=lower, xmax=upper), width=0, size=1, color="darkblue") +
+  geom_label(aes(label=round(att_grp,2)),
+             show.legend=F, color="darkblue") +
+  theme(legend.position="bottom",
+        legend.title=element_blank()) + 
+  labs(x="", 
+       y="",
+       title="Change in stability, by calendar time",
+       caption="Measured in standard deviation units
+       Callaway Sant'Anna did") + 
+  scale_x_continuous(limits=c(-.5, 1.5),
+                     breaks=seq(-.5,1.5,.5))
+```
+
+------------------------------------------------------------------------
+
+-   Background
+-   Problem
+-   Solutions
+-   Case study - MISTI
+-   **Final thoughts**
+
+------------------------------------------------------------------------
+
+### What have we learned?
+
+-   In certain settings, two-way fixed effects estimation is biased in ways that we only recently came to realize
+-   We have to carefully think through the data generating process (logic modeling) for each individual setting
+-   As we get more granular data and ask deeper questions, econometric tools are starting to provide better insight into treatment dynamics
+
+------------------------------------------------------------------------
+
+### What should we do?
+
+-   For any two-way fixed effects setting, use the Bacon decomposition to diagnose any problems
+-   Use stacked d-i-d to remove problematic 2x2 cells, or apply any of the new estimators
+-   Go back to your old evaluations!!
+
+------------------------------------------------------------------------
+
+### Selected bibliography
+
+```{r}
+library(flextable)
+bib <- read_excel("../AEA 2022 bib/AEA 2022 d-i-d bib.xlsx")
+
+flextable(bib)
+```
+
+------------------------------------------------------------------------
+
+THANK YOU!!
+
+dkillian\@msi-inc.com
+
+Please evaluate this session!
+
+The next slide shows two DALL-E narratives
+
+How would you rate the quality of this session, where 1 reflects the scenario on the left, and 5 reflects the scenario on the right?
+
+------------------------------------------------------------------------
+
+::: columns
+::: {.column width="50%"}
+```{r echo =F}
+include_graphics(here("new d-i-d estimators/viz/dalle/y_failure.jpg"))
+```
+:::
+
+::: {.column width="50%"}
+```{r echo =F}
+include_graphics(here("new d-i-d estimators/viz/dalle/y_success.jpg"))
+```
+:::
+:::

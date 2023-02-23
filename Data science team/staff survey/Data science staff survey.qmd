@@ -1,0 +1,31 @@
+---
+title: Data Science Staff Survey
+format: 
+  revealjs:
+    slide-number: true
+    theme: sky
+editor: visual
+background-color: lightblue
+title-slide-attributes: 
+  data-background-image: 'MSI logo.jpg'
+  data-background-size: 20%
+  data-background-position: 50% 5%
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+#getwd()
+library(here)
+source("../prep.R")
+
+d <- read_excel("Data science team/staff survey/Survey results 02-15.xlsx")
+
+```
+
+
+
+
+
+
