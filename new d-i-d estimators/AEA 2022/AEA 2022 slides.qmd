@@ -433,7 +433,7 @@ include_graphics("MISTI map.jpg")
 ### MISTI treatment timings
 
 | Wave | Comparison villages | Treated villages | Treated villages (cumulative) |
-|:---------------:|:---------------:|:---------------:|:------------------:|
+|:----------------:|:----------------:|:----------------:|:------------------:|
 |  1   |         355         |        0         |               0               |
 |  2   |         341         |        14        |              14               |
 |  3   |         322         |        19        |              33               |
