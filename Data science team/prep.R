@@ -33,13 +33,13 @@ options(digits=3, scipen=6)
 # set default
 base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            panel.grid.minor.y=element_blank(),
-                           plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
-                           plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
+                           plot.title=element_text(face="bold",size=16, hjust=.5, family = "Gill Sans Mt"),
+                           plot.subtitle = element_text(size=14, family="Gill Sans Mt"),
                            plot.caption=element_text(size=12, family="Gill Sans Mt"),
-                           axis.title=element_text(size=16, family="Gill Sans Mt"),
-                           axis.text=element_text(size=14, family="Gill Sans Mt"),
-                           legend.text=element_text(size=14, family="Gill Sans Mt"),
-                           strip.text=element_text(size=14, family="Gill Sans Mt"),
+                           axis.title=element_text(size=14, family="Gill Sans Mt"),
+                           axis.text=element_text(size=12, family="Gill Sans Mt"),
+                           legend.text=element_text(size=12, family="Gill Sans Mt"),
+                           strip.text=element_text(size=12, family="Gill Sans Mt"),
                            panel.border=element_blank(),
                            axis.ticks = element_blank())
 
@@ -48,13 +48,13 @@ theme_set(base)
 faceted <- theme_bw() +
   theme(panel.grid.minor.x=element_blank(),
         panel.grid.minor.y=element_blank(),
-        plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
-        plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
+        plot.title=element_text(face="bold",size=16, hjust=.5, family = "Gill Sans Mt"),
+        plot.subtitle = element_text(size=14, family="Gill Sans Mt"),
         plot.caption=element_text(size=12, family="Gill Sans Mt"),
-        axis.title=element_text(size=16, family="Gill Sans Mt"),
-        axis.text=element_text(size=14, family="Gill Sans Mt"),
-        legend.text=element_text(size=14, family="Gill Sans Mt"),
-        strip.text=element_text(size=14, family="Gill Sans Mt"))
+        axis.title=element_text(size=14, family="Gill Sans Mt"),
+        axis.text=element_text(size=12, family="Gill Sans Mt"),
+        legend.text=element_text(size=12, family="Gill Sans Mt"),
+        strip.text=element_text(size=12, family="Gill Sans Mt"))
 
 
 

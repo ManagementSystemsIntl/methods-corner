@@ -23,9 +23,3 @@ source("../prep.R")
 d <- read_excel("Data science team/staff survey/Survey results 02-15.xlsx")
 
 ```
-
-
-
-
-
-
