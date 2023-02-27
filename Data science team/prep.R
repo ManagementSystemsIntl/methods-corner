@@ -23,7 +23,7 @@ didPackages <- c("bacondecomp", "staggered","pretrends","HonestDiD", "did", "gsy
                  "synthdid", "TwoWayFEWeights","fixest", "DRDID", "DIDmultiplegt", "did2s", "fect")
 lapply(didPackages, library, character.only=T)
 
-setwd(here("new d-i-d estimators"))
+#setwd(here("new d-i-d estimators"))
 
 # font_add_google("Source Sans Pro", "sans-serif")
 
