@@ -8,7 +8,7 @@ source("network analysis sandbox/prep/prep.R")
 set.seed(13287)
 
 #reading in the nodes - keeping ID and Names column for now
-nodes <- read_xlsx("network analysis sandbox/data/DATA SCIENCE AND ADVANCED ANALYTICS(1-13).xlsx") |>
+nodes <- read_xlsx("network analysis sandbox/data/2-15/Staff survey network data (2-15-23).xlsx") |>
                   select(ID, Name)
 
 #reading in edges and renaming columns to variations of from and to
