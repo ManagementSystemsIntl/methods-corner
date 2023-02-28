@@ -112,7 +112,7 @@ sticker("hex sticker/pics/MSI dynamic stability.jpg",
         url="msiworldwide.com",
         u_size=4,
         u_color="#009CA6",
-        filename="hex sticker/MSI data science hex sticker v3.png")
+        filename="hex sticker/stickers/MSI data science hex sticker v3.png")
 
 # v4 ---- 
 
@@ -133,7 +133,7 @@ sticker("hex sticker/pics/MSI familiarity.jpg",
         url="msiworldwide.com",
         u_size=4,
         u_color="#009CA6",
-        filename="hex sticker/MSI data science hex sticker v4.png")
+        filename="hex sticker/stickers/MSI data science hex sticker v4.png")
 
 # v5 ---- 
 
@@ -154,7 +154,7 @@ sticker("hex sticker/pics/data-science.png",
         url="msiworldwide.com",
         u_size=4,
         u_color="#5482AB",
-        filename="hex sticker/MSI data science hex sticker v5.png")
+        filename="hex sticker/stickers/MSI data science hex sticker v5.png")
 
 
 
