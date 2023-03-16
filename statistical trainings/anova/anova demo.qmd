@@ -1,50 +1,33 @@
 ---
 title: MSI Statistical Training Series
 subtitle: Analysis of Variance (ANOVA)
-format: 
-  revealjs:
-    slide-number: true
-    theme: sky
+toc: true
+toc-depth: 3
+number-sections: false
+format:
+  html:
+    code-fold: true
+    page-layout: full
 editor: visual
-background-color: lightblue
-title-slide-attributes: 
-  data-background-image: '../../misc/MSI logo.jpg'
-  data-background-size: 10%
-  data-background-position: 1% 1%
 ---
 
-```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+## Quarto
 
-# standard figure size and generate clean output
-knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
 
-library(here)
-source(here("misc/prep.r"))
+## Running Code
 
-```
-
-Analysis of Variance (ANOVA) is a statistical theorem concerning a random variable that comprises two or more groups. The ANOVA theorem states that the variance of the random variable *y* that comprises two or more groups *x* can be decomposed into the sum of (i) the average of the subgroup variances, and (ii) the variance of the subgroup means.
-
----
-
-$V(Y)=E_X(\sigma^2_{Y|X}) + V_X(\mu_{Y|X})$
-
-This result is used most commonly to test the equality of means of the subgroups *x*. Introductory statistics texts present what is referred to as an ANOVA table.
-
----
-
-## ANOVA Table
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
 
 ```{r}
-
-aov_tab <- data.frame(errors=c("Between","Within","Total"),
-                      squares=c("SSB","SSW","SST"),
-                      #ss_act=c(ssb, ssw, sst),
-                      df=c("g-1","N-g","N-1"),
-                      #df_act = c(4-1, 400-4, 400-1),
-                      mn_sq = c("SSB/DFB", "SSW/DFW", ""),
-                      F=c("MSB/MSW","","")) 
-
-aov_tab
-
+1 + 1
 ```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
