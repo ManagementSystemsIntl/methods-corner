@@ -12,7 +12,7 @@ nodes <- read_xlsx("network analysis sandbox/data/2-15/Staff survey network data
                   select(ID, Name)
 
 #reading in edges and renaming columns to variations of from and to
-df <-read_xlsx("network analysis sandbox/data/DATA SCIENCE AND ADVANCED ANALYTICS(1-13).xlsx") |>
+df <-read_xlsx("network analysis sandbox/data/2-15/Staff survey network data (2-15-23).xlsx") |>
   select(ID, Name, to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
          , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`)
 
@@ -67,7 +67,24 @@ edges_tech$to_tech2 <- edges_tech$to_tech2 |>
          , "Robert Underwood" = "Robert Underwood"
          , "Dave Hinkle" = "David Hinkle"
          , "Brian Calhoon" = "Brian Calhoon"
-         , "N/A" = "skip") 
+         , "N/A" = "skip"
+         , "Depends on the project/assignment" = "skip"
+         , "NA" = "skip"
+         , "I'm fairly new to MSI but I would go to Aaron Lee to run through ideas :)" = "Aaron Lee"
+         , "The other Technical Director in ROLGA" = "skip"
+         , "Technical Manager Clare Bambrick" = "Clare Bambrick"
+         , "Supervisor Robert Underwood" = "Robert Underwood"
+         , "No one right now since I'm not involved in the technical side" = "skip"
+         , "Dave Hinkle Brian Calhoon" = "David Hinkle, Brian Calhoon"
+         , "N/A" = "skip"
+         , "Other TDs" = "skip"
+         , "I do not turn to anyone for help on technical questions." = "skip"
+         , "Gwen" = "Gwen Bevis"
+         , "NA" = "skip"
+         , "Ali Hayat;" = "Ali Hayat") 
+
+#remove the double name one
+#Resume here
 
 edges_tech <- edges_tech |>
   filter(!is.na(to_tech2)) |>
