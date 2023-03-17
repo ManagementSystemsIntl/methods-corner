@@ -8,10 +8,10 @@ source("network analysis sandbox/prep/prep.R")
 set.seed(13287)
 
 #reading in the nodes - keeping ID and Names column for now
-nodes <- read_xlsx("network analysis sandbox/data/2-15/Staff survey network data (2-15-23).xlsx") |>
-                  select(ID, Name)
+#nodes <- read_xlsx("network analysis sandbox/data/2-15/Staff survey network data (2-15-23).xlsx") |>
+ #                 select(ID, Name)
 
-#reading in edges and renaming columns to variations of from and to
+#reading in dataframe and renaming columns to variations of from and to
 df <-read_xlsx("network analysis sandbox/data/2-15/Staff survey network data (2-15-23).xlsx") |>
   select(ID, Name, to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
          , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`)
@@ -21,28 +21,41 @@ df <-read_xlsx("network analysis sandbox/data/2-15/Staff survey network data (2-
 
 #create a dataframe for the mentor question  
 edges_mentor <- df |>
-  mutate(to_mentor2 = strsplit(to_mentor, ",")) |>
+  mutate(to_mentor2 = strsplit(to_mentor, "[,;]+")) |>
   unnest("to_mentor2") |>
   select(ID, Name, to_mentor2)
  
+#had to separately clean the " and " for some reason
+edges_mentor <- edges_mentor |>
+  mutate(to_mentor3 = strsplit(to_mentor2, " and ")) |>
+  unnest("to_mentor3")
+  
 #need to clean up names in to_mentor column
 #This allows us to view all unique rows in the column
-unique(edges_mentor$to_mentor2)
+unique(edges_mentor$to_mentor3)
 
-#this fixes the names of the to_mentor2 column
-edges_mentor$to_mentor2 <- edges_mentor$to_mentor2 |>
+#this fixes the names of the to_mentor3 column
+edges_mentor$to_mentor3 <- edges_mentor$to_mentor3 |>
   str_trim() |> #eliminates extra spaces before and after text
   recode("Tim R" = "Tim Reilly"
          , "Tim R." = "Tim Reilly"
-         , "Michelle" = "Michelle Adams-Matson")
-        
-edges_mentor <- edges_mentor |>
+         , "Michelle" = "Michelle Adams-Matson"
+         , "Just started here" = "skip"
+         , "past staff" = "skip"
+         #, "Natalya Ghurbanyan" = "Natalya Ghurbanyan"
+         , "None" = "skip"
+         , "NA" = "skip")
+         
+
+edges_mentor2 <- edges_mentor |>
   filter(!is.na(to_mentor2)) |>
-  select(ID, Name, to_mentor2)
+  filter(to_mentor3 != "skip") |>
+  filter(to_mentor3 != "") |>
+  select(ID, Name, to_mentor3)
 
 #all the names mentioned need to be in a df for nodes
-nodes_mentor <- as_tibble(unique(c(unique(edges_mentor$Name)
-                            , unique(edges_mentor$to_mentor2)))) |>
+nodes_mentor <- as_tibble(unique(c(unique(edges_mentor2$Name)
+                            , unique(edges_mentor2$to_mentor3)))) |>
   select('Name' = value)
 
 
@@ -92,22 +105,23 @@ edges_tech <- edges_tech |>
 edges_tech$to_clean <- edges_tech$to_clean |>
   str_trim()
 
-###Resume here!!!
+#remove the the "skip" and the NA
 edges_tech <- edges_tech |>
   filter(!is.na(to_tech2)) |>
-  filter(to_tech2 != "skip")
+  filter(to_tech2 != "skip") |>
+  select(Name, to_clean)
   
 #all the names mentioned need to be in a df for nodes
 nodes_tech <- as_tibble(unique(c(unique(edges_tech$Name)
-                                   , unique(edges_tech$to_tech2)))) |>
+                                   , unique(edges_tech$to_clean)))) |>
   rename("Name" = "value")
 
 ###Populate the master list of nodes and ----
 #make unique ids for each name
 
-mentors <- unique(edges_mentor$to_mentor2)
+mentors <- unique(edges_mentor2$to_mentor3)
 
-techs <- unique(edges_tech$to_tech2) 
+techs <- unique(edges_tech$to_clean) 
 
 sources <- unique(nodes$Name)
 
@@ -132,7 +146,8 @@ nodes_mentor2 <- nodes_mentor |>
 
 #then to anonymize each df, we select only the 
 # id column and write that to the file
-nodes_mentor2 <- select(nodes_mentor2, id)  
+nodes_mentor2 <- nodes_mentor2 |>
+  select(id)  
 
 writexl::write_xlsx(nodes_mentor2
                     , "network analysis sandbox/data/nodes_mentor.xlsx")
@@ -140,15 +155,15 @@ writexl::write_xlsx(nodes_mentor2
 #Then we repeat this for each of the 3 other dfs
 
 #first I renamed some columns before joining
-edges_mentor2 <- edges_mentor |>
+edges_mentor_join <- edges_mentor2 |>
   left_join(all_nodes_names) |>
-  select('from' = id, 'Name' = to_mentor2)
+  select('from' = id, 'Name' = to_mentor3)
 
-edges_mentor2 <- edges_mentor2 |>
+edges_mentor_join <- edges_mentor_join |>
   left_join(all_nodes_names) |>
   select(from, 'to' = id)
 
-writexl::write_xlsx(edges_mentor2
+writexl::write_xlsx(edges_mentor_join
                     , "network analysis sandbox/data/edges_mentor.xlsx")
 
 #Repeat the above joining fun for the tech question 
@@ -161,7 +176,7 @@ writexl::write_xlsx(nodes_tech2,
 
 edges_tech2 <- edges_tech |>
   left_join(all_nodes_names) |>
-  select('from' = id, 'Name' = to_tech2)
+  select('from' = id, 'Name' = to_clean)
 
 edges_tech2 <- edges_tech2 |>
   left_join(all_nodes_names) |>
@@ -173,7 +188,7 @@ writexl::write_xlsx(edges_tech2,
 
 ###test plots ----
 #This is an igraph object of the network
-g_mentor <- graph_from_data_frame(edges_mentor2
+g_mentor <- graph_from_data_frame(edges_mentor_join
                                   , directed = FALSE
                                   , vertices = nodes_mentor2)
 
