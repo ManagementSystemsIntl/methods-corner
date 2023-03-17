@@ -84,8 +84,15 @@ edges_tech$to_tech2 <- edges_tech$to_tech2 |>
          , "Ali Hayat;" = "Ali Hayat") 
 
 #remove the double name one
-#Resume here
+edges_tech <- edges_tech |>
+  mutate(to_clean = strsplit(to_tech2, ",")) |>
+  unnest("to_clean") 
 
+#remove the last white space
+edges_tech$to_clean <- edges_tech$to_clean |>
+  str_trim()
+
+###Resume here!!!
 edges_tech <- edges_tech |>
   filter(!is.na(to_tech2)) |>
   filter(to_tech2 != "skip")
