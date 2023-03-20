@@ -43,51 +43,86 @@ tech_nodes <- readxl::read_xlsx(here::here("network analysis sandbox/data/nodes_
 
 tech_edges <- readxl::read_xlsx(here::here("network analysis sandbox/data/edges_tech.xlsx"))
 
-###Replace this with a different type of table
-reactable::reactable(mentor_nodes[1:5,]
-                     , defaultColDef = colDef(vAlign = "center"
-                                              , headerVAlign = "bottom")
-                     , fullWidth = F
-                     , bordered = F
-                     , outlined = T
-                     , highlight = T) |>
-  add_title("Node IDs"
-            , align = "left"
-            , font_color = my_pal[[5]]
-            , font_size = 18)
 
-reactable::reactable(mentor_edges[1:5,]
-                     , defaultColDef = colDef(vAlign = "center"
-                                              , headerVAlign = "bottom")
-                     , fullWidth = F
-                     , bordered = F
-                     , outlined = T
-                     , highlight = T)|>
-  add_title("Nodes and Connections"
-            , align = "left"
-            , font_color = my_pal[[5]]
-            , font_size = 18)
+
+###Replace this with a different type of table
+#reactable::reactable(mentor_nodes[1:5,]
+ #                    , defaultColDef = colDef(vAlign = "center"
+  #                                            , headerVAlign = "bottom")
+   #                  , fullWidth = F
+    #                 , bordered = F
+     #                , outlined = T
+      #               , highlight = T) |>
+  #add_title("Node IDs"
+   #         , align = "left"
+    #        , font_color = my_pal[[5]]
+     #       , font_size = 18)
+
+#reactable::reactable(mentor_edges[1:5,]
+ #                    , defaultColDef = colDef(vAlign = "center"
+  #                                            , headerVAlign = "bottom")
+   #                  , fullWidth = F
+    #                 , bordered = F
+     #                , outlined = T
+      #               , highlight = T)|>
+  #add_title("Nodes and Connections"
+   #         , align = "left"
+    #        , font_color = my_pal[[5]]
+     #       , font_size = 18)
                      
 ```
-
 
 
 ```{r}
 #convert the mentor_edges dataframe to a matrix
 mentors <- graph_from_data_frame(mentor_edges)
 
-#then convert it to a graph object
-mentors <- graph.edgelist(edges.mat, directed = F)
+#add degree
+mentors$degree <- degree(mentors)
+
+#add edge_betweenness
+mentors$edge_betweenness <- edge_betweenness(mentors)
+
+#add neighborhood size (i.e. size of neighborhood within 2 edges of a node)
+mentors$degree2 <- neighborhood.size(mentors, 2)
+
+ment_graph <- ggraph(mentors, layout = "with_kk") +
+  geom_node_point(aes(size = mentors$degree2)
+                  , color = "blue"
+                    , alpha = .3) +
+  geom_node_text(aes(label = name )) +
+  geom_edge_link(aes(alpha = mentors$edge_betweenness)) +
+  labs(title = "Mentor network among data enthusiasts at MSI"
+       , subtitle = "subtitle") +
+  theme(legend.position = "none")
+
+#Repeat for tech side
+techs <- graph_from_data_frame(tech_edges)
+
+#add degree
+techs$degree <- degree(techs)
+
+#add edge_betweenness
+techs$edge_betweenness <- edge_betweenness(techs)
+
+#add neighborhood size (i.e. size of neighborhood within 2 edges of a node)
+techs$degree2 <- neighborhood.size(techs, 2)
+
+tech_graph <- ggraph(techs, layout = "with_kk") +
+  geom_node_point(aes(size = techs$degree2)
+                  , color = "red"
+                    , alpha = .3) +
+  geom_node_text(aes(label = name )) +
+  geom_edge_link(aes(alpha = techs$edge_betweenness)) +
+  labs(title = "Technical advice network among data enthusiasts at MSI"
+       , subtitle = "Something about the nodes") +
+  theme(legend.position = "none")
 
 
+ment_graph + tech_graph
 ```
 
-In the entire mentor dataset there are `r gorder(mentors)`. These nodes have `r gsize(g)` connections. The resulting network looks like this.
+In the entire mentor dataset there are `r gorder(mentors)` nodes. These nodes have `r gsize(mentors)` connections. The resulting network looks like this.
 
-```{r}
-ggraph(graph = mentors, layout = "with_kk") +
-  geom_edge_link() +
-  geom_node_point(aes(label = ))
-```
 
 
