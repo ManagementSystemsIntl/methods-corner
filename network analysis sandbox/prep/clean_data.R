@@ -7,12 +7,9 @@ source("network analysis sandbox/prep/prep.R")
 
 set.seed(13287)
 
-#reading in the nodes - keeping ID and Names column for now
-#nodes <- read_xlsx("network analysis sandbox/data/2-15/Staff survey network data (2-15-23).xlsx") |>
- #                 select(ID, Name)
 
 #reading in dataframe and renaming columns to variations of from and to
-df <-read_xlsx("network analysis sandbox/data/2-15/Staff survey network data (2-15-23).xlsx") |>
+df <-read_xlsx("network analysis sandbox/data/staff survey data 03-21.xlsx") |>
   select(ID, Name, to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
          , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`)
 
@@ -21,7 +18,7 @@ df <-read_xlsx("network analysis sandbox/data/2-15/Staff survey network data (2-
 
 #create a dataframe for the mentor question  
 edges_mentor <- df |>
-  mutate(to_mentor2 = strsplit(to_mentor, "[,;]+")) |>
+  mutate(to_mentor2 = strsplit(to_mentor, "[,;&]+")) |>
   unnest("to_mentor2") |>
   select(ID, Name, to_mentor2)
  
@@ -41,14 +38,32 @@ edges_mentor$to_mentor3 <- edges_mentor$to_mentor3 |>
          , "Tim R." = "Tim Reilly"
          , "Michelle" = "Michelle Adams-Matson"
          , "Just started here" = "skip"
+         , "Dave Hinkle" = "David Hinkle"
          , "past staff" = "skip"
-         #, "Natalya Ghurbanyan" = "Natalya Ghurbanyan"
          , "None" = "skip"
-         , "NA" = "skip")
-         
+         , "NA" = "skip"
+         , "N/A" = "skip"
+         , "Kazeem"  = "Kazeem Adebayo"
+         , "Tom" = "Tom Muga Ogejo"
+         , "Tom Muga (CoP NMP)" = "Tom Muga Ogejo"
+         , "I don't know" = "skip"
+         , "Kinda Jaradat (COP)" = "Kinda Jaradat"
+         , "Non for now" = "skip"
+         , "Reily Tim on Strategic Information Management" = "Tim Reilly"
+         , "Tim Shiflett on visualizations" = "Tim Shifflett"
+         , "others on incorporation of ML into my project" = "skip"
+         , "Andrew Dicello until he left the company"= "Andrew Dicello"
+         , "Since I just joined the MSI team" = "skip"
+         , "for now I only know of Dan" = "Dan Killian"
+         , "Hallie from Home office" = "Hallie Powell"
+         , "Gift from Field Office." = "Gift Sitenge"
+         , "Anyone?" = "skip"
+         , "Gwen Bevis" = "Gwendolyn Bevis"
+         , "Mussarat Arif." = "Mussarat Arif")
+
 
 edges_mentor2 <- edges_mentor |>
-  filter(!is.na(to_mentor2)) |>
+  filter(!is.na(to_mentor3)) |>
   filter(to_mentor3 != "skip") |>
   filter(to_mentor3 != "") |>
   select(ID, Name, to_mentor3)
@@ -62,7 +77,7 @@ nodes_mentor <- as_tibble(unique(c(unique(edges_mentor2$Name)
 ###create a dataframe for the tech question
 #-repeat what was done above---###
 edges_tech <- df |>
-  mutate(to_tech2 = strsplit(to_tech_ques, ",")) |>
+  mutate(to_tech2 = strsplit(to_tech_ques, "[,;&]+")) |>
   unnest("to_tech2") |>
   select(Name, to_tech2)
 
@@ -78,8 +93,6 @@ edges_tech$to_tech2 <- edges_tech$to_tech2 |>
          , "Tim S." = "Tim Schifflet"
          , "Clare Bambrick" = "Clare Bambrick"
          , "Robert Underwood" = "Robert Underwood"
-         , "Dave Hinkle" = "David Hinkle"
-         , "Brian Calhoon" = "Brian Calhoon"
          , "N/A" = "skip"
          , "Depends on the project/assignment" = "skip"
          , "NA" = "skip"
@@ -92,13 +105,34 @@ edges_tech$to_tech2 <- edges_tech$to_tech2 |>
          , "N/A" = "skip"
          , "Other TDs" = "skip"
          , "I do not turn to anyone for help on technical questions." = "skip"
-         , "Gwen" = "Gwen Bevis"
+         , "Gwen" = "Gwendolyn Bevis"
+         , "Gwen Bevis" = "Gwendolyn Bevis"
          , "NA" = "skip"
-         , "Ali Hayat;" = "Ali Hayat") 
+         , "Ali Hayat;" = "Ali Hayat"
+         , "Busayo" = "Busayo Bello"
+         , "Kazeem"  = "Kazeem Adebayo"
+         , "Tom" = "Tom Muga Ogejo"
+         , "Kazeem Adebayo (DCoP NMP)" = "Kazeem Adebayo"
+         , "within the field team" = "skip"
+         , "Tim Schifflet" = "Tim Shifflett"
+         , "My line manager Kinda Jaradat" = "Kinda Jaradat"
+         , "Kinda Jaradat (COP)" = "Kinda Jaradat"
+         , "Dave Hinkle" = "David Hinkle"
+         , "Non for now" = "skip"
+         , "Diego" = "Diego Parra Galan"
+         , "Oscar Reyes y Diego Parra" = "Oscar Reyes, Diego Parra Galan"
+         , "Tim Shiflet" = "Tim Shifflett"
+         , "the PMES COP" = "Roger Pipe"
+         , "previously Lynn Carter" = "Lynn Carter"
+         , "not sure about a third person I \"often\" contact" = "skip"
+         , "and  Mohammed Saab" = "Mohammed Saab"
+         , "Timm Shifflett" = "Tim Shifflett"
+         , "and Jovan Rapic." = "Jovan Rapic") 
 
-#remove the double name one
+
+#remove the double name ones
 edges_tech <- edges_tech |>
-  mutate(to_clean = strsplit(to_tech2, ",")) |>
+  mutate(to_clean = strsplit(to_tech2, ", ")) |>
   unnest("to_clean") 
 
 #remove the last white space
@@ -107,8 +141,8 @@ edges_tech$to_clean <- edges_tech$to_clean |>
 
 #remove the the "skip" and the NA
 edges_tech <- edges_tech |>
-  filter(!is.na(to_tech2)) |>
-  filter(to_tech2 != "skip") |>
+  filter(!is.na(to_clean)) |>
+  filter(to_clean != "skip") |>
   select(Name, to_clean)
   
 #all the names mentioned need to be in a df for nodes
@@ -116,19 +150,10 @@ nodes_tech <- as_tibble(unique(c(unique(edges_tech$Name)
                                    , unique(edges_tech$to_clean)))) |>
   rename("Name" = "value")
 
-###Populate the master list of nodes and ----
-#make unique ids for each name
+###Populate the master list of nodes and generate ids----
 
-mentors <- unique(edges_mentor2$to_mentor3)
-
-techs <- unique(edges_tech$to_clean) 
-
-sources <- unique(nodes$Name)
-
-#This will create our list of master IDs so that nodes are identified 
-#by the same number in each network
-all_nodes_names <- as_tibble(unique(c(techs, mentors, sources)))
-  
+all_nodes_names <- as_tibble(unique(c(nodes_mentor$Name
+                                      , nodes_tech$Name)))  
 #confirm names are repeated more than once
 janitor::get_dupes(all_nodes_names)
 
@@ -140,16 +165,16 @@ all_nodes_names <-  all_nodes_names |>
 
 #The above df contains all the nodes.
 
-#Left join them to the mentor nodes object to get the ids
+#Left join all_nodes_names to nodes_mentor object to get the ids
 nodes_mentor2 <- nodes_mentor |>
   left_join(all_nodes_names)
 
 #then to anonymize each df, we select only the 
 # id column and write that to the file
-nodes_mentor2 <- nodes_mentor2 |>
+nodes_mentor_xlsx <- nodes_mentor2 |>
   select(id)  
 
-writexl::write_xlsx(nodes_mentor2
+writexl::write_xlsx(nodes_mentor_xlsx
                     , "network analysis sandbox/data/nodes_mentor.xlsx")
 
 #Then we repeat this for each of the 3 other dfs
@@ -157,46 +182,46 @@ writexl::write_xlsx(nodes_mentor2
 #first I renamed some columns before joining
 edges_mentor_join <- edges_mentor2 |>
   left_join(all_nodes_names) |>
-  select('from' = id, 'Name' = to_mentor3)
+  select('from' = id, 'Name' = to_mentor3) #Used the column name "Name" to make the next join easier
 
-edges_mentor_join <- edges_mentor_join |>
+edges_mentor_xlsx <- edges_mentor_join |>
   left_join(all_nodes_names) |>
   select(from, 'to' = id)
 
-writexl::write_xlsx(edges_mentor_join
+writexl::write_xlsx(edges_mentor_xlsx
                     , "network analysis sandbox/data/edges_mentor.xlsx")
 
 #Repeat the above joining fun for the tech question 
-nodes_tech2 <- nodes_tech |>
+nodes_tech_xlsx <- nodes_tech |>
   left_join(all_nodes_names) |>
   select(id) 
 
-writexl::write_xlsx(nodes_tech2,
+writexl::write_xlsx(nodes_tech_xlsx,
            "network analysis sandbox/data/nodes_tech.xlsx")
 
 edges_tech2 <- edges_tech |>
   left_join(all_nodes_names) |>
   select('from' = id, 'Name' = to_clean)
 
-edges_tech2 <- edges_tech2 |>
+edges_tech_xlsx <- edges_tech2 |>
   left_join(all_nodes_names) |>
   select(from, 'to' = id)
 
 
-writexl::write_xlsx(edges_tech2,
+writexl::write_xlsx(edges_tech_xlsx,
                     "network analysis sandbox/data/edges_tech.xlsx")
 
 ###test plots ----
 #This is an igraph object of the network
-g_mentor <- graph_from_data_frame(edges_mentor_join
+g_mentor <- graph_from_data_frame(edges_mentor_xlsx
                                   , directed = FALSE
-                                  , vertices = nodes_mentor2)
+                                  , vertices = nodes_mentor_xlsx)
 
 
 
-g_tech <- graph_from_data_frame(edges_tech2
+g_tech <- graph_from_data_frame(edges_tech_xlsx
                                   , directed = FALSE
-                                  , vertices = nodes_tech2)
+                                  , vertices = nodes_tech_xlsx)
 
 par(mfrow=c(1, 2))
 plot(g_tech, main = "Tech Assistance")
