@@ -7,7 +7,65 @@ source("network analysis sandbox/prep/prep.R")
 
 set.seed(13287)
 
+###cleaning for descriptive stats------
+#importing and cleaning column names
+df <- read_xlsx("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx") |>
+  select(Name 
+        , home_field = `Are you home office or field office staff?` 
+        , practice_area = `Practice Area` 
+        , training = `Training/Credential specific to data analytics` 
+        , advanced_analyses = `Any specific advanced analyses you have conducted?`
+        , software = `Any specific competencies with statistical analysis software?` 
+        , aspirations = `Any specific aspirations for data analytics?`) 
 
+
+#find the individual softwares
+softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA"
+                     , "Python", "ArcGIS", "Excel", "excel", "SAS"
+                     , "EpiInfo", "STATA", "Kobo Tool Box", "Dedoose"
+                     , "SMath Studio", "Tableau"), collapse = "|")
+
+#create a new column that extracts the names of software used 
+#then create another column that unnests any lists
+df1 <- df |>
+  mutate(new = str_extract_all(software, pattern = softwares)) |>
+          unnest(new) 
+
+#clean up a few software names
+df1$new <- df1$new |>
+  recode("STATA" = "Stata"
+         , "Spss" = "SPSS"
+         , "EXCEL" = "Excel") 
+
+#then create a count of which software packages are used at MSI
+df2 <- df1 |>
+  filter(!is.na(new)) |>
+  group_by(new) |>
+  count() |>
+  mutate(new2 = case_when(n == 1 ~ "Other"
+                          , TRUE ~ new)) |>
+  select("Software" = new2, "Count" = n, -new) |>
+  arrange(desc(Count))
+
+
+ggplot(data = df2
+       , aes(reorder(factor(Software), -Count), Count)) +
+  geom_point(size = 14, color = my_pal[[2]]) +
+  geom_segment(aes(x = factor(df2$Software), xend = factor(df2$Software) 
+               , y = 0, yend = df2$Count)
+               , linewidth = 2
+               , color = my_pal[[2]]
+               , alpha = .7) +
+  geom_text(aes(x = Software, y = Count, label = Count)
+            , color = "white") #
+
+  
+
+
+
+
+
+###network cleaning-------  
 #reading in dataframe and renaming columns to variations of from and to
 df <-read_xlsx("network analysis sandbox/data/staff survey data 03-21.xlsx") |>
   select(ID, Name, to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`

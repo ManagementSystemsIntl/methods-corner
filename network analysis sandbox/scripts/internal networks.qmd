@@ -20,14 +20,83 @@ At the January 9, 2023 all company Monday meeting, Melanie Murphy presented on t
 * Who within MSI are you able to turn to for mentorship/career guidance? 
 * Who within MSI do you turn to most often to discuss or get help on technical questions?
 
-The responses to these questions are the topic at hand in this post. They allow us to analyze informal networks that have developed within MSI, one for mentoring and the other for specific technical questions. We will then compare these with the official organizational structure.
+The responses to these questions are the topic at hand in this post. First, we will look at the different statistical and software skills, and then we will analyze the informal networks that have developed within MSI, one for mentoring and the other for specific technical questions. We will then compare these with the official organizational structure.
 
 # Our methology and data
-The data come from a voluntary, virtual survey that was distributed during a company meeting. The response rate was low so the Advanced Analytics team identified additional staff to take the survey to give us more data points. All names have been anonymized. 
+The data come from a voluntary, virtual survey that was distributed during a company meeting. The response rate was low so the Advanced Analytics team identified additional staff at the home office and on field teams to take the survey to give us a better picture of analytics at MSI. All names have been anonymized. 
 
+Let's start by looking at some summary statistics.
+
+# Summary Statistics
+We received r nrow(df) responses to the survey with r nrow(df[df$home_field=="Home office",]) responses from home office staff and r nrow(df[df$home_field=="Field office,]) responses from field office staff. 
+
+```{r}
+
+#importing and cleaning column names
+
+df <- here::here(read_xlsx("network analysis sandbox/data/staff_survey_data_03-21.xlsx")) |>
+  select(Name 
+        , home_field = `Are you home office or field office staff?` 
+        , practice_area = `Practice Area` 
+        , training = `Training/Credential specific to data analytics` 
+        , advanced_analyses = `Any specific advanced analyses you have conducted?`
+        , software = `Any specific competencies with statistical analysis software?` 
+        , aspirations = `Any specific aspirations for data analytics?`) 
+
+
+#find the individual softwares
+softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA"
+                     , "Python", "ArcGIS", "Excel", "excel", "SAS"
+                     , "EpiInfo", "STATA", "Kobo Tool Box", "Dedoose"
+                     , "SMath Studio", "Tableau"), collapse = "|")
+
+
+#create a new column that extracts the names of software used 
+#then create another column that unnests any lists
+df1 <- df |>
+  mutate(new = str_extract_all(software, pattern = softwares)) |>
+          unnest(new) 
+
+#clean up a few software names
+df1$new <- df1$new |>
+  recode("STATA" = "Stata"
+         , "Spss" = "SPSS"
+         , "EXCEL" = "Excel") 
+
+#then create a count of which software packages are used at MSI
+df2 <- df1 |>
+  filter(!is.na(new)) |>
+  group_by(new) |>
+  count() |>
+  mutate(new2 = case_when(n == 1 ~ "Other"
+                          , TRUE ~ new)) |>
+  select("Software" = new2, "Count" = n, -new) |>
+  arrange(desc(Count))
+
+
+ggplot(data = df2
+       , aes(reorder(factor(Software), -Count), Count)) +
+  geom_point(size = 14, color = my_pal[[2]]) +
+  geom_segment(aes(x = factor(df2$Software), xend = factor(df2$Software) 
+               , y = 0, yend = df2$Count)
+               , linewidth = 2
+               , color = my_pal[[2]]
+               , alpha = .7) +
+  geom_text(aes(x = Software, y = Count, label = Count)
+            , color = "white") +
+  labs(title = "Most used softwares, per responses"
+       , subtitle = "SPSS, Stata, and R were the most commonly used."
+       , y = "Number of staff"
+       , x = "Software") + 
+  theme.plot()
+
+```
+
+# Network statistics
 We are looking at networks so we have to identify the people and the connections. In network analysis these are called, nodes and edges, respectively. 
 
 Let's observe the first five rows of data for the mentor network and their connections. 
+
 
 ```{r}
 #| layout-nrow: 1

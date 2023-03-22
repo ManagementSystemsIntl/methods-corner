@@ -29,3 +29,19 @@ degree(g)
 
 strength(g)
 
+###text work
+
+library(tidytext)
+library(tidyverse)
+
+text <- as_tibble_col(df$software)
+
+softwares <- paste(c("R", "Stata", "SPSS", "Nvivo", "Qualtrics", "MaxQDA"
+              , "Python", "ArcGIS", "Excel", "SAS", "EpiInfo", "STATA"
+              , "Kobo Tool Box", "Dedoose", "SMath Studio", "Tableau"), collapse = "|")
+
+text <- text |>
+  mutate(new = str_extract_all(text$value, pattern = softwares))
+
+
+    
