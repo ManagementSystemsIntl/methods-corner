@@ -46,7 +46,8 @@ df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-2
 ```
 We received `r nrow(df)` responses to the survey with `r nrow(df[df$home_field=="Home office",])` responses from home office staff and `r nrow(df[df$home_field=="Field office",])` responses from field office staff representing projects in Iraq, Nigeria, Jordan, and Zambia. 
 
-```{r}
+```{r warning=FALSE}
+
 
 #identifying the analytic softwares used at MSI
 
@@ -106,11 +107,12 @@ Next, let's look at the networks. We collected data for two networks -- one rela
 #| label: Edges and nodes
 #| tbl-cap: "Network data"
 #| tbl-subcap: 
-#|   - "Edges"
 #|   - "Nodes"
+#|   - "Edges"
 #| layout-ncol: 2
 #| echo: fenced
 #| tbl-colwidths: [20,20]
+
 #read in the dataframes
 
 #mentoring
@@ -133,13 +135,10 @@ kable(head(mentor_edges, n = 5))
 ```
 
 
-```{r }
+```{r echo = F, warning = F}
 
 #| label: fig-charts
-#| fig-cap: "Networks"
-#| fig-subcap: 
-#|   - "Mentor network"
-#|   - "Technical advice network"
+#| fig-align="center"
 #| layout-nrow: 2
 
 
@@ -161,9 +160,10 @@ ment_graph <- ggraph(mentors, layout = "with_kk") +
                     , alpha = .3) +
   geom_node_text(aes(label = name )) +
   geom_edge_link(aes(alpha = mentors$edge_betweenness)) +
-  labs(title = "Mentor network among data enthusiasts at MSI"
+  labs(title = "Mentor network among data enthusiasts\nat MSI"
        , subtitle = "subtitle") +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  theme_void()
 
 #Repeat for tech side
 techs <- graph_from_data_frame(tech_edges)
@@ -185,7 +185,7 @@ tech_graph <- ggraph(techs, layout = "with_kk") +
   geom_edge_link(aes(alpha = techs$edge_betweenness)) +
   labs(title = "Technical advice network among data enthusiasts at MSI"
        , subtitle = "Something about the nodes") +
-  theme(legend.position = "none")
+  theme_void()
 
 ment_graph
 tech_graph
