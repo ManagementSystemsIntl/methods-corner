@@ -11,7 +11,7 @@ format:
 
 #Run a prep script that includes necessary packages and some formatting thingies
 source(here::here("network_analysis_sandbox/prep/prep.R"))
-source(here::here("network_analysis_sandbox/prep/clean_data.R")) 
+source(here::here("network_analysis_sandbox/prep/clean_data.R"))
 ```
 
 # Introduction
@@ -29,21 +29,26 @@ The data come from a voluntary, virtual survey that was distributed during a com
 Let's start by looking at some summary statistics.
 
 # Summary Statistics
-We received r nrow(df) responses to the survey with r nrow(df[df$home_field=="Home office",]) responses from home office staff and r nrow(df[df$home_field=="Field office,]) responses from field office staff. 
 
-```{r}
-
+```{r, echo = FALSE, output = FALSE}
 #importing and cleaning column names
 
-df <- here::here(read_xlsx("network analysis sandbox/data/staff_survey_data_03-21.xlsx")) |>
+df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
   select(Name 
         , home_field = `Are you home office or field office staff?` 
         , practice_area = `Practice Area` 
         , training = `Training/Credential specific to data analytics` 
         , advanced_analyses = `Any specific advanced analyses you have conducted?`
         , software = `Any specific competencies with statistical analysis software?` 
-        , aspirations = `Any specific aspirations for data analytics?`) 
+        , aspirations = `Any specific aspirations for data analytics?`) |>
+  filter(!is.na(Name))
 
+```
+We received `r nrow(df)` responses to the survey with `r nrow(df[df$home_field=="Home office",])` responses from home office staff and `r nrow(df[df$home_field=="Field office",])` responses from field office staff representing projects in Iraq, Nigeria, Jordan, and Zambia. 
+
+```{r}
+
+#identifying the analytic softwares used at MSI
 
 #find the individual softwares
 softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA"
@@ -104,41 +109,18 @@ Let's observe the first five rows of data for the mentor network and their conne
 #read in the dataframes
 
 #mentoring
-mentor_nodes <- readxl::read_xlsx(here::here("network analysis sandbox/data/nodes_mentor.xlsx"))
+mentor_nodes <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/nodes_mentor.xlsx"))
 
-mentor_edges <- readxl::read_xlsx(here::here("network analysis sandbox/data/edges_mentor.xlsx"))
+mentor_edges <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/edges_mentor.xlsx"))
 
 #tech questions
-tech_nodes <- readxl::read_xlsx(here::here("network analysis sandbox/data/nodes_tech.xlsx"))
+tech_nodes <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/nodes_tech.xlsx"))
 
-tech_edges <- readxl::read_xlsx(here::here("network analysis sandbox/data/edges_tech.xlsx"))
+tech_edges <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/edges_tech.xlsx"))
 
 
 
-###Replace this with a different type of table
-#reactable::reactable(mentor_nodes[1:5,]
- #                    , defaultColDef = colDef(vAlign = "center"
-  #                                            , headerVAlign = "bottom")
-   #                  , fullWidth = F
-    #                 , bordered = F
-     #                , outlined = T
-      #               , highlight = T) |>
-  #add_title("Node IDs"
-   #         , align = "left"
-    #        , font_color = my_pal[[5]]
-     #       , font_size = 18)
 
-#reactable::reactable(mentor_edges[1:5,]
- #                    , defaultColDef = colDef(vAlign = "center"
-  #                                            , headerVAlign = "bottom")
-   #                  , fullWidth = F
-    #                 , bordered = F
-     #                , outlined = T
-      #               , highlight = T)|>
-  #add_title("Nodes and Connections"
-   #         , align = "left"
-    #        , font_color = my_pal[[5]]
-     #       , font_size = 18)
                      
 ```
 

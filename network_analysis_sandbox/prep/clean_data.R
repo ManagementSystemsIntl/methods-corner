@@ -67,7 +67,7 @@ ggplot(data = df2
 
 ###network cleaning-------  
 #reading in dataframe and renaming columns to variations of from and to
-df <-read_xlsx("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx") |>
+df <-read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
   select(ID, Name, to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
          , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`)
 
@@ -233,7 +233,7 @@ nodes_mentor_xlsx <- nodes_mentor2 |>
   select(id)  
 
 writexl::write_xlsx(nodes_mentor_xlsx
-                    , "network_analysis_sandbox/data/nodes_mentor.xlsx")
+                    , here::here("network_analysis_sandbox/data/nodes_mentor.xlsx"))
 
 #Then we repeat this for each of the 3 other dfs
 
@@ -247,7 +247,7 @@ edges_mentor_xlsx <- edges_mentor_join |>
   select(from, 'to' = id)
 
 writexl::write_xlsx(edges_mentor_xlsx
-                    , "network_analysis_sandbox/data/edges_mentor.xlsx")
+                    , here::here("network_analysis_sandbox/data/edges_mentor.xlsx"))
 
 #Repeat the above joining fun for the tech question 
 nodes_tech_xlsx <- nodes_tech |>
@@ -255,7 +255,7 @@ nodes_tech_xlsx <- nodes_tech |>
   select(id) 
 
 writexl::write_xlsx(nodes_tech_xlsx,
-           "network_analysis_sandbox/data/nodes_tech.xlsx")
+                    here::here("network_analysis_sandbox/data/nodes_tech.xlsx"))
 
 edges_tech2 <- edges_tech |>
   left_join(all_nodes_names) |>
@@ -267,7 +267,7 @@ edges_tech_xlsx <- edges_tech2 |>
 
 
 writexl::write_xlsx(edges_tech_xlsx,
-                    "network_analysis_sandbox/data/edges_tech.xlsx")
+                    here::here("network_analysis_sandbox/data/edges_tech.xlsx"))
 
 ###test plots ----
 #This is an igraph object of the network
