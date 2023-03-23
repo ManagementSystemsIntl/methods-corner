@@ -1,5 +1,5 @@
 packages <- c("bookdown", "cowplot", "extrafont", "extrafontdb", "lubridate"
-              , "igraph", "ggraph", "patchwork", "reactable", "reactablefmtr", "readxl"
+              , "igraph", "ggraph", "knitr", "patchwork", "reactable", "reactablefmtr", "readxl"
               , "tidygraph", "tidyverse", "visNetwork")
 
 

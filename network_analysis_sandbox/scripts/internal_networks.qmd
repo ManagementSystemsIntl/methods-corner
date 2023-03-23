@@ -90,22 +90,27 @@ ggplot(data = df2
                , alpha = .7) +
   geom_text(aes(x = Software, y = Count, label = Count)
             , color = "white") +
-  labs(title = "Most used softwares, per responses"
-       , subtitle = "SPSS, Stata, and R were the most commonly used."
+  labs(title = "Most used analytic software packages"
+       , subtitle = "SPSS, Stata, and R are the most commonly used."
        , y = "Number of staff"
        , x = "Software") + 
+  scale_y_continuous(limits = c(0, 20))+
   theme.plot()
 
 ```
 
 # Network statistics
-We are looking at networks so we have to identify the people and the connections. In network analysis these are called, nodes and edges, respectively. 
-
-Let's observe the first five rows of data for the mentor network and their connections. 
-
+Next, let's look at the networks. We collected data for two networks -- one related to mentoring and another related to technical guidance. To understand the networks we have to identify the people and their connections. In network analysis these are called, nodes and edges, respectively. Let's observe the first five rows of data for the mentor network and their connections. 
 
 ```{r}
-#| layout-nrow: 1
+#| label: Edges and nodes
+#| tbl-cap: "Network data"
+#| tbl-subcap: 
+#|   - "Edges"
+#|   - "Nodes"
+#| layout-ncol: 2
+#| echo: fenced
+#| tbl-colwidths: [20,20]
 #read in the dataframes
 
 #mentoring
@@ -118,6 +123,9 @@ tech_nodes <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/nodes_
 
 tech_edges <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/edges_tech.xlsx"))
 
+kable(head(mentor_nodes, n = 5))
+
+kable(head(mentor_edges, n = 5))
 
 
 
@@ -125,7 +133,16 @@ tech_edges <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/edges_
 ```
 
 
-```{r}
+```{r }
+
+#| label: fig-charts
+#| fig-cap: "Networks"
+#| fig-subcap: 
+#|   - "Mentor network"
+#|   - "Technical advice network"
+#| layout-nrow: 2
+
+
 #convert the mentor_edges dataframe to a matrix
 mentors <- graph_from_data_frame(mentor_edges)
 
@@ -170,8 +187,9 @@ tech_graph <- ggraph(techs, layout = "with_kk") +
        , subtitle = "Something about the nodes") +
   theme(legend.position = "none")
 
+ment_graph
+tech_graph
 
-ment_graph + tech_graph
 ```
 
 In the entire mentor dataset there are `r gorder(mentors)` nodes. These nodes have `r gsize(mentors)` connections. The resulting network looks like this.
