@@ -9,7 +9,7 @@ set.seed(13287)
 
 ###cleaning for descriptive stats------
 #importing and cleaning column names
-df <- read_xlsx(here::here("network_analysis_sandbox/scripts/staff_survey_data_03-21.xlsx")) |>
+df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
   select(Name 
         , home_field = `Are you home office or field office staff?` 
         , practice_area = `Practice Area` 
@@ -67,7 +67,7 @@ ggplot(data = df2
 
 ###network cleaning-------  
 #reading in dataframe and renaming columns to variations of from and to
-df <-read_xlsx("network_analysis_sandbox/scripts/staff_survey_data_03-21.xlsx") |>
+df <-read_xlsx("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx") |>
   select(ID, Name, to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
          , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`)
 
