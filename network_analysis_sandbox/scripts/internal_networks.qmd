@@ -101,7 +101,7 @@ ggplot(data = df2
 ```
 
 # Network statistics
-Next, let's look at the networks. We collected data for two networks -- one related to mentoring and another related to technical guidance. To understand the networks we have to identify the people and their connections. In network analysis these are called, nodes and edges, respectively. Let's observe the first five rows of data for the mentor network and their connections. 
+Next, let's look at the networks. We collected data for two networks -- one related to mentoring and another related to technical guidance. To understand the networks we have to identify the people and their connections. In network analysis these are called, nodes and edges, respectively. Let's observe the first five rows of data for the mentor network to get a sense of how network data looks. 
 
 ```{r}
 #| label: Edges and nodes
@@ -134,12 +134,10 @@ kable(head(mentor_edges, n = 5))
                      
 ```
 
+On the left, are the anonymized nodes. Each one represents one person in our network. On the right, are the ties between the nodes. Node 1 is connected to node 11, and two is connected to 11 and 30 and so on. This from and to dynamic allows us to analyze and visualize the networks connections.
 
+## Mentoring network
 ```{r echo = F, warning = F}
-
-#| label: fig-charts
-#| fig-align="center"
-#| layout-nrow: 2
 
 
 #convert the mentor_edges dataframe to a matrix
@@ -154,17 +152,59 @@ mentors$edge_betweenness <- edge_betweenness(mentors)
 #add neighborhood size (i.e. size of neighborhood within 2 edges of a node)
 mentors$degree2 <- neighborhood.size(mentors, 2)
 
+```
+
+
+In the entire mentor dataset there are `r gorder(mentors)` nodes. These nodes have `r gsize(mentors)` connections. The resulting network looks like this.
+
+
+```{r warning = F, echo = F}
+#| label: fig-charts
+#| fig-align="center"
+
+basic_mentor <- ggraph(mentors, layout = "with_kk") +
+  geom_node_point(color = my_pal[[5]]
+                    , alpha = .3
+                  , size = 6) +
+  geom_node_text(aes(label = name )) +
+  geom_edge_link() +
+  labs(title = "Mentor network among data enthusiasts\nat MSI")
+  theme.graph() +
+  theme(legend.position = "none")
+
+basic_mentor
+```
+
+In this figure it is easy to see one large cluster of nodes near the top and then a collection of smaller, disconnected nodes near the bottom. 
+
+```{r}
+
+#| label: fig-charts
+#| fig-align="center"
+#| fig-width=6
+#| fig-height=4
+
 ment_graph <- ggraph(mentors, layout = "with_kk") +
   geom_node_point(aes(size = mentors$degree2)
-                  , color = "blue"
+                  , color = my_pal[[5]]
                     , alpha = .3) +
   geom_node_text(aes(label = name )) +
   geom_edge_link(aes(alpha = mentors$edge_betweenness)) +
   labs(title = "Mentor network among data enthusiasts\nat MSI"
-       , subtitle = "subtitle") +
-  theme(legend.position = "none") +
-  theme_void()
+       , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +
+  theme.graph() +
+  theme(legend.position = "none")
 
+ment_graph
+
+
+```
+
+
+### Network statistics
+
+
+```{r}
 #Repeat for tech side
 techs <- graph_from_data_frame(tech_edges)
 
@@ -179,20 +219,20 @@ techs$degree2 <- neighborhood.size(techs, 2)
 
 tech_graph <- ggraph(techs, layout = "with_kk") +
   geom_node_point(aes(size = techs$degree2)
-                  , color = "red"
+                  , color = my_pal[[10]]
                     , alpha = .3) +
-  geom_node_text(aes(label = name )) +
+  geom_node_text(aes(label = name)) +
   geom_edge_link(aes(alpha = techs$edge_betweenness)) +
   labs(title = "Technical advice network among data enthusiasts at MSI"
-       , subtitle = "Something about the nodes") +
-  theme_void()
+       , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +
+  theme.graph() +
+  theme(legend.position = "none")
 
-ment_graph
 tech_graph
 
 ```
 
-In the entire mentor dataset there are `r gorder(mentors)` nodes. These nodes have `r gsize(mentors)` connections. The resulting network looks like this.
+We 
 
 
 
