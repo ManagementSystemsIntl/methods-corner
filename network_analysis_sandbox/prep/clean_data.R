@@ -10,13 +10,17 @@ set.seed(13287)
 ###cleaning for descriptive stats------
 #importing and cleaning column names
 df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
-  select(Name 
+  select(ID
+         , Name 
         , home_field = `Are you home office or field office staff?` 
         , practice_area = `Practice Area` 
         , training = `Training/Credential specific to data analytics` 
         , advanced_analyses = `Any specific advanced analyses you have conducted?`
         , software = `Any specific competencies with statistical analysis software?` 
-        , aspirations = `Any specific aspirations for data analytics?`) 
+        , aspirations = `Any specific aspirations for data analytics?`
+        , to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
+        , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`) |>
+  mutate(respondent = 1)
 
 
 #find the individual softwares
@@ -47,32 +51,12 @@ df2 <- df1 |>
   select("Software" = new2, "Count" = n, -new) |>
   arrange(desc(Count))
 
-
-ggplot(data = df2
-       , aes(reorder(factor(Software), -Count), Count)) +
-  geom_point(size = 14, color = my_pal[[2]]) +
-  geom_segment(aes(x = factor(df2$Software), xend = factor(df2$Software) 
-               , y = 0, yend = df2$Count)
-               , linewidth = 2
-               , color = my_pal[[2]]
-               , alpha = .7) +
-  geom_text(aes(x = Software, y = Count, label = Count)
-            , color = "white") #
-
-  
-
-
-
-
-
 ###network cleaning-------  
 #reading in dataframe and renaming columns to variations of from and to
-df <-read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
-  select(ID, Name, to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
-         , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`)
+#df <-read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
+ # select(ID, Name, to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
+  #       , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`)
 
-#reformat `to` columns by splitting them 
-#and then pivoting_longer
 
 #create a dataframe for the mentor question  
 edges_mentor <- df |>

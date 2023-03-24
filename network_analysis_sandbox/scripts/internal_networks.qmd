@@ -159,18 +159,17 @@ In the entire mentor dataset there are `r gorder(mentors)` nodes. These nodes ha
 
 
 ```{r warning = F, echo = F}
-#| label: fig-charts
-#| fig-align="center"
+
 
 basic_mentor <- ggraph(mentors, layout = "with_kk") +
+  geom_edge_link(color = my_pal[[5]]
+                 , alpha = .3) +
   geom_node_point(color = my_pal[[5]]
-                    , alpha = .3
-                  , size = 6) +
-  geom_node_text(aes(label = name )) +
-  geom_edge_link() +
+                  , size = 4) +
   labs(title = "Mentor network among data enthusiasts\nat MSI")
-  theme.graph() +
-  theme(legend.position = "none")
+  theme(legend.position = "none")+
+  theme.graph() 
+  
 
 basic_mentor
 ```
@@ -184,18 +183,18 @@ In this figure it is easy to see one large cluster of nodes near the top and the
 #| fig-width=6
 #| fig-height=4
 
-ment_graph <- ggraph(mentors, layout = "with_kk") +
-  geom_node_point(aes(size = mentors$degree2)
-                  , color = my_pal[[5]]
-                    , alpha = .3) +
-  geom_node_text(aes(label = name )) +
-  geom_edge_link(aes(alpha = mentors$edge_betweenness)) +
-  labs(title = "Mentor network among data enthusiasts\nat MSI"
-       , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +
-  theme.graph() +
-  theme(legend.position = "none")
+#ment_graph <- ggraph(mentors, layout = "with_kk") +
+ # geom_node_point(aes(size = mentors$degree2)
+  #                , color = my_pal[[5]]
+   #                 , alpha = .3) +
+  #geom_node_text(aes(label = name )) +
+  #geom_edge_link(aes(alpha = mentors$edge_betweenness)) +
+  #labs(title = "Mentor network among data enthusiasts\nat MSI"
+   #    , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +
+  #theme.graph() +
+  #theme(legend.position = "none")
 
-ment_graph
+#ment_graph
 
 
 ```
@@ -218,11 +217,12 @@ techs$edge_betweenness <- edge_betweenness(techs)
 techs$degree2 <- neighborhood.size(techs, 2)
 
 tech_graph <- ggraph(techs, layout = "with_kk") +
-  geom_node_point(aes(size = techs$degree2)
-                  , color = my_pal[[10]]
-                    , alpha = .3) +
-  geom_node_text(aes(label = name)) +
-  geom_edge_link(aes(alpha = techs$edge_betweenness)) +
+  geom_edge_link(color = my_pal[[10]]
+                 , alpha = .3) +
+  geom_node_point(color = my_pal[[10]]
+                  , size = 4) +
+  #geom_node_text(aes(label = name)) +
+
   labs(title = "Technical advice network among data enthusiasts at MSI"
        , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +
   theme.graph() +
