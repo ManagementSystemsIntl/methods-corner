@@ -1,0 +1,162 @@
+---
+title: "South Sudan resilience baseline"
+subtitle: "Demographic profiles" 
+author: "Monitoring and Evaluation Support Project (MESP)"
+toc: true
+toc-depth: 3
+number-sections: true
+format:
+  docx:
+    reference-doc: USAID-report-template-02.docx
+    highlight-style: github
+#  html:
+    code-fold: true
+editor: visual
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+
+# standard figure size and generate clean output
+
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=F, echo=T)
+
+library(here) 
+source(here("code/00 South Sudan resilience - prep.R"))
+
+#hh <- read_dta(here("data/local/SSD resilience baseline household roster.dta"))
+
+# to switch to Word
+
+# format:
+#   docx:
+#     reference-doc: USAID-report-template-02.docx
+# always_allow_html: true
+
+# ---
+# title: "My Document"
+# format:
+#   docx:
+#     toc: true
+#     number-sections: true
+#     highlight-style: github
+# ---
+
+```
+
+# Introduction
+
+# Overall
+
+```{r}
+
+frq(dat$county)
+table(dat$region, dat$county)
+```
+
+# Jur River (Bahr el Gazal)
+
+```{r}
+jur <- dat %>%
+  filter(county=="Jur River")
+
+hhjur <- hh %>%
+  filter(county=="Jur River")
+```
+
+## Age
+
+```{r}
+#frq(hhjur$sex)
+
+#hhjur <- hhjur %>%
+#  mutate()
+
+#age_jur <- data.frame(table(hhjur$age_dec, hhjur$sex))
+
+ age_jur <- hhjur %>%
+   group_by(age_dec, sex) %>%
+   summarize(sex_count=n()) %>%
+   left_join(age_dec_key) %>%
+   left_join(sex_key) %>%
+   mutate(count=ifelse(sex_lab=="Male", sex_count, sex_count*-1)) %>%
+   na.omit()
+ 
+age_jur
+
+```
+
+```{r}
+
+
+ 
+ ggplot(age_jur, aes(age_lab, count, fill=sex_lab)) +
+   geom_bar(stat="identity", alpha=.8, width=.6) +
+   scale_fill_manual(values=c("dodgerblue2","maroon")) +
+   coord_flip() +
+   #scale_y_continuous(labels=age_dec_key$age_lab) +
+   theme(legend.title=element_blank(),
+         legend.position="bottom",
+         axis.ticks.x=element_blank(),
+         axis.text.x=element_blank()) +
+   labs(x="",
+        y="",
+        title="Age pyramid\nJur River")
+
+
+```
+
+```{r}
+ggplot(hhjur, aes(age)) + 
+  stat_density(fill="dodgerblue2", alpha=.5) + 
+  geom_vline(xintercept=mean(hhjur$age, na.rm=T), color="darkgoldenrod2", size=1) +
+  scale_x_continuous(breaks=seq(0,80,10)) +
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  labs(x="",
+       y="",
+       title="Age, Jur River")
+```
+
+## Literate
+
+```{r}
+hhjur %>%
+  filter(age>5) %>%
+  describe(.[,literate])
+
+```
+
+## Economic activity in last 10 years (Q314)
+
+```{r}
+jur_ec <-ec_act_cnty_lst$`Jur River` %>%
+  arrange(desc(freq))
+
+jur_ec
+```
+
+```{r}
+jur_314 <- data.frame(frq(hhjur$q_314)) %>%
+  select(2:4) %>%
+  na.omit() %>%
+  arrange(desc(frq)) %>%
+  mutate(percent=round(frq/sum(frq),3),
+         rank=rev(rank(frq)))
+
+jur_314_gt <- jur_314 %>%
+  select(-1, Income=2) %>%
+  gt() 
+
+jur_314_gt
+```
+
+## Livelihood activities (Q401-Q402)
+
+```{r}
+
+jur_inc <- inc_cnty_lst$`Jur River`
+jur_inc
+
+```
+
+## Wau (Bahr el Gazal)

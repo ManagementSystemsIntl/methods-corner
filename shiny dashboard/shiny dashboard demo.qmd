@@ -1,0 +1,207 @@
+---
+title: "Shiny dashboard"
+subtitle: "notes from Datacamp course"
+format: revealjs
+    slide-number: true
+    theme: sky
+editor: visual
+background-color: lightblue
+title-slide-attributes: 
+  data-background-image: 'MSI logo.jpg'
+  data-background-size: 20%
+  data-background-position: 50% 5%
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+
+library(here)
+source("prep.R")
+library(shiny)
+library(shinydashboard)
+data(starwars)
+d <- starwars
+rm(starwars)
+
+```
+
+## Dashboard structure
+
+```{r}
+header <- dashboardHeader()
+
+sidebar <- dashboardSidebar()
+
+body <- dashboardBody()
+
+server <- function(input, output) {}
+
+ui <- dashboardPage(header, sidebar, body)
+
+shinyApp(ui, server)
+
+```
+
+## Dashboard header
+
+```{r}
+
+header <- dashboardHeader(
+  dropdownMenu(
+    type="messages",
+    messageItem(
+      from="Lucy",
+      message="Check out datacamp!",
+      href="http://www.datacamp.com"
+    )
+  ),
+  dropdownMenu(
+    type="notifications",
+    notificationItem(
+      text="Whoopee!",
+      href="http://www.datacamp.com"
+    )
+  ),
+  dropdownMenu(
+    type="tasks",
+    taskItem(
+      text="task!",
+      value=15
+    )
+  )
+)
+
+ui <- dashboardPage(header, sidebar, body)
+shinyApp(ui, server)
+
+```
+
+## Dashboard sidebar 
+
+```{r}
+sidebar <- dashboardSidebar(
+  sidebarMenu(
+    menuItem("Data",
+             tabName="data"
+    ),
+    menuItem("Dashboard",
+             tabName="dashboard")
+  )
+)
+
+ui <- dashboardPage(header, sidebar, body)
+shinyApp(ui, server)
+
+
+```
+
+## Dashboard body
+
+```{r}
+body <- dashboardBody(
+  tabItems(
+    tabItem(tabName="data",
+            "Input data here"),
+    tabItem(tabName="dashboard",
+            "Look at my cool dashboard")
+  ),
+  tabBox(
+    title="This area contains tabs",
+    tabPanel("Tab1", "Tab 1 content"),
+    tabPanel("Tab2", "tab 2 content")
+  )
+)
+
+ui <- dashboardPage(header, sidebar, body)
+shinyApp(ui, server)
+
+```
+
+## Inputs
+
+```{r}
+
+body <- dashboardBody(
+  tabItems(
+    tabItem(tabName="data",
+            "Input data here"),
+    tabItem(tabName="dashboard",
+            "Look at my cool dashboard")
+  ),
+  tabBox(
+    title="This area contains tabs",
+    tabPanel("Tab1", "Tab 1 content"),
+    tabPanel("Tab2", "tab 2 content")
+  ),
+  selectInput(
+    inputId="colleagues",
+    label="Colleagues",
+    choices=c("Brian Calhoon", "Melanie Murphy","Carolyn Fonseca")
+  ),
+  actionButton(
+    inputId="Hullo!",
+    label="I said Hullo!",
+    #icon="refresh",
+    width=400
+  ),
+  checkboxInput(inputId="checkboxInput",
+                label="Checkbox Input!"
+  ),
+  dateInput(inputId="date",
+            label="Put the date here!"
+  ),
+  numericInput(inputId="numericInput",
+               label="Numeric input!",
+               value=10,
+               min=0,
+               max=100,
+               step=10
+  ),
+  radioButtons(inputId="radioButtons",
+               label="Radio buttons!",
+               choices=c("Red","Blue","Yellow")
+  ),
+  sliderInput(inputId="sliderInput",
+              label="Slider input!",
+              value=10,
+              min=-100,
+              max=100,
+              step=10
+  ),
+  textInput(inputId="textInput",
+            label="Text input!"
+  )
+)
+
+ui <- dashboardPage(header, sidebar, body)
+shinyApp(ui, server)
+
+```
+
+## Read in data
+
+```{r}
+
+starwars_url <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_6225/datasets/starwars.csv"
+
+server <- function(input, output, session) {
+  starwars_url <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_6225/datasets/starwars.csv"
+  reactive_starwars_data <- reactiveFileReader(
+         intervalMillis = 1000,
+         session =  session,
+         filePath =  starwars_url,
+         readFunc = function(filePath) { 
+           read.csv(url(filePath))
+         }
+        )
+  output$table <- renderTable({
+    reactive_starwars_data()
+    })
+}
+
+ui <- dashboardPage(header, sidebar, body)
+shinyApp(ui, server)
+```
+

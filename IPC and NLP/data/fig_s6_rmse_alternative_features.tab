@@ -1,0 +1,9 @@
+"Baseline + Frame semantic parsing + Keyword expansion + Granger Causality"	0.0912
+"Only 13 seed keyphrases"	0.1466
+"No frame semantic parsing of books or journal articles"	0.1127
+"No keyword expansion"	0.1258
+"No dimensionality reduction"	0.1311
+"Elastic net instead of Granger causality"	0.1395
+"XGBoost instead of Granger causality"	0.1321
+"Location within the same sentence as a text feature"	0.0984
+"Binary news indicators"	0.1104

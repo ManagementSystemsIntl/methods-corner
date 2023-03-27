@@ -1,0 +1,125 @@
+---
+title: Data Science and Advanced Analytics
+author: Melanie Murphy, Brian Calhoon, Dan Killian
+format: 
+  revealjs:
+    slide-number: true
+    theme: sky
+editor: visual
+background-color: lightblue
+title-slide-attributes: 
+  data-background-image: 'MSI logo.jpg'
+  data-background-size: 20%
+  data-background-position: 50% 5%
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+
+library(here)
+source("prep.R")
+
+
+```
+
+------------------------------------------------------------------------
+
+### What is Data Science? Advanced analytics?
+
+-   Data science: The extraction of learning from data
+
+-   Advanced analytics: The application of methods that learn from the data
+
+```{r fig.align='center', out.width="20%", fig.show='hold', echo=F}
+
+include_graphics("Data science life cycle.png") 
+# need not be case sensitive locally, but is case sensitive for GH Pages
+
+```
+
+------------------------------------------------------------------------
+
+### Robust external demand for advanced analytics
+
+-   USAID's 2011 evaluation policy remains in force, offering the opportunity for impact evaluations
+
+-   USAID references analytics in its solicitations (simulation, social network analysis, modeling)
+
+-   New data sources require deeper understanding, processing, and analysis
+
+------------------------------------------------------------------------
+
+### Robust internal demand for advanced analytics
+
+-   We lost our analysts!
+
+-   MSI junior / midlevel staff interested in gaining skills and experience / dedicated experience path
+
+-   MSI needs to document and build its past performance and capabilities for new business
+
+-   Need to justify / defend analytical choices
+
+------------------------------------------------------------------------
+
+### Data science and advanced analytics
+
+Three primary areas of action
+
+-   Best practice application of technique to extract learning
+-   Build capacity of interested staff
+-   Document past practice to help win new business
+
+------------------------------------------------------------------------
+
+### Application of technique to extract learning
+
+```{r echo = F}
+tech <- read_excel("Analytical techniques.xlsx")
+
+#gt(tech)
+
+#kable(tech)
+
+tech_gt <- gt(tech)
+tech_gt
+```
+
+------------------------------------------------------------------------
+
+### Build capacity of interested staff
+
+-   Structured trainings, hopefully at least once per year
+-   4-12 brown bag sessions per year
+-   Weekly office hours / on-demand consultation
+
+```{r fig.align='center', out.width="40%", fig.show='hold', echo=F}
+
+include_graphics("Quarto website.png")
+
+```
+
+------------------------------------------------------------------------
+
+### Document past practice and identify new opportunities
+
+-   Inventory of techniques, activities, and analysts
+-   Review existing task pipeline for opportunities to apply technique
+-   Demonstrate new techniques to expand performance and capabilities
+
+------------------------------------------------------------------------
+
+### Tasks
+
+-   Build and maintain trackers of techniques, where they were used, which staff implemented them
+-   Identify interested and capable staff
+-   Develop comms on current performance and capabilities
+-   Develop how-to manual / cookbook on analytical workflow
+-   Develop content for training and brown bag sessions
+
+------------------------------------------------------------------------
+
+Interested? Please follow link in the chat.
+
+Thank you!

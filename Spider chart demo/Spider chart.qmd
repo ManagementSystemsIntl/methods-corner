@@ -1,0 +1,169 @@
+---
+title: "Spider Chart Example"
+author: "Brian Calhoon"
+date: "5/6/2021"
+format: 
+  html:
+    toc: true
+    code-fold: true
+    code-tools: true
+---
+<style>
+#TOC {border-color: #133469;
+
+}
+
+body{font-family: Gill Sans MT;
+     font-size: 18px;
+     background-color: #FDFDFD;
+}
+
+h1{color: #133469; 
+}
+
+h2{color: #009CA6;
+}
+
+h3{color: #5482AB
+}
+
+</style>
+---
+
+# Title
+```{r global_options, include = FALSE}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(fig.width=10, fig.height=8, warning=F, message=F, cache=T, error=T, echo = T)
+
+```
+
+
+```{r libraries, include = F}
+
+library(extrafont) #fonts
+library(extrafontdb) #more fonts
+library(tidyverse)
+library(plotly) #Creates interactive charts
+library(crosstalk) #connects tables and charts 
+library(DT) # An R interface to the JavaScript library DataTables
+library(ggradar)
+library(palmerpenguins)
+library(scales)
+library(showtext)
+library(htmlwidgets)
+```
+
+## Data
+
+```{r, echo: false}
+### Making my mock object
+
+dat <- tibble(role = c("Role 1"
+                       , "Role 2"
+                       , "Role 3"
+                       , "Role 4")) %>% 
+              mutate(lfa = case_when(grepl("Role 1", role)  ~ round(runif(4), digits = 2)
+                                     , grepl("Role 3", role) ~ round(runif(4), digits = 2)
+                                     , TRUE ~ 0)
+                     , cam = case_when(grepl("Role 2", role) ~ round(runif(4), digits = 2)
+                                       , TRUE ~ 0)
+                     , ic = case_when(grepl("Role 3", role) ~ round(runif(4), digits = 2)
+                                      , grepl("Role 2", role) ~ round(runif(4), digits =2)
+                                      , grepl("Role 1", role) ~ round(runif(4), digits=2)
+                                      , TRUE ~ 0)
+                     , cms = case_when(grepl("Role 4", role) ~ round(runif(4), digits=2)
+                                       , grepl("Role 2", role) ~ round(runif(4), digits=2)
+                                       , grepl("Role 3", role) ~ round(runif(4), digits =2)
+                                       , TRUE ~ 0))
+
+col_list = c("lfa", "cam", "ic", "cms")
+
+var_width = 20
+
+#avg. scores
+dat_sum <- dat %>%
+  group_by(role) %>% 
+  rowwise() %>% 
+  mutate(score = round(mean(c_across(all_of(col_list)), na.rm = T), digits = 2)) %>% 
+  ungroup() %>% 
+  mutate_at(vars(-role), rescale) %>% 
+  select(-score) %>% 
+  rename("Land Force Application" = lfa
+         , !!str_wrap("Counter Air & Missile", width=15) := cam
+         , "Imagery Collection" = ic
+         , !!str_wrap("Corp. Mgmt & Support", width = 15) := cms) 
+
+
+```
+
+```{r, include = F} 
+#|fig-width: 9 
+#| fig-height: 9
+#| fig-cap: "Testing a static version of the graphic."
+#| fig-alt: "A radar plot of the S2C graphic."
+#| echo: false
+
+spider <- dat_sum %>%
+  ggradar::ggradar(
+    font.radar = "roboto",
+    grid.label.size = 13,  # Affects the grid annotations (0%, 50%, etc.)
+    axis.label.size = 8.5, # Afftects the names of the variables
+    group.point.size = 3)   # Simply the size of the point 
+
+spider
+```
+
+```{r spider2}
+#|fig-width: 9 
+#| fig-height: 9
+#| fig-cap: "Testing a static version of the graphic."
+#| fig-alt: "A radar plot of the S2C graphic."
+#| echo: false
+
+spider2 <- spider + 
+  theme(
+    legend.position = c(1, 0),  
+    legend.justification = c(1, 0),
+    legend.text = element_text(size = 16, family = "roboto"),
+    legend.key = element_rect(fill = NA, color = NA),
+    legend.background = element_blank()
+  ) +
+  labs(title = "Radar plot of S2C capabilities, by Role") + 
+  theme(
+    plot.background = element_rect(fill = "#fbf9f4", color = "#fbf9f4"),
+    panel.background = element_rect(fill = "#fbf9f4", color = "#fbf9f4"),
+    plot.title.position = "plot", # slightly different from default
+    plot.title = element_text(
+      family = "Roboto", 
+      size = 32,
+      face = "bold", 
+      color = "#2a475e"
+    )
+  )
+
+spider2
+```
+
+
+```{r}
+
+#| label: fig-spider
+#| fig-height: 9
+#| fig-width: 9
+#| fig-cap: "Select data on the chart to view it in the table below."
+#| fig-alt: "A radar plot of the S2C graphic."
+#| echo: false
+
+library(crosstalk)
+
+#This is used for highlighting data. It creates an object of class crosstalk::SharedData.
+m1 <- highlight_key(dat_sum)
+
+#Makes an interactive plot
+p3 <- highlight(ggplotly(spider2), "plotly_selected")
+
+#We want the plot to talk to the table so we connect them via the crosstalk package's bscol() function. Then, DT generates a javascript friendly table to "talk" with selections on the plot.
+crosstalk::bscols(p3, DT::datatable(m1), widths = 10, height = 300)
+```
+   
