@@ -1,7 +1,7 @@
 
 library(tidygraph)
 
-g <- as_tbl_graph(mentor_edges) |>
+g <- as_tbl_graph(edges_mentor_xlsx) |>
   activate(nodes) |>
   mutate(degree = centrality_degree()) |>
   activate(edges) |>
@@ -12,6 +12,8 @@ g <- as_tbl_graph(mentor_edges) |>
 activate( nodes) |>
   local_size(g)
 
+V(g)$degree
+E(g)$centrality
 E(g)
 
 ecount(g)
@@ -23,11 +25,6 @@ ggraph(g, layout = "with_kk") +
   geom_node_text(aes(label = name)) +
   geom_edge_link(aes(alpha = centrality))
 
-centrality(g)
-
-degree(g)
-
-strength(g)
 
 ###text work
 
@@ -99,8 +96,8 @@ edges_mentor_test2 <- edges_mentor_test |>
 #  select(ID, Name, to_mentor3)
 
 #all the names mentioned need to be in a df for nodes
-nodes_mentor_test <- as_tibble(unique(c(unique(edges_mentor_test2$Name)
-                                   , unique(edges_mentor_test2$to_mentor3)))) |>
+nodes_mentor_test <- as_tibble(unique(c(edges_mentor_test2$Name
+                                   , edges_mentor_test2$to_mentor3))) |>
   select('Name' = value)
 
 
@@ -176,8 +173,8 @@ edges_tech_test <- edges_tech_test |>
 #  select(Name, to_clean)
 
 #all the names mentioned need to be in a df for nodes
-nodes_tech_test <- as_tibble(unique(c(unique(edges_tech_test$Name)
-                                 , unique(edges_tech_test$to_clean)))) |>
+nodes_tech_test <- as_tibble(unique(c(edges_tech_test$Name
+                                 , edges_tech_test$to_clean))) |>
   rename("Name" = "value")
 
 ###Populate the master list of nodes and generate ids----
@@ -223,8 +220,8 @@ edges_mentor_xlsx_test <- edges_mentor_join_test |>
 
 #Repeat the above joining fun for the tech question 
 nodes_tech_xlsx_test <- nodes_tech_test |>
-  left_join(all_nodes_names_test) |>
-  select(id) 
+  left_join(all_nodes_names_test) #|>
+  #select(id) 
 
 #writexl::write_xlsx(nodes_tech_xlsx,
  #                   here::here("network_analysis_sandbox/data/nodes_tech.xlsx"))
@@ -246,11 +243,37 @@ edges_tech_xlsx_test <- edges_tech_test2 |>
 edges_mentor_xlsx_test <- edges_mentor_xlsx_test |>
   relocate(c(from, to), .before = ID) 
 
+edges_mentor_xlsx_test$home_field <- edges_mentor_xlsx_test$home_field |>
+  recode("Home office" = "1" 
+         , "Field office" = "2" )
+
 edges_tech_xlsx_test <- edges_tech_xlsx_test |>
   relocate(c(from, to), .before = ID)
 
-g_mentor_test <- graph_from_data_frame(edges_mentor_xlsx_test
-                                  , directed = FALSE)
+nodes_test <- 
+
+edges_g <- edges_mentor_xlsx_test |>
+  select(1:2)
+
+nodes_test <- nodes_mentor_xlsx_test |>
+  select(4) 
+
+####smaller test##-------
+
+#This uses only the SEA staff
+df_test$practice_area <- df_test$practice_area |>
+  recode("Strategy, Evluation and Analysis" = "SEA"
+         , "Education" = "SEA") 
+
+df_test1 <- df_test |>
+  filter(practice_area=="SEA")
+
+df_test1_ties <- df_test1 |>
+  select()
+  
+g_mentor_test <- graph_from_data_frame(edges_g
+                                  , directed = FALSE
+                                  , vertices = nodes_mentor_test)
                                
 
 
@@ -265,9 +288,37 @@ V(g_mentor_test)
 
 E(g_mentor_test)
 
-library(tidygraph)
+V(g_mentor_test)$home_field
+
+E(g_mentor_test)$color <- E(g_mentor_test)$home_field
+
+E(g_mentor_test)$home_field <- gsub("Home office", "red"
+                               , E(g_mentor_test)$home_field)
+E(g_mentor_test)$color <- gsub("Field office", "blue"
+                               , E(g_mentor_test)$color)
+
 
 ggraph(g_mentor_test, "with_kk") +
-  geom_node_point(aes(fill = g_mentor_test$home_field)) +
+  geom_node_label(aes(name)) +
+  geom_edge_link(aes(color = home_field))+
   theme.graph()
 
+###--------testing out--------------
+
+library(igraph)
+
+actors <- data.frame(name=c("Alice", "Bob", "Cecil", "David",
+                            "Esmeralda"),
+                     age=c(48,33,45,34,21),
+                     gender=c("F","M","F","M","F"))
+relations <- data.frame(from=c("Bob", "Cecil", "Cecil", "David",
+                               "David", "Esmeralda"),
+                        to=c("Alice", "Bob", "Alice", "Alice", "Bob", "Alice"),
+                        same.dept=c(FALSE,FALSE,TRUE,FALSE,FALSE,TRUE),
+                        friendship=c(4,5,5,2,1,1), advice=c(4,5,5,4,2,3))
+g <- graph_from_data_frame(relations, directed=TRUE, vertices=actors)
+print(g, e=TRUE, v=TRUE)
+
+## The opposite operation
+as_data_frame(g, what="vertices")
+as_data_frame(g, what="edges")
