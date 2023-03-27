@@ -206,7 +206,7 @@ hence, difference-in-differences (d-i-d or DiD or DD)
 $y_{it}=\beta_0+\delta_{0,t}Post_t+\beta_{1,i}Treat_i+\delta_{1,it}Post_t*Treat_i+\epsilon_{it}$
 
 |                        | Pre               | Post                                | Post - Pre          |
-|------------------|------------------|-------------------|------------------|
+|------------------------|-------------------|-------------------------------------|---------------------|
 | Comparison             | $\beta_0$         | $\beta_0+\delta_0$                  | $\delta_0$          |
 | Treatment              | $\beta_0+\beta_1$ | $\beta_0+\delta_0+\beta_1+\delta_1$ | $\delta_0+\delta_1$ |
 | Treatment - Comparison | $\beta_1$         | $\beta_1 + \delta_1$                | $\delta_1$          |
@@ -433,7 +433,7 @@ include_graphics("MISTI map.jpg")
 ### MISTI treatment timings
 
 | Wave | Comparison villages | Treated villages | Treated villages (cumulative) |
-|:---------------:|:---------------:|:---------------:|:------------------:|
+|:----:|:-------------------:|:----------------:|:-----------------------------:|
 |  1   |         355         |        0         |               0               |
 |  2   |         341         |        14        |              14               |
 |  3   |         322         |        19        |              33               |
