@@ -11,7 +11,7 @@ format:
 
 #Run a prep script that includes necessary packages and some formatting thingies
 source(here::here("network_analysis_sandbox/prep/prep.R"))
-source(here::here("network_analysis_sandbox/prep/clean_data.R")) 
+source(here::here("network_analysis_sandbox/prep/clean_data.R"))
 ```
 
 # Introduction
@@ -29,21 +29,27 @@ The data come from a voluntary, virtual survey that was distributed during a com
 Let's start by looking at some summary statistics.
 
 # Summary Statistics
-We received r nrow(df) responses to the survey with r nrow(df[df$home_field=="Home office",]) responses from home office staff and r nrow(df[df$home_field=="Field office,]) responses from field office staff. 
 
-```{r}
-
+```{r, echo = FALSE, output = FALSE}
 #importing and cleaning column names
 
-df <- here::here(read_xlsx("network analysis sandbox/data/staff_survey_data_03-21.xlsx")) |>
+df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
   select(Name 
         , home_field = `Are you home office or field office staff?` 
         , practice_area = `Practice Area` 
         , training = `Training/Credential specific to data analytics` 
         , advanced_analyses = `Any specific advanced analyses you have conducted?`
         , software = `Any specific competencies with statistical analysis software?` 
-        , aspirations = `Any specific aspirations for data analytics?`) 
+        , aspirations = `Any specific aspirations for data analytics?`) |>
+  filter(!is.na(Name))
 
+```
+We received `r nrow(df)` responses to the survey with `r nrow(df[df$home_field=="Home office",])` responses from home office staff and `r nrow(df[df$home_field=="Field office",])` responses from field office staff representing projects in Iraq, Nigeria, Jordan, and Zambia. 
+
+```{r warning=FALSE}
+
+
+#identifying the analytic softwares used at MSI
 
 #find the individual softwares
 softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA"
@@ -85,65 +91,55 @@ ggplot(data = df2
                , alpha = .7) +
   geom_text(aes(x = Software, y = Count, label = Count)
             , color = "white") +
-  labs(title = "Most used softwares, per responses"
-       , subtitle = "SPSS, Stata, and R were the most commonly used."
+  labs(title = "Most used analytic software packages"
+       , subtitle = "SPSS, Stata, and R are the most commonly used."
        , y = "Number of staff"
        , x = "Software") + 
+  scale_y_continuous(limits = c(0, 20))+
   theme.plot()
 
 ```
 
 # Network statistics
-We are looking at networks so we have to identify the people and the connections. In network analysis these are called, nodes and edges, respectively. 
-
-Let's observe the first five rows of data for the mentor network and their connections. 
-
+Next, let's look at the networks. We collected data for two networks -- one related to mentoring and another related to technical guidance. To understand the networks we have to identify the people and their connections. In network analysis these are called, nodes and edges, respectively. Let's observe the first five rows of data for the mentor network to get a sense of how network data looks. 
 
 ```{r}
-#| layout-nrow: 1
+#| label: Edges and nodes
+#| tbl-cap: "Network data"
+#| tbl-subcap: 
+#|   - "Nodes"
+#|   - "Edges"
+#| layout-ncol: 2
+#| echo: fenced
+#| tbl-colwidths: [20,20]
+
 #read in the dataframes
 
 #mentoring
-mentor_nodes <- readxl::read_xlsx(here::here("network analysis sandbox/data/nodes_mentor.xlsx"))
+mentor_nodes <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/nodes_mentor.xlsx"))
 
-mentor_edges <- readxl::read_xlsx(here::here("network analysis sandbox/data/edges_mentor.xlsx"))
+mentor_edges <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/edges_mentor.xlsx"))
 
 #tech questions
-tech_nodes <- readxl::read_xlsx(here::here("network analysis sandbox/data/nodes_tech.xlsx"))
+tech_nodes <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/nodes_tech.xlsx"))
 
-tech_edges <- readxl::read_xlsx(here::here("network analysis sandbox/data/edges_tech.xlsx"))
+tech_edges <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/edges_tech.xlsx"))
+
+kable(head(mentor_nodes, n = 5))
+
+kable(head(mentor_edges, n = 5))
 
 
 
-###Replace this with a different type of table
-#reactable::reactable(mentor_nodes[1:5,]
- #                    , defaultColDef = colDef(vAlign = "center"
-  #                                            , headerVAlign = "bottom")
-   #                  , fullWidth = F
-    #                 , bordered = F
-     #                , outlined = T
-      #               , highlight = T) |>
-  #add_title("Node IDs"
-   #         , align = "left"
-    #        , font_color = my_pal[[5]]
-     #       , font_size = 18)
-
-#reactable::reactable(mentor_edges[1:5,]
- #                    , defaultColDef = colDef(vAlign = "center"
-  #                                            , headerVAlign = "bottom")
-   #                  , fullWidth = F
-    #                 , bordered = F
-     #                , outlined = T
-      #               , highlight = T)|>
-  #add_title("Nodes and Connections"
-   #         , align = "left"
-    #        , font_color = my_pal[[5]]
-     #       , font_size = 18)
                      
 ```
 
+On the left, are the anonymized nodes. Each one represents one person in our network. On the right, are the ties between the nodes. Node 1 is connected to node 11, and two is connected to 11 and 30 and so on. This from and to dynamic allows us to analyze and visualize the networks connections.
 
-```{r}
+## Mentoring network
+```{r echo = F, warning = F}
+
+
 #convert the mentor_edges dataframe to a matrix
 mentors <- graph_from_data_frame(mentor_edges)
 
@@ -156,16 +152,58 @@ mentors$edge_betweenness <- edge_betweenness(mentors)
 #add neighborhood size (i.e. size of neighborhood within 2 edges of a node)
 mentors$degree2 <- neighborhood.size(mentors, 2)
 
-ment_graph <- ggraph(mentors, layout = "with_kk") +
-  geom_node_point(aes(size = mentors$degree2)
-                  , color = "blue"
-                    , alpha = .3) +
-  geom_node_text(aes(label = name )) +
-  geom_edge_link(aes(alpha = mentors$edge_betweenness)) +
-  labs(title = "Mentor network among data enthusiasts at MSI"
-       , subtitle = "subtitle") +
-  theme(legend.position = "none")
+```
 
+
+In the entire mentor dataset there are `r gorder(mentors)` nodes. These nodes have `r gsize(mentors)` connections. The resulting network looks like this.
+
+
+```{r warning = F, echo = F}
+
+
+basic_mentor <- ggraph(mentors, layout = "with_kk") +
+  geom_edge_link(color = my_pal[[5]]
+                 , alpha = .3) +
+  geom_node_point(color = my_pal[[5]]
+                  , size = 4) +
+  labs(title = "Mentor network among data enthusiasts\nat MSI")
+  theme(legend.position = "none")+
+  theme.graph() 
+  
+
+basic_mentor
+```
+
+In this figure it is easy to see one large cluster of nodes near the top and then a collection of smaller, disconnected nodes near the bottom. 
+
+```{r}
+
+#| label: fig-charts
+#| fig-align="center"
+#| fig-width=6
+#| fig-height=4
+
+#ment_graph <- ggraph(mentors, layout = "with_kk") +
+ # geom_node_point(aes(size = mentors$degree2)
+  #                , color = my_pal[[5]]
+   #                 , alpha = .3) +
+  #geom_node_text(aes(label = name )) +
+  #geom_edge_link(aes(alpha = mentors$edge_betweenness)) +
+  #labs(title = "Mentor network among data enthusiasts\nat MSI"
+   #    , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +
+  #theme.graph() +
+  #theme(legend.position = "none")
+
+#ment_graph
+
+
+```
+
+
+### Network statistics
+
+
+```{r}
 #Repeat for tech side
 techs <- graph_from_data_frame(tech_edges)
 
@@ -179,20 +217,22 @@ techs$edge_betweenness <- edge_betweenness(techs)
 techs$degree2 <- neighborhood.size(techs, 2)
 
 tech_graph <- ggraph(techs, layout = "with_kk") +
-  geom_node_point(aes(size = techs$degree2)
-                  , color = "red"
-                    , alpha = .3) +
-  geom_node_text(aes(label = name )) +
-  geom_edge_link(aes(alpha = techs$edge_betweenness)) +
+  geom_edge_link(color = my_pal[[10]]
+                 , alpha = .3) +
+  geom_node_point(color = my_pal[[10]]
+                  , size = 4) +
+  #geom_node_text(aes(label = name)) +
+
   labs(title = "Technical advice network among data enthusiasts at MSI"
-       , subtitle = "Something about the nodes") +
+       , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +
+  theme.graph() +
   theme(legend.position = "none")
 
+tech_graph
 
-ment_graph + tech_graph
 ```
 
-In the entire mentor dataset there are `r gorder(mentors)` nodes. These nodes have `r gsize(mentors)` connections. The resulting network looks like this.
+We 
 
 
 
