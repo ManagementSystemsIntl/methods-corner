@@ -1,33 +1,404 @@
 ---
 title: MSI Statistical Training Series
 subtitle: Analysis of Variance (ANOVA)
+date: April 2023
 toc: true
 toc-depth: 3
 number-sections: false
 format:
   html:
-    code-fold: true
+    code-fold: false
     page-layout: full
 editor: visual
 ---
 
-## Quarto
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
 
-## Running Code
+base_packages <- c("tidyverse", "easystats", "corrplot","DescTools","estimatr","extrafont","janitor",
+                   "reshape2", "haven", "broom","HH","Hmisc","plotrix","scales","sysfonts","foreign","car",
+                   "ICC","openxlsx","readr","readxl","sjmisc","sjPlot","flextable", "sjstats","sjlabelled","skimr",
+                   "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi")
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+lapply(base_packages, library, character.only=T)
 
-```{r}
-1 + 1
+viz_packages <- c("patchwork","gganimate","ggstatsplot","ggthemes","ggrepel","ggpubr","cowplot","ggdist","ggtext",
+                  "geomtextpath","ggfortify", "ggridges", "gghighlight")
+lapply(viz_packages, library, character.only=T)
+
+options(digits=3, scipen=9)
+
+# set default
+base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                           panel.grid.minor.y=element_blank(),
+                           plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+                           plot.subtitle = element_text(size=16, family="Source Sans Pro"),
+                           plot.caption=element_text(size=12, family="Source Sans Pro"),
+                           axis.title=element_text(size=16, family="Source Sans Pro"),
+                           axis.text=element_text(size=14, family="Source Sans Pro"),
+                           legend.text=element_text(size=14, family="Source Sans Pro"),
+                           strip.text=element_text(size=14, family="Source Sans Pro"),
+                           panel.border=element_blank(),
+                           axis.ticks = element_blank())
+
+theme_set(base)
+
+faceted <- theme_bw() +
+  theme(panel.grid.minor.x=element_blank(),
+        panel.grid.minor.y=element_blank(),
+        plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+        plot.subtitle = element_text(size=16, family="Source Sans Pro"),
+        plot.caption=element_text(size=12, family="Source Sans Pro"),
+        axis.title=element_text(size=16, family="Source Sans Pro"),
+        axis.text=element_text(size=14, family="Source Sans Pro"),
+        legend.text=element_text(size=14, family="Source Sans Pro"),
+        strip.text=element_text(size=14, family="Source Sans Pro"))
+
+facet_style <- function(){theme_bw() +
+    theme(panel.grid.minor.x=element_blank(),
+          panel.grid.minor.y=element_blank(),
+          plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+          plot.subtitle = element_text(size=16, family="Source Sans Pro"),
+          plot.caption=element_text(size=12, family="Source Sans Pro"),
+          axis.title=element_text(size=16, family="Source Sans Pro"),
+          axis.text=element_text(size=14, family="Source Sans Pro"),
+          legend.text=element_text(size=14, family="Source Sans Pro"),
+          strip.text=element_text(size=14, family="Source Sans Pro"))
+}
+
+col <- viridis(4)
+
 ```
 
-You can add options to executable code like this
+## Background
+
+The MSI Statistical Training Series offers tutorials on a range of topics that are commonly applied in data analysis. The objective is to a) refresh readers on the derivation and application of methods from a first statistics course, b) introduce readers to new methods, and c) provide practical, hands-on coding examples to enable users of statistical analysis software to gain proficiency in coding skills. Exploration of each topic should include its application in a specific client deliverable, in order to better understand how a theoretical method is grounded in real-world data.
+
+## Analysis of Variance (ANOVA)
+
+The analysis of variance theorem derives from the properties of conditional expectations. By the ANOVA theorem,
+
+$$
+V(Y)=E_x(\sigma^2_{Y|X})+V_X(\mu_{Y|X})
+$$
+
+This may be paraphrased as saying the variance of a random variably Y, whose elements comprise several groups denoted as the random variable X, can be decomposed into the average variance of the sub-groups of X plus the variance of the means of each sub-group of X.
+
+The ANOVA theorem may be used to test whether the sub-groups of X are statistically distinguishable from the overall distribution of Y.
+
+## Data
 
 ```{r}
-#| echo: false
-2 * 2
+
+set.seed(4632)
+
+grp_a <- rnorm(50, 25 ,12) %>%
+    round(0)
+
+grp_b <- rnorm(50, 45, 20) %>%
+    round(0)
+
+grp_c <- rnorm(50,55, 20) %>%
+    round(0)
+
+grp_d <- rnorm(50, 75, 12) %>%
+    round(0)
+
+d <- data.frame(group=rep(letters[1:4], each=50),
+                y=c(grp_a, grp_b, grp_c, grp_d))
+flextable(d[c(1:2, 51:52, 101:102, 151:152),])
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+Let's extract the properties of the data that we will use to construct our test statistic.
+
+```{r}
+g <- 4 # number of groups
+g
+
+n_g <- length(grp_a) # sample size of each group
+n_g
+
+N <- nrow(d) # overall sample size
+N
+
+grnd_mn <- mean(d$y)  # overall mean of Y      
+grnd_mn
+ 
+mns <- d %>% # sub-group means
+    group_by(group) %>%
+    summarise(grp_mn=mean(y),
+              se=std.error(y))
+
+flextable(mns) 
+
+```
+
+Let's look at our data.
+
+```{r}
+
+# distribution of overall data Y
+da <- ggplot(d, aes(x=y)) + 
+    geom_density(alpha=.3, fill="dodgerblue2", color="dodgerblue2", linewidth=1) +
+    scale_x_continuous(limits=c(-20,120),
+                       breaks=seq(-20, 120, 20)) +
+    theme(axis.text.y=element_blank()) +
+    labs(x="",
+         y="",
+         title="Distribution of Y")
+da
+```
+
+The data can be described as roughly normal, though there is clearly the beginning of a second mode at around 75, and the first hint of another mode at around 25. We know by construction that this is due to the presence of the sub-groups X. If we had knowledge only of Y but not of X, we might suspect the presence of hidden structure (sub-groups) in the data, but would not know.
+
+```{r}
+
+# distribution of sub-groups X
+
+grp <- ggplot(d, aes(x=y, group=group, fill=group, color=group)) + 
+    geom_density(alpha=.3) +
+    scale_x_continuous(limits=c(-20,120),
+                       breaks=seq(-20, 120, 20)) +
+    scale_color_viridis_d() +
+    scale_fill_viridis_d() + 
+    annotate("text", x=c(18, 41, 53, 78), y=.021, label=letters[1:4]) +
+    theme(axis.text.y=element_blank(),
+          legend.position="none") +
+    labs(x="",
+         y="",
+         title="Distribution of X")
+
+grp
+
+```
+
+The question is whether the sub-groups of X are statistically distinguishable from the overall distribution Y.
+
+```{r}
+# decompose variance across groups
+
+d <- d %>%
+    left_join(mns[,1:2]) %>%
+    group_by(group) %>%
+    mutate(w_dev=y-mean(y),
+           sq_w_dev=w_dev^2) %>%
+    ungroup() %>%
+    mutate(bet_dev = grp_mn-grnd_mn,
+           sq_bet_dev = bet_dev^2,
+           grnd_mn = grnd_mn,
+           grnd_dev=grnd_mn-y,
+           sq_grnd_dev=grnd_dev^2)
+
+flextable(d[c(1:2, 51:52, 101:102, 151:152),])
+```
+
+```{r}
+# ssw sum of squares within groups (distance between observation and its group mean)
+
+ssw <- sum(d$sq_w_dev)
+ssw # 42642
+
+ssw_check <- d %>%
+    group_by(group) %>%
+    summarise(ss = var(y) * (n_g-1) ) %>%
+    summarise(sum(ss))
+
+flextable(ssw_check) # 42642
+```
+
+```{r}
+ssb <- sum(d$sq_bet_dev)
+ssb # 71211
+
+ssb_check <- mns %>%
+    mutate(bet_dev=grp_mn-grnd_mn,
+           sq_bet_dev=bet_dev^2) %>%
+    summarise(ssb=sum(sq_bet_dev*n_g))
+
+flextable(ssb_check) # 71211
+
+```
+
+```{r}
+# sst total sum of squares (observations from grand mean)
+
+mns <- d %>%
+    group_by(group) %>%
+    summarise(grp_mn=mean(y),
+              se=std.error(y)) %>%
+    mutate(grnd_dev=grp_mn-grnd_mn,
+           sq_grnd_dev=grnd_dev^2)
+
+flextable(mns)
+
+sst <- sum(d$sq_grnd_dev)
+sst # 113853
+ssw + ssb # 113853
+
+```
+
+```{r}
+# create anova table
+
+aov_tab <- data.frame(errors=c("Between","Within","Total"),
+                      squares=c("SSB","SSW","SST"),
+                      ss_act=c(ssb, ssw, sst),
+                      df=c("g-1","N-g","N-1"),
+                      df_act = c(g-1, N-g, N-1),
+                      mn_sq = c("SSB/DFB", "SSW/DFW", ""),
+                      F=c("MSB/MSW","","")) %>%
+    mutate(mn_sq_act=ss_act/df_act,
+           F_act=c(mn_sq_act[1]/mn_sq_act[2], NA, NA))
+
+flextable(aov_tab)
+
+```
+
+```{r}
+
+
+fstat <- round(( ssb/(g-1) ) / ( ssw/(N-g) ), 2) 
+
+fstat # 109
+
+ssb / (g-1)
+ssw / (N-g)
+
+fstat2 <- round(( aov_tab$ss_act[1] / aov_tab$df_act[1] ) / 
+                  ( aov_tab$ss_act[2] / aov_tab$df_act[2] ), 2)
+
+fstat2 
+
+crit <- qf(p=.05,
+           df1=g-1,
+           df2=N-g,
+           lower.tail=F)
+
+crit
+
+p <- pf(fstat, g-1, N-g, lower.tail=F)
+p
+
+```
+
+```{r}
+
+av <- aov(y~group, d)
+summary(av)
+TukeyHSD(av)
+ScheffeTest(av)
+pairwise.t.test(d$y, d$group, p.adj="holm")
+```
+
+```{r}
+
+rg <- lm(y~group, d) %>%
+  tidy() %>%
+  flextable() %>%
+  colformat_double(j=5, digits=3)
+
+rg
+
+```
+
+```{r}
+anova(rg) %>%
+  flextable() %>%
+  colformat_double(j=5, digits=3)
+```
+
+
+
+
+
+```{r}
+# distribution of sample means ---- 
+
+ggplot() +
+  stat_function(fun = dnorm, 
+                args=list(mean=mns$grp_mn[1],
+                          sd=mns$se[1]),
+                geom = "polygon",
+                color = col[1], 
+                fill = col[1], 
+                alpha = 0.4) +
+  stat_function(fun = dnorm, 
+                args=list(mean=mns$grp_mn[2],
+                          sd=mns$se[2]),
+                geom = "polygon",
+                color = col[2], 
+                fill = col[2], 
+                alpha = 0.4) +
+  stat_function(fun = dnorm, 
+                args=list(mean=mns$grp_mn[3],
+                          sd=mns$se[3]),
+                geom = "polygon",
+                color = col[3], 
+                fill = col[3], 
+                alpha = 0.4) +
+  stat_function(fun = dnorm, 
+                args=list(mean=mns$grp_mn[4],
+                          sd=mns$se[4]),
+                geom = "polygon",
+                color = col[4], 
+                fill = col[4], 
+                alpha = 0.4) +
+  scale_x_continuous(limits=c(0,100),
+                     breaks=seq(0,100,20)) +
+  theme(axis.text.y=element_blank()) +
+  labs(x="",
+       y="",
+       title="Distribution of sample means")
+```
+
+```{r}
+
+y_rf <- data.frame(f=rf(1e4, g-1, N-g))
+
+ggplot(y_rf, aes(f)) +
+  geom_vline(xintercept=crit, color="firebrick2",
+             linewidth=1) +
+  geom_histogram(#data=filter(y_rf, x<crit), 
+                 color="blue",
+                 fill="dodgerblue2",
+                 bins=40,
+                 binwidth=.1,
+                 alpha=.5) +
+  #geom_histogram(data=filter(y_rf, x>crit), fill="red") +
+  scale_x_continuous(breaks=0:8)
+  #geom_freqpoly() +
+  #stat_bin()
+
+  gghighlight(max(x) > crit)
+
+
+```
+
+```{r}
+
+sum(y_rf$x>crit) / 1e3
+
+```
+
+
+
+## Demonstration
+
+
+
+## Resources
+
+This tutorial relied on the following resources: 
+
+- Course notes for the Statistics pre-requisite in the Applied Economics curriculum at Johns Hopkins
+- Applied Statistics with R, a text used in Stat 420, Methods of Applied Statistics at the University of Illinois
+- 
+
+
+
+
+
+
+

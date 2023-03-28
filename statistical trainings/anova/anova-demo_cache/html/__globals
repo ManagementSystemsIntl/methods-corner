@@ -1,0 +1,15 @@
+unnamed-chunk-1	%>%	c	data.frame	flextable	letters	rep	rnorm	round	set.seed
+unnamed-chunk-2	$	%>%	d	flextable	group	group_by	grp_a	length	mean	nrow	std.error	summarise	y
+unnamed-chunk-3	aes	c	d	element_blank	geom_density	ggplot	labs	scale_x_continuous	seq	theme	y
+unnamed-chunk-4	aes	annotate	c	d	element_blank	geom_density	ggplot	group	labs	letters	scale_color_viridis_d	scale_fill_viridis_d	scale_x_continuous	seq	theme	y
+unnamed-chunk-5	%>%	^	bet_dev	c	flextable	grnd_dev	grnd_mn	group	group_by	grp_mn	left_join	mean	mns	mutate	ungroup	w_dev	y
+unnamed-chunk-6	$	%>%	d	flextable	group	group_by	n_g	ss	sum	summarise	var	y
+unnamed-chunk-7	$	%>%	^	bet_dev	d	flextable	grnd_mn	grp_mn	mns	mutate	n_g	sq_bet_dev	sum	summarise
+unnamed-chunk-8	$	%>%	^	d	flextable	grnd_dev	grnd_mn	group	group_by	grp_mn	mean	mutate	ssb	ssw	std.error	sum	summarise	y
+unnamed-chunk-9	%>%	c	data.frame	df_act	flextable	g	mn_sq_act	mutate	N	ss_act	ssb	sst	ssw
+unnamed-chunk-10	$	aov_tab	F	g	N	pf	qf	round	ssb	ssw
+unnamed-chunk-11	$	~	aov	d	pairwise.t.test	ScheffeTest	summary	TukeyHSD
+unnamed-chunk-12	%>%	~	colformat_double	d	flextable	lm	tidy
+unnamed-chunk-13	%>%	anova	colformat_double	flextable	rg
+unnamed-chunk-14	$	c	col	dnorm	element_blank	ggplot	labs	list	mns	scale_x_continuous	seq	stat_function	theme
+unnamed-chunk-15	aes	data.frame	g	geom_histogram	ggplot	N	rf	x

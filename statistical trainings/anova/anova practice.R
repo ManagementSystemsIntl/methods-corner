@@ -26,7 +26,8 @@ d
 str(d)
 
 g <- 4
-N <- 200
+n_g <- length(grp_a)
+N <- nrow(d)
 
 
 describe(d)
@@ -51,7 +52,7 @@ col
 # distribution of overall data ----
 
 da <- ggplot(d, aes(x=y)) + 
-    geom_density(alpha=.3, fill="dodgerblue2", color="dodgerblue2", size=1) +
+    geom_density(alpha=.3, fill="dodgerblue2", color="dodgerblue2", linewidth=1) +
     scale_x_continuous(limits=c(-20,120),
                        breaks=seq(-20, 120, 20)) +
     theme(axis.text.y=element_blank()) +
@@ -97,37 +98,33 @@ d
 # ssw sum of squares within groups (distance between observation and its group mean)
 
 ssw <- sum(d$sq_w_dev)
-ssw # 44528
+ssw # 42642
 
 ssw_check <- d %>%
     group_by(group) %>%
-    summarise(ss = var(y) * 49) %>%
+    summarise(ss = var(y) * (n_g-1) ) %>%
     summarise(sum(ss))
 
-ssw_check # 44528
+ssw_check # 42642
 
 # ssb sum of squares between (group means from grand mean)
 
 ssb <- sum(d$sq_bet_dev)
-ssb # 208513
+ssb # 71211
 
 ssb_check <- mns %>%
     mutate(bet_dev=grp_mn-grnd_mn,
            sq_bet_dev=bet_dev^2) %>%
-    summarize(ssb=sum(sq_bet_dev*100))
+    summarise(ssb=sum(sq_bet_dev*n_g))
 
-ssb_check # 208513
+ssb_check # 71211
 
-
-
-ssb <- sum(mns$sq_bet_dev*100)        
-ssb # 208513
 
 # sst total sum of squares (observations from grand mean)
 
 mns <- d %>%
     group_by(group) %>%
-    summarize(grp_mn=mean(y),
+    summarise(grp_mn=mean(y),
               se=std.error(y)) %>%
     mutate(grnd_dev=grp_mn-grnd_mn,
            sq_grnd_dev=grnd_dev^2)
@@ -135,7 +132,8 @@ mns <- d %>%
 mns
 
 sst <- sum(d$sq_grnd_dev)
-sst 
+sst # 113853
+ssw + ssb # 113853
 
 # create anova table
 
@@ -143,7 +141,7 @@ aov_tab <- data.frame(errors=c("Between","Within","Total"),
                       squares=c("SSB","SSW","SST"),
                       ss_act=c(ssb, ssw, sst),
                       df=c("g-1","N-g","N-1"),
-                      df_act = c(4-1, 400-4, 400-1),
+                      df_act = c(g-1, N-g, N-1),
                       mn_sq = c("SSB/DFB", "SSW/DFW", ""),
                       F=c("MSB/MSW","","")) %>%
     mutate(mn_sq_act=ss_act/df_act,
@@ -151,9 +149,9 @@ aov_tab <- data.frame(errors=c("Between","Within","Total"),
 
 aov_tab
 
-fstat1 <- round(( ssb/(g-1) ) / ( ssw/(N-g) ), 2) 
+fstat <- round(( ssb/(g-1) ) / ( ssw/(N-g) ), 2) 
 
-fstat1
+fstat # 109
 
 ssb / (g-1)
 ssw / (N-g)
@@ -169,7 +167,7 @@ crit <- qf(p=.05,
 
 crit
 
-p <- pf(207, g-1, N-g, lower.tail=F)
+p <- pf(fstat, g-1, N-g, lower.tail=F)
 p
 
 av <- aov(y~group, d)
@@ -234,7 +232,43 @@ ggplot() +
 
 
         
-        
+
+
+
+sim_anova = function(n = 10, mu_a = 0, mu_b = 0, mu_c = 0, mu_d = 0, sigma = 1, stat = TRUE) {
+  
+  # create data from one-way ANOVA model with four groups of equal size
+  # response simulated from normal with group mean, shared variance
+  # group variable indicates group A, B, C or D
+  sim_data = data.frame(
+    response = c(rnorm(n = n, mean = mu_a, sd = sigma),
+                 rnorm(n = n, mean = mu_b, sd = sigma),
+                 rnorm(n = n, mean = mu_c, sd = sigma),
+                 rnorm(n = n, mean = mu_d, sd = sigma)),
+    group = c(rep("A", times = n), rep("B", times = n), 
+              rep("C", times = n), rep("D", times = n))
+  )
+  
+  # obtain F-statistic and p-value for testing difference of means
+  # use lm instead of aov for better result formatting with glance
+  aov_results = lm(response ~ group, data = sim_data)
+  f_stat = glance(aov_results)$statistic
+  p_val  = glance(aov_results)$p.value
+  
+  # return f_stat if stat = TRUE, otherwise, p-value
+  ifelse(stat, f_stat, p_val)
+  
+}
+
+f_stats = replicate(n = 5000, sim_anova(stat = TRUE))
+
+
+
+hist(f_stats, breaks = 100, prob = TRUE, border = "dodgerblue", main = "Empirical Distribution of F")
+curve(df(x, df1 = 4 - 1, df2 = 40 - 4), col = "darkorange", add = TRUE, lwd = 2)
+
+
+
         
         
         
