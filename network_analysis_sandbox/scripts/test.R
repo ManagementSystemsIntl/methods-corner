@@ -26,31 +26,84 @@ ggraph(g, layout = "with_kk") +
   geom_edge_link(aes(alpha = centrality))
 
 
-###text work
+###testing out additional vertice attributes
+df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
+  select(ID
+         , Name 
+         , home_field = `Are you home office or field office staff?` 
+         , practice_area = `Practice Area` 
+         , training = `Training/Credential specific to data analytics` 
+         , advanced_analyses = `Any specific advanced analyses you have conducted?`
+         , software = `Any specific competencies with statistical analysis software?` 
+         , aspirations = `Any specific aspirations for data analytics?`
+         , to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
+         , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`) |>
+  mutate(respondent = 1) |>
+  filter(!is.na(practice_area)) 
 
-library(tidytext)
-library(tidyverse)
+df$practice_area <- df$practice_area |>
+  recode("Strategy, Evaluation and Analysis" = "SEA"
+         , "Education" = "SEA")
 
-text <- as_tibble_col(df$software)
+#reworking this data set for mentoring
+df1 <- df |>
+  filter(practice_area == "SEA"
+         & home_field == "Home office") |>
+  select(-to_tech_ques)
 
-softwares <- paste(c("R", "Stata", "SPSS", "Nvivo", "Qualtrics", "MaxQDA"
-              , "Python", "ArcGIS", "Excel", "SAS", "EpiInfo", "STATA"
-              , "Kobo Tool Box", "Dedoose", "SMath Studio", "Tableau"), collapse = "|")
+df1 <- df1 |>
+  mutate(to_mentor2 = strsplit(to_mentor, "[,;&]+")) |>
+  unnest("to_mentor2") 
 
-text <- text |>
-  mutate(new = str_extract_all(text$value, pattern = softwares))
+#had to separately clean the " and " for some reason
+df1 <- df1 |>
+  mutate(to_mentor3 = strsplit(to_mentor2, " and ")) |>
+  unnest("to_mentor3")
 
+#need to clean up names in to_mentor column
+#This allows us to view all unique rows in the column
+unique(df1$to_mentor3)
 
-###Testing out additional attributes
-df_test <- df 
+#this fixes the names of the to_mentor3 column
+df1$to_mentor3 <- df1$to_mentor3 |>
+  str_trim() |> #eliminates extra spaces before and after text
+  recode("Tim R" = "Tim Reilly"
+         , "Michelle" = "Michelle Adams-Matson"
+         , "Tim R." = "Tim Reilly"
+         , "None" = "skip"
+         , "NA" = "skip"
+         , "N/A" = "skip") 
 
-edges_mentor_test <- df_test |>
+df1 <- df1 |>
+  relocate(to_mentor3, .before = home_field)
+
+###resume here
+
+#find the individual softwares
+softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA"
+                     , "Python", "ArcGIS", "Excel", "excel", "SAS"
+                     , "EpiInfo", "STATA", "Kobo Tool Box", "Dedoose"
+                     , "SMath Studio", "Tableau"), collapse = "|")
+
+#create a new column that extracts the names of software used 
+#then create another column that unnests any lists
+df1 <- df |>
+  mutate(new = str_extract_all(software, pattern = softwares)) |>
+  unnest(new) 
+
+#clean up a few software names
+df1$new <- df1$new |>
+  recode("STATA" = "Stata"
+         , "Spss" = "SPSS"
+         , "EXCEL" = "Excel") 
+
+df1 <- df1 |>
   mutate(to_mentor2 = strsplit(to_mentor, "[,;&]+")) |>
   unnest("to_mentor2") #|>
 #select(ID, Name, to_mentor2)
 
 #had to separately clean the " and " for some reason
-edges_mentor_test <- edges_mentor_test |>
+df1 <- df1 |>
   mutate(to_mentor3 = strsplit(to_mentor2, " and ")) |>
   unnest("to_mentor3")
 
@@ -265,8 +318,9 @@ df_test$practice_area <- df_test$practice_area |>
   recode("Strategy, Evluation and Analysis" = "SEA"
          , "Education" = "SEA") 
 
-df_test1 <- df_test |>
-  filter(practice_area=="SEA")
+
+
+head(df_test1)
 
 df_test1_ties <- df_test1 |>
   select()
