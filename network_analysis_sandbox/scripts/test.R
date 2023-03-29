@@ -77,7 +77,48 @@ df1$to_mentor3 <- df1$to_mentor3 |>
 df1 <- df1 |>
   relocate(to_mentor3, .before = home_field)
 
-###resume here
+#find the individual softwares
+softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA"
+                     , "Python", "ArcGIS", "Excel", "excel", "SAS"
+                     , "EpiInfo", "STATA", "Kobo Tool Box", "Dedoose"
+                     , "SMath Studio", "Tableau"), collapse = "|")
+
+#create a new column that extracts the names of software used 
+#then create another column that unnests any lists
+df2 <- df1 |>
+  mutate(new = str_extract_all(software, pattern = softwares))
+
+#Create a ties df
+df1_ties <- df2 |>
+  select(Name, to_mentor3) |>
+  filter(to_mentor3 != "skip")
+
+#Create a nodes df with all attributes
+df1_nodes <- as_tibble(unique(c(df2$Name, df2$to_mentor3))) |>
+  filter(value != "skip" &
+           !is.na(value))
+
+#Create a nodes df with all attributes
+#create the list of nodes
+df1_nodes <- as_tibble(unique(c(df1_ties$Name, df1_ties$to_mentor3)))
+
+#join it to the attributes
+df2_nodes <- df1_nodes |>
+  left_join(df2, by = c("value" = "Name"))
+
+#delete any duplicate nodes
+df2_vertices <- subset(df2_nodes, !duplicated(value)) 
+
+###create graph object
+
+df_graph_ment <- graph_from_data_frame(df1_ties
+                                  , directed = FALSE
+                                  , vertices = df2_vertices)
+
+ggraph(df_graph_ment, "with_kk") +
+  geom_node_point()+
+  geom_edge_link() +
+  geom_node_text(aes(label = df2_vertices$value))
 
 #find the individual softwares
 softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA"
@@ -87,9 +128,9 @@ softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA
 
 #create a new column that extracts the names of software used 
 #then create another column that unnests any lists
-df1 <- df |>
-  mutate(new = str_extract_all(software, pattern = softwares)) |>
-  unnest(new) 
+df2 <- df1 |>
+  mutate(new = str_extract_all(software, pattern = softwares)) #|>
+#  unnest(new) 
 
 #clean up a few software names
 df1$new <- df1$new |>
