@@ -1,15 +1,18 @@
-unnamed-chunk-1	d	grp_a	grp_b	grp_c	grp_d	.anova-demo_cache/html/unnamed-chunk-1_427cd0a6124e6192b05051bd66098e3d_meta
-unnamed-chunk-2	g	grnd_mn	mns	N	n_g	.anova-demo_cache/html/unnamed-chunk-2_b39712172c3c468a762794e5266d91fc_meta
+unnamed-chunk-1	aov_ex	.anova-demo_cache/html/unnamed-chunk-1_5c2245eef3bd04d04ef669c64fdb5f89_meta
+unnamed-chunk-2	d	grp_a	grp_b	grp_c	grp_d	.anova-demo_cache/html/unnamed-chunk-2_407998b782ddef804a4850bd866c4836_meta
 unnamed-chunk-3	da
 unnamed-chunk-4	grp
-unnamed-chunk-5	d	.anova-demo_cache/html/unnamed-chunk-5_31f38b8f229789565141ed4cb146e118_meta
-unnamed-chunk-6	ssw	ssw_check	.anova-demo_cache/html/unnamed-chunk-6_5c8d3a5db022484a9f5780093ab78c56_meta
-unnamed-chunk-7	ssb	ssb_check	.anova-demo_cache/html/unnamed-chunk-7_caede4aab664b8d297b1eddafba9961e_meta
-unnamed-chunk-8	mns	sst	.anova-demo_cache/html/unnamed-chunk-8_2af077891222c91cea23b9aec73a16dd_meta
-unnamed-chunk-9	aov_tab	.anova-demo_cache/html/unnamed-chunk-9_87dd4dbc6fe0aa8bba328fdec6c613bc_meta
-unnamed-chunk-10	crit	fstat	fstat2	p
-unnamed-chunk-11	av
-unnamed-chunk-12	rg	.anova-demo_cache/html/unnamed-chunk-12_4dd8161857cd0bb61fd651b1c6dfa384_meta
-unnamed-chunk-13	
-unnamed-chunk-14	
-unnamed-chunk-15	y_rf
+unnamed-chunk-5	g	grnd_mn	mns	N	n_g	.anova-demo_cache/html/unnamed-chunk-5_afd1d959bceefc6bc49de8629f23c3e5_meta
+unnamed-chunk-6	d	.anova-demo_cache/html/unnamed-chunk-6_5a464b37f842df396c57c19e5d5aa7b0_meta
+unnamed-chunk-7	ssw	ssw_check	.anova-demo_cache/html/unnamed-chunk-7_4d19d3f6d01beb0afe9d0c12a81ffca4_meta
+unnamed-chunk-8	ssb	ssb_check	.anova-demo_cache/html/unnamed-chunk-8_ad8fc2e10e76a51b2084f321f4ffd06f_meta
+unnamed-chunk-9	mns	sst	.anova-demo_cache/html/unnamed-chunk-9_dfa05bd9ed4c3fe49d447d4092516f5a_meta
+unnamed-chunk-10	aov_tab	.anova-demo_cache/html/unnamed-chunk-10_fe9aeb44ef62cae7b4735d23af386da5_meta
+unnamed-chunk-11	crit	fstat	p
+unnamed-chunk-12	y_rf
+unnamed-chunk-13	av
+unnamed-chunk-14	rg	.anova-demo_cache/html/unnamed-chunk-14_38b96dd1d0f14a425c207b97341194bf_meta
+unnamed-chunk-15	rg	.anova-demo_cache/html/unnamed-chunk-15_fb19608f730863b90b44badc735a44bf_meta
+unnamed-chunk-16	
+unnamed-chunk-17	
+unnamed-chunk-18	

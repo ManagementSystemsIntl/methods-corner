@@ -10,6 +10,7 @@ format:
     code-fold: false
     page-layout: full
 editor: visual
+bibliography: references.bib
 ---
 
 ```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
@@ -74,11 +75,13 @@ col <- viridis(4)
 
 ## Background
 
-The MSI Statistical Training Series offers tutorials on a range of topics that are commonly applied in data analysis. The objective is to a) refresh readers on the derivation and application of methods from a first statistics course, b) introduce readers to new methods, and c) provide practical, hands-on coding examples to enable users of statistical analysis software to gain proficiency in coding skills. Exploration of each topic should include its application in a specific client deliverable, in order to better understand how a theoretical method is grounded in real-world data.
+The MSI Statistical Training Series offers tutorials on a range of topics that are commonly applied in data analysis. The objective is to a) refresh readers on the derivation and application of methods from a first statistics course, b) provide the underlying theory that goes beyond an introductory statistics course, c) introduce readers to new methods that would not be covered in an introductory statistics course, and d) provide practical, hands-on coding examples to enable users of statistical analysis software to gain proficiency in coding skills.
+
+Exploration of each topic should include the underlying theory, a demonstration using toy or fake data, and a real-world application in data that MSI has generated for a client deliverable.
 
 ## Analysis of Variance (ANOVA)
 
-The analysis of variance theorem derives from the properties of conditional expectations. By the ANOVA theorem,
+The analysis of variance theorem derives from the properties of conditional expectations -- see [@wooldridge2010], pages 31-32 for a proof. The ANOVA theorem states that
 
 $$
 V(Y)=E_x(\sigma^2_{Y|X})+V_X(\mu_{Y|X})
@@ -86,9 +89,59 @@ $$
 
 This may be paraphrased as saying the variance of a random variably Y, whose elements comprise several groups denoted as the random variable X, can be decomposed into the average variance of the sub-groups of X plus the variance of the means of each sub-group of X.
 
-The ANOVA theorem may be used to test whether the sub-groups of X are statistically distinguishable from the overall distribution of Y.
+The ANOVA theorem may be used to test whether the sub-groups of X are statistically distinguishable from the overall distribution of Y. To get some intuition behind this, consider a null hypothesis in which all sub-group means of X are equal and share the same variance:
 
-## Data
+$$
+H_0: \alpha_1=\alpha_2=..\alpha_g=0
+$$
+
+Note that we construct the data model as $y_{ij}=\mu+\alpha_i+e_{ij}$, where $y_{ij}\sim N(\mu_i, \sigma^2)$, $\mu$ is the grand (overall) mean of the sample, and the $\alpha_{i}$ are deviations from the grand mean. So, if all means are the same the deviations are zero.
+
+Using the ANOVA theorem, if the $\alpha_i$ are zero, than their variances are zero, so the first term of the ANOVA theorem drops out. Furthermore, by assumption, there is only a single variance for all sub-groups. So the second term simplifies to $\sigma^2$.
+
+$$
+H_0: E(Y|X_i)=\mu; V(Y|X_i)=\sigma^2
+$$
+
+The alternative hypothesis would be that the group means differ, still on the assumption of equal variance across sub-groups of X.
+
+$$
+H_1: \alpha_1=\alpha_2=..\alpha_g\neq0
+$$
+
+The key here is the variance term. If the sub-group means differ, their means will have a variance around the grand mean. If this 'between' variance of the sub-group means around the grand mean is large relative to the 'within' variance of group observations around the group mean (which by assumption would just be $\sigma^2$ for each sub-group), then we have evidence that the group means do in fact differ from the grand mean.
+
+We use the F-distribution, which is constructed from the ratio of two chi-square statistics, to generate the probability of observing the observed data under the assumption that the null hypothesis is true. A high ratio of between variance to within variance will generate a high F-statistic, which will generate a low p-value.
+
+Introductory statistics texts provide a summary table to generate the F-statistic.
+
+```{r}
+
+# create anova table
+
+aov_ex <- data.frame(errors=c("Between","Within","Total"),
+                      squares=c("SSB","SSW","SST"),
+                      df=c("g-1","N-g","N-1"),
+                      mn_sq = c("SSB/DFB", "SSW/DFW", ""),
+                      F=c("MSB/MSW","","")) %>%
+  flextable() %>%
+  set_header_labels(values=list(
+    errors="Error type",
+    squares="Designation",
+    df="Degrees of Freedom",
+    mn_sq="Mean square"
+  )) %>%
+  autofit()
+
+aov_ex
+
+```
+
+We will now demonstrate the use of the ANOVA theorem to test for the equality of sub-groups, using constructed data.
+
+## Demonstration
+
+We construct a variable Y with sub-groups X with different means and standard deviations.
 
 ```{r}
 
@@ -109,30 +162,6 @@ grp_d <- rnorm(50, 75, 12) %>%
 d <- data.frame(group=rep(letters[1:4], each=50),
                 y=c(grp_a, grp_b, grp_c, grp_d))
 flextable(d[c(1:2, 51:52, 101:102, 151:152),])
-```
-
-Let's extract the properties of the data that we will use to construct our test statistic.
-
-```{r}
-g <- 4 # number of groups
-g
-
-n_g <- length(grp_a) # sample size of each group
-n_g
-
-N <- nrow(d) # overall sample size
-N
-
-grnd_mn <- mean(d$y)  # overall mean of Y      
-grnd_mn
- 
-mns <- d %>% # sub-group means
-    group_by(group) %>%
-    summarise(grp_mn=mean(y),
-              se=std.error(y))
-
-flextable(mns) 
-
 ```
 
 Let's look at our data.
@@ -174,7 +203,57 @@ grp
 
 ```
 
-The question is whether the sub-groups of X are statistically distinguishable from the overall distribution Y.
+Let's extract the properties of the data that we will use to construct our test statistic.
+
+```{r}
+g <- 4 # number of groups
+g
+
+n_g <- length(grp_a) # sample size of each group
+n_g
+
+N <- nrow(d) # overall sample size
+N
+
+grnd_mn <- mean(d$y)  # overall mean of Y      
+grnd_mn
+ 
+mns <- d %>% # sub-group means
+    group_by(group) %>%
+    summarise(grp_mn=mean(y),
+              se=std.error(y))
+
+flextable(mns) 
+
+```
+
+First we need the between sum of squares. As a reminder, this is the variation of the sub-group means around their grand mean.
+
+$$
+SSB=\sum_{i=1}^g\sum_{j=1}^{n_i}(\bar{y_i}-\bar{y})^2
+$$
+
+As the sub-group means do not vary within their own group, this reduces to the variance of the sub-group means around the grand mean, weighted by the sample size of each sub-group.
+
+$$
+SSB=\sum_{i=1}^gn_i(\bar{y_i}-\bar{y})
+$$
+
+Next we need the within sum of squares. As a reminder, this is the variation of a sub-group observation around its sub-group mean.
+
+$$
+SSW=\sum_{i=1}^g\sum_{j=1}^{n_i}(y_{ij}-\bar{y_i}^2)
+$$
+
+It can be shown that this expression is the same as the overall variance times the sample size.
+
+$$
+SSW=\sum_{i=1}^g(n_i-1)s_i^2
+$$
+
+This also matches the intuition that, under the null of equal variances, the variation of a sub-group observation around its sub-group mean is no different than the variation around any observation around the grand mean.
+
+We can see the squared deviations explicitly by constructing new variables in our data set.
 
 ```{r}
 # decompose variance across groups
@@ -186,13 +265,17 @@ d <- d %>%
            sq_w_dev=w_dev^2) %>%
     ungroup() %>%
     mutate(bet_dev = grp_mn-grnd_mn,
-           sq_bet_dev = bet_dev^2,
+           sq_bet_dev = bet_dev^2, # squared between deviation
            grnd_mn = grnd_mn,
            grnd_dev=grnd_mn-y,
-           sq_grnd_dev=grnd_dev^2)
+           sq_grnd_dev=grnd_dev^2) # squared within deviation
 
 flextable(d[c(1:2, 51:52, 101:102, 151:152),])
 ```
+
+And then we would just take the sum of the relevant variable. We can also use the shortcut equations as a check.
+
+SSW:
 
 ```{r}
 # ssw sum of squares within groups (distance between observation and its group mean)
@@ -208,6 +291,8 @@ ssw_check <- d %>%
 flextable(ssw_check) # 42642
 ```
 
+SSB:
+
 ```{r}
 ssb <- sum(d$sq_bet_dev)
 ssb # 71211
@@ -220,6 +305,8 @@ ssb_check <- mns %>%
 flextable(ssb_check) # 71211
 
 ```
+
+Total sum of squares (SST):
 
 ```{r}
 # sst total sum of squares (observations from grand mean)
@@ -239,37 +326,43 @@ ssw + ssb # 113853
 
 ```
 
+Now we can create our ANOVA table with actual values.
+
 ```{r}
 # create anova table
 
-aov_tab <- data.frame(errors=c("Between","Within","Total"),
-                      squares=c("SSB","SSW","SST"),
+aov_tab <- data.frame(errors=c("Between (SSB)","Within (SSW)","Total (SST)"),
+                      #squares=c("SSB","SSW","SST"),
                       ss_act=c(ssb, ssw, sst),
-                      df=c("g-1","N-g","N-1"),
-                      df_act = c(g-1, N-g, N-1),
-                      mn_sq = c("SSB/DFB", "SSW/DFW", ""),
-                      F=c("MSB/MSW","","")) %>%
+                      #df=c("g-1","N-g","N-1"),
+                      df_act = c(g-1, N-g, N-1)) %>%
+                      #mn_sq = c("SSB/DFB", "SSW/DFW", "")) %>%
+                      #F=c("MSB/MSW","","")) %>%
     mutate(mn_sq_act=ss_act/df_act,
            F_act=c(mn_sq_act[1]/mn_sq_act[2], NA, NA))
 
-flextable(aov_tab)
+aov_tab <- aov_tab %>%
+  flextable() %>%
+  set_header_labels(values=list(
+    errors="Error type",
+    ss_act="Sum of squares",
+    df_act="Degrees of Freedom",
+    mn_sq_act="Mean square",
+    F_act="F"
+  )) %>%
+  autofit()
+
+aov_tab
 
 ```
 
-```{r}
+We can use R's built in functions to generate the critical value of the F distribution, as well as the probability (p-value) of observing the actual value under the null hypothesis.
 
+```{r}
 
 fstat <- round(( ssb/(g-1) ) / ( ssw/(N-g) ), 2) 
 
 fstat # 109
-
-ssb / (g-1)
-ssw / (N-g)
-
-fstat2 <- round(( aov_tab$ss_act[1] / aov_tab$df_act[1] ) / 
-                  ( aov_tab$ss_act[2] / aov_tab$df_act[2] ), 2)
-
-fstat2 
 
 crit <- qf(p=.05,
            df1=g-1,
@@ -283,18 +376,55 @@ p
 
 ```
 
+For explication purposes, let's look at the distribution of F-statistics that are generated under our null hypothesis.
+
+```{r}
+
+y_rf <- data.frame(f=rf(1e4, g-1, N-g))
+
+ggplot(y_rf, aes(f)) +
+  geom_vline(xintercept=crit, color="firebrick2",
+             linewidth=1) +
+  geom_histogram(#data=filter(y_rf, x<crit), 
+                 color="blue",
+                 fill="dodgerblue2",
+                 bins=40,
+                 binwidth=.1,
+                 alpha=.5) +
+  scale_x_continuous(breaks=0:8)
+
+```
+
+
+Our observed F-statistic of 109 is far above the critical value of 2.7, indicating the inequality of sub-group means.
+
+We have completed our ANOVA test for the equality of means, and we've done it mostly by hand. There are several ways to apply ANOVA tests using existing functions within R. In base R, we call the function 'aov' on a formula, or we call 'anova' on a linear model.
+
+aov:
+
 ```{r}
 
 av <- aov(y~group, d)
 summary(av)
-TukeyHSD(av)
-ScheffeTest(av)
-pairwise.t.test(d$y, d$group, p.adj="holm")
+
 ```
+anova:
 
 ```{r}
 
-rg <- lm(y~group, d) %>%
+rg <- lm(y~group, d) 
+
+anova(rg) %>%
+  flextable() %>%
+  colformat_double(j=5, digits=3)
+
+```
+
+We can also compare the sub-groups explicitly in a regression framework.
+
+```{r}
+
+rg <- rg %>%
   tidy() %>%
   flextable() %>%
   colformat_double(j=5, digits=3)
@@ -303,15 +433,17 @@ rg
 
 ```
 
+Note that the intercept is not centered to represent the grand mean, and the t-tests associated with each individual group mean is nonsensical (statistically different from zero).
+
+Returning to the ANOVA output, the evidence suggests that the group means differ from the grand mean, but we don't necessarily know which groups may differ and which groups may not. There are a number of post hoc significance tests to address this.
+
 ```{r}
-anova(rg) %>%
-  flextable() %>%
-  colformat_double(j=5, digits=3)
+TukeyHSD(av)
+ScheffeTest(av)
+pairwise.t.test(d$y, d$group, p.adj="holm")
 ```
 
-
-
-
+A previous examination of the distribution of the sub-group data may have suggested that groups B and C would not differ. However, even after adjusting for multiple comparisons, the post hoc tests suggest that all sub-groups differ. It should be remembered that tests for differences in means may be statistically significant, even when there is extensive overlap in their distributions. The differences in means may be seen more clearly by examining the distribution of sub-group sample means, rather than the distribution of the sub-group data.
 
 ```{r}
 # distribution of sample means ---- 
@@ -350,55 +482,21 @@ ggplot() +
   theme(axis.text.y=element_blank()) +
   labs(x="",
        y="",
-       title="Distribution of sample means")
+       title="Distribution of sample means") +
+     annotate("text", x=c(25.1, 43.5, 57, 76.7), y=.021, label=letters[1:4]) 
+  
 ```
 
-```{r}
+Now the inequality of sub-group means is much clearer.
 
-y_rf <- data.frame(f=rf(1e4, g-1, N-g))
+## Application
 
-ggplot(y_rf, aes(f)) +
-  geom_vline(xintercept=crit, color="firebrick2",
-             linewidth=1) +
-  geom_histogram(#data=filter(y_rf, x<crit), 
-                 color="blue",
-                 fill="dodgerblue2",
-                 bins=40,
-                 binwidth=.1,
-                 alpha=.5) +
-  #geom_histogram(data=filter(y_rf, x>crit), fill="red") +
-  scale_x_continuous(breaks=0:8)
-  #geom_freqpoly() +
-  #stat_bin()
-
-  gghighlight(max(x) > crit)
-
-
-```
-
-```{r}
-
-sum(y_rf$x>crit) / 1e3
-
-```
-
-
-
-## Demonstration
-
-
+We will now show an application of ANOVA to real-world data that MSI, whose results were included in a client deliverable.
 
 ## Resources
 
-This tutorial relied on the following resources: 
+This tutorial relied on the following resources:
 
-- Course notes for the Statistics pre-requisite in the Applied Economics curriculum at Johns Hopkins
-- Applied Statistics with R, a text used in Stat 420, Methods of Applied Statistics at the University of Illinois
-- 
-
-
-
-
-
-
-
+-   Course notes for the Statistics pre-requisite in the Applied Economics curriculum at Johns Hopkins
+-   Applied Statistics with R, a text used in Stat 420, Methods of Applied Statistics at the University of Illinois
+-   
