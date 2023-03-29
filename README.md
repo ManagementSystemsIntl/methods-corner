@@ -19,4 +19,5 @@ Tutorial content on crafting high-quality line graphs in R
 Turns out we've doing a lot of our regressions wrong. The common program evaluation setup of a two-period difference-in-differences generalizes across multiple groups and time periods to the two-way fixed effects estimator, but this estimator has only recently been shown to produce biased estimates in settings of staggered adoption of treatment and/or heterogeneous treatment effects. A new class of d-i-d estimators to the rescue. An MSI presentation at the 2022 American Evaluation Association annual meeting. 
 
 [Analysis of Variance](https://managementsystemsintl.github.io/methods-corner/statistical%20trainings/anova/anova%20demo.html)
+
 Tutorial on the ANOVA theorem
