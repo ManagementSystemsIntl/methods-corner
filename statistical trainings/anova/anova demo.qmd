@@ -498,7 +498,5 @@ We will now show an application of ANOVA to real-world data that MSI collected, 
 This tutorial relied on the following resources:
 
 -   Course notes for the Statistics pre-requisite in the Johns Hopkins Applied Economics program
-
 -   Applied Statistics with R, a text used in Stat 420, Methods of Applied Statistics at the University of Illinois [@dalpiaz]
-
 -   Common statistical tests are linear models, chapter 7 [@doogue]
