@@ -97,7 +97,7 @@ $$
 
 Note that we construct the data model as $y_{ij}=\mu+\alpha_i+e_{ij}$, where $y_{ij}\sim N(\mu_i, \sigma^2)$, $\mu$ is the grand (overall) mean of the sample, and the $\alpha_{i}$ are deviations from the grand mean. So, if all means are the same the deviations are zero.
 
-Using the ANOVA theorem, if the $\alpha_i$ are zero, than their variances are zero, so the first term of the ANOVA theorem drops out. Furthermore, by assumption, there is only a single variance for all sub-groups. So the second term simplifies to $\sigma^2$.
+Using the ANOVA theorem, if the $\alpha_i$ are zero, then their variances are zero, so the first term of the ANOVA theorem drops out. Furthermore, by assumption, there is only a single variance for all sub-groups. So the second term simplifies to $\sigma^2$.
 
 $$
 H_0: E(Y|X_i)=\mu; V(Y|X_i)=\sigma^2
@@ -111,7 +111,7 @@ $$
 
 The key here is the variance term. If the sub-group means differ, their means will have a variance around the grand mean. If this 'between' variance of the sub-group means around the grand mean is large relative to the 'within' variance of group observations around the group mean (which by assumption would just be $\sigma^2$ for each sub-group), then we have evidence that the group means do in fact differ from the grand mean.
 
-We use the F-distribution, which is constructed from the ratio of two chi-square statistics, to generate the probability of observing the observed data under the assumption that the null hypothesis is true. A high ratio of between variance to within variance will generate a high F-statistic, which will generate a low p-value.
+We use the F-distribution, which is constructed from the ratio of two chi-square statistics, to generate the probability of observing the data under the assumption that the null hypothesis is true. A high ratio of between variance to within variance will generate a high F-statistic, which will generate a low p-value.
 
 Introductory statistics texts provide a summary table to generate the F-statistic.
 
