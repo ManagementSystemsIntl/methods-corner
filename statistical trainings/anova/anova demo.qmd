@@ -75,7 +75,7 @@ col <- viridis(4)
 
 ## Background
 
-The MSI Statistical Training Series offers tutorials on a range of topics that are commonly applied in data analysis. The objective is to a) refresh readers on the derivation and application of methods from a first statistics course, b) provide the underlying theory that goes beyond an introductory statistics course, c) introduce readers to new methods that would not be covered in an introductory statistics course, and d) provide practical, hands-on coding examples to enable users of statistical analysis software to gain proficiency in coding skills.
+The MSI Statistical Training Series offers tutorials on a range of topics that are commonly applied in data analysis. The objective is to i) refresh readers on the derivation and application of methods from a first statistics course, ii) provide the underlying theory that goes beyond an introductory statistics course, iii) introduce readers to new methods that would not be covered in an introductory statistics course, and iv) provide practical, hands-on coding examples to enable users of statistical analysis software to gain proficiency in coding skills not just to run statistical procedures, but also to derive statistical procedures through the underlying theory.
 
 Exploration of each topic should include the underlying theory, a demonstration using toy or fake data, and a real-world application in data that MSI has generated for a client deliverable.
 
@@ -395,7 +395,6 @@ ggplot(y_rf, aes(f)) +
 
 ```
 
-
 Our observed F-statistic of 109 is far above the critical value of 2.7, indicating the inequality of sub-group means.
 
 We have completed our ANOVA test for the equality of means, and we've done it mostly by hand. There are several ways to apply ANOVA tests using existing functions within R. In base R, we call the function 'aov' on a formula, or we call 'anova' on a linear model.
@@ -408,6 +407,7 @@ av <- aov(y~group, d)
 summary(av)
 
 ```
+
 anova:
 
 ```{r}
@@ -433,7 +433,7 @@ rg
 
 ```
 
-Note that the intercept is not centered to represent the grand mean, and the t-tests associated with each individual group mean is nonsensical (statistically different from zero).
+Note that the intercept is not centered to represent the grand mean, and the t-tests associated with each individual group mean are nonsensical (statistically different from zero).
 
 Returning to the ANOVA output, the evidence suggests that the group means differ from the grand mean, but we don't necessarily know which groups may differ and which groups may not. There are a number of post hoc significance tests to address this.
 
@@ -491,12 +491,14 @@ Now the inequality of sub-group means is much clearer.
 
 ## Application
 
-We will now show an application of ANOVA to real-world data that MSI, whose results were included in a client deliverable.
+We will now show an application of ANOVA to real-world data that MSI collected, whose results were included in a client deliverable.
 
 ## Resources
 
 This tutorial relied on the following resources:
 
--   Course notes for the Statistics pre-requisite in the Applied Economics curriculum at Johns Hopkins
--   Applied Statistics with R, a text used in Stat 420, Methods of Applied Statistics at the University of Illinois
--   
+-   Course notes for the Statistics pre-requisite in the Johns Hopkins Applied Economics program
+
+-   Applied Statistics with R, a text used in Stat 420, Methods of Applied Statistics at the University of Illinois [@dalpiaz]
+
+-   Common statistical tests are linear models, chapter 7 [@doogue]
