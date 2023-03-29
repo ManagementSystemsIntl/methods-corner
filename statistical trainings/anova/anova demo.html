@@ -180,7 +180,7 @@ V(Y)=E_x(\sigma^2_{Y|X})+V_X(\mu_{Y|X})
 H_0: \alpha_1=\alpha_2=..\alpha_g=0
 \]</span></p>
 <p>Note that we construct the data model as <span class="math inline">\(y_{ij}=\mu+\alpha_i+e_{ij}\)</span>, where <span class="math inline">\(y_{ij}\sim N(\mu_i, \sigma^2)\)</span>, <span class="math inline">\(\mu\)</span> is the grand (overall) mean of the sample, and the <span class="math inline">\(\alpha_{i}\)</span> are deviations from the grand mean. So, if all means are the same the deviations are zero.</p>
-<p>Using the ANOVA theorem, if the <span class="math inline">\(\alpha_i\)</span> are zero, than their variances are zero, so the first term of the ANOVA theorem drops out. Furthermore, by assumption, there is only a single variance for all sub-groups. So the second term simplifies to <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>Using the ANOVA theorem, if the <span class="math inline">\(\alpha_i\)</span> are zero, then their variances are zero, so the first term of the ANOVA theorem drops out. Furthermore, by assumption, there is only a single variance for all sub-groups. So the second term simplifies to <span class="math inline">\(\sigma^2\)</span>.</p>
 <p><span class="math display">\[
 H_0: E(Y|X_i)=\mu; V(Y|X_i)=\sigma^2
 \]</span></p>
@@ -189,7 +189,7 @@ H_0: E(Y|X_i)=\mu; V(Y|X_i)=\sigma^2
 H_1: \alpha_1=\alpha_2=..\alpha_g\neq0
 \]</span></p>
 <p>The key here is the variance term. If the sub-group means differ, their means will have a variance around the grand mean. If this ‘between’ variance of the sub-group means around the grand mean is large relative to the ‘within’ variance of group observations around the group mean (which by assumption would just be <span class="math inline">\(\sigma^2\)</span> for each sub-group), then we have evidence that the group means do in fact differ from the grand mean.</p>
-<p>We use the F-distribution, which is constructed from the ratio of two chi-square statistics, to generate the probability of observing the observed data under the assumption that the null hypothesis is true. A high ratio of between variance to within variance will generate a high F-statistic, which will generate a low p-value.</p>
+<p>We use the F-distribution, which is constructed from the ratio of two chi-square statistics, to generate the probability of observing the data under the assumption that the null hypothesis is true. A high ratio of between variance to within variance will generate a high F-statistic, which will generate a low p-value.</p>
 <p>Introductory statistics texts provide a summary table to generate the F-statistic.</p>
 <div class="cell" data-hash="anova-demo_cache/html/unnamed-chunk-1_5c2245eef3bd04d04ef669c64fdb5f89">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create anova table</span></span>
