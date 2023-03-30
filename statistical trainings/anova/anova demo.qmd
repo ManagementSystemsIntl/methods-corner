@@ -197,7 +197,7 @@ grp <- ggplot(d, aes(x=y, group=group, fill=group, color=group)) +
           legend.position="none") +
     labs(x="",
          y="",
-         title="Distribution of X")
+         title="Distribution of Y|X")
 
 grp
 
@@ -242,7 +242,7 @@ $$
 Next we need the within sum of squares. As a reminder, this is the variation of a sub-group observation around its sub-group mean.
 
 $$
-SSW=\sum_{i=1}^g\sum_{j=1}^{n_i}(y_{ij}-\bar{y_i}^2)
+SSW=\sum_{i=1}^g\sum_{j=1}^{n_i}(y_{ij}-\bar{y_i})^2
 $$
 
 It can be shown that this expression is the same as the overall variance times the sample size.
@@ -251,7 +251,7 @@ $$
 SSW=\sum_{i=1}^g(n_i-1)s_i^2
 $$
 
-This also matches the intuition that, under the null of equal variances, the variation of a sub-group observation around its sub-group mean is no different than the variation around any observation around the grand mean.
+This also matches the intuition that, under the null of equal variances, the variation of a sub-group observation around its sub-group mean is no different than the variation of any observation around the grand mean.
 
 We can see the squared deviations explicitly by constructing new variables in our data set.
 
