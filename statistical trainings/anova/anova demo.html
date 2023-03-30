@@ -259,7 +259,7 @@ H_1: \alpha_1=\alpha_2=..\alpha_g\neq0
 </div>
 </div>
 <p>The data can be described as roughly normal, though there is clearly the beginning of a second mode at around 75, and the first hint of another mode at around 25. We know by construction that this is due to the presence of the sub-groups X. If we had knowledge only of Y but not of X, we might suspect the presence of hidden structure (sub-groups) in the data, but would not know.</p>
-<div class="cell" data-hash="anova-demo_cache/html/unnamed-chunk-4_a10420eb1cbaca0d9d91f445771950f3">
+<div class="cell" data-hash="anova-demo_cache/html/unnamed-chunk-4_225adef6dee4d7446b6574502e188a0c">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># distribution of sub-groups X</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>grp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(d, <span class="fu">aes</span>(<span class="at">x=</span>y, <span class="at">group=</span>group, <span class="at">fill=</span>group, <span class="at">color=</span>group)) <span class="sc">+</span> </span>
@@ -273,7 +273,7 @@ H_1: \alpha_1=\alpha_2=..\alpha_g\neq0
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">legend.position=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">y=</span><span class="st">""</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">title=</span><span class="st">"Distribution of X"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">title=</span><span class="st">"Distribution of Y|X"</span>)</span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>grp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -323,13 +323,13 @@ SSB=\sum_{i=1}^gn_i(\bar{y_i}-\bar{y})
 \]</span></p>
 <p>Next we need the within sum of squares. As a reminder, this is the variation of a sub-group observation around its sub-group mean.</p>
 <p><span class="math display">\[
-SSW=\sum_{i=1}^g\sum_{j=1}^{n_i}(y_{ij}-\bar{y_i}^2)
+SSW=\sum_{i=1}^g\sum_{j=1}^{n_i}(y_{ij}-\bar{y_i})^2
 \]</span></p>
 <p>It can be shown that this expression is the same as the overall variance times the sample size.</p>
 <p><span class="math display">\[
 SSW=\sum_{i=1}^g(n_i-1)s_i^2
 \]</span></p>
-<p>This also matches the intuition that, under the null of equal variances, the variation of a sub-group observation around its sub-group mean is no different than the variation around any observation around the grand mean.</p>
+<p>This also matches the intuition that, under the null of equal variances, the variation of a sub-group observation around its sub-group mean is no different than the variation of any observation around the grand mean.</p>
 <p>We can see the squared deviations explicitly by constructing new variables in our data set.</p>
 <div class="cell" data-hash="anova-demo_cache/html/unnamed-chunk-6_5a464b37f842df396c57c19e5d5aa7b0">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># decompose variance across groups</span></span>
