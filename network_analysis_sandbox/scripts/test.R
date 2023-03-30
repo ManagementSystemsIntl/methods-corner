@@ -25,7 +25,7 @@ ggraph(g, layout = "with_kk") +
   geom_node_text(aes(label = name)) +
   geom_edge_link(aes(alpha = centrality))
 
-
+source("network_analysis_sandbox/prep/prep.R")
 ###testing out additional vertice attributes
 df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
   select(ID
@@ -39,7 +39,8 @@ df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-2
          , to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
          , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`) |>
   mutate(respondent = 1) |>
-  filter(!is.na(practice_area)) 
+  filter(!is.na(practice_area)
+         & !is.na(to_mentor))
 
 df$practice_area <- df$practice_area |>
   recode("Strategy, Evaluation and Analysis" = "SEA"
