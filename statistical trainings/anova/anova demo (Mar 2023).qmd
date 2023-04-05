@@ -79,35 +79,7 @@ The MSI Statistical Training Series offers tutorials on a range of topics that a
 
 Exploration of each topic should include the underlying theory, a demonstration using toy or fake data, and a real-world application in data that MSI has generated for a client deliverable.
 
-## Introduction
-
-We use the F-distribution, which is constructed from the ratio of two chi-square statistics, to generate the probability of observing the data under the assumption that the null hypothesis is true. A high ratio of between variance to within variance will generate a high F-statistic, which will generate a low p-value.
-
-Introductory statistics texts provide a summary table to generate the F-statistic.
-
-```{r}
-
-# create anova table
-
-aov_ex <- data.frame(errors=c("Between","Within","Total"),
-                      squares=c("SSB","SSW","SST"),
-                      df=c("g-1","N-g","N-1"),
-                      mn_sq = c("SSB/DFB", "SSW/DFW", ""),
-                      F=c("MSB/MSW","","")) %>%
-  flextable() %>%
-  set_header_labels(values=list(
-    errors="Error type",
-    squares="Designation",
-    df="Degrees of Freedom",
-    mn_sq="Mean square"
-  )) %>%
-  autofit()
-
-aov_ex
-
-```
-
-## Underlying theory
+## Analysis of Variance (ANOVA)
 
 The analysis of variance theorem derives from the properties of conditional expectations -- see [@wooldridge2010], pages 31-32 for a proof. The ANOVA theorem states that
 
@@ -139,7 +111,31 @@ $$
 
 The key here is the variance term. If the sub-group means differ, their means will have a variance around the grand mean. If this 'between' variance of the sub-group means around the grand mean is large relative to the 'within' variance of group observations around the group mean (which by assumption would just be $\sigma^2$ for each sub-group), then we have evidence that the group means do in fact differ from the grand mean.
 
+We use the F-distribution, which is constructed from the ratio of two chi-square statistics, to generate the probability of observing the data under the assumption that the null hypothesis is true. A high ratio of between variance to within variance will generate a high F-statistic, which will generate a low p-value.
 
+Introductory statistics texts provide a summary table to generate the F-statistic.
+
+```{r}
+
+# create anova table
+
+aov_ex <- data.frame(errors=c("Between","Within","Total"),
+                      squares=c("SSB","SSW","SST"),
+                      df=c("g-1","N-g","N-1"),
+                      mn_sq = c("SSB/DFB", "SSW/DFW", ""),
+                      F=c("MSB/MSW","","")) %>%
+  flextable() %>%
+  set_header_labels(values=list(
+    errors="Error type",
+    squares="Designation",
+    df="Degrees of Freedom",
+    mn_sq="Mean square"
+  )) %>%
+  autofit()
+
+aov_ex
+
+```
 
 We will now demonstrate the use of the ANOVA theorem to test for the equality of sub-groups, using constructed data.
 
