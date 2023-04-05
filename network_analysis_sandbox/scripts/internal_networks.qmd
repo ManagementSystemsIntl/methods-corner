@@ -101,7 +101,7 @@ ggplot(data = df2
 ```
 
 # Network statistics
-Next, let's look at the networks. We collected data for two networks -- one related to mentoring and another related to technical guidance. To understand the networks we have to identify the people and their connections. In network analysis these are called, nodes and edges, respectively. Let's observe the first five rows of data for the mentor network to get a sense of how network data looks. 
+Next, let's look at the networks. We collected data for two networks -- one related to mentoring and another related to technical guidance. To understand the networks we have to identify the people and their connections. In network analysis these are called, nodes and edges, respectively. To better understand how this works let's look at an example of a dataframe that shows the ties and one that shows the nodes. 
 
 ```{r}
 #| label: Edges and nodes
@@ -113,68 +113,260 @@ Next, let's look at the networks. We collected data for two networks -- one rela
 #| echo: fenced
 #| tbl-colwidths: [20,20]
 
-#read in the dataframes
+## example available at https://igraph.org/r/doc/graph_from_data_frame.html
+## A simple example with a couple of actors
+## The typical case is that these tables are read in from files....
+actors <- data.frame(name=c("Alice", "Bob", "Cecil", "David",
+                            "Esmeralda"),
+                     age=c(48,33,45,34,21),
+                     gender=c("F","M","F","M","F"))
+relations <- data.frame(from=c("Bob", "Cecil", "Cecil", "David",
+                               "David", "Esmeralda"),
+                        to=c("Alice", "Bob", "Alice", "Alice", "Bob", "Alice"),
+                        same.dept=c(FALSE,FALSE,TRUE,FALSE,FALSE,TRUE),
+                        friendship=c(4,5,5,2,1,1), advice=c(4,5,5,4,2,3))
 
-#mentoring
-mentor_nodes <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/nodes_mentor.xlsx"))
 
-mentor_edges <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/edges_mentor.xlsx"))
+flextable(actors) |>
+  set_header_labels(values = list(
+  ))
 
-#tech questions
-tech_nodes <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/nodes_tech.xlsx"))
+flextable(relations) |>
+  set_header_labels(values=list(
+  ))
 
-tech_edges <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/edges_tech.xlsx"))
-
-kable(head(mentor_nodes, n = 5))
-
-kable(head(mentor_edges, n = 5))
 
 
 
                      
 ```
 
-On the left, are the anonymized nodes. Each one represents one person in our network. On the right, are the ties between the nodes. Node 1 is connected to node 11, and two is connected to 11 and 30 and so on. This from and to dynamic allows us to analyze and visualize the networks connections.
+On the left, are the nodes. Each one name is one person in the network. The ties, or connections, between them is displayed in the table on the right.  Bob is connected to Alice, and you can see that Cecil is connected to both Bob and Alice. David is connected to both Alice and Bob. 
 
-## Mentoring network
-```{r echo = F, warning = F}
+These two dataframes can be merged into a graph object, and they can be visualized as a network as in the below.
 
+```{r}
 
-#convert the mentor_edges dataframe to a matrix
-mentors <- graph_from_data_frame(mentor_edges)
+g <- graph_from_data_frame(relations, directed=TRUE, vertices=actors)
 
-#add degree
-mentors$degree <- degree(mentors)
-
-#add edge_betweenness
-mentors$edge_betweenness <- edge_betweenness(mentors)
-
-#add neighborhood size (i.e. size of neighborhood within 2 edges of a node)
-mentors$degree2 <- neighborhood.size(mentors, 2)
+ggraph(g, "with_kk") +
+  geom_node_point(aes(color = gender)#color = my_pal[[2]]
+                  , size = 8
+                  , alpha = .3) +
+  geom_edge_link(aes(color = same.dept
+                     , alpha = friendship))+#color = my_pal[[2]]
+                 #, alpha = .3) +
+  geom_node_text(aes(label = name)) +
+  labs(title = "Office network"
+       , subtitle = "Friendships cross departments, but not all staff have friends in the other department")+
+  theme.graph()
 
 ```
 
+In the graph we see a few points communicated, including the ties, sex, how strong a friendship is between ties, and whether or not the nodes (people) are in the same department. We now see that Esmeralda has no friendships in the other office. We could also say that she has the smallest neighborhood -- the smallest number of first order, or direct, connections. 
 
-In the entire mentor dataset there are `r gorder(mentors)` nodes. These nodes have `r gsize(mentors)` connections. The resulting network looks like this.
+## MSI's Mentoring network
+```{r echo = FALSE, output = FALSE }
+df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
+  select(ID
+         , Name 
+         , home_field = `Are you home office or field office staff?` 
+         , practice_area = `Practice Area` 
+         , training = `Training/Credential specific to data analytics` 
+         , advanced_analyses = `Any specific advanced analyses you have conducted?`
+         , software = `Any specific competencies with statistical analysis software?` 
+         , aspirations = `Any specific aspirations for data analytics?`
+         , to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
+         , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`) |>
+  mutate(respondent = 1) |>
+  filter(!is.na(practice_area)
+         & !is.na(to_mentor))
 
+df$practice_area <- df$practice_area |>
+  recode("Strategy, Evaluation and Analysis" = "SEA"
+         , "Education" = "SEA")
 
-```{r warning = F, echo = F}
+#reworking this data set for mentoring
+df1 <- df |>
+  filter(practice_area == "SEA"
+         & home_field == "Home office") |>
+  select(-to_tech_ques)
 
+df1 <- df1 |>
+  mutate(to_mentor2 = strsplit(to_mentor, "[,;&]+")) |>
+  unnest("to_mentor2") 
 
-basic_mentor <- ggraph(mentors, layout = "with_kk") +
+#had to separately clean the " and " for some reason
+df1 <- df1 |>
+  mutate(to_mentor3 = strsplit(to_mentor2, " and ")) |>
+  unnest("to_mentor3")
+
+#need to clean up names in to_mentor column
+#This allows us to view all unique rows in the column
+unique(df1$to_mentor3)
+
+#this fixes the names of the to_mentor3 column
+df1$to_mentor3 <- df1$to_mentor3 |>
+  str_trim() |> #eliminates extra spaces before and after text
+  recode("Tim R" = "Tim Reilly"
+         , "Michelle" = "Michelle Adams-Matson"
+         , "Tim R." = "Tim Reilly"
+         , "None" = "skip"
+         , "NA" = "skip"
+         , "N/A" = "skip") 
+
+df1 <- df1 |>
+  relocate(to_mentor3, .before = home_field)
+
+#find the individual softwares
+softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA"
+                     , "Python", "ArcGIS", "Excel", "excel", "SAS"
+                     , "EpiInfo", "STATA", "Kobo Tool Box", "Dedoose"
+                     , "SMath Studio", "Tableau"), collapse = "|")
+
+#create a new column that extracts the names of software used 
+#then create another column that unnests any lists
+df2 <- df1 |>
+  mutate(new = str_extract_all(software, pattern = softwares))
+
+#Create a ties df
+df1_ties <- df2 |>
+  select(Name, to_mentor3) |>
+  filter(to_mentor3 != "skip")
+
+#Create a nodes df with all attributes
+df1_nodes <- as_tibble(unique(c(df2$Name, df2$to_mentor3))) |>
+  filter(value != "skip" &
+           !is.na(value))
+
+#Create a nodes df with all attributes
+#create the list of nodes
+df1_nodes <- as_tibble(unique(c(df1_ties$Name, df1_ties$to_mentor3)))
+
+#join it to the attributes
+df2_nodes <- df1_nodes |>
+  left_join(df2, by = c("value" = "Name"))
+
+#delete any duplicate nodes
+df2_vertices <- subset(df2_nodes, !duplicated(value)) 
+
+###create graph object
+
+df_graph_ment <- graph_from_data_frame(df1_ties
+                                       , directed = FALSE
+                                       , vertices = df2_vertices)
+```
+
+Within the SEA practice area we had `r gorder(df_graph_ment)` nodes in our network consisting of `r gsize(df_graph_ment)` edges.
+
+```{r echo = F, warning = F}
+
+ggraph(df_graph_ment, layout = "with_kk") +
   geom_edge_link(color = my_pal[[5]]
                  , alpha = .3) +
   geom_node_point(color = my_pal[[5]]
                   , size = 4) +
-  labs(title = "Mentor network among data enthusiasts\nat MSI")
+  labs(title = "Mentor network among data enthusiasts\nat MSI") +
   theme(legend.position = "none")+
-  theme.graph() 
-  
+  theme.graph()
 
-basic_mentor
 ```
 
-In this figure it is easy to see one large cluster of nodes near the top and then a collection of smaller, disconnected nodes near the bottom. 
+
+
+
+## MSI's SEA Technical Guidance Network
+```{r warning = F, echo = F}
+#SEA only and only those who listed tech advisors
+
+df_tech <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
+  select(ID
+         , Name 
+         , home_field = `Are you home office or field office staff?` 
+         , practice_area = `Practice Area` 
+         , training = `Training/Credential specific to data analytics` 
+         , advanced_analyses = `Any specific advanced analyses you have conducted?`
+         , software = `Any specific competencies with statistical analysis software?` 
+         , aspirations = `Any specific aspirations for data analytics?`
+         , to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
+         , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`) |>
+  mutate(respondent = 1) |>
+  filter(!is.na(practice_area)
+         & !is.na(to_tech_ques))
+
+df_tech$practice_area <- df_tech$practice_area |>
+  recode("Strategy, Evaluation and Analysis" = "SEA"
+         , "Education" = "SEA")
+
+#reworking this data set for mentoring
+df_tech1 <- df_tech |>
+  filter(practice_area == "SEA"
+         & home_field == "Home office") |>
+  select(-to_mentor)
+
+df_tech1 <- df_tech1 |>
+  mutate(to_tech2 = strsplit(to_tech_ques, "[,;&]+")) |>
+  unnest("to_tech2") 
+
+#need to clean up names in to_mentor column
+#This allows us to view all unique rows in the column
+unique(df_tech1$to_tech2)
+
+#this fixes the names of the to_mentor3 column
+df_tech1$to_tech3 <- df_tech1$to_tech2 |>
+  str_trim() |> #eliminates extra spaces before and after text
+  recode("No one right now" = "skip"
+         , "Dan" = "Dan Killian"
+         , "David" = "David Hinkle"
+         , "Tim S." = "Tim Shifflett"
+         , "None" = "skip"
+         , "NA" = "skip"
+         , "N/A" = "skip")
+         
+
+df_tech1 <- df_tech1 |>
+  relocate(to_tech3, .before = home_field)
+
+#find the individual softwares
+softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA"
+                     , "Python", "ArcGIS", "Excel", "excel", "SAS"
+                     , "EpiInfo", "STATA", "Kobo Tool Box", "Dedoose"
+                     , "SMath Studio", "Tableau"), collapse = "|")
+
+#create a new column that extracts the names of software used 
+#then create another column that unnests any lists
+df_tech2 <- df_tech1 |>
+  mutate(new = str_extract_all(software, pattern = softwares)) |>
+  filter(to_tech3 !="skip")
+
+#Create a ties df
+df_tech_ties <- df_tech2 |>
+  select(Name, to_tech3)
+
+
+
+#Create a nodes df with all attributes
+#create the list of nodes
+df_tech_nodes <- as_tibble(unique(c(df_tech_ties$Name, df_tech_ties$to_tech3)))
+
+#join it to the attributes
+df_tech_nodes1 <- df_tech_nodes |>
+  left_join(df_tech2, by = c("value" = "Name"))
+
+#delete any duplicate nodes
+df_tech_vertices <- subset(df_tech_nodes1, !duplicated(value)) 
+
+df_graph_tech <- graph_from_data_frame(df_tech_ties
+                                       , directed = FALSE
+                                       , vertices = df_tech_vertices)
+
+
+
+```
+
+Within the SEA practice area we had `r gorder(df_graph_tech)` nodes in our network consisting of `r gsize(df_graph_tech)` edges.
+
+ 
 
 ```{r}
 
@@ -183,18 +375,16 @@ In this figure it is easy to see one large cluster of nodes near the top and the
 #| fig-width=6
 #| fig-height=4
 
-#ment_graph <- ggraph(mentors, layout = "with_kk") +
- # geom_node_point(aes(size = mentors$degree2)
-  #                , color = my_pal[[5]]
-   #                 , alpha = .3) +
-  #geom_node_text(aes(label = name )) +
-  #geom_edge_link(aes(alpha = mentors$edge_betweenness)) +
-  #labs(title = "Mentor network among data enthusiasts\nat MSI"
-   #    , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +
-  #theme.graph() +
-  #theme(legend.position = "none")
+ggraph(df_graph_tech, layout = "with_kk") +
+  geom_edge_link(color = my_pal[[10]]
+                 , alpha = .3) +
+  geom_node_point(color = my_pal[[10]]
+                  , size = 4) +
+    labs(title = "Technical advice network among data enthusiasts at MSI"
+       , subtitle = "tech-tech-tech-ni-cal") +
+  theme.graph() +
+  theme(legend.position = "none")
 
-#ment_graph
 
 
 ```
@@ -205,30 +395,30 @@ In this figure it is easy to see one large cluster of nodes near the top and the
 
 ```{r}
 #Repeat for tech side
-techs <- graph_from_data_frame(tech_edges)
+#techs <- graph_from_data_frame(tech_edges)
 
 #add degree
-techs$degree <- degree(techs)
+#techs$degree <- degree(techs)
 
 #add edge_betweenness
-techs$edge_betweenness <- edge_betweenness(techs)
+#techs$edge_betweenness <- edge_betweenness(techs)
 
 #add neighborhood size (i.e. size of neighborhood within 2 edges of a node)
-techs$degree2 <- neighborhood.size(techs, 2)
+#techs$degree2 <- neighborhood.size(techs, 2)
 
-tech_graph <- ggraph(techs, layout = "with_kk") +
-  geom_edge_link(color = my_pal[[10]]
-                 , alpha = .3) +
-  geom_node_point(color = my_pal[[10]]
-                  , size = 4) +
+#tech_graph <- ggraph(techs, layout = "with_kk") +
+ # geom_edge_link(color = my_pal[[10]]
+           #      , alpha = .3) +
+  #geom_node_point(color = my_pal[[10]]
+            #      , size = 4) +
   #geom_node_text(aes(label = name)) +
 
-  labs(title = "Technical advice network among data enthusiasts at MSI"
-       , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +
-  theme.graph() +
-  theme(legend.position = "none")
+  #labs(title = "Technical advice network among data enthusiasts at MSI"
+   #    , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +
+  #theme.graph() +
+  #theme(legend.position = "none")
 
-tech_graph
+#tech_graph
 
 ```
 
