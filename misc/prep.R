@@ -18,7 +18,7 @@
 base_packages <- c("tidyverse", "easystats", "corrplot","DescTools","estimatr","extrafont","janitor",
                    "reshape2", "haven", "broom","HH","Hmisc","plotrix","scales","sysfonts","foreign","car",
                    "ICC","openxlsx","readr","readxl","sjmisc","sjPlot","flextable", "sjstats","sjlabelled","skimr",
-                   "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi", "citr")
+                   "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi", "citr", "kableExtra")
 
 lapply(base_packages, library, character.only=T)
 

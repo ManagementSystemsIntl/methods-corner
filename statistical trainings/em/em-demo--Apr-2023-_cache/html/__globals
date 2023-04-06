@@ -1,9 +1,10 @@
 unnamed-chunk-1	flextable	read_csv
-unnamed-chunk-2	d	frq	map
-unnamed-chunk-3	$	%>%	.	::	c	d	data.frame	flextable	frq	mutate	raw.prc	round
+unnamed-chunk-2	d	tab_stackfrq
+unnamed-chunk-3	$	%>%	.	::	c	d	data.frame	flextable	frq	mutate	plot	raw.prc	round
 unnamed-chunk-4	%>%	c	data.frame	flextable	set_header_labels
-unnamed-chunk-5	c	y1_x1	y2_x1	y3_x1
-unnamed-chunk-6	$	c	data.frame	flextable	freqs	jointy_x1	y1_x2	y2_x2	y3_x2
-unnamed-chunk-7	%>%	flextable	joint_x1	joint_x2	mutate	p_x1	p_x2
-unnamed-chunk-8	%>%	flextable	joint_x1	joint_x2	mutate	p_x1	p_x2	params
-unnamed-chunk-9	%>%	flextable	frq	joint_x1	joint_x2	log	mutate	new_perc	p_x1	p_x2
+unnamed-chunk-5	a	flextable	params	plot
+unnamed-chunk-6	%>%	c	F	freqs	kable	kable_styling	params	y1_x1	y2_x1	y3_x1
+unnamed-chunk-7	$	c	data.frame	flextable	freqs	jointy_x1	y1_x2	y2_x2	y3_x2
+unnamed-chunk-8	%>%	flextable	joint_x1	joint_x2	mutate	p_x1	p_x2
+unnamed-chunk-9	%>%	flextable	joint_x1	joint_x2	mutate	p_x1	p_x2	params
+unnamed-chunk-10	%>%	flextable	frq	joint_x1	joint_x2	log	mutate	new_perc	p_x1	p_x2

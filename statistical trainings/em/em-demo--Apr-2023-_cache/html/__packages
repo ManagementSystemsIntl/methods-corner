@@ -76,3 +76,4 @@ ggridges
 gghighlight
 scatterplot3d
 poLCA
+kableExtra

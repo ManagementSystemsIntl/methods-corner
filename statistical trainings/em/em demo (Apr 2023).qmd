@@ -21,7 +21,7 @@ knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, messa
 base_packages <- c("tidyverse", "easystats", "corrplot","DescTools","estimatr","extrafont","janitor",
                    "reshape2", "haven", "broom","HH","Hmisc","plotrix","scales","sysfonts","foreign","car",
                    "ICC","openxlsx","readr","readxl","sjmisc","sjPlot","flextable", "sjstats","sjlabelled","skimr",
-                   "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi")
+                   "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi", "kableExtra")
 
 lapply(base_packages, library, character.only=T)
 rm(base_packages)
@@ -109,8 +109,10 @@ flextable(d[1:5,])
 
 ```
 
-```{r}
-map(d[,1:3], frq)
+```{r results='asis'}
+
+tab_stackfrq(d[,1:3],
+             digits=1)
 ```
 
 A slight majority of respondents agreed with items one and three, while item two was about evenly split. Perhaps there are two broad groups of respondents, those who are typically tolerant of anti-religious sentiment, and those who are not.
@@ -125,6 +127,9 @@ freqs <- data.frame(frq(d$cum)) %>%
   dplyr::select(-raw.prc)
 
 flextable(freqs)
+
+#| column: margin
+plot(flextable(freqs))
 
 ```
 
@@ -178,11 +183,31 @@ flextable(params) %>%
 
 ```
 
+```{r}
+
+b <- plot(flextable(params))
+b
+a
+a + b
+
+```
+
 We now apply the initial indicator parameters to the observed data, to get a joint probability of the pattern of all three responses and either component. This is $P(y_1, y_2, y_3|X=x)$, where the $y_1, y_2, y_3$ are the observed patterns of responses in the sample, and the Xs are the current parameter estimates of the probability of each indicator variable for each component.
 
 Probability of response patterns, if they belonged to component 1.
 
 ```{r}
+
+#|layout-ncol: 2
+
+freqs %>%
+  kable("html", align = 'clc', caption = 'Observed pattern of responses') %>%
+    kable_styling(full_width = F, position = "float_left")
+
+params %>%
+  kable("html", align = 'clc', caption = 'Initial parameter values') %>%
+    kable_styling(full_width = F, position = "float_right")
+
 
 x1_111 <- y1_x1*y2_x1*y3_x1 
 # probability of 1-1-1 belonging to component 1
@@ -197,7 +222,7 @@ x1_221 <- (1-y1_x1)*(1-y2_x1)*(y3_x1)
 x1_222 <- (1-y1_x1)*(1-y2_x1)*(1-y3_x1)
 
 jointy_x1 <- c(x1_111, x1_112, x1_121, x1_122, x1_211, x1_212, x1_221, x1_222)
-jointy_x1
+
 ```
 
 Probability of response patterns, if they belonged to component 2.
@@ -217,7 +242,6 @@ x2_221 <- (1-y1_x2)*(1-y2_x2)*(y3_x2)
 x2_222 <- (1-y1_x2)*(1-y2_x2)*(1-y3_x2)
 
 jointy_x2 <- c(x2_111, x2_112, x2_121, x2_122, x2_211, x2_212, x2_221, x2_222)
-jointy_x2
 
 joint_y <- data.frame(pattern=freqs$val,
                       frq=freqs$frq,
@@ -232,7 +256,7 @@ flextable(joint_y)
 
 For each indicator selection pattern, we multiply the posited model probabilities together to get the joint probability of observing that pattern, if the posited parameter values were true. We do that for each posited component.
 
-We then invoke model assumption (1) to estimate the observed frequency of the response pattern as the sum of two mixtures.@eq-ass1
+We then invoke model assumption (1) to estimate the observed frequency of the response pattern as the sum of two mixtures.\@eq-ass1
 
 ```{r}
 
