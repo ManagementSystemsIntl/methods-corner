@@ -10,6 +10,7 @@ format:
     code-fold: false
     page-layout: full
 editor: visual
+reference-location: margin
 bibliography: references.bib
 ---
 
@@ -121,9 +122,7 @@ A slight majority of respondents agreed with items one and three, while item two
 
 We are interested in using the patterns of responses on the y1, y2, y3 variables to identify these two broad classes of respondents, so we created a new variable that captures their pattern across each respondent. We can then tabulate the frequencies of these patterns.
 
-```{r collapse=T}
-
-#| output: collapse
+```{r}
 
 freqs <- data.frame(frq(d$cum)) %>%
   .[1:8, c(2,4,5)] %>%
@@ -132,9 +131,6 @@ freqs <- data.frame(frq(d$cum)) %>%
 
 flextable(freqs)
 
-#| column: margin
-a <- plot(flextable(freqs))
-a
 ```
 
 We suspect there are two patterns in how respondents answer the three survey items, and that these patterns arise due to the existence of two components, or latent variables, in the data. We will call this latent variable X, which can take on values of component 1 (X=1) or component 2 (X=2). We will refer to the observed indicator variables as $y_1, y_2, .., y_n$.
@@ -147,21 +143,25 @@ We want to use the observed frequencies of the response patterns to infer the ex
     P(y_1, y_2, y_3)=P(X=1)P(y_1, y_2, y_3|X=1) + P(X=2)P(y_1, y_2, y_3|X=2)
     $$ {#eq-ass1}
 
-    Note that the probabilities of the indicator variables and of each component are not observed - they are the parameters of the model.
+    Note that the probabilities of the indicator variables for each component[^3], as well as the share of each component in the sample[^4] , are not observed - they are the parameters of the model.
 
 2.  Within each component, responses are independent (*local independence*). Within each component, knowing $y_1$ offers no information about $y_2$. If this is true, then the probability of observing a given pattern of responses is simply the product of their probabilities.
 
     $$
     P(y_1,y_2,y_3|X=1)=P(y_1|X=1)P(y_2|X=1)P(y_3|X=1)
-    $$
+    $$ {#eq-ass2}
 
     Again note that the notation above refers not to observed probabilities, but the parameter probabilities of the model.
 
+[^3]: $P(y_i|X=c)$
+
+[^4]: $P(X=c)$
+
 The above model assumptions identify two sets of parameters that will generate our observed information. The first set of parameters is the proportion of the sample belonging to each component. This is $P(X=1,2)$ from model assumption (1) above. Second, we need the proportion of each indicator variable (the y1, y2, y3) within each assigned component. This is $P(Y1=1|X=1,2), P(Y2=1|X=1,2), P(Y3=1|X=1,2)$. Knowing these parameter values allows us to generate the joint probability of the pattern of responses in the indicator variables described in model assumption (2).
 
-We will start by arbitrarily setting initial values for these parameters, and then use these values to estimate the probabilities that each observation belongs to each component.[^3] Let's start off by saying that components 1 and 2 are evenly apportioned in the sample, and that the probabilities of an observation being 1 for each of the indicator variables is 60 percent.
+We will start by arbitrarily setting initial values for these parameters, and then use these values to estimate the probabilities that each observation belongs to each component.[^5] Let's start off by saying that components 1 and 2 are evenly apportioned in the sample, and that the probabilities of an observation being 1 for each of the indicator variables is 60 percent.
 
-[^3]: In other instructional content, you will often see the application of a clustering algorithm to estimate the probabilities of class membership for each observation. These class probabilities then start of the EM algorithm.
+[^5]: In other instructional content, you will often see the application of a clustering algorithm to estimate the probabilities of class membership for each observation. These class probabilities then start of the EM algorithm.
 
 ```{r}
 
@@ -177,69 +177,37 @@ y1_x2 <- .4
 y2_x2 <- .4
 y3_x2 <- .4
 
-params <- data.frame(probs=c("P(X)","P(y1=1|X)","P(y2=1|X)", "P(y3=1|X)"),
+params1 <- data.frame(probs=c("P(X)","P(y1=1|X)","P(y2=1|X)", "P(y3=1|X)"),
                      X1=c(.5,.6,.6,.6),
                      X2=c(.5,.4,.4,.4))
 
-flextable(params) %>%
+flextable(params1) %>%
   set_header_labels(X1="X=1",
                     X2="X=2")
 
 ```
 
-```{r}
+We now use the initial indicator parameters to estimate a probability of observing a given response pattern $P(y_1, y_2, y_3|X=x)$, where the $y_1, y_2, y_3$ are the observed patterns of responses in the sample, and the Xs are the current parameter estimates of the probability of each indicator variable for each component. If you're trying to follow along, here are the observed indicator response pattern frequencies and initial parameter estimates.
 
-gr_params <- gen_grob(flextable(params), 
-               fit="fixed",
-               just="center")
-gr_params_dims <- dim(gr)
-
-svglite::svglite("params.png", 
-                 width=gr_dims$width+.1,
-                 height=gr_dims$height+.1)
-
-agg_png("params.png")
-
-plot(gr)
-
-gr_freqs <- gen_grob(flextable(freqs),
-                     fit="fixed",
-                     just="center")
-
-```
-
-```{r}
-
-a <- plot(flextable(freqs))
-b <- plot(flextable(params))
-b
-a
-a + b
-
-```
-
-```{r}
-
-plot(gr_params) + plot(gr_freqs)
-
-```
-
-We now apply the initial indicator parameters to the observed data, to get a joint probability of the pattern of all three responses and either component. This is $P(y_1, y_2, y_3|X=x)$, where the $y_1, y_2, y_3$ are the observed patterns of responses in the sample, and the Xs are the current parameter estimates of the probability of each indicator variable for each component.
-
-Probability of response patterns, if they belonged to component 1.
-
-```{r collapse=T, results="hold"}
-
-#|layout-ncol: 2
+```{r results="hold"}
 
 freqs %>%
   kable("html", align = 'clc', caption = 'Observed pattern of responses') %>%
     kable_styling(full_width = F, position = "float_left")
 
-params %>%
+params1 %>%
   kable("html", align = 'clc', caption = 'Initial parameter values') %>%
     kable_styling(full_width = F, position = "float_right")
 
+```
+
+The most common response pattern is 1-1-1, which occurred in 41 percent of respondents.
+
+Given our initial model parameters that each indicator value has a 60 percent probability of belonging to component 1 and a 40 percent probability of belonging to component 2, then we would expect to see a pattern of 1-1-1 $.6*.6*.6$ = `r .6^3*100`% of the time in component 1, and $.4*.4*.4$ = `r .4^3*100`% of the time in component 2.
+
+Probability of response patterns, if they belonged to component 1.
+
+```{r}
 
 x1_111 <- y1_x1*y2_x1*y3_x1 
 # probability of 1-1-1 belonging to component 1
@@ -275,27 +243,42 @@ x2_222 <- (1-y1_x2)*(1-y2_x2)*(1-y3_x2)
 
 jointy_x2 <- c(x2_111, x2_112, x2_121, x2_122, x2_211, x2_212, x2_221, x2_222)
 
-joint_y <- data.frame(pattern=freqs$val,
-                      frq=freqs$frq,
-                      perc=freqs$perc,
-                      iteration=1,
-                      joint_x1=jointy_x1, 
-                      joint_x2=jointy_x2)
+# joint_y <- data.frame(pattern=freqs$val,
+#                       frq=freqs$frq,
+#                       perc=freqs$perc,
+#                       iteration=1,
+#                       joint_x1=jointy_x1, 
+#                       joint_x2=jointy_x2)
+# 
+# flextable(joint_y)
 
-flextable(joint_y)
+freqs1 <- freqs %>%
+  mutate(iteration=1,
+         joint_x1=jointy_x1,
+         joint_x2=jointy_x2)
+
+flextable(freqs1)
 
 ```
 
 For each indicator selection pattern, we multiply the posited model probabilities together to get the joint probability of observing that pattern, if the posited parameter values were true. We do that for each posited component.
 
-We then invoke model assumption (1) to estimate the observed frequency of the response pattern as the sum of two mixtures.\@eq-ass1
+::: callout-note
+Let's demo a callout. Something happens in my callout when I put a word in `quotes`.
+:::
+
+We then invoke @eq-ass1[^6] to estimate the observed frequency of the response pattern as the sum of two mixtures.
+
+[^6]: $$
+    P(y_1, y_2, y_3)=P(X=1)P(y_1, y_2, y_3|X=1) + P(X=2)P(y_1, y_2, y_3|X=2)
+    $$
 
 ```{r}
 
-joint_y <- joint_y %>%
+freqs1 <- freqs1 %>%
   mutate(joint_y=joint_x1*p_x1 + joint_x2*p_x2)
 
-flextable(joint_y)
+flextable(freqs1)
 
 ```
 
@@ -310,23 +293,29 @@ P(X=c|y_1, .., y_j)=\frac{P(X=c)P(y_1, .., y_j|X=c)}{P(y_1, .., y_j)}
 $$
 
 ```{r}
-joint_y <- joint_y %>%
-  mutate(x1_y=(p_x1*joint_x1)/joint_y,
-         x2_y=(p_x2*joint_x2)/joint_y)
+#| column: margin
+#| echo: false
 
-flextable(params)
-flextable(joint_y)
+flextable(params1)
 ```
-
-We can use this formulation to get our estimation of the overall probability of observing the observed pattern of responses, given our values for the parameters. Recall that our initial values for the proportion of each component is 50/50. So,
 
 ```{r}
 
-#ov_y <- data.frame(ov_p=c())
+freqs1 <- freqs1 %>%
+  mutate(x1_y=(p_x1*joint_x1)/joint_y,
+         x2_y=(p_x2*joint_x2)/joint_y)
 
-joint_y <- joint_y %>%
-  mutate(new_perc = joint_x1*p_x1 + joint_x2*p_x2,
-         loglik=log(new_perc)*frq)
+flextable(freqs1)
+```
 
-flextable(joint_y)
+Using the values of our initial parameter estimates, we have generated estimates of the probability of the respondent belonging to a given component, given their response pattern on the indicator variables. We can now use these estimated probabilities to estimate the number of respondents we expect to belong to each component.
+
+```{r}
+
+freqs1 <- freqs1 %>%
+  mutate(frq_x1=x1_y*frq,
+         frq_x2=x2_y*frq)
+
+flextable(freqs1)
+
 ```

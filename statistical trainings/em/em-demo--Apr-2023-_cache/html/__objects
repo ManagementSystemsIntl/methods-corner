@@ -1,10 +1,12 @@
 unnamed-chunk-1	d	.em-demo--Apr-2023-_cache/html/unnamed-chunk-1_0b41fc3d70b5e908a8fbad6314e2af38_meta
 unnamed-chunk-2	
-unnamed-chunk-3	freqs	.em-demo--Apr-2023-_cache/html/unnamed-chunk-3_84a222467b89ca2a13c49f4ce32334a7_meta
+unnamed-chunk-3	a	freqs	.em-demo--Apr-2023-_cache/html/unnamed-chunk-3_39aff4f3b09c3fcdc3cbc0da8857119b_meta
 unnamed-chunk-4	p_x	p_x1	p_x2	params	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2	.em-demo--Apr-2023-_cache/html/unnamed-chunk-4_7cd5b5940a1166c0ed145dc75ed706a4_meta
-unnamed-chunk-5	b
-unnamed-chunk-6	jointy_x1	x1_111	x1_112	x1_121	x1_122	x1_211	x1_212	x1_221	x1_222	.em-demo--Apr-2023-_cache/html/unnamed-chunk-6_50e991459fe35ed07030b058930b1db2_meta
-unnamed-chunk-7	joint_y	jointy_x2	x2_111	x2_112	x2_121	x2_122	x2_211	x2_212	x2_221	x2_222	.em-demo--Apr-2023-_cache/html/unnamed-chunk-7_4bebb90e8dd2c10e92d77ab2d5094f3b_meta
-unnamed-chunk-8	joint_y	.em-demo--Apr-2023-_cache/html/unnamed-chunk-8_f213a78a2c1c1777e0d046511e95538b_meta
-unnamed-chunk-9	joint_y	.em-demo--Apr-2023-_cache/html/unnamed-chunk-9_94fb0c0446249e02441123ce2b92a647_meta
-unnamed-chunk-10	joint_y	.em-demo--Apr-2023-_cache/html/unnamed-chunk-10_108886fa9c41d5927b2b2bca76f665e6_meta
+unnamed-chunk-5	gr_freqs	gr_params
+unnamed-chunk-6	a	b
+unnamed-chunk-7	
+unnamed-chunk-8	jointy_x1	x1_111	x1_112	x1_121	x1_122	x1_211	x1_212	x1_221	x1_222
+unnamed-chunk-9	joint_y	jointy_x2	x2_111	x2_112	x2_121	x2_122	x2_211	x2_212	x2_221	x2_222	.em-demo--Apr-2023-_cache/html/unnamed-chunk-9_88eb6bb27da5b0ee56be92c2b4bf4126_meta
+unnamed-chunk-10	joint_y	.em-demo--Apr-2023-_cache/html/unnamed-chunk-10_40ff57f70632ffca6fdc75a3d917cb83_meta
+unnamed-chunk-11	joint_y	.em-demo--Apr-2023-_cache/html/unnamed-chunk-11_5de320a98995b713c9652b0520efe72d_meta
+unnamed-chunk-12	joint_y	.em-demo--Apr-2023-_cache/html/unnamed-chunk-12_6edd33f782a0801d7d4691491e7404b6_meta
