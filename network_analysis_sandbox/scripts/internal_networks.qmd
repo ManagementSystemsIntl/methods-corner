@@ -276,7 +276,7 @@ ggraph(df_graph_ment, layout = "with_kk") +
 
 
 ## MSI's SEA Technical Guidance Network
-```{r warning = F, echo = F}
+```{r warning = F, echo = F, output = F}
 #SEA only and only those who listed tech advisors
 
 df_tech <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
