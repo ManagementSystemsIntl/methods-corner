@@ -320,4 +320,64 @@ flextable(freqs1)
 
 ```
 
-Now that we have the predicted frequencies of cases exhibiting a particular response pattern for each component, we will use these probabilities to predict overall frequency counts of the parameters.
+Now that we have the predicted frequencies of cases exhibiting a particular response pattern for each component, we will use these probabilities to predict overall frequency counts of the parameters. We'll append these parameter frequency counts to our initial parameters table.
+
+```{r}
+
+out1 <- data.frame(probs=params1$probs) 
+  
+x1_freqs2 <- sum(freqs1$frq_x1)
+x1_freqs2
+
+x2_freqs2 <- sum(freqs1$frq_x2)
+
+```
+
+```{r}
+
+f1_y1_c1 <- sum(freqs1[1:4,10])
+f1_y1_c1
+
+f1_y1_c2 <- sum(freqs1[1:4,11])
+f1_y1_c2
+
+f1_y2_c1 <- sum(freqs1[c(1:2, 5:6),10])
+f1_y2_c1
+
+f1_y2_c2 <- sum(freqs1[c(1:2, 5:6), 11])
+f1_y2_c2
+
+f1_y3_c1 <- sum(freqs1[c(1,3,5,7), 10])
+f1_y3_c1
+
+f1_y3_c2 <- sum(freqs1[c(1,3,5,7), 11])
+f1_y3_c2
+
+```
+
+New parameter probabilities
+
+```{r}
+
+p2_x1 <- x1_freqs2 / (x1_freqs2 + x2_freqs2)
+p2_x1
+
+p2_x2 <- x2_freqs2 / (x1_freqs2 + x2_freqs2)
+p2_x2
+```
+
+```{r}
+
+y1_x1_2 <- f1_y1_c1 / x1_freqs2
+y1_x1_2
+
+
+y2_x1_2 <- f1_y2_c1 / x1_freqs2
+y2_x1_2
+
+y3_x1_2 <- f1_y3_c1 / x1_freqs2
+y3_x1_2
+
+
+
+```
