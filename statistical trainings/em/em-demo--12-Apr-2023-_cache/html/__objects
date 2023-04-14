@@ -5,20 +5,20 @@ unnamed-chunk-4	p_x1	p_x2	params1	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2	.em-demo--
 unnamed-chunk-5	
 unnamed-chunk-6	jointy_x1	x1_111	x1_112	x1_121	x1_122	x1_211	x1_212	x1_221	x1_222
 unnamed-chunk-7	freqs1	jointy_x2	x2_111	x2_112	x2_121	x2_122	x2_211	x2_212	x2_221	x2_222	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-7_022f36578f6e12fbfdc8bd39c381f002_meta
-unnamed-chunk-8	
-unnamed-chunk-9	freqs1	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-9_393917941931f12e72bc4697b185f0aa_meta
-unnamed-chunk-10	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-10_8f6cffea66727b5d553836b2f1745ed8_meta
-unnamed-chunk-11	freqs1	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-11_82f4d298601100deac890fef693ddf5d_meta
-unnamed-chunk-12	freqs1	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-12_05c07420cbad491c3561325e99db5c83_meta
-unnamed-chunk-13	f_y1_c1	f_y1_c2	f_y2_c1	f_y2_c2	f_y3_c1	f_y3_c2	newfreqs	newfreqs_flex	x1_freqs	x2_freqs	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-13_df6f2448c6d451015e57b6de73beec46_meta
-unnamed-chunk-14	pnew_x1	pnew_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
-unnamed-chunk-15	new	params1	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-15_0d27d2c02d09c375184cde3d64d77e16_meta
-unnamed-chunk-16	freqs1	ll_1	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-16_d77032cbab057ffee3df3a10f711c92f_meta
-unnamed-chunk-17	params2	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-17_62949840b27e18c6fe5e452e10980904_meta
-unnamed-chunk-18	p_x1	p_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
-unnamed-chunk-19	jointy_x1	x1_111	x1_112	x1_121	x1_122	x1_211	x1_212	x1_221	x1_222
-unnamed-chunk-20	freqs2	jointy_x2	x2_111	x2_112	x2_121	x2_122	x2_211	x2_212	x2_221	x2_222	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-20_14b3038583c182a0f6982bbb433018b7_meta
-unnamed-chunk-21	f_y1_c1	f_y1_c2	f_y2_c1	f_y2_c2	f_y3_c1	f_y3_c2	newfreqs	newfreqs_flex	x1_freqs	x2_freqs	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-21_e5a6cb4a0830eca81607fab643b9ab6d_meta
-unnamed-chunk-22	pnew_x1	pnew_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
-unnamed-chunk-23	new	params2	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-23_493e571e0d653cd225f8d88b8d5e509d_meta
+unnamed-chunk-8	freqs1	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-8_8ece3bf298b3951f2bafebd8d3dd9743_meta
+unnamed-chunk-9	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-9_7e83c678d1f57b5b304c4de802ad1120_meta
+unnamed-chunk-10	freqs1	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-10_94a7eadbe04acd0510c4ba2bb785f640_meta
+unnamed-chunk-11	freqs1	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-11_da9e7f08b7503d0caccbb57d3a8b0a6c_meta
+unnamed-chunk-12	f_y1_c1	f_y1_c2	f_y2_c1	f_y2_c2	f_y3_c1	f_y3_c2	newfreqs	newfreqs_flex	x1_freqs	x2_freqs	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-12_e09f2e591c9ecc7cfa6a82c6cfcde870_meta
+unnamed-chunk-13	pnew_x1	pnew_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
+unnamed-chunk-14	new	params1	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-14_b4d79de95a86787340a33fada19af7e5_meta
+unnamed-chunk-15	freqs1	ll_1	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-15_cd077c3cfb8e710b200f5225845deca0_meta
+unnamed-chunk-16	params2	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-16_1e544ded0dc927bb20ddc31e83a7dbe3_meta
+unnamed-chunk-17	p_x1	p_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
+unnamed-chunk-18	jointy_x1	x1_111	x1_112	x1_121	x1_122	x1_211	x1_212	x1_221	x1_222
+unnamed-chunk-19	freqs2	jointy_x2	x2_111	x2_112	x2_121	x2_122	x2_211	x2_212	x2_221	x2_222	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-19_ddf7b4e63983952f24738336f3fc15a0_meta
+unnamed-chunk-20	f_y1_c1	f_y1_c2	f_y2_c1	f_y2_c2	f_y3_c1	f_y3_c2	newfreqs	newfreqs_flex	x1_freqs	x2_freqs	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-20_11769e0de42edc3402ee98def808a11a_meta
+unnamed-chunk-21	pnew_x1	pnew_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
+unnamed-chunk-22	new	params2	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-22_6df73e13872aab27a411dc8468b390b7_meta
+unnamed-chunk-23	freqs2	ll_2	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-23_fc89758c6e67078dd17c4e1061ccb925_meta
 unnamed-chunk-24	freqs2	ll_2	.em-demo--12-Apr-2023-_cache/html/unnamed-chunk-24_42c87de0d1f722dddf710a3e2b9b2193_meta

@@ -5,20 +5,20 @@ unnamed-chunk-4	%>%	c	data.frame	flextable	set_header_labels
 unnamed-chunk-5	%>%	F	freqs	kable	kable_styling	params1
 unnamed-chunk-6	c	y1_x1	y2_x1	y3_x1
 unnamed-chunk-7	%>%	c	flextable	freqs	jointy_x1	mutate	y1_x2	y2_x2	y3_x2
-unnamed-chunk-8	
-unnamed-chunk-9	%>%	flextable	joint_x1	joint_x2	mutate	p_x1	p_x2
-unnamed-chunk-10	flextable	params1
-unnamed-chunk-11	%>%	flextable	joint_x1	joint_x2	joint_y	mutate	p_x1	p_x2
-unnamed-chunk-12	%>%	flextable	frq	mutate	x1_y	x2_y
-unnamed-chunk-13	$	%>%	c	data.frame	flextable	freqs1	mutate	params1	sum
-unnamed-chunk-14	f_y1_c1	f_y1_c2	f_y2_c1	f_y2_c2	f_y3_c1	f_y3_c2	x1_freqs	x2_freqs
-unnamed-chunk-15	$	%>%	bind_rows	c	data.frame	flextable	mutate	pnew_x1	pnew_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
-unnamed-chunk-16	$	%>%	flextable	frq	joint_y	log	mutate	sum
-unnamed-chunk-17	%>%	flextable	mutate	new
-unnamed-chunk-18	params2
-unnamed-chunk-19	c	y1_x1	y2_x1	y3_x1
-unnamed-chunk-20	%>%	c	flextable	freqs	frq	joint_x1	joint_x2	joint_y	jointy_x1	mutate	p_x1	p_x2	x1_y	x2_y	y1_x2	y2_x2	y3_x2
-unnamed-chunk-21	$	%>%	c	data.frame	flextable	freqs2	mutate	params2	sum
-unnamed-chunk-22	f_y1_c1	f_y1_c2	f_y2_c1	f_y2_c2	f_y3_c1	f_y3_c2	x1_freqs	x2_freqs
-unnamed-chunk-23	$	%>%	bind_rows	c	data.frame	flextable	mutate	params1	pnew_x1	pnew_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
+unnamed-chunk-8	%>%	flextable	joint_x1	joint_x2	mutate	p_x1	p_x2
+unnamed-chunk-9	flextable	params1
+unnamed-chunk-10	%>%	flextable	joint_x1	joint_x2	joint_y	mutate	p_x1	p_x2
+unnamed-chunk-11	%>%	flextable	frq	mutate	x1_y	x2_y
+unnamed-chunk-12	$	%>%	c	data.frame	flextable	freqs1	mutate	params1	sum
+unnamed-chunk-13	f_y1_c1	f_y1_c2	f_y2_c1	f_y2_c2	f_y3_c1	f_y3_c2	x1_freqs	x2_freqs
+unnamed-chunk-14	$	%>%	bind_rows	c	data.frame	flextable	mutate	pnew_x1	pnew_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
+unnamed-chunk-15	$	%>%	flextable	frq	joint_y	log	mutate	sum
+unnamed-chunk-16	%>%	flextable	mutate	new
+unnamed-chunk-17	params2
+unnamed-chunk-18	c	y1_x1	y2_x1	y3_x1
+unnamed-chunk-19	%>%	c	flextable	freqs	frq	joint_x1	joint_x2	joint_y	jointy_x1	mutate	p_x1	p_x2	x1_y	x2_y	y1_x2	y2_x2	y3_x2
+unnamed-chunk-20	$	%>%	c	data.frame	flextable	freqs2	mutate	params2	sum
+unnamed-chunk-21	f_y1_c1	f_y1_c2	f_y2_c1	f_y2_c2	f_y3_c1	f_y3_c2	x1_freqs	x2_freqs
+unnamed-chunk-22	$	%>%	bind_rows	c	data.frame	flextable	mutate	params1	pnew_x1	pnew_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
+unnamed-chunk-23	$	%>%	flextable	frq	joint_y	ll_1	log	mutate	sum
 unnamed-chunk-24	$	%>%	flextable	frq	joint_y	ll_1	log	mutate	sum

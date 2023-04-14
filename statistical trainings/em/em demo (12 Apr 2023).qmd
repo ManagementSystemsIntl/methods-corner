@@ -149,7 +149,7 @@ We want to use the observed frequencies of the response patterns to infer the ex
 
     $$
     P(y_1, y_2, y_3)=P(X=1)P(y_1, y_2, y_3|X=1) + P(X=2)P(y_1, y_2, y_3|X=2)
-    $$
+    $$ {#eq-ass1}
 
     Note that the probabilities of the indicator variables for each component[^4], as well as the share of each component in the sample[^5] , are not observed - they are the parameters of the model.
 
@@ -157,7 +157,7 @@ We want to use the observed frequencies of the response patterns to infer the ex
 
     $$
     P(y_1,y_2,y_3|X=1)=P(y_1|X=1)P(y_2|X=1)P(y_3|X=1)
-    $$
+    $$ {#eq-ass2}
 
     Again note that the notation above refers not to observed probabilities, but the parameter probabilities of the model.
 
@@ -265,17 +265,11 @@ flextable(freqs1)
 
 For each indicator selection pattern, we multiply the posited model probabilities together to get the joint probability of observing that pattern, if the posited parameter values were true. We do that for each posited component.
 
-We then invoke @eq-ass1[^6] to estimate the observed frequency of the response pattern as the sum of two mixtures.
+We then invoke Assumption 1[^6] to estimate the observed frequency of the response pattern as the sum of two mixtures.
 
 [^6]: $$
     P(y_1, y_2, y_3)=P(X=1)P(y_1, y_2, y_3|X=1) + P(X=2)P(y_1, y_2, y_3|X=2)
     $$
-
-```{r}
-
-#flextable(freqs1)
-
-```
 
 ```{r}
 
@@ -433,8 +427,6 @@ params1 <- bind_rows(params1, new)
 
 flextable(params1) 
 
-#  hline(i=5)
-
 ```
 
 Comparing initial to new estimates of model parameters, we see that the estimate of the share of component 1 in the sample increases to 56 percent, while the estimate of the share of component 2 in the sample decreases to 44 percent. Probability of belonging to component 1 increased for all indicator variables, and decreased for all indicator variables belonging to comnponent 2.
@@ -471,14 +463,14 @@ flextable(params2)
 
 ```{r}
 
-p_x1 <- params2[1,4] # share of component 1, iteration 1
+p_x1 <- params2[1,4] # share of component 1
 p_x2 <- params2[1,5]
 
-y1_x1 <- params2[2,4] # probability of y1 for component 1, iteration 1
+y1_x1 <- params2[2,4] # probability of y1 for component 1
 y2_x1 <- params2[3,4]
 y3_x1 <- params2[4,4]
 
-y1_x2 <- params2[2,5] # probability of y1 for component 2, iteration 1
+y1_x2 <- params2[2,5] # probability of y1 for component 2
 y2_x2 <- params2[3,5]
 y3_x2 <- params2[4,5]
 
@@ -531,8 +523,7 @@ freqs2 <- freqs %>%
          x1_y=(p_x1*joint_x1)/joint_y,
          x2_y=(p_x2*joint_x2)/joint_y,
          frq_x1=x1_y*frq,
-         frq_x2=x2_y*frq,
-         )
+         frq_x2=x2_y*frq)
 
 flextable(freqs2)
 
