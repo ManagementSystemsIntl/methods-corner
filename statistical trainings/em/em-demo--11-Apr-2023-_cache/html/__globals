@@ -9,7 +9,8 @@ unnamed-chunk-8	%>%	flextable	joint_x1	joint_x2	mutate	p_x1	p_x2
 unnamed-chunk-9	flextable	params1
 unnamed-chunk-10	%>%	flextable	joint_x1	joint_x2	joint_y	mutate	p_x1	p_x2
 unnamed-chunk-11	%>%	flextable	frq	mutate	x1_y	x2_y
-unnamed-chunk-12	$	data.frame	freqs1	params1	sum
-unnamed-chunk-13	c	freqs1	sum
+unnamed-chunk-12	$	c	freqs1	sum
+unnamed-chunk-13	
 unnamed-chunk-14	x1_freqs2	x2_freqs2
-unnamed-chunk-15	f1_y1_c1	f1_y2_c1	f1_y3_c1	x1_freqs2
+unnamed-chunk-15	$	%>%	data.frame	mutate	params1	x1_freqs2	x2_freqs2
+unnamed-chunk-16	f1_y1_c1	f1_y2_c1	f1_y3_c1	x1_freqs2

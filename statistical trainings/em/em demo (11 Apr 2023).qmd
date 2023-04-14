@@ -165,21 +165,22 @@ We will start by arbitrarily setting initial values for these parameters, and th
 
 ```{r}
 
-p_x <- c(.5,.5)
-p_x1 <- .5
-p_x2 <- .5
+p1_x1 <- .5 # share of component 1, iteration 1
+p1_x2 <- .5
 
-y1_x1 <- .6
+y1_x1 <- .6 # probability of y1 for component 1, iteration 1
 y2_x1 <- .6
 y3_x1 <- .6
 
-y1_x2 <- .4
+y1_x2 <- .4 # probability of y1 for component 2, iteration 1
 y2_x2 <- .4
 y3_x2 <- .4
 
-params1 <- data.frame(probs=c("P(X)","P(y1=1|X)","P(y2=1|X)", "P(y3=1|X)"),
-                     X1=c(.5,.6,.6,.6),
-                     X2=c(.5,.4,.4,.4))
+params1 <- data.frame(estimate="current",
+                      probs=c("P(X)","P(y1=1|X)","P(y2=1|X)", "P(y3=1|X)"),
+                      iteration=1,
+                      X1=c(.5,.6,.6,.6),
+                      X2=c(.5,.4,.4,.4))
 
 flextable(params1) %>%
   set_header_labels(X1="X=1",
@@ -203,7 +204,7 @@ params1 %>%
 
 The most common response pattern is 1-1-1, which occurred in 41 percent of respondents.
 
-Given our initial model parameters that each indicator value has a 60 percent probability of belonging to component 1 and a 40 percent probability of belonging to component 2, then we would expect to see a pattern of 1-1-1 $.6*.6*.6$ = `r .6^3*100`% of the time in component 1, and $.4*.4*.4$ = `r .4^3*100`% of the time in component 2.
+Given our initial model parameters that each indicator value has a 60 percent probability of belonging to component 1 and a 40 percent probability of belonging to component 2, then we would expect to see the pattern (1-1-1) to be $.6*.6*.6$ = `r .6^3*100`% of the time in component 1, and $.4*.4*.4$ = `r .4^3*100`% of the time in component 2.
 
 Probability of response patterns, if they belonged to component 1.
 
@@ -320,20 +321,15 @@ flextable(freqs1)
 
 ```
 
-Now that we have the predicted frequencies of cases exhibiting a particular response pattern for each component, we will use these probabilities to predict overall frequency counts of the parameters. We'll append these parameter frequency counts to our initial parameters table.
+Now that we have the predicted frequencies of cases exhibiting a particular response pattern for each component, we will use these probabilities to predict overall frequency counts of the parameters.
 
 ```{r}
 
-out1 <- data.frame(probs=params1$probs) 
-  
 x1_freqs2 <- sum(freqs1$frq_x1)
 x1_freqs2
 
 x2_freqs2 <- sum(freqs1$frq_x2)
-
-```
-
-```{r}
+x2_freqs2
 
 f1_y1_c1 <- sum(freqs1[1:4,10])
 f1_y1_c1
@@ -355,29 +351,34 @@ f1_y3_c2
 
 ```
 
-New parameter probabilities
+Now we use these predicted frequency counts to generate new parameter probabilities
 
 ```{r}
 
-p2_x1 <- x1_freqs2 / (x1_freqs2 + x2_freqs2)
-p2_x1
+pnew_x1 <- x1_freqs2 / (x1_freqs2 + x2_freqs2)
+pnew_x1
 
-p2_x2 <- x2_freqs2 / (x1_freqs2 + x2_freqs2)
-p2_x2
+pnew_x2 <- x2_freqs2 / (x1_freqs2 + x2_freqs2)
+pnew_x2
+
+y1_x1 <- f1_y1_c1 / x1_freqs2
+y1_x1
+
+y2_x1 <- f1_y2_c1 / x1_freqs2
+y2_x1
+
+y3_x1 <- f1_y3_c1 / x1_freqs2
+y3_x1
+
 ```
 
 ```{r}
 
-y1_x1_2 <- f1_y1_c1 / x1_freqs2
-y1_x1_2
-
-
-y2_x1_2 <- f1_y2_c1 / x1_freqs2
-y2_x1_2
-
-y3_x1_2 <- f1_y3_c1 / x1_freqs2
-y3_x1_2
-
-
+new <- data.frame(estimate="new",
+                  probs=params1$probs,
+                  iteration=1) %>%
+                  mutate(X1=c())
+              
+flextable(new)
 
 ```
