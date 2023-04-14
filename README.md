@@ -20,3 +20,6 @@ Turns out we've doing a lot of our regressions wrong. The common program evaluat
 
 [Analysis of Variance](https://managementsystemsintl.github.io/methods-corner/statistical%20trainings/anova/anova%20demo.html)  
 Tutorial on the ANOVA theorem
+
+[Expectation Maximization](https://ManagementSystemsIntl.github.io/methods-corner/statistical%20trainings/em/em%20demo%20(12%20Apr%202023).html)
+Exploration and tutorial on the Expectation Maximization (EM) algorithm
