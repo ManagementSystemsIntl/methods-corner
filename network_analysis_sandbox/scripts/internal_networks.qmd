@@ -127,15 +127,16 @@ relations <- data.frame(from=c("Bob", "Cecil", "Cecil", "David",
                         friendship=c(4,5,5,2,1,1), advice=c(4,5,5,4,2,3))
 
 
-flextable(actors) |>
+table1 <- flextable(actors) |>
   set_header_labels(values = list(
   ))
 
-flextable(relations) |>
+table2 <- flextable(relations) |>
   set_header_labels(values=list(
   ))
 
-
+table1
+table2
 
 
                      
@@ -166,7 +167,7 @@ ggraph(g, "with_kk") +
 In the graph we see a few points communicated, including the ties, sex, how strong a friendship is between ties, and whether or not the nodes (people) are in the same department. We now see that Esmeralda has no friendships in the other office. We could also say that she has the smallest neighborhood -- the smallest number of first order, or direct, connections. 
 
 ## MSI's Mentoring network
-```{r echo = FALSE, output = FALSE }
+```{r echo = FALSE, output = TRUE }
 df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
   select(ID
          , Name 
@@ -203,7 +204,7 @@ df1 <- df1 |>
 
 #need to clean up names in to_mentor column
 #This allows us to view all unique rows in the column
-unique(df1$to_mentor3)
+#unique(df1$to_mentor3)
 
 #this fixes the names of the to_mentor3 column
 df1$to_mentor3 <- df1$to_mentor3 |>
@@ -227,7 +228,7 @@ softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA
 #create a new column that extracts the names of software used 
 #then create another column that unnests any lists
 df2 <- df1 |>
-  mutate(new = str_extract_all(software, pattern = softwares))
+  mutate(software1 = str_extract_all(software, pattern = softwares))
 
 #Create a ties df
 df1_ties <- df2 |>
@@ -255,6 +256,49 @@ df2_vertices <- subset(df2_nodes, !duplicated(value))
 df_graph_ment <- graph_from_data_frame(df1_ties
                                        , directed = FALSE
                                        , vertices = df2_vertices)
+
+#Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality
+#calculate the network density
+density_ment <- edge_density(df_graph_ment)
+
+#calculate the mean_distance
+avg_dist_ment <- mean_distance(df_graph_ment, directed = FALSE)
+
+#calculate the betweeness
+b1 <- betweenness(df_graph_ment, directed = FALSE)
+
+between_ment <- mean(b1)
+#calculate the transitivity of the network
+trans_ment <- transitivity(df_graph_ment)
+
+#eigenvalues vector
+e1 <- eigen_centrality(df_graph_ment, directed =FALSE)$vector
+
+#calculate avg. eigenvalue of the network
+eigen_ment <- mean(e1)
+
+l <- c("Network", "Density", "Avg. Distance", "Transitivity", "Betweenness", "Eigenvalue")
+m <- c("Mentorship", density_ment, avg_dist_ment, trans_ment, between_ment, eigen_ment)
+
+dat <- data.frame(l, m)
+
+dat1 <- pivot_wider(data = dat
+                    , names_from = l
+                    , values_from = m) |>
+  mutate(across(2:6, as.numeric))
+
+
+#graph statistics table
+
+network_table <- flextable(dat1) |>
+  set_header_labels(values = list(
+  )) |>
+  align(align = "center", part = "all") |>
+  colformat_double(digits = 2)
+
+network_table
+
+
 ```
 
 Within the SEA practice area we had `r gorder(df_graph_ment)` nodes in our network consisting of `r gsize(df_graph_ment)` edges.
@@ -392,37 +436,73 @@ ggraph(df_graph_tech, layout = "with_kk") +
 
 ### Network statistics
 
-
 ```{r}
-#Repeat for tech side
-#techs <- graph_from_data_frame(tech_edges)
 
-#add degree
-#techs$degree <- degree(techs)
+#Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality
+#calculate the network density
+density_tech <- edge_density(df_graph_tech)
 
-#add edge_betweenness
-#techs$edge_betweenness <- edge_betweenness(techs)
+#calculate the mean_distance
+avg_dist_tech <- mean_distance(df_graph_tech, directed = FALSE)
 
-#add neighborhood size (i.e. size of neighborhood within 2 edges of a node)
-#techs$degree2 <- neighborhood.size(techs, 2)
+#calculate the betweeness
+b2 <- betweenness(df_graph_tech, directed = FALSE)
 
-#tech_graph <- ggraph(techs, layout = "with_kk") +
- # geom_edge_link(color = my_pal[[10]]
-           #      , alpha = .3) +
-  #geom_node_point(color = my_pal[[10]]
-            #      , size = 4) +
-  #geom_node_text(aes(label = name)) +
+between_tech <- mean(b2)
+#calculate the transitivity of the network
+trans_tech <- transitivity(df_graph_tech)
 
-  #labs(title = "Technical advice network among data enthusiasts at MSI"
-   #    , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +
-  #theme.graph() +
-  #theme(legend.position = "none")
+#eigenvalues vector
+e1_tech <- eigen_centrality(df_graph_tech, directed =FALSE)$vector
 
-#tech_graph
+#calculate avg. eigenvalue of the network
+eigen_tech <- mean(e1_tech)
+
+names <- c("Network", "Density", "Avg. Distance", "Transitivity", "Betweenness", "Eigenvalue")
+values <- c("Tech guidance", density_tech, avg_dist_tech, trans_tech, between_tech, eigen_tech)
+
+dat_tech <- data.frame(names, values)
+
+dat1_tech <- pivot_wider(data = dat_tech
+                    , names_from = names
+                    , values_from = values) |>
+  mutate(across(2:6, as.numeric))
+
+dat2 <- bind_rows(dat1, dat1_tech)
+
+network_table1 <- flextable(dat2) |>
+  set_header_labels(values = list(
+  )) |>
+  align(align = "center", part = "all") |>
+  colformat_double(digits = 2)
+
+network_table1
 
 ```
 
-We 
+How do these statistics compare with what we would expect from similar networks? We can run some simulations to find out.
+
+```{r}
+#simulation of mentorship network 1000x
+gl <- vector('list', 1000)
+
+for(i in 1:1000){
+  gl[[i]] <- erdos.renyi.game(
+    n = gorder(df_graph_ment)
+    , p.or.m = edge_density(df_graph_ment)
+    , type = "gnp"
+  )
+}
+
+gl.apls = unlist(lapply(gl, mean_distance, directed=FALSE))
+
+hist(gl.apls)
+abline(v= avg_dist_ment, col = "red", lty = 3, lwd = 2)
+
+mean(gl.apls < avg_dist_ment)
+
+```
+
 
 
 
