@@ -502,7 +502,27 @@ abline(v= avg_dist_ment, col = "red", lty = 3, lwd = 2)
 mean(gl.apls < avg_dist_ment)
 
 ```
+```{r}
 
+#simulation of tech guidance network 1000x
+gl_tech <- vector('list', 1000)
+
+for(i in 1:1000){
+  gl_tech[[i]] <- erdos.renyi.game(
+    n = gorder(df_graph_tech)
+    , p.or.m = edge_density(df_graph_tech)
+    , type = "gnp"
+  )
+}
+
+gl_tech.apls = unlist(lapply(gl_tech, mean_distance, directed=FALSE))
+
+hist(gl_tech.apls)
+abline(v= avg_dist_tech, col = "red", lty = 3, lwd = 2)
+
+mean(gl_tech.apls < avg_dist_tech)
+
+```
 
 
 
