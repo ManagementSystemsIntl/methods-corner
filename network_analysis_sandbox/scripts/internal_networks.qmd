@@ -496,10 +496,26 @@ for(i in 1:1000){
 
 gl.apls = unlist(lapply(gl, mean_distance, directed=FALSE))
 
-hist(gl.apls)
-abline(v= avg_dist_ment, col = "red", lty = 3, lwd = 2)
+ggplot(data = as.data.frame(gl.apls)) +
+  geom_histogram(aes(x = gl.apls), bins = 25
+                 , fill = my_pal[[11]]
+                 , alpha = .4) +
+  geom_vline(xintercept = avg_dist_ment
+             , linewidth = 1
+             , linetype = "dashed"
+             , color = my_pal[[14]]) +
+  annotate(x = avg_dist_ment + 1.2, y = 150, label = glue::glue("{round(avg_dist_ment, digits = 2)}, is the average distance \nbetween connections \nin the mentoring network"), geom = "label", color = my_pal[[14]]) +
+  geom_segment(aes(x = avg_dist_ment + .6, y = 145, xend = avg_dist_ment +.05, yend = 138),
+                  arrow = arrow(length = unit(0.25, "cm"))
+               , linewidth = 1
+               , color = my_pal[[14]])+
+  labs(y = "# of simulations"
+       , x = "Average distance between connections"
+       , title = "How does our network compare to \nsimilarly structured networks?"
+       , subtitle = glue::glue("{mean(gl.apls < avg_dist_ment) * 100}", "% ", "of similar networks have a shorter average distance between \nconnections than the mentoring network"))+
+  theme.plot()
 
-mean(gl.apls < avg_dist_ment)
+#mean(gl.apls < avg_dist_ment)
 
 ```
 ```{r}
@@ -530,8 +546,6 @@ ggplot(data = as.data.frame(gl_tech.apls)) +
                   arrow = arrow(length = unit(0.25, "cm"))
                , linewidth = 1
                , color = my_pal[[14]])+
-#  annotate(x = avg_dist_tech + .75, y = 100
-#           , label = glue::glue("{mean(gl_tech.apls < avg_dist_tech) * 100}", "% ", "of similar networks have a #shorter average distance between connections \nthan the technical guidance network"), geom = "label", color = #my_pal[[11]])+
   labs(y = "# of simulations"
        , x = "Average distance between connections"
        , title = "How does our network compare to \nsimilarly structured networks?"
@@ -539,7 +553,7 @@ ggplot(data = as.data.frame(gl_tech.apls)) +
   theme.plot()
 
 
-mean(gl_tech.apls < avg_dist_tech)
+#mean(gl_tech.apls < avg_dist_tech)
 
 ```
 
