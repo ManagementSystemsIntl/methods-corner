@@ -520,17 +520,22 @@ gl_tech.apls = unlist(lapply(gl_tech, mean_distance, directed=FALSE))
 ggplot(data = as.data.frame(gl_tech.apls)) +
   geom_histogram(aes(x = gl_tech.apls), bins = 25
                  , fill = my_pal[[11]]
-                 , alpha = .6) +
+                 , alpha = .4) +
   geom_vline(xintercept = avg_dist_tech
              , linewidth = 1
              , linetype = "dashed"
              , color = my_pal[[14]]) +
-  annotate(x = avg_dist_tech + .5, y = 150, label = "Average distance between connections \nin the technical guidance network", geom = "text", color = my_pal[[14]]) +
-  annotate(x = avg_dist_tech + .5, y = 100
-           , label = glue::glue("{mean(gl_tech.apls < avg_dist_tech) * 100}", "% ", "of similar networks have a shorter \naverage distance between \nconnections than the technical guidance network"), geom = "text", color = my_pal[[11]])+
+  annotate(x = avg_dist_tech + .8, y = 150, label = glue::glue("{round(avg_dist_tech, digits = 2)}, is the average distance \nbetween connections \nin the technical guidance network"), geom = "label", color = my_pal[[14]]) +
+  geom_segment(aes(x = avg_dist_tech + .25, y = 145, xend = avg_dist_tech +.05, yend = 138),
+                  arrow = arrow(length = unit(0.25, "cm"))
+               , linewidth = 1
+               , color = my_pal[[14]])+
+#  annotate(x = avg_dist_tech + .75, y = 100
+#           , label = glue::glue("{mean(gl_tech.apls < avg_dist_tech) * 100}", "% ", "of similar networks have a #shorter average distance between connections \nthan the technical guidance network"), geom = "label", color = #my_pal[[11]])+
   labs(y = "# of simulations"
        , x = "Average distance between connections"
-       , title = "How does our network compare to similarly structured networks?")+
+       , title = "How does our network compare to \nsimilarly structured networks?"
+       , subtitle = glue::glue("{mean(gl_tech.apls < avg_dist_tech) * 100}", "% ", "of similar networks have a shorter average distance between \nconnections than the technical guidance network"))+
   theme.plot()
 
 
