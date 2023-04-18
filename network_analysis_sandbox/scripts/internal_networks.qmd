@@ -202,10 +202,6 @@ Within the SEA practice area we had `r gorder(df_graph_ment)` nodes in our netwo
 
 ```{r echo = F, warning = F}
 
-#| column: screen-inset-shaded
-#| layout-nrow: 1
-
-
 
 #Technical
 #SEA only and only those who listed tech advisors
@@ -290,9 +286,16 @@ df_tech_vertices <- subset(df_tech_nodes1, !duplicated(value))
 df_graph_tech <- graph_from_data_frame(df_tech_ties
                                        , directed = FALSE
                                        , vertices = df_tech_vertices)
+```
+
+```{r}
+
+#| column: screen-inset-shaded
+#| layout-nrow: 1
+
 
 #plot graph object of mentor network
-ggraph(df_graph_ment, layout = "with_kk") +
+g1 <- ggraph(df_graph_ment, layout = "with_kk") +
   geom_edge_link(color = my_pal[[5]]
                  , alpha = .3) +
   geom_node_point(color = my_pal[[5]]
@@ -302,7 +305,7 @@ ggraph(df_graph_ment, layout = "with_kk") +
   theme.graph()
 
 #plot graph object of tech network
-ggraph(df_graph_tech, layout = "with_kk") +
+g2 <- ggraph(df_graph_tech, layout = "with_kk") +
   geom_edge_link(color = my_pal[[10]]
                  , alpha = .3) +
   geom_node_point(color = my_pal[[10]]
@@ -312,6 +315,8 @@ ggraph(df_graph_tech, layout = "with_kk") +
   theme.graph() +
   theme(legend.position = "none")
 
+g1
+g2
 
 ```
 
