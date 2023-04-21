@@ -24,7 +24,9 @@ Tutorial on the ANOVA theorem
 [Expectation Maximization](https://ManagementSystemsIntl.github.io/methods-corner/statistical%20trainings/em/em%20demo%20(12%20Apr%202023).html)  
 Exploration and tutorial on the Expectation Maximization (EM) algorithm
 
-[Survey frequencies](https://managementsystemsintl.github.io/methods-corner/Perception%20survey/04.1%20Palestinian%20Perception%20Study%20-%20Eval%20Q1%20frequencies.html)
+[Palestinian Perception Survey - Evaluation Question 1](https://managementsystemsintl.github.io/methods-corner/Perception%20survey/04.1%20Palestinian%20Perception%20Study%20-%20Eval%20Q1%20frequencies.html)  
+Weighted frequency output of the Palestian Perception Survey
+
 
 
 
