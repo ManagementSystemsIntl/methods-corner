@@ -1,0 +1,8 @@
+---
+title: "Introduction to Causal Inference"
+author: "Sheng Cao"
+format: revealjs
+editor: visual
+---
+
+## Introduction
