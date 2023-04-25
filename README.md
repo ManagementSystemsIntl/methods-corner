@@ -27,7 +27,7 @@ Exploration and tutorial on the Expectation Maximization (EM) algorithm
 [Palestinian Perception Survey - Evaluation Question 1](https://managementsystemsintl.github.io/methods-corner/Perception%20survey/04.1%20Palestinian%20Perception%20Study%20-%20Eval%20Q1%20frequencies.html)  
 Weighted frequency output of the Palestian Perception Survey
 
-
+[Introduction to Causal Inference](https://managementsystemsintl.github.io/methods-corner/Introduction%20to%20Causal%Inference/Introduction%20to%20Causal%20Inference.html)  
 
 
 
