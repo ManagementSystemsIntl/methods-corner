@@ -1,0 +1,107 @@
+---
+title: "Introduction to Impact Evaluation"
+author: "Dan Killian"
+date: "June 19, 2017"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## We want to know the causal effect of a project on its beneficiaries
+
+Job training on earnings and employment
+
+Class size on test scores
+
+School leadership on teacher morale
+
+Teacher qualifications on student outcomes
+
+## Potential outcomes - i
+
+Consider an indicator for a potential beneficiary, Di	
+
+D tells us whether there is a project, or a "treatment"
+
+The subscript i denotes a single individual who is either treated or not treated
+
+Di = 1 ??? participates in a project (beneficiary)
+Di = 0 ??? does not participate in a project
+
+
+## Potential outcomes - ii
+
+Consider an indicator for the outcome of a potential beneficiary, Yi
+
+Y1i ??? the outcome after project participation
+
+Y0i ??? the outcome without any project
+
+Note that Y1 and Y0 denote *possibilities* for the *same person*, unit i ! 
+
+
+## Potential outcomes - iii
+
+The effect of the project (treatment effect) on person i is the difference between the two potential outcomes
+Treatment effect = Y1i - Y0i 
+
+This is the difference in potential outcomes for the *same person*
+
+A person participates in a project, and then goes back in time and does not participate in the project
+
+
+## Potential outcomes - iv
+
+But how can one person be both treated and untreated?
+
+In the real world, person i experiences one of the potential outcomes, but not both
+
+If Di = 1, the potential outcome of Yi becomes Y1i
+If Di = 0, the potential outcome of Yi becomes Y0i
+
+
+## The fundamental problem of causal inference
+
+This is the fundamental problem of causal inference:
+
+We observe only one outcome, but we need both outcomes to describe the effect of the project
+
+We refer to the outcome that didn't happen as the *counterfactual*, or what would have happened in the absence of the project
+
+
+```{r}
+
+Group <- c("Treatment","Control")
+Y1i <- c(<font color="red">"Observed"</font color>, "Counterfactual")
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

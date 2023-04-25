@@ -1,0 +1,340 @@
+---
+title: "BPI Baseline Preliminary Findings"
+author: "Dan Killian"
+date: "February 9, 2017"
+output:
+  slidy_presentation: default
+  ioslides_presentation: default
+---
+
+```{r setup, include=FALSE, message=F, warning=F}
+knitr::opts_chunk$set(echo=F, message=F, warning=F)
+
+setwd("C:/Users/dan.killian/Dropbox/work/MSI/Chevron Bangladesh (BPI)/survey/BPI Enterprise Development Baseline Report/Data")
+library(haven)
+library(foreign)
+library(readxl)
+library(sjPlot)
+library(sjmisc)
+library(tidyverse)
+library(DescTools)
+library(psych)
+library(knitr)
+
+
+options(digits=3, scipen=6)
+
+theme_set(theme_bw() + theme(panel.grid.major.x=element_blank(),
+                             panel.grid.minor.x=element_blank(),
+                             panel.grid.major.y=element_blank(),
+                             panel.grid.minor.y=element_blank(),
+                             plot.title=element_text(face="bold",size=18)) + 
+               theme(axis.title=element_text(size=16)) + 
+               theme(axis.text=element_text(size=14)))
+
+dat <- read.spss("Final Datafile (BPI).sav", to.data.frame=T)
+dat$a20 <- dat[,1]
+
+dat$localremitUSD <- dat$d1_res / 78
+describe(dat$localremitUSD)
+
+dat$abroadremitUSD <- dat$d2_res / 78
+describe(dat$abroadremitUSD)
+
+```
+## A quick note on navigation
+
+- 'C' Show table of contents
+- 'F' Toggles the display of the footer
+- 'A' Toggles display of current vs all slides (useful for printing handouts)
+- 'S' Make fonts smaller
+- 'B' Make fonts larger
+
+## Bangaldesh Partnership Initiative (BPI)
+
+Five-year, multi-sectoral initiative to improve incomes, employability, and inclusiveness in the communities surrounding Chevron gas plants. BPI objectives are to:   
+
+- Build capacity of local enterprises to sustain and grow their business  
+
+- Build craft vocational skills and strengthen long term employment prospects  
+
+- Enhance the overall impact of BPI by leveraging funds and partnerships, and linking Chevron investments to regional economic development  
+
+- Strengthen BPI effectiveness and ensure Chevron can tell a holistic and credible story of impact   
+
+
+## BPI Components and Projects  
+
+* Enterprise Development
+    + Jibika (BRAC)  
+  
+* Workforce Development
+    + Uttoron (SwissContact)
+    + BACCO (British Council)  
+    
+* Enabling Environment
+    + DIAGives Alliance (CAF America)
+  
+* Crosscutting
+    + BPI Monitoring & Evaluation Framework (MSI)
+
+## BPI Timeline
+
+- 2014 Partnership launched
+- Oct 2015 Enterprise Development Component launched
+- Mar 2016 Crosscutting M&E Component launched  
+- Aug 2016 Workforce Development Component launched
+- Nov 2016 BPI Baseline Survey launched
+- Jan 2017 Enabling Environment Component launched
+- Oct 2017 Enterprise Development Phase 2
+- Jan 2018 Workforce Development Phase 2
+- Nov 2018 BPI Midline Survey
+- Nov 2019 BPI Endline Survey
+
+
+## Enterprise Development Component Baseline Survey  
+
+Objectives:
+
+- Provide an independent measure of baseline income levels, enable subsequent measurement of long term income gains
+
+- Generate baseline measure on a broader set of 10 key socio-economic indicators
+
+- Provide data on villages receiving other Chevron investments (schools, health clinics, etc)
+
+- Identify characteristics of project success
+
+## Presentation outline
+
+- <span style="color:blue">Household respondents</span>
+
+- Household income
+
+- Perceptions of Chevron
+
+## Household respondents
+
+- The Enterprise Development Baseline survey collected household-level information from 750 respondents across Chevron's three natural gas plants. 
+
+- Respondents are sampled evenly across the Bibiyana (Habiganj district), Jalalabad (Sylhet district), and Moulavibazar (Moulavibazar district) gas plants. 
+
+`r sjt.xtab(dat$dist, dat$upazila, digits=1, no.output=T)$knitr`
+
+## Household respondents
+
+Respondents are sampled evenly across the nine BPI unions, with the exception of Sreemangal
+
+`r sjt.frq(dat$union, digits=1,no.output=TRUE)$knitr`
+
+
+## Respondent sampling 
+
+Respondents were sampled according to two primary groups: 
+
+- Jibika beneficiaries (300 respondents)
+- Households (450 respondents)
+
+`r sjt.xtab(dat$res_type1, dat$dist, no.output=T)$knitr`
+
+The survey sampled from these two groups in order to distinguish between individual beneficiary and village level measures. 
+
+## Within group sampling
+
+Within the beneficiary group: 
+
+    - Received seed funding (163)
+    - Received microloan (48)
+    - Received training, but not yet received seed funding or microloan (89)
+
+Within the household survey: 
+
+    - Randomly sampled households (428)
+    - Randomly sampled households that happened to include a VDO member (22)
+
+`r sjt.xtab(dat$res_type1, dat$res_type2, no.output=T)$knitr`
+
+
+## Within and across village sampling
+
+Jibika beneficiaries sampled from 50 beneficiary villages
+
+Within each Jibika village: 
+
+    - 6 households surveyed that participated in Jibika
+    - 4 randomly selected households (which could have included a VDO member)
+
+Within each non-Jibika village, 10 randomly selected households
+
+Final complication: 
+
+    - Of the 50 Jibika and 25 non-Jibika villages, 15-20 had received previous Chevron investments in schools, health clinics, or other support
+    - (To be confirmed)
+
+## Summary of design and comparison groups
+
+```{r}
+
+a <- c("Treatment","Villages","Households","Beneficiaries","Total respondents")
+b <- c("Jibika", 50, 200, 300, 500)
+c <- c("non-Jibika",25, 250, 0, 250)
+d <- c("Total", 75,450,300, 750)
+
+t <- data.frame(rbind(b,c, d), row.names=NULL)
+names(t) <- a
+kable(t)
+```
+
+- Note how the comparison group of 450 respondents can be divided into those in non-Jibika villages and those in Jibika villages
+    - Allows test for spillover effects of Chevron programming
+
+## Primary hypotheses and learning agenda
+
+The Enterprise Development Baseline survey, in conjunction with follow-up surveys in 2018 and 2019 of the same respondents, will enable testing of the following hypotheses: 
+
+    - Did Jibika support lead to long term, sustainable increase in household income?
+    - Is Jibika, and BPI more broadly, contributing to poverty reduction in the communities surrounding its gas plants? 
+
+The survey will also enable exploration of a learning agenda to gather lessons learned, unintended effects, and the characteristics of project success. 
+
+Examples of learning agenda questions: 
+
+    - Do improved beneficiary / VDO outcomes lead to improved village outcomes?
+    - What are the individual- or village-level characteristics of success, or lack of it?
+    - Are there VDO characteristics contributing to project success? 
+    - Is there a separate effect from previous Chevron programming in Jibika villages? 
+    - Do Jibika and previous Chevron programming interact to strengthen beneficiary and / or village outcomes? 
+
+## Presentation outline
+
+- Household respondents
+
+- <span style="color:blue">Household income</span>
+
+- Perceptions of Chevron
+
+## Household income
+
+Measuring household income is hard!
+
+    - Multiple sources of income
+    - Irregular / occasional labor
+    - Lots of in-kind "labor" contributing to reciprocal networks of exchange based on family, neighborhood, clan, tribe
+    - Informal or extra-legal labor that respondents may want hidden
+    - Unclear that income is even a well-defined concept to measure among the poor
+
+## Measuring income - approaches
+
+Several approaches to measuring income
+
+    - Ask directly about income sources and tolerate ambiguity and error in the measures
+    - Itemize what households own - a wealth rather than income measure
+    - Itemize what households spend - a consumption rather than income measure
+    - Ask households to rate their economic situation - a perceptual measure of welfare
+
+Measuring expenditures is considered the most robust measure of income, and also connects well with an economist's view of consumption as the basic measure of human welfare. 
+
+However, measuring expenditures is an extremely detailed and exhaustive exercise that exceeded the time and resource budget of our survey. 
+
+In this survey, we measure the following: 
+
+    - Wage and other sources of income
+    - Household assets
+    - Progress out of Poverty Index (a simplified asset score linked to poverty likelihoods)
+    - Self-rating of economic situation
+
+## Primary wage income
+
+`r sjt.frq(dat$c1_1, sort.frq="desc", no.output=T)$knitr`
+
+## Primary other income
+
+- 9.7 percent of households received an average of $1,080 in foreign remittances
+- 3.6 percent of households received an average of $314 in domestic remittances
+
+## Total household income (USD per day) by Subdistrict
+
+Both wage and other income, summed across all working members of the household  
+
+```{r}
+
+inc <- read.csv("Total household annual income.csv")
+
+incUpa <- read.csv("Income by Subdistrict.csv")
+
+incUpa$dailyUSD <- round(incUpa$dailyUSD,1)
+ggplot(incUpa, aes(x=dailyUSD, y=reorder(as.character(Subdistrict), dailyUSD), label=dailyUSD)) + 
+  geom_point(size=3, color="darkblue") + 
+  geom_segment(aes(yend=Subdistrict), xend=1, color="black") +
+  geom_label(color="darkblue") + 
+  xlim(1,10) + ylab("") + 
+  geom_vline(xintercept=mean(incUpa$dailyUSD), color="maroon")
+
+
+```
+
+
+## Total household income (USD per day) by Union
+
+Both wage and other income, summed across all working members of the household
+
+```{r}
+incUnion <- read.csv("Income by Union.csv")
+
+ggplot(incUnion, aes(x=dailyUSD, y=reorder(as.character(Union), dailyUSD), label=dailyUSD)) + 
+  geom_point(size=3, color="darkblue") + 
+  geom_segment(aes(yend=Union), xend=1, color="black") +
+  geom_label(color="darkblue") + 
+  xlim(1,10) + ylab("") +
+  geom_vline(xintercept=mean(incUnion$dailyUSD), color="maroon")
+
+
+
+```
+
+## Reported income and perceived economic situation 
+
+```{r}
+
+theme_set(theme_bw() + theme(panel.grid.major.x=element_blank(),
+                             panel.grid.minor.x=element_blank(),
+                             panel.grid.minor.y=element_blank(),
+                             plot.title=element_text(face="bold",size=18)) + 
+               theme(axis.title=element_text(size=16)) + 
+               theme(axis.text=element_text(size=14)))
+
+ladder <- inc %>%
+  group_by("Perceived economic situation"=l1) %>%
+  summarise(dailyUSD=mean(TotaldailyUSD))
+
+round(cor(ladder[,1], ladder[,2]),2)
+
+ggplot(ladder, aes(x=ladder[,1], y=ladder[,2])) + stat_smooth(se=F) + geom_point() + 
+  xlab("Perceived economic situation") + ylab("Total daily income (USD)") + 
+  scale_y_continuous(limits=c(0, 75), breaks=c(0,5,10,15,20,30,40,50,60,70)) + 
+  scale_x_continuous(limits=c(1,9), breaks=1:9)
+```
+
+Next steps are to compute a full household asset score as well as poverty likelihoods from the Progress out of Poverty Index
+
+## Presentation outline
+
+- Household respondents
+
+- Household income
+
+- <span style="color:blue">Perceptions of Chevron</span>
+
+## Who is aware of Chevron? 
+
+`r sjt.xtab(dat$k1,dat$res_type1, no.output=T)$knitr`
+
+## Perceptions of Chevron
+
+```{r}
+
+Desc(dat$k7, plotit=T)
+
+```
+
+
+
