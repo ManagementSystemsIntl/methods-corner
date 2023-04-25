@@ -13,7 +13,7 @@ title-slide-attributes:
   data-background-position: 1% 1%
 ---
 
-``` {r global_options, include=F, warning=F, message=F, echo=F, error=F}
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
 
 # standard figure size and generate clean output
 knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
@@ -89,4 +89,3 @@ col <- viridis(4)
 ## Observational methods
 
 ## Conclusion
-
