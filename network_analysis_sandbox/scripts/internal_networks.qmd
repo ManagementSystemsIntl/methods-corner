@@ -198,7 +198,7 @@ df_graph_ment <- graph_from_data_frame(df1_ties
 
 ```
 
-Within the SEA practice area we had `r gorder(df_graph_ment)` nodes in our network consisting of `r gsize(df_graph_ment)` edges.
+Within the SEA practice area we have `r gorder(df_graph_ment)` nodes in our mentorship network consisting of `r gsize(df_graph_ment)` edges. In the technical guidance network we have `r gorder(df_graph_tech)` nodes and `r gsize(df_graph_tech)` edges.
 
 ```{r echo = F, warning = F}
 
@@ -288,7 +288,7 @@ df_graph_tech <- graph_from_data_frame(df_tech_ties
                                        , vertices = df_tech_vertices)
 ```
 
-```{r}
+```{r, warning = FALSE}
 
 #| column: screen-inset-shaded
 #| layout-nrow: 1
@@ -320,29 +320,9 @@ g2
 
 ```
 
-Within the SEA practice area we had `r gorder(df_graph_tech)` nodes in our network consisting of `r gsize(df_graph_tech)` edges.
+
 
  
-
-```{r}
-
-#| label: fig-charts
-#| fig-align="center"
-#| column: page
-
-ggraph(df_graph_tech, layout = "with_kk") +
-  geom_edge_link(color = my_pal[[10]]
-                 , alpha = .3) +
-  geom_node_point(color = my_pal[[10]]
-                  , size = 4) +
-    labs(title = "Technical advice network among data enthusiasts at MSI"
-       , subtitle = "tech-tech-tech-ni-cal") +
-  theme.graph() +
-  theme(legend.position = "none")
-
-
-
-```
 
 ```{r}
 #| column: screen-inset-shaded
@@ -353,6 +333,8 @@ plot(iris)
 plot(pressure)
 ```
 ### Network statistics
+
+How do these statistics compare with what we would expect from similar networks? We can run some simulations to find out.
 
 ```{r}
 #Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality
@@ -382,10 +364,7 @@ network_table <- flextable(dat1) |>
   )) |>
   align(align = "center", part = "all") |>
   colformat_double(digits = 2)
-network_table
-```
-
-```{r}
+#network_table
 
 #Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality
 #calculate the network density
@@ -425,13 +404,8 @@ network_table1 <- flextable(dat2) |>
   align(align = "center", part = "all") |>
   colformat_double(digits = 2)
 
-network_table1
+#network_table1
 
-```
-
-How do these statistics compare with what we would expect from similar networks? We can run some simulations to find out.
-
-```{r}
 #simulation of mentorship network 1000x
 gl <- vector('list', 1000)
 
@@ -457,33 +431,6 @@ gl_eigen_ment <- do.call(rbind, lapply(gl, eigen_centrality, directed = FALSE)) 
 
 gl_ment_avg_eigen <- mean(unlist(gl_eigen_ment$vector))
 
-#One example plotted to show what's happening
-gl.apls = unlist(lapply(gl, mean_distance, directed=FALSE))
-
-ggplot(data = as.data.frame(gl.apls)) +
-  geom_histogram(aes(x = gl.apls), bins = 25
-                 , fill = my_pal[[11]]
-                 , alpha = .4) +
-  geom_vline(xintercept = avg_dist_ment
-             , linewidth = 1
-             , linetype = "dashed"
-             , color = my_pal[[14]]) +
-  annotate(x = avg_dist_ment + 1.2, y = 150, label = glue::glue("{round(avg_dist_ment, digits = 2)}, is the average distance \nbetween connections \nin the mentoring network"), geom = "label", color = my_pal[[14]]) +
-  geom_segment(aes(x = avg_dist_ment + .6, y = 145, xend = avg_dist_ment +.05, yend = 138),
-                  arrow = arrow(length = unit(0.25, "cm"))
-               , linewidth = 1
-               , color = my_pal[[14]])+
-  labs(y = "# of simulations"
-       , x = "Average distance between connections"
-       , title = "How does our network compare to \nsimilarly structured networks?"
-       , subtitle = glue::glue("{mean(gl.apls < avg_dist_ment) * 100}", "% ", "of similar networks have a shorter average distance between \nconnections than the mentoring network"))+
-  theme.plot()
-
-#mean(gl.apls < avg_dist_ment)
-
-```
-
-```{r}
 
 ####simulation of tech guidance network 1000x
 
@@ -541,13 +488,50 @@ network_table2 <- flextable(dat_all2) |>
 
 network_table2
 
+```
+
+
+```{r}
+#One example plotted to show what's happening
+gl.apls = unlist(lapply(gl, mean_distance, directed=FALSE))
+
+ggplot(data = as.data.frame(gl.apls)) +
+  geom_histogram(aes(x = gl.apls), bins = 25
+                 , fill = my_pal[[11]]
+                 , alpha = .4) +
+  geom_vline(xintercept = avg_dist_ment
+             , linewidth = 1
+             , linetype = "dashed"
+             , color = my_pal[[14]]) +
+  annotate(x = avg_dist_ment + 1.2, y = 150, label = glue::glue("{round(avg_dist_ment, digits = 2)}, is the average distance \nbetween connections \nin the mentoring network"), geom = "label", color = my_pal[[14]]) +
+  geom_segment(aes(x = avg_dist_ment + .6, y = 145, xend = avg_dist_ment +.05, yend = 138),
+                  arrow = arrow(length = unit(0.25, "cm"))
+               , linewidth = 1
+               , color = my_pal[[14]])+
+  labs(y = "# of simulations"
+       , x = "Average distance between connections"
+       , title = "How does our network compare to \nsimilarly structured networks?"
+       , subtitle = glue::glue("{mean(gl.apls < avg_dist_ment) * 100}", "% ", "of similar networks have a shorter average distance between \nconnections than the mentoring network"))+
+  theme.plot()
+
+#mean(gl.apls < avg_dist_ment)
+
+```
+
+```{r}
+
+
 
 
 ```
 
 ```{r}
-ggplot(data = as.data.frame(gl_tech_avg_dist)) +
-  geom_histogram(aes(x = gl_tech_avg_dist), bins = 25
+#One example plotted to show what's happening
+gl.apls.tech = unlist(lapply(gl_tech, mean_distance, directed=FALSE))
+
+
+ggplot(data = as.data.frame(gl.apls.tech)) +
+  geom_histogram(aes(x = gl.apls.tech), bins = 25
                  , fill = my_pal[[11]]
                  , alpha = .4) +
   geom_vline(xintercept = avg_dist_tech
@@ -562,7 +546,7 @@ ggplot(data = as.data.frame(gl_tech_avg_dist)) +
   labs(y = "# of simulations"
        , x = "Average distance between connections"
        , title = "How does our network compare to \nsimilarly structured networks?"
-       , subtitle = glue::glue("{mean(gl_tech_avg_dist < avg_dist_tech) * 100}", "% ", "of similar networks have a shorter average distance between \nconnections than the technical guidance network"))+
+       , subtitle = glue::glue("{mean(gl.apls.tech < avg_dist_tech) * 100}", "% ", "of similar networks have a shorter average distance between \nconnections than the technical guidance network"))+
   theme.plot()
 
 
