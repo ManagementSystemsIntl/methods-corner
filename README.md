@@ -28,6 +28,7 @@ Exploration and tutorial on the Expectation Maximization (EM) algorithm
 Weighted frequency output of the Palestian Perception Survey
 
 [Introduction to Causal Inference](https://managementsystemsintl.github.io/methods-corner/Introduction%20to%20Causal%Inference/Introduction%20to%20Causal%20Inference.html)  
+A gentle introduction to the field
 
 
 
