@@ -1,0 +1,116 @@
+---
+title: "Introduction to Causal Inference"
+author: "Sheng Cao"
+format: 
+  revealjs:
+    slide-number: true
+    theme: sky
+editor: visual
+background-color: lightblue
+title-slide-attributes: 
+  data-background-image: 'MSI logo.jpg'
+  data-background-size: 10%
+  data-background-position: 1% 1%
+bibliography: references.bib
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+
+base_packages <- c("tidyverse", "easystats", "corrplot","DescTools","estimatr","extrafont","janitor",
+                   "reshape2", "haven", "broom","HH","Hmisc","plotrix","scales","sysfonts","foreign","car",
+                   "ICC","openxlsx","readr","readxl","sjmisc","sjPlot","flextable", "sjstats","sjlabelled","skimr",
+                   "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi", "kableExtra")
+
+lapply(base_packages, library, character.only=T)
+rm(base_packages)
+
+viz_packages <- c("patchwork","gganimate","ggstatsplot","ggthemes","ggrepel","ggpubr","cowplot","ggdist","ggtext",
+                  "geomtextpath","ggfortify", "ggridges", "gghighlight")
+lapply(viz_packages, library, character.only=T)
+rm(viz_packages)
+
+library(poLCA)
+
+options(digits=3, scipen=9)
+
+# set default
+base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                           panel.grid.minor.y=element_blank(),
+                           plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+                           plot.subtitle = element_text(size=16, family="Source Sans Pro"),
+                           plot.caption=element_text(size=12, family="Source Sans Pro"),
+                           axis.title=element_text(size=16, family="Source Sans Pro"),
+                           axis.text=element_text(size=14, family="Source Sans Pro"),
+                           legend.text=element_text(size=14, family="Source Sans Pro"),
+                           strip.text=element_text(size=14, family="Source Sans Pro"),
+                           panel.border=element_blank(),
+                           axis.ticks = element_blank())
+
+theme_set(base)
+rm(base)
+
+faceted <- theme_bw() +
+  theme(panel.grid.minor.x=element_blank(),
+        panel.grid.minor.y=element_blank(),
+        plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+        plot.subtitle = element_text(size=16, family="Source Sans Pro"),
+        plot.caption=element_text(size=12, family="Source Sans Pro"),
+        axis.title=element_text(size=16, family="Source Sans Pro"),
+        axis.text=element_text(size=14, family="Source Sans Pro"),
+        legend.text=element_text(size=14, family="Source Sans Pro"),
+        strip.text=element_text(size=14, family="Source Sans Pro"))
+
+# facet_style <- function(){theme_bw() +
+#     theme(panel.grid.minor.x=element_blank(),
+#           panel.grid.minor.y=element_blank(),
+#           plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+#           plot.subtitle = element_text(size=16, family="Source Sans Pro"),
+#           plot.caption=element_text(size=12, family="Source Sans Pro"),
+#           axis.title=element_text(size=16, family="Source Sans Pro"),
+#           axis.text=element_text(size=14, family="Source Sans Pro"),
+#           legend.text=element_text(size=14, family="Source Sans Pro"),
+#           strip.text=element_text(size=14, family="Source Sans Pro"))
+# }
+
+col <- viridis(4)
+
+```
+
+## Introduction
+
+### What is causal inference?
+
+-   Cause-and-effect questions: Does X cause Y ? If X causes Y, how large is the effect of X on Y? Is the size of this effect large relative to the effects of other causes of Y? [@morgan2014]
+
+    E.g. Did mandatory busing programs in the 1970s increase the school achievement of disadvantaged minority youth? If so, how much of a gain was achieved?
+
+    Does obtaining a college degree increase an individual's labor market earnings? If so, is this particular effect large relative to the earnings gains that could be achieved only through on-the-job training?
+
+    Did the use of a butterfly ballot in some Florida counties in the 2000 presidential election cost Al Gore votes? If so, was the number of miscast votes sufficiently large to have altered the election outcome?
+
+### Why is it important?
+
+-   **It is essential to science:** If we are choosing between treatments for a disease, we want to choose the treatment that causes the most people to be cured, without causing too many bad side effects. [@neal]
+
+-   **It is essential for rigorous decision-making:** We are considering several different policies to implement to reduce greenhouse gas emissions, and we must choose just one due to budget constraints. If we want to be maximally effective, we should carry out causal analysis to determine which policy will cause the largest reduction in emissions. [@neal]
+
+## Background
+
+## The Fundamental Problem of Causal Inference
+
+-   It is impossible to observe all potential outcomes for a given individual[@rubin1974], which is defined by Holland as the *fundamental problem of causal inference*[@holland1986].
+
+    E.g. You could observe Y(1) by getting a dog and observing your happiness after getting a dog. Alternatively, you could observe Y(0) by not getting a dog and observing your happiness. However, you cannot observe both Y(1) and Y(0), unless you have a **time machine** that would allow you to go back in time and choose the version of treatment that you didn't take the first time. [@neal]
+
+## Experimental methods
+
+### Definition
+
+## Observational methods
+
+## Conclusion
+
+## References
