@@ -203,4 +203,24 @@ df_anon <- unique(c(df1_ties$Name
                       , df_tech_ties$to_tech3)) |>
   as.data.frame() |>
   mutate(number = row_number()
-         , .before = everything())
+         , .before = everything()) |>
+  rename(names = 2)
+
+#This object has mentor ties anonymized
+ment_ties_anon <- df1_ties |>
+  left_join(df_anon, by = c("Name" = "names")) |>
+  left_join(df_anon, by = c("to_mentor3" = "names")) |>
+  rename(number.name = 3, number.to = 4) |>
+  select(number.name, number.to)
+
+#This object has mentor nodes anonymized
+ment_nodes_anon <- df2_vertices |>
+  left_join(df_anon, by = c("value" = "names")) |>
+  relocate(number) |>
+  select(number, 5:10, new)
+
+#anonymized graph object for mentorship network
+df_graph_ment_anon <- graph_from_data_frame(ment_ties_anon
+                                       , directed = FALSE
+                                       , vertices = ment_nodes_anon)
+
