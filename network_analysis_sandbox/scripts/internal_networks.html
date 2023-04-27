@@ -21,69 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -97,8 +34,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="internal_networks_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="internal_networks_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="internal_networks_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<link href="internal_networks_files/libs/tabwid-1.1.0/tabwid.css" rel="stylesheet">
-<link href="internal_networks_files/libs/tabwid-1.1.0/scrool.css" rel="stylesheet">
+<link href="internal_networks_files/libs/tabwid-1.1.3/tabwid.css" rel="stylesheet">
+<script src="internal_networks_files/libs/tabwid-1.1.3/tabwid.js"></script>
 
 
 </head>
@@ -170,61 +107,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>We received 47 responses to the survey with 23 responses from home office staff and 24 responses from field office staff representing projects in Iraq, Nigeria, Jordan, and Zambia.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#identifying the analytic softwares used at MSI</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#find the individual softwares</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>softwares <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">c</span>(<span class="st">"R"</span>, <span class="st">"Stata"</span>, <span class="st">"SPSS"</span>, <span class="st">"Spss"</span>, <span class="st">"Nvivo"</span>, <span class="st">"Qualtrics"</span>, <span class="st">"MaxQDA"</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                     , <span class="st">"Python"</span>, <span class="st">"ArcGIS"</span>, <span class="st">"Excel"</span>, <span class="st">"excel"</span>, <span class="st">"SAS"</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                     , <span class="st">"EpiInfo"</span>, <span class="st">"STATA"</span>, <span class="st">"Kobo Tool Box"</span>, <span class="st">"Dedoose"</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                     , <span class="st">"SMath Studio"</span>, <span class="st">"Tableau"</span>), <span class="at">collapse =</span> <span class="st">"|"</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#create a new column that extracts the names of software used </span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#then create another column that unnests any lists</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new =</span> <span class="fu">str_extract_all</span>(software, <span class="at">pattern =</span> softwares)) <span class="sc">|&gt;</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>          <span class="fu">unnest</span>(new) </span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#clean up a few software names</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>df1<span class="sc">$</span>new <span class="ot">&lt;-</span> df1<span class="sc">$</span>new <span class="sc">|&gt;</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recode</span>(<span class="st">"STATA"</span> <span class="ot">=</span> <span class="st">"Stata"</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>         , <span class="st">"Spss"</span> <span class="ot">=</span> <span class="st">"SPSS"</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>         , <span class="st">"EXCEL"</span> <span class="ot">=</span> <span class="st">"Excel"</span>) </span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#then create a count of which software packages are used at MSI</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> df1 <span class="sc">|&gt;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(new)) <span class="sc">|&gt;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(new) <span class="sc">|&gt;</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">|&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new2 =</span> <span class="fu">case_when</span>(n <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Other"</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                          , <span class="cn">TRUE</span> <span class="sc">~</span> new)) <span class="sc">|&gt;</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">"Software"</span> <span class="ot">=</span> new2, <span class="st">"Count"</span> <span class="ot">=</span> n, <span class="sc">-</span>new) <span class="sc">|&gt;</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Count))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Adding missing grouping variables: `new`</code></pre>
 </div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df2</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>       , <span class="fu">aes</span>(<span class="fu">reorder</span>(<span class="fu">factor</span>(Software), <span class="sc">-</span>Count), Count)) <span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">color =</span> my_pal[[<span class="dv">2</span>]]) <span class="sc">+</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(df2<span class="sc">$</span>Software), <span class="at">xend =</span> <span class="fu">factor</span>(df2<span class="sc">$</span>Software) </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>               , <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> df2<span class="sc">$</span>Count)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>               , <span class="at">linewidth =</span> <span class="dv">2</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>               , <span class="at">color =</span> my_pal[[<span class="dv">2</span>]]</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>               , <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> Software, <span class="at">y =</span> Count, <span class="at">label =</span> Count)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            , <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Most used analytic software packages"</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>       , <span class="at">subtitle =</span> <span class="st">"Stata, SPSS, and R are the most commonly used."</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>       , <span class="at">y =</span> <span class="st">"Number of staff"</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>       , <span class="at">x =</span> <span class="st">"Software"</span>) <span class="sc">+</span> </span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20</span>))<span class="sc">+</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme.plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <p><img src="internal_networks_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -242,53 +127,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </div>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: screen-inset-shaded</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-nrow: 1</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#plot graph object of mentor network</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">ggraph</span>(df_graph_ment, <span class="at">layout =</span> <span class="st">"with_kk"</span>) <span class="sc">+</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">color =</span> my_pal[[<span class="dv">5</span>]]</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                 , <span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="at">color =</span> my_pal[[<span class="dv">5</span>]]</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                  , <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Mentor network among data enthusiasts</span><span class="sc">\n</span><span class="st">at MSI"</span>) <span class="sc">+</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)<span class="sc">+</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme.graph</span>()</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#plot graph object of tech network</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> <span class="fu">ggraph</span>(df_graph_tech, <span class="at">layout =</span> <span class="st">"with_kk"</span>) <span class="sc">+</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">color =</span> my_pal[[<span class="dv">10</span>]]</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                 , <span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="at">color =</span> my_pal[[<span class="dv">10</span>]]</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                  , <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Technical advice network among data enthusiasts at MSI"</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>       , <span class="at">subtitle =</span> <span class="st">"tech-tech-tech-ni-cal"</span>) <span class="sc">+</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme.graph</span>() <span class="sc">+</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>g1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <p><img src="internal_networks_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>g2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <p><img src="internal_networks_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<div class="page-columns page-full">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cars)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pressure)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell column-screen-inset-shaded quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
@@ -302,238 +147,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-</div>
 <section id="network-statistics" class="level3">
 <h3 class="anchored" data-anchor-id="network-statistics">Network statistics</h3>
 <p>How do these statistics compare with what we would expect from similar networks? We can run some simulations to find out.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate the network density</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>density_ment <span class="ot">&lt;-</span> <span class="fu">edge_density</span>(df_graph_ment)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate the mean_distance</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>avg_dist_ment <span class="ot">&lt;-</span> <span class="fu">mean_distance</span>(df_graph_ment, <span class="at">directed =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate the betweeness</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> <span class="fu">betweenness</span>(df_graph_ment, <span class="at">directed =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>between_ment <span class="ot">&lt;-</span> <span class="fu">mean</span>(b1)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate the transitivity of the network</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>trans_ment <span class="ot">&lt;-</span> <span class="fu">transitivity</span>(df_graph_ment)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#eigenvalues vector</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>e1 <span class="ot">&lt;-</span> <span class="fu">eigen_centrality</span>(df_graph_ment, <span class="at">directed =</span><span class="cn">FALSE</span>)<span class="sc">$</span>vector</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate avg. eigenvalue of the network</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>eigen_ment <span class="ot">&lt;-</span> <span class="fu">mean</span>(e1)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Network"</span>, <span class="st">"Avg. Density"</span>, <span class="st">"Avg. Distance"</span>, <span class="st">"Avg. Transitivity"</span>, <span class="st">"Avg. Betweenness"</span>, <span class="st">"Avg. Eigenvector"</span>)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Mentorship"</span>, density_ment, avg_dist_ment, trans_ment, between_ment, eigen_ment)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(l, m)</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>dat1 <span class="ot">&lt;-</span> <span class="fu">pivot_wider</span>(<span class="at">data =</span> dat</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                    , <span class="at">names_from =</span> l</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                    , <span class="at">values_from =</span> m) <span class="sc">|&gt;</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>, as.numeric))</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#graph statistics table</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>network_table <span class="ot">&lt;-</span> <span class="fu">flextable</span>(dat1) <span class="sc">|&gt;</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_header_labels</span>(<span class="at">values =</span> <span class="fu">list</span>(</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">align</span>(<span class="at">align =</span> <span class="st">"center"</span>, <span class="at">part =</span> <span class="st">"all"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colformat_double</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#network_table</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate the network density</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>density_tech <span class="ot">&lt;-</span> <span class="fu">edge_density</span>(df_graph_tech)</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate the mean_distance</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>avg_dist_tech <span class="ot">&lt;-</span> <span class="fu">mean_distance</span>(df_graph_tech, <span class="at">directed =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate the betweeness</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>b2 <span class="ot">&lt;-</span> <span class="fu">betweenness</span>(df_graph_tech, <span class="at">directed =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>between_tech <span class="ot">&lt;-</span> <span class="fu">mean</span>(b2)</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate the transitivity of the network</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>trans_tech <span class="ot">&lt;-</span> <span class="fu">transitivity</span>(df_graph_tech)</span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co">#eigenvalues vector</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>e1_tech <span class="ot">&lt;-</span> <span class="fu">eigen_centrality</span>(df_graph_tech, <span class="at">directed =</span><span class="cn">FALSE</span>)<span class="sc">$</span>vector</span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate avg. eigenvalue of the network</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>eigen_tech <span class="ot">&lt;-</span> <span class="fu">mean</span>(e1_tech)</span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Network"</span>, <span class="st">"Avg. Density"</span>, <span class="st">"Avg. Distance"</span>, <span class="st">"Avg. Transitivity"</span>, <span class="st">"Avg. Betweenness"</span>, <span class="st">"Avg. Eigenvector"</span>)</span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Tech guidance"</span>, density_tech, avg_dist_tech, trans_tech, between_tech, eigen_tech)</span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>dat_tech <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(names, values)</span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>dat1_tech <span class="ot">&lt;-</span> <span class="fu">pivot_wider</span>(<span class="at">data =</span> dat_tech</span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>                    , <span class="at">names_from =</span> names</span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>                    , <span class="at">values_from =</span> values) <span class="sc">|&gt;</span></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>, as.numeric))</span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>dat2 <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(dat1, dat1_tech)</span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>network_table1 <span class="ot">&lt;-</span> <span class="fu">flextable</span>(dat2) <span class="sc">|&gt;</span></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_header_labels</span>(<span class="at">values =</span> <span class="fu">list</span>(</span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">align</span>(<span class="at">align =</span> <span class="st">"center"</span>, <span class="at">part =</span> <span class="st">"all"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colformat_double</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="co">#network_table1</span></span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="co">#simulation of mentorship network 1000x</span></span>
-<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>gl <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">'list'</span>, <span class="dv">1000</span>)</span>
-<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>){</span>
-<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>  gl[[i]] <span class="ot">&lt;-</span> <span class="fu">erdos.renyi.game</span>(</span>
-<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">gorder</span>(df_graph_ment)</span>
-<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>    , <span class="at">p.or.m =</span> <span class="fu">edge_density</span>(df_graph_ment)</span>
-<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>    , <span class="at">type =</span> <span class="st">"gnp"</span></span>
-<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a><span class="co">#Then use the gl object to calculate averages for each of the stats presented above on the original two networks.</span></span>
-<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>gl_ment_avg_density <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(gl, edge_density)))</span>
-<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>gl_ment_avg_dist <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(gl, mean_distance, <span class="at">directed =</span> <span class="cn">FALSE</span>)))</span>
-<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>gl_ment_avg_between <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(gl, betweenness)))</span>
-<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>gl_ment_avg_trans <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(gl, transitivity)))</span>
-<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a><span class="co">#This one takes a few more steps </span></span>
-<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>gl_eigen_ment <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(gl, eigen_centrality, <span class="at">directed =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>  <span class="co">#do.call(rbind, .data) |&gt;</span></span>
-<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>() </span>
-<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>gl_ment_avg_eigen <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">unlist</span>(gl_eigen_ment<span class="sc">$</span>vector))</span>
-<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a><span class="do">####simulation of tech guidance network 1000x</span></span>
-<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a><span class="co">#this simulates 1000 iterations of a graph with the same number of nodes and edge_density</span></span>
-<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a><span class="co">#set up a for loop </span></span>
-<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>gl_tech <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">'list'</span>, <span class="dv">1000</span>)</span>
-<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>){</span>
-<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>  gl_tech[[i]] <span class="ot">&lt;-</span> <span class="fu">erdos.renyi.game</span>(</span>
-<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">gorder</span>(df_graph_tech)</span>
-<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a>    , <span class="at">p.or.m =</span> <span class="fu">edge_density</span>(df_graph_tech)</span>
-<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>    , <span class="at">type =</span> <span class="st">"gnp"</span></span>
-<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a><span class="co">#Then use the gl_tech object to calculate averages for each of the stats presented above on the original two networks.</span></span>
-<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>gl_tech_avg_density <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(gl_tech, edge_density)))</span>
-<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>gl_tech_avg_dist <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(gl_tech, mean_distance, <span class="at">directed =</span> <span class="cn">FALSE</span>)))</span>
-<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a>gl_tech_avg_between <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(gl_tech, betweenness)))</span>
-<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>gl_tech_avg_trans <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(gl_tech, transitivity)))</span>
-<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a><span class="co">#This one takes a few more steps </span></span>
-<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>gl_eigen_tech <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(gl_tech, eigen_centrality, <span class="at">directed =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>  <span class="co">#do.call(rbind, .data) |&gt;</span></span>
-<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>() </span>
-<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>gl_tech_avg_eigen <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">unlist</span>(gl_eigen_tech<span class="sc">$</span>vector))</span>
-<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a><span class="co">#make a flextable</span></span>
-<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Network"</span>, <span class="st">"Avg. Density"</span>, <span class="st">"Avg. Distance"</span>, <span class="st">"Avg. Transitivity"</span>, <span class="st">"Avg. Betweenness"</span>, <span class="st">"Avg. Eigenvector"</span>)</span>
-<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a>dat_ment <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Mentorship"</span>, density_ment, avg_dist_ment, trans_ment, between_ment, eigen_ment)</span>
-<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>sim_ment <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Simulated Mentorship"</span>, gl_ment_avg_density, gl_ment_avg_dist, gl_ment_avg_trans, gl_ment_avg_between, gl_ment_avg_eigen)</span>
-<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>dat_tech <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Tech Guidance"</span>, density_tech, avg_dist_tech, trans_tech, between_tech, eigen_tech)</span>
-<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a>sim_tech <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Simulated Tech Guidance"</span>, gl_tech_avg_density, gl_tech_avg_dist, gl_tech_avg_trans, gl_tech_avg_between, gl_tech_avg_eigen)</span>
-<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>dat_all <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(names, dat_ment, sim_ment, dat_tech, sim_tech)</span>
-<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(dat_all) <span class="ot">&lt;-</span> names</span>
-<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a>dat_all1 <span class="ot">&lt;-</span> <span class="fu">t</span>(dat_all) <span class="sc">|&gt;</span></span>
-<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span>
-<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a>dat_all2 <span class="ot">&lt;-</span> dat_all1[<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>,] <span class="sc">|&gt;</span></span>
-<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>, as.numeric))</span>
-<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a>network_table2 <span class="ot">&lt;-</span> <span class="fu">flextable</span>(dat_all2) <span class="sc">|&gt;</span></span>
-<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_header_labels</span>(<span class="at">values =</span> <span class="fu">list</span>(</span>
-<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
-<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a>  <span class="fu">align</span>(<span class="at">align =</span> <span class="st">"center"</span>, <span class="at">part =</span> <span class="st">"all"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colformat_double</span>(<span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a>  <span class="fu">italic</span>(<span class="at">i =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bold</span>(<span class="at">i =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
-<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a>network_table2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 
-<div class="tabwid"><style>.cl-8beeac10{}.cl-8be66cee{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8be66cf8{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8be66cf9{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:italic;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8be95a6c{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8be96b60{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8be96b61{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8be96b6a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class="cl-8beeac10"><thead><tr style="overflow-wrap:break-word;"><td class="cl-8be96b60"><p class="cl-8be95a6c"><span class="cl-8be66cee">Network</span></p></td><td class="cl-8be96b60"><p class="cl-8be95a6c"><span class="cl-8be66cee">Avg..Density</span></p></td><td class="cl-8be96b60"><p class="cl-8be95a6c"><span class="cl-8be66cee">Avg..Distance</span></p></td><td class="cl-8be96b60"><p class="cl-8be95a6c"><span class="cl-8be66cee">Avg..Transitivity</span></p></td><td class="cl-8be96b60"><p class="cl-8be95a6c"><span class="cl-8be66cee">Avg..Betweenness</span></p></td><td class="cl-8be96b60"><p class="cl-8be95a6c"><span class="cl-8be66cee">Avg..Eigenvector</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">Mentorship</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">0.15</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">2.69</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">0.15</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">14.39</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">0.33</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf9">Simulated Mentorship</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf9">0.15</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf9">2.67</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf9">0.14</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf9">11.97</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf9">0.44</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">Tech Guidance</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">0.19</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">2.65</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">0.35</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">14.84</span></p></td><td class="cl-8be96b61"><p class="cl-8be95a6c"><span class="cl-8be66cf8">0.34</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-8be96b6a"><p class="cl-8be95a6c"><span class="cl-8be66cf9">Simulated Tech Guidance</span></p></td><td class="cl-8be96b6a"><p class="cl-8be95a6c"><span class="cl-8be66cf9">0.19</span></p></td><td class="cl-8be96b6a"><p class="cl-8be95a6c"><span class="cl-8be66cf9">2.36</span></p></td><td class="cl-8be96b6a"><p class="cl-8be95a6c"><span class="cl-8be66cf9">0.17</span></p></td><td class="cl-8be96b6a"><p class="cl-8be95a6c"><span class="cl-8be66cf9">11.58</span></p></td><td class="cl-8be96b6a"><p class="cl-8be95a6c"><span class="cl-8be66cf9">0.50</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-b8702730{}.cl-b867ded6{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-b867dee0{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-b867dee1{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:italic;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-b86abed0{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b86ad384{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b86ad38e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b86ad38f{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-b8702730"><thead><tr style="overflow-wrap:break-word;"><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Network</span></p></th><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Avg. Density</span></p></th><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Avg. Distance</span></p></th><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Avg. Transitivity</span></p></th><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Avg. Betweenness</span></p></th><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Avg. Eigenvector</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">Mentorship</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.15</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">2.69</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.15</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">14.39</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.33</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">Simulated Mentorship</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">0.15</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">2.67</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">0.14</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">11.97</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">0.44</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">Tech Guidance</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.19</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">2.65</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.35</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">14.84</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.34</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">Simulated Tech Guidance</span></p></td><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">0.19</span></p></td><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">2.36</span></p></td><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">0.17</span></p></td><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">11.58</span></p></td><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">0.50</span></p></td></tr></tbody></table></div>
 </div>
 </div>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#One example plotted to show what's happening</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>gl.apls <span class="ot">=</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(gl, mean_distance, <span class="at">directed=</span><span class="cn">FALSE</span>))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(gl.apls)) <span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> gl.apls), <span class="at">bins =</span> <span class="dv">25</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                 , <span class="at">fill =</span> my_pal[[<span class="dv">11</span>]]</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                 , <span class="at">alpha =</span> .<span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> avg_dist_ment</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>             , <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>             , <span class="at">linetype =</span> <span class="st">"dashed"</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>             , <span class="at">color =</span> my_pal[[<span class="dv">14</span>]]) <span class="sc">+</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="at">x =</span> avg_dist_ment <span class="sc">+</span> <span class="fl">1.2</span>, <span class="at">y =</span> <span class="dv">150</span>, <span class="at">label =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{round(avg_dist_ment, digits = 2)}, is the average distance </span><span class="sc">\n</span><span class="st">between connections </span><span class="sc">\n</span><span class="st">in the mentoring network"</span>), <span class="at">geom =</span> <span class="st">"label"</span>, <span class="at">color =</span> my_pal[[<span class="dv">14</span>]]) <span class="sc">+</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> avg_dist_ment <span class="sc">+</span> .<span class="dv">6</span>, <span class="at">y =</span> <span class="dv">145</span>, <span class="at">xend =</span> avg_dist_ment <span class="sc">+</span>.<span class="dv">05</span>, <span class="at">yend =</span> <span class="dv">138</span>),</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                  <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.25</span>, <span class="st">"cm"</span>))</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>               , <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>               , <span class="at">color =</span> my_pal[[<span class="dv">14</span>]])<span class="sc">+</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"# of simulations"</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>       , <span class="at">x =</span> <span class="st">"Average distance between connections"</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>       , <span class="at">title =</span> <span class="st">"How does our network compare to </span><span class="sc">\n</span><span class="st">similarly structured networks?"</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>       , <span class="at">subtitle =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{mean(gl.apls &lt; avg_dist_ment) * 100}"</span>, <span class="st">"% "</span>, <span class="st">"of similar networks have a shorter average distance between </span><span class="sc">\n</span><span class="st">connections than the mentoring network"</span>))<span class="sc">+</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme.plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <p><img src="internal_networks_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mean(gl.apls &lt; avg_dist_ment)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 <div class="cell">
 
 </div>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#One example plotted to show what's happening</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gl.apls.tech <span class="ot">=</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(gl_tech, mean_distance, <span class="at">directed=</span><span class="cn">FALSE</span>))</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(gl.apls.tech)) <span class="sc">+</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> gl.apls.tech), <span class="at">bins =</span> <span class="dv">25</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                 , <span class="at">fill =</span> my_pal[[<span class="dv">11</span>]]</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                 , <span class="at">alpha =</span> .<span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> avg_dist_tech</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>             , <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>             , <span class="at">linetype =</span> <span class="st">"dashed"</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>             , <span class="at">color =</span> my_pal[[<span class="dv">14</span>]]) <span class="sc">+</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="at">x =</span> avg_dist_tech <span class="sc">+</span> .<span class="dv">8</span>, <span class="at">y =</span> <span class="dv">150</span>, <span class="at">label =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{round(avg_dist_tech, digits = 2)}, is the average distance </span><span class="sc">\n</span><span class="st">between connections </span><span class="sc">\n</span><span class="st">in the technical guidance network"</span>), <span class="at">geom =</span> <span class="st">"label"</span>, <span class="at">color =</span> my_pal[[<span class="dv">14</span>]]) <span class="sc">+</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> avg_dist_tech <span class="sc">+</span> .<span class="dv">25</span>, <span class="at">y =</span> <span class="dv">145</span>, <span class="at">xend =</span> avg_dist_tech <span class="sc">+</span>.<span class="dv">05</span>, <span class="at">yend =</span> <span class="dv">138</span>),</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>                  <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.25</span>, <span class="st">"cm"</span>))</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>               , <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>               , <span class="at">color =</span> my_pal[[<span class="dv">14</span>]])<span class="sc">+</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"# of simulations"</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>       , <span class="at">x =</span> <span class="st">"Average distance between connections"</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>       , <span class="at">title =</span> <span class="st">"How does our network compare to </span><span class="sc">\n</span><span class="st">similarly structured networks?"</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>       , <span class="at">subtitle =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{mean(gl.apls.tech &lt; avg_dist_tech) * 100}"</span>, <span class="st">"% "</span>, <span class="st">"of similar networks have a shorter average distance between </span><span class="sc">\n</span><span class="st">connections than the technical guidance network"</span>))<span class="sc">+</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme.plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <p><img src="internal_networks_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mean(gl_tech.apls &lt; avg_dist_tech)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 </section>
