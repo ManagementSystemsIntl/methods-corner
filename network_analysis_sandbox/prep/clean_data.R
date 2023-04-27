@@ -94,6 +94,7 @@ df2_nodes <- df1_nodes |>
 #delete any duplicate nodes
 df2_vertices <- subset(df2_nodes, !duplicated(value)) 
 
+
 ###create graph object
 
 df_graph_ment <- graph_from_data_frame(df1_ties
@@ -193,3 +194,13 @@ ggraph(df_graph_tech, "with_kk") +
   geom_node_text(aes(label = df_tech_vertices$value))
 
 
+###Lists to anonymize networks----
+
+#Add a number column that can be used to anonymize each network 
+df_anon <- unique(c(df1_ties$Name
+                      , df1_ties$to_mentor3
+                      , df_tech_ties$Name
+                      , df_tech_ties$to_tech3)) |>
+  as.data.frame() |>
+  mutate(number = row_number()
+         , .before = everything())
