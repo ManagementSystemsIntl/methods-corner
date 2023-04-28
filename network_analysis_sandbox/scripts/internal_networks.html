@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.340">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -18,7 +18,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -83,9 +83,6 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<div class="cell">
-
-</div>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>At the January 9, 2023 all company Monday meeting, Melanie Murphy presented on the Advanced Analytics and Data Science team. At the end of her presentation, we requested those interested in engaging with this team to fill out a small survey about their analytics background and where they work within the company. The final two questions, however, asked about respondents’ engagement with colleagues. They were:</p>
@@ -102,9 +99,6 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="summary-statistics" class="level1">
 <h1>Summary Statistics</h1>
-<div class="cell">
-
-</div>
 <p>We received 47 responses to the survey with 23 responses from home office staff and 24 responses from field office staff representing projects in Iraq, Nigeria, Jordan, and Zambia.</p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
@@ -119,56 +113,56 @@ ul.task-list li input[type="checkbox"] {
 <section id="networks" class="level1 page-columns page-full">
 <h1>Networks</h1>
 <p>Next, let’s look at the networks. We collected data for two networks – one related to mentoring and another related to technical guidance, and then we decided to filter the data so that we only included survey SEA staff To understand the networks we have to identify the people and their connections. In network analysis these are called, nodes and edges, respectively. To better understand how this works let’s look at an example of a dataframe that shows the ties and one that shows the nodes.</p>
-<div class="cell">
-
-</div>
 <p>Within the SEA practice area we have 18 nodes in our mentorship network consisting of 23 edges. In the technical guidance network we have 19 nodes and 32 edges.</p>
 <div class="cell">
-
-</div>
-<div class="cell">
 <div class="cell-output-display">
-<p><img src="internal_networks_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="internal_networks_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<div class="cell column-screen-inset-shaded quarto-layout-panel">
+<div class="cell column-screen-inset-shaded quarto-layout-panel" title="Dan, I wanted the above graphs to spread out like this">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
-<p><img src="internal_networks_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
-<p><img src="internal_networks_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
-<p><img src="internal_networks_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid" width="672"></p>
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <section id="network-statistics" class="level3">
 <h3 class="anchored" data-anchor-id="network-statistics">Network statistics</h3>
-<p>How do these statistics compare with what we would expect from similar networks? We can run some simulations to find out.</p>
+<p>How do these statistics compare with what we would expect from similar networks? We can run some simulations to find out. To do this, we set up network parameters with the same number of nodes and the same density, and then we simulate 1000 networks. We do this with both the mentorship network and the technical guidance network.</p>
+<section id="what-statistics-are-we-going-to-look-at-and-why" class="level4">
+<h4 class="anchored" data-anchor-id="what-statistics-are-we-going-to-look-at-and-why">What statistics are we going to look at and why?</h4>
+<p>We will look at a series of centrality statistics to give us a sense of how easily or not information travels through a network.</p>
+<p><strong>Density:</strong></p>
+<p><strong>Distance:</strong></p>
+<p><strong>Transitivity:</strong></p>
+<p><strong>Betweenness:</strong></p>
+<p><strong>Eigenvector:</strong></p>
 <div class="cell">
 <div class="cell-output-display">
 
-<div class="tabwid"><style>.cl-b8702730{}.cl-b867ded6{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-b867dee0{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-b867dee1{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:italic;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-b86abed0{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-b86ad384{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b86ad38e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-b86ad38f{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-b8702730"><thead><tr style="overflow-wrap:break-word;"><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Network</span></p></th><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Avg. Density</span></p></th><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Avg. Distance</span></p></th><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Avg. Transitivity</span></p></th><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Avg. Betweenness</span></p></th><th class="cl-b86ad384"><p class="cl-b86abed0"><span class="cl-b867ded6">Avg. Eigenvector</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">Mentorship</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.15</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">2.69</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.15</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">14.39</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.33</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">Simulated Mentorship</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">0.15</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">2.67</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">0.14</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">11.97</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee1">0.44</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">Tech Guidance</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.19</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">2.65</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.35</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">14.84</span></p></td><td class="cl-b86ad38e"><p class="cl-b86abed0"><span class="cl-b867dee0">0.34</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">Simulated Tech Guidance</span></p></td><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">0.19</span></p></td><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">2.36</span></p></td><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">0.17</span></p></td><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">11.58</span></p></td><td class="cl-b86ad38f"><p class="cl-b86abed0"><span class="cl-b867dee1">0.50</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-d4eea088{}.cl-d4e72074{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d4e7207e{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d4e7207f{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:italic;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-d4e9d224{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-d4e9e200{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d4e9e201{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-d4e9e20a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-d4eea088"><thead><tr style="overflow-wrap:break-word;"><th class="cl-d4e9e200"><p class="cl-d4e9d224"><span class="cl-d4e72074">Network</span></p></th><th class="cl-d4e9e200"><p class="cl-d4e9d224"><span class="cl-d4e72074">Avg. Density</span></p></th><th class="cl-d4e9e200"><p class="cl-d4e9d224"><span class="cl-d4e72074">Avg. Distance</span></p></th><th class="cl-d4e9e200"><p class="cl-d4e9d224"><span class="cl-d4e72074">Avg. Transitivity</span></p></th><th class="cl-d4e9e200"><p class="cl-d4e9d224"><span class="cl-d4e72074">Avg. Betweenness</span></p></th><th class="cl-d4e9e200"><p class="cl-d4e9d224"><span class="cl-d4e72074">Avg. Eigenvector</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">Mentorship</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">0.15</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">2.69</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">0.15</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">14.39</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">0.33</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207f">Simulated Mentorship</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207f">0.15</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207f">2.67</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207f">0.14</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207f">11.97</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207f">0.44</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">Tech Guidance</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">0.19</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">2.65</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">0.35</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">14.84</span></p></td><td class="cl-d4e9e201"><p class="cl-d4e9d224"><span class="cl-d4e7207e">0.34</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-d4e9e20a"><p class="cl-d4e9d224"><span class="cl-d4e7207f">Simulated Tech Guidance</span></p></td><td class="cl-d4e9e20a"><p class="cl-d4e9d224"><span class="cl-d4e7207f">0.19</span></p></td><td class="cl-d4e9e20a"><p class="cl-d4e9d224"><span class="cl-d4e7207f">2.36</span></p></td><td class="cl-d4e9e20a"><p class="cl-d4e9d224"><span class="cl-d4e7207f">0.17</span></p></td><td class="cl-d4e9e20a"><p class="cl-d4e9d224"><span class="cl-d4e7207f">11.58</span></p></td><td class="cl-d4e9e20a"><p class="cl-d4e9d224"><span class="cl-d4e7207f">0.50</span></p></td></tr></tbody></table></div>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="internal_networks_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
-</div>
-<div class="cell">
-
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="internal_networks_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
 </section>
 </section>
 
@@ -201,9 +195,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -268,6 +276,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

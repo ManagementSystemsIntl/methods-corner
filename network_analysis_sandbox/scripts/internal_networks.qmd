@@ -30,7 +30,7 @@ Let's start by looking at which analytical softwares are used most frequently by
 
 # Summary Statistics
 
-```{r, echo = FALSE, output = FALSE}
+```{r, echo = FALSE, output = FALSE, warning = FALSE}
 #importing and cleaning column names
 
 df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
@@ -107,211 +107,54 @@ Next, let's look at the networks. We collected data for two networks -- one rela
 
 
 ```{r echo = FALSE, output = TRUE }
-df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
-  select(ID
-         , Name 
-         , home_field = `Are you home office or field office staff?` 
-         , practice_area = `Practice Area` 
-         , training = `Training/Credential specific to data analytics` 
-         , advanced_analyses = `Any specific advanced analyses you have conducted?`
-         , software = `Any specific competencies with statistical analysis software?` 
-         , aspirations = `Any specific aspirations for data analytics?`
-         , to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
-         , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`) |>
-  mutate(respondent = 1) |>
-  filter(!is.na(practice_area)
-         & !is.na(to_mentor))
 
-df$practice_area <- df$practice_area |>
-  recode("Strategy, Evaluation and Analysis" = "SEA"
-         , "Education" = "SEA")
+#load network data from files
+edges_mentor <- read_xlsx(here::here("./network_analysis_sandbox/data/edges_mentor.xlsx"))
+nodes_mentor <- read_xlsx(here::here("./network_analysis_sandbox/data/nodes_mentor.xlsx"))
+edges_tech <- read_xlsx(here::here("./network_analysis_sandbox/data/edges_tech.xlsx"))
+nodes_tech <- read_xlsx(here::here("./network_analysis_sandbox/data/nodes_tech.xlsx"))
 
-#reworking this data set for mentoring
-df1 <- df |>
-  filter(practice_area == "SEA"
-         & home_field == "Home office") |>
-  select(-to_tech_ques)
-
-df1 <- df1 |>
-  mutate(to_mentor2 = strsplit(to_mentor, "[,;&]+")) |>
-  unnest("to_mentor2") 
-
-#had to separately clean the " and " for some reason
-df1 <- df1 |>
-  mutate(to_mentor3 = strsplit(to_mentor2, " and ")) |>
-  unnest("to_mentor3")
-
-#need to clean up names in to_mentor column
-#This allows us to view all unique rows in the column
-#unique(df1$to_mentor3)
-
-#this fixes the names of the to_mentor3 column
-df1$to_mentor3 <- df1$to_mentor3 |>
-  str_trim() |> #eliminates extra spaces before and after text
-  recode("Tim R" = "Tim Reilly"
-         , "Michelle" = "Michelle Adams-Matson"
-         , "Tim R." = "Tim Reilly"
-         , "None" = "skip"
-         , "NA" = "skip"
-         , "N/A" = "skip") 
-
-df1 <- df1 |>
-  relocate(to_mentor3, .before = home_field)
-
-#find the individual softwares
-softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA"
-                     , "Python", "ArcGIS", "Excel", "excel", "SAS"
-                     , "EpiInfo", "STATA", "Kobo Tool Box", "Dedoose"
-                     , "SMath Studio", "Tableau"), collapse = "|")
-
-#create a new column that extracts the names of software used 
-#then create another column that unnests any lists
-df2 <- df1 |>
-  mutate(software1 = str_extract_all(software, pattern = softwares))
-
-#Create a ties df
-df1_ties <- df2 |>
-  select(Name, to_mentor3) |>
-  filter(to_mentor3 != "skip")
-
-#Create a nodes df with all attributes
-df1_nodes <- as_tibble(unique(c(df2$Name, df2$to_mentor3))) |>
-  filter(value != "skip" &
-           !is.na(value))
-
-#Create a nodes df with all attributes
-#create the list of nodes
-df1_nodes <- as_tibble(unique(c(df1_ties$Name, df1_ties$to_mentor3)))
-
-#join it to the attributes
-df2_nodes <- df1_nodes |>
-  left_join(df2, by = c("value" = "Name"))
-
-#delete any duplicate nodes
-df2_vertices <- subset(df2_nodes, !duplicated(value)) 
 
 ###create graph object
-
-df_graph_ment <- graph_from_data_frame(df1_ties
-                                       , directed = FALSE
-                                       , vertices = df2_vertices)
+graph_ment <- graph_from_data_frame(edges_mentor
+                                    , directed = FALSE
+                                    , vertices = nodes_mentor)
+graph_tech <- graph_from_data_frame(edges_tech
+                                   , directed = FALSE
+                                   , vertices = nodes_tech)
 
 ```
 
-Within the SEA practice area we have `r gorder(df_graph_ment)` nodes in our mentorship network consisting of `r gsize(df_graph_ment)` edges. In the technical guidance network we have `r gorder(df_graph_tech)` nodes and `r gsize(df_graph_tech)` edges.
+Within the SEA practice area we have `r gorder(graph_ment)` nodes in our mentorship network consisting of `r gsize(graph_ment)` edges. In the technical guidance network we have `r gorder(graph_tech)` nodes and `r gsize(graph_tech)` edges.
 
-```{r echo = F, warning = F}
-
-
-#Technical
-#SEA only and only those who listed tech advisors
-
-df_tech <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
-  select(ID
-         , Name 
-         , home_field = `Are you home office or field office staff?` 
-         , practice_area = `Practice Area` 
-         , training = `Training/Credential specific to data analytics` 
-         , advanced_analyses = `Any specific advanced analyses you have conducted?`
-         , software = `Any specific competencies with statistical analysis software?` 
-         , aspirations = `Any specific aspirations for data analytics?`
-         , to_mentor = `Who within MSI are you able to turn to for mentorship/career guidance?`
-         , to_tech_ques = `Who within MSI do you turn to most often to discuss or get help on technical questions?`) |>
-  mutate(respondent = 1) |>
-  filter(!is.na(practice_area)
-         & !is.na(to_tech_ques))
-
-df_tech$practice_area <- df_tech$practice_area |>
-  recode("Strategy, Evaluation and Analysis" = "SEA"
-         , "Education" = "SEA")
-
-#reworking this data set for mentoring
-df_tech1 <- df_tech |>
-  filter(practice_area == "SEA"
-         & home_field == "Home office") |>
-  select(-to_mentor)
-
-df_tech1 <- df_tech1 |>
-  mutate(to_tech2 = strsplit(to_tech_ques, "[,;&]+")) |>
-  unnest("to_tech2") 
-
-#need to clean up names in to_mentor column
-#This allows us to view all unique rows in the column
-#unique(df_tech1$to_tech2)
-
-#this fixes the names of the to_mentor3 column
-df_tech1$to_tech3 <- df_tech1$to_tech2 |>
-  str_trim() |> #eliminates extra spaces before and after text
-  recode("No one right now" = "skip"
-         , "Dan" = "Dan Killian"
-         , "David" = "David Hinkle"
-         , "Tim S." = "Tim Shifflett"
-         , "None" = "skip"
-         , "NA" = "skip"
-         , "N/A" = "skip")
-         
-
-df_tech1 <- df_tech1 |>
-  relocate(to_tech3, .before = home_field)
-
-#find the individual softwares
-softwares <- paste(c("R", "Stata", "SPSS", "Spss", "Nvivo", "Qualtrics", "MaxQDA"
-                     , "Python", "ArcGIS", "Excel", "excel", "SAS"
-                     , "EpiInfo", "STATA", "Kobo Tool Box", "Dedoose"
-                     , "SMath Studio", "Tableau"), collapse = "|")
-
-#create a new column that extracts the names of software used 
-#then create another column that unnests any lists
-df_tech2 <- df_tech1 |>
-  mutate(new = str_extract_all(software, pattern = softwares)) |>
-  filter(to_tech3 !="skip")
-
-#Create a ties df
-df_tech_ties <- df_tech2 |>
-  select(Name, to_tech3)
-
-
-
-#Create a nodes df with all attributes
-#create the list of nodes
-df_tech_nodes <- as_tibble(unique(c(df_tech_ties$Name, df_tech_ties$to_tech3)))
-
-#join it to the attributes
-df_tech_nodes1 <- df_tech_nodes |>
-  left_join(df_tech2, by = c("value" = "Name"))
-
-#delete any duplicate nodes
-df_tech_vertices <- subset(df_tech_nodes1, !duplicated(value)) 
-
-df_graph_tech <- graph_from_data_frame(df_tech_ties
-                                       , directed = FALSE
-                                       , vertices = df_tech_vertices)
-```
 
 ```{r, warning = FALSE}
 
 #| column: screen-inset-shaded
 #| layout-nrow: 1
 
-
 #plot graph object of mentor network
-g1 <- ggraph(df_graph_ment, layout = "with_kk") +
+g1 <- ggraph(graph_ment, layout = "with_kk") +
   geom_edge_link(color = my_pal[[5]]
                  , alpha = .3) +
   geom_node_point(color = my_pal[[5]]
-                  , size = 4) +
+                  , size = 8) +
+  geom_node_text(aes(label = name)
+                 , color = "white")+
   labs(title = "Mentor network among data enthusiasts\nat MSI") +
   theme(legend.position = "none")+
   theme.graph()
 
 #plot graph object of tech network
-g2 <- ggraph(df_graph_tech, layout = "with_kk") +
+g2 <- ggraph(graph_tech, layout = "with_kk") +
   geom_edge_link(color = my_pal[[10]]
                  , alpha = .3) +
   geom_node_point(color = my_pal[[10]]
-                  , size = 4) +
-    labs(title = "Technical advice network among data enthusiasts at MSI"
-       , subtitle = "tech-tech-tech-ni-cal") +
+                  , size = 8) +
+  geom_node_text(aes(label = name)
+                 , color = "white")+
+    labs(title = "Technical guidance network among data\nenthusiasts at MSI"
+       , subtitle = "A slightly more webby network") +
   theme.graph() +
   theme(legend.position = "none")
 
@@ -327,28 +170,44 @@ g2
 ```{r}
 #| column: screen-inset-shaded
 #| layout-nrow: 1
+#| title: "Dan, I wanted the above graphs to spread out like this"
 
-plot(cars)
+plot(cars, main = "Dan, I wanted the above graphs to spread out like this")
 plot(iris)
 plot(pressure)
 ```
 ### Network statistics
 
-How do these statistics compare with what we would expect from similar networks? We can run some simulations to find out.
+How do these statistics compare with what we would expect from similar networks? We can run some simulations to find out. To do this, we set up network parameters with the same number of nodes and the same density, and then we simulate 1000 networks. We do this with both the mentorship network and the technical guidance network.
+
+#### What statistics are we going to look at and why?
+We will look at a series of centrality statistics to give us a sense of how easily  or not information travels through a network.
+
+**Density:**
+
+**Distance:**
+
+**Transitivity:**
+
+**Betweenness:**
+
+**Eigenvector:**
+
+
 
 ```{r}
 #Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality
 #calculate the network density
-density_ment <- edge_density(df_graph_ment)
+density_ment <- edge_density(graph_ment)
 #calculate the mean_distance
-avg_dist_ment <- mean_distance(df_graph_ment, directed = FALSE)
+avg_dist_ment <- mean_distance(graph_ment, directed = FALSE)
 #calculate the betweeness
-b1 <- betweenness(df_graph_ment, directed = FALSE)
+b1 <- betweenness(graph_ment, directed = FALSE)
 between_ment <- mean(b1)
 #calculate the transitivity of the network
-trans_ment <- transitivity(df_graph_ment)
+trans_ment <- transitivity(graph_ment)
 #eigenvalues vector
-e1 <- eigen_centrality(df_graph_ment, directed =FALSE)$vector
+e1 <- eigen_centrality(graph_ment, directed =FALSE)$vector
 #calculate avg. eigenvalue of the network
 eigen_ment <- mean(e1)
 l <- c("Network", "Avg. Density", "Avg. Distance", "Avg. Transitivity", "Avg. Betweenness", "Avg. Eigenvector")
@@ -367,20 +226,20 @@ network_table <- flextable(dat1) |>
 
 #Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality
 #calculate the network density
-density_tech <- edge_density(df_graph_tech)
+density_tech <- edge_density(graph_tech)
 
 #calculate the mean_distance
-avg_dist_tech <- mean_distance(df_graph_tech, directed = FALSE)
+avg_dist_tech <- mean_distance(graph_tech, directed = FALSE)
 
 #calculate the betweeness
-b2 <- betweenness(df_graph_tech, directed = FALSE)
+b2 <- betweenness(graph_tech, directed = FALSE)
 
 between_tech <- mean(b2)
 #calculate the transitivity of the network
-trans_tech <- transitivity(df_graph_tech)
+trans_tech <- transitivity(graph_tech)
 
 #eigenvalues vector
-e1_tech <- eigen_centrality(df_graph_tech, directed =FALSE)$vector
+e1_tech <- eigen_centrality(graph_tech, directed =FALSE)$vector
 
 #calculate avg. eigenvalue of the network
 eigen_tech <- mean(e1_tech)
@@ -409,8 +268,8 @@ gl <- vector('list', 1000)
 
 for(i in 1:1000){
   gl[[i]] <- erdos.renyi.game(
-    n = gorder(df_graph_ment)
-    , p.or.m = edge_density(df_graph_ment)
+    n = gorder(graph_ment)
+    , p.or.m = edge_density(graph_ment)
     , type = "gnp"
   )
 }
@@ -438,8 +297,8 @@ gl_tech <- vector('list', 1000)
 
 for(i in 1:1000){
   gl_tech[[i]] <- erdos.renyi.game(
-    n = gorder(df_graph_tech)
-    , p.or.m = edge_density(df_graph_tech)
+    n = gorder(graph_tech)
+    , p.or.m = edge_density(graph_tech)
     , type = "gnp"
   )
 }
@@ -509,7 +368,7 @@ ggplot(data = as.data.frame(gl.apls)) +
                , color = my_pal[[14]])+
   labs(y = "# of simulations"
        , x = "Average distance between connections"
-       , title = "How does our network compare to \nsimilarly structured networks?"
+       , title = "How does our mentorship network compare to \nsimilarly structured networks?"
        , subtitle = glue::glue("{mean(gl.apls < avg_dist_ment) * 100}", "% ", "of similar networks have a shorter average distance between \nconnections than the mentoring network"))+
   theme.plot()
 
@@ -544,7 +403,7 @@ ggplot(data = as.data.frame(gl.apls.tech)) +
                , color = my_pal[[14]])+
   labs(y = "# of simulations"
        , x = "Average distance between connections"
-       , title = "How does our network compare to \nsimilarly structured networks?"
+       , title = "How does our Technical guidance network \ncompare to similarly structured networks?"
        , subtitle = glue::glue("{mean(gl.apls.tech < avg_dist_tech) * 100}", "% ", "of similar networks have a shorter average distance between \nconnections than the technical guidance network"))+
   theme.plot()
 
