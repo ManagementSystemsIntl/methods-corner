@@ -355,58 +355,252 @@ Sheng Cao
 </div>
 
 </section>
-<section id="introduction" class="slide level2">
-<h2>Introduction</h2>
-<h3 id="what-is-causal-inference">What is causal inference?</h3>
+<section>
+<section id="introduction" class="title-slide slide level1 center">
+<h1>Introduction</h1>
+
+</section>
+<section id="what-is-causal-inference" class="slide level2">
+<h2>What is causal inference?</h2>
 <ul>
 <li><p>Cause-and-effect questions: Does X cause Y ? If X causes Y, how large is the effect of X on Y? Is the size of this effect large relative to the effects of other causes of Y? <span class="citation" data-cites="morgan2014">(<a href="#/references" role="doc-biblioref" onclick="">Morgan and Winship 2014</a>)</span></p>
-<p>E.g. Did mandatory busing programs in the 1970s increase the school achievement of disadvantaged minority youth? If so, how much of a gain was achieved?</p>
-<p>Does obtaining a college degree increase an individual’s labor market earnings? If so, is this particular effect large relative to the earnings gains that could be achieved only through on-the-job training?</p>
-<p>Did the use of a butterfly ballot in some Florida counties in the 2000 presidential election cost Al Gore votes? If so, was the number of miscast votes sufficiently large to have altered the election outcome?</p></li>
-</ul>
-<h3 id="why-is-it-important">Why is it important?</h3>
 <ul>
-<li><p><strong>It is essential to science:</strong> If we are choosing between treatments for a disease, we want to choose the treatment that causes the most people to be cured, without causing too many bad side effects. <span class="citation" data-cites="neal">(<a href="#/references" role="doc-biblioref" onclick="">Neal, n.d.</a>)</span></p></li>
-<li><p><strong>It is essential for rigorous decision-making:</strong> We are considering several different policies to implement to reduce greenhouse gas emissions, and we must choose just one due to budget constraints. If we want to be maximally effective, we should carry out causal analysis to determine which policy will cause the largest reduction in emissions. <span class="citation" data-cites="neal">(<a href="#/references" role="doc-biblioref" onclick="">Neal, n.d.</a>)</span></p></li>
+<li>E.g. Did mandatory busing programs in the 1970s increase the school achievement of disadvantaged minority youth? If so, how much of a gain was achieved? <span class="citation" data-cites="morgan2014">(<a href="#/references" role="doc-biblioref" onclick="">Morgan and Winship 2014</a>)</span></li>
+<li>E.g. Does obtaining a college degree increase an individual’s labor market earnings? If so, is this particular effect large relative to the earnings gains that could be achieved only through on-the-job training? <span class="citation" data-cites="morgan2014">(<a href="#/references" role="doc-biblioref" onclick="">Morgan and Winship 2014</a>)</span></li>
+</ul></li>
 </ul>
 </section>
-<section id="background" class="slide level2">
-<h2>Background</h2>
+<section id="why-is-it-important" class="slide level2">
+<h2>Why is it important?</h2>
+<ul>
+<li><p><strong>It is essential to science:</strong> If we are choosing between treatments for a disease, we want to choose the treatment that causes the most people to be cured, without causing too many bad side effects. <span class="citation" data-cites="neal2020">(<a href="#/references" role="doc-biblioref" onclick="">Neal 2020</a>)</span></p></li>
+<li><p><strong>It is essential for rigorous decision-making:</strong> We are considering several different policies to implement to reduce greenhouse gas emissions, and we must choose just one due to budget constraints. If we want to be maximally effective, we should carry out causal analysis to determine which policy will cause the largest reduction in emissions. <span class="citation" data-cites="neal2020">(<a href="#/references" role="doc-biblioref" onclick="">Neal 2020</a>)</span></p></li>
+</ul>
+</section></section>
+<section>
+<section id="background" class="title-slide slide level1 center">
+<h1>Background</h1>
+
 </section>
-<section id="the-fundamental-problem-of-causal-inference" class="slide level2">
-<h2>The Fundamental Problem of Causal Inference</h2>
+<section id="difference-between-correlation-and-causation" class="slide level2">
+<h2>Difference Between Correlation and Causation</h2>
+</section></section>
+<section id="the-fundamental-problem-of-causal-inference" class="title-slide slide level1 center">
+<h1>The Fundamental Problem of Causal Inference</h1>
 <ul>
 <li><p>It is impossible to observe all potential outcomes for a given individual<span class="citation" data-cites="rubin1974">(<a href="#/references" role="doc-biblioref" onclick="">Rubin 1974</a>)</span>, which is defined by Holland as the <em>fundamental problem of causal inference</em><span class="citation" data-cites="holland1986">(<a href="#/references" role="doc-biblioref" onclick="">Holland 1986</a>)</span>.</p>
-<p>E.g. You could observe Y(1) by getting a dog and observing your happiness after getting a dog. Alternatively, you could observe Y(0) by not getting a dog and observing your happiness. However, you cannot observe both Y(1) and Y(0), unless you have a <strong>time machine</strong> that would allow you to go back in time and choose the version of treatment that you didn’t take the first time. <span class="citation" data-cites="neal">(<a href="#/references" role="doc-biblioref" onclick="">Neal, n.d.</a>)</span></p></li>
+<ul>
+<li>E.g. You could observe Y(1) by getting a dog and observing your happiness after getting a dog. Alternatively, you could observe Y(0) by not getting a dog and observing your happiness. However, you cannot observe both Y(1) and Y(0), unless you have a <strong>time machine</strong> that would allow you to go back in time and choose the version of treatment that you didn’t take the first time. <span class="citation" data-cites="neal2020">(<a href="#/references" role="doc-biblioref" onclick="">Neal 2020</a>)</span></li>
+</ul></li>
 </ul>
 </section>
-<section id="experimental-methods" class="slide level2">
-<h2>Experimental methods</h2>
-<h3 id="definition">Definition</h3>
+
+<section>
+<section id="experimental-methods" class="title-slide slide level1 center">
+<h1>Experimental methods</h1>
+
 </section>
-<section id="observational-methods" class="slide level2">
-<h2>Observational methods</h2>
+<section id="definition" class="slide level2">
+<h2>Definition</h2>
+<ul>
+<li>The individuals or material investigated, the nature of the treatments or manipulations under study and the measurement procedures used are all selected, in their important features at least, by the investigator. <span class="citation" data-cites="cox2000">(<a href="#/references" role="doc-biblioref" onclick="">Cox and Reid 2000</a>)</span>
+<ul>
+<li>E.g. “Treatment group” receives the medicine being evaluated. “Control group” receives a harmless/ineffective substitute (placebo). Each subject is assigned at random to either the treatment or the control condition.</li>
+</ul></li>
+</ul>
 </section>
-<section id="conclusion" class="slide level2">
-<h2>Conclusion</h2>
+<section id="randomized-controlled-trial-rct" class="slide level2">
+<h2>Randomized Controlled Trial (RCT)</h2>
+<ul>
+<li><p>This is a type of experiment in which participants are randomly assigned to an intervention group (that receives a treatment or intervention) or a control group (that does not receive the treatment).</p>
+<ul>
+<li>In policy-related RCTs, “treatment” is equal to the exposure to some policy/program (e.g., job training program, income supplement program, sex education program, etc)</li>
+</ul></li>
+</ul>
 </section>
-<section id="references" class="slide level2 smaller scrollable">
-<h2>References</h2>
+<section id="pros-and-cons-of-rct" class="slide level2">
+<h2>Pros and Cons of RCT</h2>
+<ul>
+<li><p><strong>Pros:</strong> Association is causation. Randomized experiments guarantee that there is no confounding. As the Directed Acyclic Graph (DAG) shows, X is a confounder of the effect of T on Y. Non-causal association flows along the backdoor path T ← X → Y. However, if we randomize T, T no longer has any causal parents. This is because T is purely random. <span class="citation" data-cites="neal2020">(<a href="#/references" role="doc-biblioref" onclick="">Neal 2020</a>)</span></p>
+<p><img data-src="images/DAG-02.png"></p></li>
+<li><p><strong>Cons:</strong> RCTs may be expensive and time-consuming to implement. Randomization requires implementation of a carefully designed and closely monitored experiment - probably on a small scale (due to cost considerations) and or for a narrowly defined group (due to practical constraints) - which can limit the study’s external validity.</p></li>
+</ul>
+</section></section>
+<section>
+<section id="observational-methods" class="title-slide slide level1 center">
+<h1>Observational methods</h1>
+
+</section>
+<section id="definition-1" class="slide level2">
+<h2>Definition</h2>
+<ul>
+<li>In an observational study some of these features, and in particular the allocation of individuals to treatment groups, are outside the investigator’s control. <span class="citation" data-cites="cox2000">(<a href="#/references" role="doc-biblioref" onclick="">Cox and Reid 2000</a>)</span></li>
+</ul>
+</section>
+<section id="quasi-experiment" class="slide level2">
+<h2>Quasi-experiment</h2>
+<ul>
+<li>We often rely on variation in policy-relevant variables that is “as-if” random since experimental methods are expensive, time-consuming and have external validity problems.</li>
+<li>Quasi-experiments use observational (rather than experimental) data.</li>
+<li>Quasi-experiments tend to “score better” than randomized experiments (but not perfectly) in terms of external validity, less well in terms of internal validity.</li>
+</ul>
+</section>
+<section id="quasi-experimental-method-1-instrumental-variables" class="slide level2">
+<h2>Quasi-experimental Method 1: Instrumental Variables</h2>
+<ul>
+<li><p><strong>Definition:</strong> The information about the movements in X that are uncorrelated with (the error term) is gleaned from one or more additional variables, called instrumental variables or simply instruments. Instrumental variables regression uses these additional variables as tools or “instruments” to isolate the movements in X that are uncorrelated with (the error term)… <span class="citation" data-cites="stock2020">(<a href="#/references" role="doc-biblioref" onclick="">Stock and Watson 2020</a>)</span></p></li>
+<li><p><strong>Example:</strong> <span class="citation" data-cites="dee2004">(<a href="#/references" role="doc-biblioref" onclick="">Dee 2004</a>)</span> The authorwas attempting to answer the following question: what is the effect of educational attainment on adults’ civic engagement? The author instrumented for educational attainment (measured in the main analysis via a dummy variable reflecting college entrance) using two arguably exogenous measures of community college availability: proximity to the nearest two-year college and the number of two-year colleges in one’s county of residence. The results suggest that educational attainment has large and statistically significant effects on subsequent voter participation and support for free speech.</p></li>
+</ul>
+</section>
+<section id="quasi-experimental-method-2-regression-discontinuity" class="slide level2">
+<h2>Quasi-experimental Method 2: Regression Discontinuity</h2>
+<ul>
+<li><p><strong>Definition:</strong> For some programs, there is a clear eligibility threshold (cutoff): if you are below (above) that threshold, you qualify for the program and, if you are above (below) the threshold, you don’t. RD takes advantage of the cutoff. As long as the only thing that changes at the cutoff is that the person gets the treatment, then any jump up or down in the dependent variable at the cutoff will reflect the causal effect of treatment. <span class="citation" data-cites="bailey2019">(<a href="#/references" role="doc-biblioref" onclick="">Bailey 2019</a>)</span></p>
+<p><img data-src="images/regression%20discontinuity-01.jpg" width="466"></p></li>
+</ul>
+</section>
+<section id="quasi-experimental-method-2-regression-discontinuity-contd" class="slide level2">
+<h2>Quasi-experimental Method 2: Regression Discontinuity (Cont’d)</h2>
+<ul>
+<li><p><strong>Example:</strong> <span class="citation" data-cites="gormley2005">(<a href="#/references" role="doc-biblioref" onclick="">Gormley and Gayer 2005</a>)</span> The author explores the effect of Oklahoma’s universal pre-kindergarten (pre-K) program for four-year-olds on children’s test scores in Tulsa Public Schools. The author uses a regression-discontinuity approach that contrasts the performance in the test of children born just before the cut-off date (the treatment group) to the performance of children born just after the cut-off date (the control group), at the same time controlling for continuous age effects.</p>
+<p><img data-src="images/Regression%20Discontinuity-01.png"></p></li>
+</ul>
+</section>
+<section id="quasi-experimental-method-3-difference-in-difference" class="slide level2">
+<h2>Quasi-experimental Method 3: Difference in Difference</h2>
+<ul>
+<li><p><strong>Definition:</strong> To control for systematic differences between the control and treatment groups, we need two years of data, one before the policy change and one after the change. Thus, our sample is usefully broken into four groups: the control group before the change, the control group after the change, the treatment group before the change, and the treatment group after the change. <span class="citation" data-cites="wooldridge2016">(<a href="#/references" role="doc-biblioref" onclick="">Wooldridge 2016</a>)</span> By having two before-after comparisons, we create a much stronger study: a difference-in-difference study. The study gets its name from the fact that it compares the differences between two before-after differences. <span class="citation" data-cites="remler2015">(<a href="#/references" role="doc-biblioref" onclick="">Remler and Van Ryzin 2015</a>)</span></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Before</th>
+<th>After</th>
+<th>After - Before</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Control</strong></td>
+<td><span class="math display">\[                                           
+                                                      \beta_0            
+                                                      \]</span></td>
+<td><span class="math display">\[                                                                               
+                                                                                                                       \beta_0+\delta_0                     
+                                                                                                                       \]</span></td>
+<td><span class="math display">\[                                                                                                   
+                                                                                                                                                                                                                                              \delta_0             
+                                                                                                                                                                                                                                              \]</span></td>
+</tr>
+<tr class="even">
+<td><strong>Treatment</strong></td>
+<td><span class="math display">\[                                           
+                                                      \beta_0+\beta_1    
+                                                      \]</span></td>
+<td><span class="math display">\[                                                                               
+                                                                                                                       \beta_0+\delta_0+\beta_1+\delta_1    
+                                                                                                                       \]</span></td>
+<td><span class="math display">\[                                                                                                   
+                                                                                                                                                                                                                                              \delta_0+\delta_1    
+                                                                                                                                                                                                                                              \]</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Treatment - Control</strong></td>
+<td><span class="math display">\[                                           
+                                                      \delta_1           
+                                                      \]</span></td>
+<td><span class="math display">\[                                                                               
+                                                                                                                       \beta_1+\delta_1                     
+                                                                                                                       \]</span></td>
+<td><span class="math display">\[                                                                                                   
+                                                                                                                                                                                                                                              \delta_1             
+                                                                                                                                                                                                                                              \]</span></td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</section>
+<section id="quasi-experimental-method-3-difference-in-difference-contd" class="slide level2">
+<h2>Quasi-experimental Method 3: Difference in Difference (Cont’d)</h2>
+<ul>
+<li><strong>Example:</strong> <span class="citation" data-cites="eissa1996">(<a href="#/references" role="doc-biblioref" onclick="">Eissa and Liebman 1996</a>)</span> This paper examines the impact of the Tax Reform Act of 1986 (TRA86) on the labor force participation and hours of work of single women with children. This paper uses all single women with children as the control group. The difference between the change in labor force participation of single women with children and the change of single women without children is the estimate of the effect of TRA886 on participation. This is essentially the difference-in-differences approach.</li>
+</ul>
+</section>
+<section id="quasi-experimental-method-4-fixed-effects" class="slide level2">
+<h2>Quasi-experimental Method 4: Fixed Effects</h2>
+<ul>
+<li><p><strong>Definition:</strong> If we include fixed effects in our regression model, we are controlling for every single fixed characteristic of every single member of our sample, including characteristics for which we don’t even have data.</p></li>
+<li><p><strong>Example:</strong> <span class="citation" data-cites="waldfogel1997">(<a href="#/references" role="doc-biblioref" onclick="">Waldfogel 1997</a>)</span> This paper is trying to answer the question: Does having children affect the wages of women in the United States? If women with lower motivation to succeed in the labor market are more likely to have children and less likely to have high earnings, then this unobserved heterogeneity might explain the observed negative relationship of wages and having children. The author controls for this heterogeneity via fixed effects and first-differences models.</p></li>
+</ul>
+</section>
+<section id="quasi-experimental-method-5-propensity-score-matching" class="slide level2">
+<h2>Quasi-experimental Method 5: Propensity Score Matching</h2>
+<ul>
+<li></li>
+</ul>
+</section></section>
+<section id="conclusion" class="title-slide slide level1 center">
+<h1>Conclusion</h1>
+<ul>
+<li><p>In conclusion, causal inference is a fundamental concept in research and is critical for making informed decisions in fields such as medicine, economics, and public policy. To establish causality, researchers can use both experimental and observational methods.</p></li>
+<li><p>While experimental methods are considered the gold standard for establishing causality, they may not always be feasible or ethical.</p></li>
+<li><p>Observational methods can be a valuable alternative, but they have limitations and cannot establish causality with the same degree of certainty as experimental methods.</p>
+<ul>
+<li>To overcome the limitations of observational methods, researchers can use advanced techniques such as instrumental variables, regression discontinuity, difference-in-differences, fixed effect and propensity score matching. These methods can help identify causal effects in observational studies, but they also have limitations and require careful consideration of assumptions and potential sources of bias.</li>
+</ul></li>
+</ul>
+</section>
+
+<section id="references" class="title-slide slide level1 smaller scrollable">
+<h1>References</h1>
 <div class="footer footer-default">
 
 </div>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-bailey2019" class="csl-entry" role="listitem">
+Bailey, Michael. 2019. <em>Real Econometrics: The Right Tools to Answer Important Questions</em>. 2nd ed. Oxford Unversity Press.
+</div>
+<div id="ref-cox2000" class="csl-entry" role="listitem">
+Cox, David, and Nancy Reid. 2000. <span>“The Theory of Design of Experiments,”</span> January.
+</div>
+<div id="ref-dee2004" class="csl-entry" role="listitem">
+Dee, Thomas S. 2004. <span>“Are There Civic Returns to Education?”</span> <em>Journal of Public Economics</em> 88 (9): 1697–1720. <a href="https://doi.org/10.1016/j.jpubeco.2003.11.002">https://doi.org/10.1016/j.jpubeco.2003.11.002</a>.
+</div>
+<div id="ref-eissa1996" class="csl-entry" role="listitem">
+Eissa, Nada, and Jeffrey B. Liebman. 1996. <span>“Labor Supply Response to the Earned Income Tax Credit.”</span> <em>Quarterly Journal of Economics</em> 111 (2): 605–37. <a href="https://doi.org/10.2307/2946689">https://doi.org/10.2307/2946689</a>.
+</div>
+<div id="ref-gormley2005" class="csl-entry" role="listitem">
+Gormley, William T., and Ted Gayer. 2005. <span>“Promoting School Readiness in Oklahoma: An Evaluation of Tulsa’s Pre-k Program.”</span> <em>The Journal of Human Resources</em> 40 (3): 533–58. <a href="https://www.jstor.org/stable/4129551">https://www.jstor.org/stable/4129551</a>.
+</div>
 <div id="ref-holland1986" class="csl-entry" role="listitem">
 Holland, Paul W. 1986. <span>“Statistics and Causal Inference.”</span> <em>Journal of the American Statistical Association</em> 81 (396): 945–60. <a href="https://doi.org/10.2307/2289064">https://doi.org/10.2307/2289064</a>.
 </div>
 <div id="ref-morgan2014" class="csl-entry" role="listitem">
 Morgan, Stephen L., and Christopher Winship. 2014. <em>Counterfactuals and Causal Inference: Methods and Principles for Social Research</em>. 2nd ed. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9781107587991">https://doi.org/10.1017/CBO9781107587991</a>.
 </div>
-<div id="ref-neal" class="csl-entry" role="listitem">
-Neal, Brady. n.d. <span>“Introduction to Causal Inference.”</span>
+<div id="ref-neal2020" class="csl-entry" role="listitem">
+Neal, Brady. 2020. <span>“Introduction to Causal Inference,”</span> December.
+</div>
+<div id="ref-remler2015" class="csl-entry" role="listitem">
+Remler, Dahlia K., and Gregg G. Van Ryzin. 2015. <em>Research Methods in Practice: Strategies for Description and Causation</em>. Second edition. Los Angeles: SAGE.
 </div>
 <div id="ref-rubin1974" class="csl-entry" role="listitem">
 Rubin, Donald B. 1974. <span>“Estimating Causal Effects of Treatments in Randomized and Nonrandomized Studies.”</span> <em>Journal of Educational Psychology</em> 66 (5): 688–701. <a href="https://doi.org/10.1037/h0037350">https://doi.org/10.1037/h0037350</a>.
+</div>
+<div id="ref-stock2020" class="csl-entry" role="listitem">
+Stock, James H., and Mark W. Watson. 2020. <em>Introduction to Econometrics</em>. Fourth edition, global edition. The Pearson Series in Economics. Harlow, England London New York Boston San Francisco Toronto Sydney Dubai Singapore Hong Kong Tokyo Seoul Taipei New Delhi Cape Town Sao Paulo Mexico City Madrid Amsterdam Munich Paris Milan: Pearson.
+</div>
+<div id="ref-waldfogel1997" class="csl-entry" role="listitem">
+Waldfogel, Jane. 1997. <span>“The Effect of Children on Women’s Wages.”</span> <em>American Sociological Review</em> 62 (2): 209–17. <a href="https://doi.org/10.2307/2657300">https://doi.org/10.2307/2657300</a>.
+</div>
+<div id="ref-wooldridge2016" class="csl-entry" role="listitem">
+Wooldridge, Jeffrey M. 2016. <em>Introductory Econometrics: A Modern Approach</em>. Sixth edition, student edition. Boston, MA: Cengage Learning.
 </div>
 </div>
 </section>
@@ -587,9 +781,9 @@ Rubin, Donald B. 1974. <span>“Estimating Causal Effects of Treatments in Rando
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: '200%',
 
-        height: 700,
+        height: '200%',
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
