@@ -1,0 +1,294 @@
+---
+output: slidy_presentation
+---
+
+
+```{r setup, include=FALSE, message=F, warning=F}
+
+knitr::opts_chunk$set(echo=F, message=F, warning=F, fig.height=10, fig.width=6)
+
+setwd("C:/Users/dan.killian/Dropbox/work/MSI/Jordan/CITIES/Inception Report/exit meeting slides")
+
+library(haven)
+library(foreign)
+library(readxl)
+library(sjPlot)
+library(sjmisc)
+library(tidyverse)
+library(DescTools)
+library(psych)
+library(knitr)
+library(DiagrammeR)
+library(jpeg)
+
+options(digits=3, scipen=6)
+
+theme_set(theme_bw() + theme(panel.grid.major.y=element_blank(),
+                             panel.grid.minor.x=element_blank(),
+                             panel.grid.minor.y=element_blank(),
+                             plot.title=element_text(face="bold",size=18, hjust=.5),
+                             axis.title=element_text(size=16),
+                             axis.text=element_text(size=14)))
+```
+
+---
+
+```{r, out.width = "400px"}
+knitr::include_graphics("usaidjordan.png")
+```
+
+Introduction to general principles of impact evaluation
+
+Dan Killian, MESP Evaluation Specialist
+
+Contents:
+
+- Introduction to potential outcomes theory
+
+- Showcasing impact evaluation designs
+
+
+## We want to know the causal effect of a project on its beneficiaries
+
+Job training on earnings and employment
+
+Class size on test scores
+
+School leadership on teacher morale
+
+Teacher qualifications on student outcomes
+
+## Potential outcomes - i
+
+Consider an indicator for a potential beneficiary, Di	
+
+D tells us whether there is a project, or a "treatment"
+
+The subscript i denotes a single individual who is either treated or not treated
+
+Di = 1 means participation in a project (beneficiary)
+
+Di = 0 means no participation in a project
+
+
+## Potential outcomes - ii
+
+Consider an indicator for the outcome of a potential beneficiary, Yi
+
+Y1i is the outcome after project participation
+
+Y0i is the outcome without any project
+
+Note that Y1 and Y0 denote *possibilities* for the *same person*, unit i ! 
+
+
+## Potential outcomes - iii
+
+The effect of the project (treatment effect) on person i is the difference between the two potential outcomes
+
+Treatment effect = Y1i - Y0i 
+
+This is the difference in potential outcomes for the *same person*
+
+A person participates in a project, and then goes back in time and does not participate in the project
+
+
+## Potential outcomes - iv
+
+But how can one person be both treated and untreated?
+
+In the real world, person i experiences one of the potential outcomes, but not both
+
+If Di = 1, the potential outcome of Yi becomes Y1i in fact and the potential outcome of Y0i is unobserved
+
+If Di = 0, the potential outcome of Yi becomes Y0i in fact and the potential outcome of Y1i is unobserved
+
+
+## The fundamental problem of causal inference - i
+
+This is the fundamental problem of causal inference:
+
+We observe only one outcome, but we need both outcomes to describe the effect of the project
+
+We refer to the outcome that didn't happen as the *counterfactual*, or what would have happened in the absence of the project
+
+Researchers sometimes refer to impact evaluation as a "missing data problem", because we are missing two pieces of information about what happens with or without the treatment
+
+
+```{r}
+Group <- c("Treatment","Control")
+Y1i <- c("Observed", "Counterfactual")
+Y0i <- c("Counterfactual","Observed")
+
+t1 <- cbind(Group, Y1i, Y0i)
+kable(t1)
+```
+
+## The fundamental problem of causal inference - ii
+
+How do we estimate the effect of a project, if we cannot observe the same person go through both potential outcomes? 
+
+We must compare a person who was treated with a person who was not treated
+
+But, what are the differences between those two people? How do we know that project participation is the only difference between them? 
+
+
+## Randomization solves the selection problem
+
+If we are able to randomize from the pool of eligible participants, we have a theoretical basis for comparing these two groups
+
+Under randomization, Y1i = Y0i (theoretically!)
+
+So all we have to do is take the difference in means as the treatment effect
+
+
+## Comparing different groups
+
+If you cannot randomize treatment and control groups, there are two common sources of differences between groups that you must worry about
+
+The groups could be different at the start of the program 
+			(baseline bias)
+
+The groups might be affected differently by the project 
+			(differential effect bias)
+			
+In development programs, it is difficult to randomize treatment and control groups
+
+So the researcher must always think about how treated and untreated groups might be different
+
+Most evaluation designs are motivated by the difficulty of not having randomization 
+
+
+
+## Comparing different groups - example
+
+```{r}
+
+Group <- c("Treatment (D=1)","Comparison (D=0)")
+Baseline <- c(6,5)
+Endline <- c(10,8)
+
+ex <- cbind(Group, Baseline, Endline)
+kable(ex)
+
+```
+
+> - Baseline bias: 6 - 5 = 1
+
+> - Differential effects bias: (10-6) - (8-5) = 1
+
+
+## Is there a way to investigate whether two groups are comparable? 
+
+Examine the group means on observable characteristics
+
+If the means are standardized, differences above 0.1 are worrisome and above 0.2 are a danger
+
+```{r fig.height=6, fig.width=10}
+
+pic <- readJPEG("C:/Users/dan.killian/Dropbox/work/MSI/Jordan/CITIES/Inception Report/Archer danger zone 5.jpg", native = FALSE)
+
+Measure <- c("Weight", "Height", "Test score", "Attitude", "Knowledge")
+Measure2 <- 1:5
+StndDiff <- c(.09, .34, -.24, .31, -.13)
+StndDiff2 <- rep(0, 5)
+
+diff2 <- data.frame(Measure2, StndDiff2)
+
+ggplot(diff2, aes(x=StndDiff2, y=Measure2)) + geom_vline(xintercept=0, color="darkblue", size=1.5) + 
+  scale_x_continuous(limits=c(-.4,.4), breaks=c(-.2, -.1, 0, .1, .2)) + 
+  scale_y_continuous(limits=c(1,5), labels=Measure) +
+  xlab("Standardized difference in means") + ylab("") + 
+  annotate("text", x=.15, y=3, label="Worry \nzone", size=6) + 
+  annotate("text", x=-.15, y=3, label="Worry \nzone", size=6) + 
+  annotation_raster(pic, ymin = 1, ymax= 1.8, xmin = -.39,xmax = -.3) + 
+  annotation_raster(pic, ymin = 4, ymax= 4.8, xmin = .3,xmax = .39)
+
+```
+
+## Actual example for CITIES matched municipalities
+
+<p align="center">
+  <img src="Differences before, after (m2).png">
+  </p>
+
+
+## Inferential design across municipalities
+
+- For institional indicators and public pereptions at the population level, compare treatment municipalities with comparison municipalities over time
+
+<p align="center">
+  <img src="d-i-d 3.jpg">
+  </p>
+  
+This design is called "difference-in-differences (d-i-d)"
+
+- Why? What are the assumptions? What are the validity threats?
+
+
+## Inferential design within municipalities
+
+- For public perceptions at the activity level, compare direct beneficiaries with indirect beneficiaries within municipalities
+
+<p align="center">
+  <img src="Spillover group specification2.jpg">
+  </p>
+
+This design may be described as a d-i-d with spillover group
+
+Under this design, indicators can be examined both across and within municipalities to learn about the effect of CITIES  
+
+- How? Under what conditions / assumptions? 
+
+
+## Interrupted time series design
+
+If we have many measurements over time, then the comparison group could be the treatment group *before* treatment
+
+- There must be enough pre-treatment measures to establish a clear trend
+
+<p align="center">
+  <img src="interrupted time series no title.png">
+  </p>
+
+
+## Regression discontinuity design
+
+If we assign treatment based on a "break", we can estimate the treatment effect as the magnitude of the "jump" over the break
+
+The discontinuity can be sharp (absolute cutoff score of 50 on a test)
+
+The discontinuity can be "fuzzy" (distance from a waste treatment plant)
+
+<p align="center">
+  <img src="all deaths by age.png">
+  </p>
+
+What is being estimated here? Is it believable? 
+
+## Regression discontinuity - ii
+
+<p align="center">
+  <img src="alcohol deaths by age.png">
+  </p>
+  
+
+---
+
+<center>Thank you!
+
+MESP Team</center>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.340">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -18,72 +18,9 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -97,8 +34,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="internal_networks_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="internal_networks_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="internal_networks_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<link href="internal_networks_files/libs/tabwid-1.1.0/tabwid.css" rel="stylesheet">
-<link href="internal_networks_files/libs/tabwid-1.1.0/scrool.css" rel="stylesheet">
+<link href="internal_networks_files/libs/tabwid-1.1.3/tabwid.css" rel="stylesheet">
+<script src="internal_networks_files/libs/tabwid-1.1.3/tabwid.js"></script>
 
 
 </head>
@@ -114,18 +51,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#our-methology-and-data" id="toc-our-methology-and-data" class="nav-link" data-scroll-target="#our-methology-and-data">Our methology and data</a></li>
   <li><a href="#summary-statistics" id="toc-summary-statistics" class="nav-link" data-scroll-target="#summary-statistics">Summary Statistics</a></li>
-  <li><a href="#network-statistics" id="toc-network-statistics" class="nav-link" data-scroll-target="#network-statistics">Network statistics</a>
+  <li><a href="#networks" id="toc-networks" class="nav-link" data-scroll-target="#networks">Networks</a>
   <ul class="collapse">
-  <li><a href="#msis-mentoring-network" id="toc-msis-mentoring-network" class="nav-link" data-scroll-target="#msis-mentoring-network">MSI’s Mentoring network</a></li>
-  <li><a href="#msis-sea-technical-guidance-network" id="toc-msis-sea-technical-guidance-network" class="nav-link" data-scroll-target="#msis-sea-technical-guidance-network">MSI’s SEA Technical Guidance Network</a>
-  <ul class="collapse">
-  <li><a href="#network-statistics-1" id="toc-network-statistics-1" class="nav-link" data-scroll-target="#network-statistics-1">Network statistics</a></li>
-  </ul></li>
+  <li><a href="#network-statistics" id="toc-network-statistics" class="nav-link" data-scroll-target="#network-statistics">Network statistics</a></li>
   </ul></li>
   </ul>
 </nav>
 </div>
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -150,9 +83,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<div class="cell">
-
-</div>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>At the January 9, 2023 all company Monday meeting, Melanie Murphy presented on the Advanced Analytics and Data Science team. At the end of her presentation, we requested those interested in engaging with this team to fill out a small survey about their analytics background and where they work within the company. The final two questions, however, asked about respondents’ engagement with colleagues. They were:</p>
@@ -160,244 +90,78 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Who within MSI are you able to turn to for mentorship/career guidance?</li>
 <li>Who within MSI do you turn to most often to discuss or get help on technical questions?</li>
 </ul>
-<p>The responses to these questions are the topic at hand in this post. First, we will look at the different statistical and software skills, and then we will analyze the informal networks that have developed within MSI, one for mentoring and the other for specific technical questions. We will then compare these with the official organizational structure.</p>
+<p>The responses to these questions are the topic at hand in this post. First, we will look at the different statistical and software skills, and then we will analyze the informal networks that have developed within MSI, one for mentoring and the other for specific technical questions. To help us make sense of the network statistics, we will simulate similar networks to help us understand the statistics in context. We will then compare these with the official organizational structure.</p>
 </section>
 <section id="our-methology-and-data" class="level1">
 <h1>Our methology and data</h1>
-<p>The data come from a voluntary, virtual survey that was distributed during a company meeting. The response rate was low so the Advanced Analytics team identified additional staff at the home office and on field teams to take the survey to give us a better picture of analytics at MSI. All names have been anonymized.</p>
-<p>Let’s start by looking at some summary statistics.</p>
+<p>The data come from a voluntary, virtual survey that was distributed during a company meeting. The response rate was low so the Advanced Analytics team identified additional staff at the home office and on field teams to take the survey to give us a better picture of analytics at MSI. All names were anonymized.</p>
+<p>Let’s start by looking at which analytical softwares are used most frequently by MSI staff.</p>
 </section>
 <section id="summary-statistics" class="level1">
 <h1>Summary Statistics</h1>
-<div class="cell">
-
-</div>
 <p>We received 47 responses to the survey with 23 responses from home office staff and 24 responses from field office staff representing projects in Iraq, Nigeria, Jordan, and Zambia.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#identifying the analytic softwares used at MSI</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#find the individual softwares</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>softwares <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">c</span>(<span class="st">"R"</span>, <span class="st">"Stata"</span>, <span class="st">"SPSS"</span>, <span class="st">"Spss"</span>, <span class="st">"Nvivo"</span>, <span class="st">"Qualtrics"</span>, <span class="st">"MaxQDA"</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                     , <span class="st">"Python"</span>, <span class="st">"ArcGIS"</span>, <span class="st">"Excel"</span>, <span class="st">"excel"</span>, <span class="st">"SAS"</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                     , <span class="st">"EpiInfo"</span>, <span class="st">"STATA"</span>, <span class="st">"Kobo Tool Box"</span>, <span class="st">"Dedoose"</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                     , <span class="st">"SMath Studio"</span>, <span class="st">"Tableau"</span>), <span class="at">collapse =</span> <span class="st">"|"</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#create a new column that extracts the names of software used </span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#then create another column that unnests any lists</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new =</span> <span class="fu">str_extract_all</span>(software, <span class="at">pattern =</span> softwares)) <span class="sc">|&gt;</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>          <span class="fu">unnest</span>(new) </span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#clean up a few software names</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>df1<span class="sc">$</span>new <span class="ot">&lt;-</span> df1<span class="sc">$</span>new <span class="sc">|&gt;</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recode</span>(<span class="st">"STATA"</span> <span class="ot">=</span> <span class="st">"Stata"</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>         , <span class="st">"Spss"</span> <span class="ot">=</span> <span class="st">"SPSS"</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>         , <span class="st">"EXCEL"</span> <span class="ot">=</span> <span class="st">"Excel"</span>) </span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#then create a count of which software packages are used at MSI</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> df1 <span class="sc">|&gt;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(new)) <span class="sc">|&gt;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(new) <span class="sc">|&gt;</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">|&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new2 =</span> <span class="fu">case_when</span>(n <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Other"</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                          , <span class="cn">TRUE</span> <span class="sc">~</span> new)) <span class="sc">|&gt;</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">"Software"</span> <span class="ot">=</span> new2, <span class="st">"Count"</span> <span class="ot">=</span> n, <span class="sc">-</span>new) <span class="sc">|&gt;</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Count))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Adding missing grouping variables: `new`</code></pre>
 </div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df2</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>       , <span class="fu">aes</span>(<span class="fu">reorder</span>(<span class="fu">factor</span>(Software), <span class="sc">-</span>Count), Count)) <span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">color =</span> my_pal[[<span class="dv">2</span>]]) <span class="sc">+</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(df2<span class="sc">$</span>Software), <span class="at">xend =</span> <span class="fu">factor</span>(df2<span class="sc">$</span>Software) </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>               , <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> df2<span class="sc">$</span>Count)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>               , <span class="at">linewidth =</span> <span class="dv">2</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>               , <span class="at">color =</span> my_pal[[<span class="dv">2</span>]]</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>               , <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> Software, <span class="at">y =</span> Count, <span class="at">label =</span> Count)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            , <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Most used analytic software packages"</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>       , <span class="at">subtitle =</span> <span class="st">"SPSS, Stata, and R are the most commonly used."</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>       , <span class="at">y =</span> <span class="st">"Number of staff"</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>       , <span class="at">x =</span> <span class="st">"Software"</span>) <span class="sc">+</span> </span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20</span>))<span class="sc">+</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme.plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <p><img src="internal_networks_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>This includes all responses. Within this, the home office accounts for 8 Stata users, 4 SPSS users, and 9 R users.</p>
 </section>
-<section id="network-statistics" class="level1">
-<h1>Network statistics</h1>
-<p>Next, let’s look at the networks. We collected data for two networks – one related to mentoring and another related to technical guidance. To understand the networks we have to identify the people and their connections. In network analysis these are called, nodes and edges, respectively. To better understand how this works let’s look at an example of a dataframe that shows the ties and one that shows the nodes.</p>
-<div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: Edges and nodes</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Network data"</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-subcap:</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "Nodes"</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "Edges"</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-colwidths: [20,20]</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## example available at https://igraph.org/r/doc/graph_from_data_frame.html</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">## A simple example with a couple of actors</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">## The typical case is that these tables are read in from files....</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>actors <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name=</span><span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Cecil"</span>, <span class="st">"David"</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"Esmeralda"</span>),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">age=</span><span class="fu">c</span>(<span class="dv">48</span>,<span class="dv">33</span>,<span class="dv">45</span>,<span class="dv">34</span>,<span class="dv">21</span>),</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                     <span class="at">gender=</span><span class="fu">c</span>(<span class="st">"F"</span>,<span class="st">"M"</span>,<span class="st">"F"</span>,<span class="st">"M"</span>,<span class="st">"F"</span>))</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>relations <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">from=</span><span class="fu">c</span>(<span class="st">"Bob"</span>, <span class="st">"Cecil"</span>, <span class="st">"Cecil"</span>, <span class="st">"David"</span>,</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"David"</span>, <span class="st">"Esmeralda"</span>),</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                        <span class="at">to=</span><span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Alice"</span>, <span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Alice"</span>),</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                        <span class="at">same.dept=</span><span class="fu">c</span>(<span class="cn">FALSE</span>,<span class="cn">FALSE</span>,<span class="cn">TRUE</span>,<span class="cn">FALSE</span>,<span class="cn">FALSE</span>,<span class="cn">TRUE</span>),</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                        <span class="at">friendship=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">advice=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="fu">flextable</span>(actors) <span class="sc">|&gt;</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_header_labels</span>(<span class="at">values =</span> <span class="fu">list</span>(</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="fu">flextable</span>(relations) <span class="sc">|&gt;</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_header_labels</span>(<span class="at">values=</span><span class="fu">list</span>(</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div id="tbl-anonymous-3964724" class="cell tbl-parent quarto-layout-panel anchored">
-<div class="panel-caption table-caption">
-<p>Network data</p>
-</div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div id="tbl-anonymous-3964724-1" class="quarto-layout-cell quarto-layout-cell-subref anchored" data-ref-parent="tbl-anonymous-3964724" style="flex-basis: 50.0%;justify-content: center;">
-
-<div class="tabwid"><style>.cl-4aa5ebc0{}.cl-4a9ea4dc{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4aa16e6a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4aa16e74{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-4aa17fae{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4aa17fb8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4aa17fb9{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4aa17fba{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4aa17fc2{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4aa17fc3{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class="cl-4aa5ebc0"><caption>Nodes </caption><thead><tr style="overflow-wrap:break-word;"><td class="cl-4aafee36"><p class="cl-4aafdebe"><span class="cl-4aad7548">from</span></p></td><td class="cl-4aafee36"><p class="cl-4aafdebe"><span class="cl-4aad7548">to</span></p></td><td class="cl-4aafee40"><p class="cl-4aafdec8"><span class="cl-4aad7548">same.dept</span></p></td><td class="cl-4aafee40"><p class="cl-4aafdec8"><span class="cl-4aad7548">friendship</span></p></td><td class="cl-4aafee40"><p class="cl-4aafdec8"><span class="cl-4aad7548">advice</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-4aafee41"><p class="cl-4aafdebe"><span class="cl-4aad7548">Bob</span></p></td><td class="cl-4aafee41"><p class="cl-4aafdebe"><span class="cl-4aad7548">Alice</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">FALSE</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">4</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">4</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4aafee41"><p class="cl-4aafdebe"><span class="cl-4aad7548">Cecil</span></p></td><td class="cl-4aafee41"><p class="cl-4aafdebe"><span class="cl-4aad7548">Bob</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">FALSE</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">5</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">5</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4aafee41"><p class="cl-4aafdebe"><span class="cl-4aad7548">Cecil</span></p></td><td class="cl-4aafee41"><p class="cl-4aafdebe"><span class="cl-4aad7548">Alice</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">TRUE</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">5</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">5</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4aafee41"><p class="cl-4aafdebe"><span class="cl-4aad7548">David</span></p></td><td class="cl-4aafee41"><p class="cl-4aafdebe"><span class="cl-4aad7548">Alice</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">FALSE</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">2</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">4</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4aafee41"><p class="cl-4aafdebe"><span class="cl-4aad7548">David</span></p></td><td class="cl-4aafee41"><p class="cl-4aafdebe"><span class="cl-4aad7548">Bob</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">FALSE</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">1</span></p></td><td class="cl-4aafee42"><p class="cl-4aafdec8"><span class="cl-4aad7548">2</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4aafee4a"><p class="cl-4aafdebe"><span class="cl-4aad7548">Esmeralda</span></p></td><td class="cl-4aafee4a"><p class="cl-4aafdebe"><span class="cl-4aad7548">Alice</span></p></td><td class="cl-4aafee4b"><p class="cl-4aafdec8"><span class="cl-4aad7548">TRUE</span></p></td><td class="cl-4aafee4b"><p class="cl-4aafdec8"><span class="cl-4aad7548">1</span></p></td><td class="cl-4aafee4b"><p class="cl-4aafdec8"><span class="cl-4aad7548">3</span></p></td></tr></tbody></table></div>
-</div>
-</div>
-</div>
-</div>
-<p>On the left, are the nodes. Each one name is one person in the network. The ties, or connections, between them is displayed in the table on the right. Bob is connected to Alice, and you can see that Cecil is connected to both Bob and Alice. David is connected to both Alice and Bob.</p>
-<p>These two dataframes can be merged into a graph object, and they can be visualized as a network as in the below.</p>
+<section id="networks" class="level1 page-columns page-full">
+<h1>Networks</h1>
+<p>Next, let’s look at the networks. We collected data for two networks – one related to mentoring and another related to technical guidance, and then we decided to filter the data so that we only included survey SEA staff To understand the networks we have to identify the people and their connections. In network analysis these are called, nodes and edges, respectively. To better understand how this works let’s look at an example of a dataframe that shows the ties and one that shows the nodes.</p>
+<p>Within the SEA practice area we have 18 nodes in our mentorship network consisting of 23 edges. In the technical guidance network we have 19 nodes and 32 edges.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph_from_data_frame</span>(relations, <span class="at">directed=</span><span class="cn">TRUE</span>, <span class="at">vertices=</span>actors)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(g, <span class="st">"with_kk"</span>) <span class="sc">+</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> gender)<span class="co">#color = my_pal[[2]]</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                  , <span class="at">size =</span> <span class="dv">8</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                  , <span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="fu">aes</span>(<span class="at">color =</span> same.dept</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                     , <span class="at">alpha =</span> friendship))<span class="sc">+</span><span class="co">#color = my_pal[[2]]</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                 <span class="co">#, alpha = .3) +</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name)) <span class="sc">+</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Office network"</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>       , <span class="at">subtitle =</span> <span class="st">"Friendships cross departments, but not all staff have friends in the other department"</span>)<span class="sc">+</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme.graph</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using the `size` aesthetic in this geom was deprecated in ggplot2 3.4.0.
-ℹ Please use `linewidth` in the `default_aes` field and elsewhere instead.</code></pre>
-</div>
 <div class="cell-output-display">
 <p><img src="internal_networks_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
+<div class="cell-output-display">
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="672"></p>
 </div>
-<p>In the graph we see a few points communicated, including the ties, sex, how strong a friendship is between ties, and whether or not the nodes (people) are in the same department. We now see that Esmeralda has no friendships in the other office. We could also say that she has the smallest neighborhood – the smallest number of first order, or direct, connections.</p>
-<section id="msis-mentoring-network" class="level2">
-<h2 class="anchored" data-anchor-id="msis-mentoring-network">MSI’s Mentoring network</h2>
+</div>
+<div class="cell column-screen-inset-shaded quarto-layout-panel" title="Dan, I wanted the above graphs to spread out like this">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<section id="network-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="network-statistics">Network statistics</h3>
+<p>How do these statistics compare with what we would expect from similar networks? We can run some simulations to find out. To do this, we set up network parameters with the same number of nodes and the same density, and then we simulate 1000 networks. We do this with both the mentorship network and the technical guidance network.</p>
+<section id="what-statistics-are-we-going-to-look-at-and-why" class="level4">
+<h4 class="anchored" data-anchor-id="what-statistics-are-we-going-to-look-at-and-why">What statistics are we going to look at and why?</h4>
+<p>We will look at a series of centrality statistics to give us a sense of how easily or not information travels through a network.</p>
+<p><strong>Density:</strong></p>
+<p><strong>Distance:</strong></p>
+<p><strong>Transitivity:</strong></p>
+<p><strong>Betweenness:</strong></p>
+<p><strong>Eigenvector:</strong></p>
 <div class="cell">
+<div class="cell-output-display">
 
+<div class="tabwid"><style>.cl-94604928{}.cl-9458cc34{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-9458cc3e{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-9458cc3f{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:italic;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-945b7790{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-945b87da{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-945b87e4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-945b87e5{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-94604928"><thead><tr style="overflow-wrap:break-word;"><th class="cl-945b87da"><p class="cl-945b7790"><span class="cl-9458cc34">Network</span></p></th><th class="cl-945b87da"><p class="cl-945b7790"><span class="cl-9458cc34">Avg. Density</span></p></th><th class="cl-945b87da"><p class="cl-945b7790"><span class="cl-9458cc34">Avg. Distance</span></p></th><th class="cl-945b87da"><p class="cl-945b7790"><span class="cl-9458cc34">Avg. Transitivity</span></p></th><th class="cl-945b87da"><p class="cl-945b7790"><span class="cl-9458cc34">Avg. Betweenness</span></p></th><th class="cl-945b87da"><p class="cl-945b7790"><span class="cl-9458cc34">Avg. Eigenvector</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">Mentorship</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">0.15</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">2.69</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">0.15</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">14.39</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">0.33</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3f">Simulated Mentorship</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3f">0.15</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3f">2.67</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3f">0.14</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3f">11.97</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3f">0.44</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">Tech Guidance</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">0.19</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">2.65</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">0.35</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">14.84</span></p></td><td class="cl-945b87e4"><p class="cl-945b7790"><span class="cl-9458cc3e">0.34</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-945b87e5"><p class="cl-945b7790"><span class="cl-9458cc3f">Simulated Tech Guidance</span></p></td><td class="cl-945b87e5"><p class="cl-945b7790"><span class="cl-9458cc3f">0.19</span></p></td><td class="cl-945b87e5"><p class="cl-945b7790"><span class="cl-9458cc3f">2.36</span></p></td><td class="cl-945b87e5"><p class="cl-945b7790"><span class="cl-9458cc3f">0.17</span></p></td><td class="cl-945b87e5"><p class="cl-945b7790"><span class="cl-9458cc3f">11.58</span></p></td><td class="cl-945b87e5"><p class="cl-945b7790"><span class="cl-9458cc3f">0.50</span></p></td></tr></tbody></table></div>
 </div>
-<p>Within the SEA practice area we had 18 nodes in our network consisting of 23 edges.</p>
+</div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="internal_networks_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section>
-<section id="msis-sea-technical-guidance-network" class="level2">
-<h2 class="anchored" data-anchor-id="msis-sea-technical-guidance-network">MSI’s SEA Technical Guidance Network</h2>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "No one right now"               "Dan Killian"                   
- [3] " Melanie Murphy"                " Tim Reilly"                   
- [5] "Melanie Murphy"                 " Brian Calhoon"                
- [7] "Dan"                            " David"                        
- [9] " Tim S."                        "Jennifer Gerst"                
-[11] " Tim Shifflett"                 " Gaelle Simon"                 
-[13] "Betsy Bury"                     " David Hinkle"                 
-[15] "Andrew Dicello"                 " Ali Hayat"                    
-[17] "Gaelle Simon"                   " Jennifer Gerst"               
-[19] " Thomaz Alvares de Azevedo Lau" " Carolyn Fonseca"              
-[21] "Thomaz Alvares de Azevedo Lau"  "Ali Hayat"                     
-[23] " Peter Mayers"                 </code></pre>
-</div>
-</div>
-<p>Within the SEA practice area we had 19 nodes in our network consisting of 32 edges.</p>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-charts</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align="center"</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width=6</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height=4</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(df_graph_tech, <span class="at">layout =</span> <span class="st">"with_kk"</span>) <span class="sc">+</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">color =</span> my_pal[[<span class="dv">10</span>]]</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                 , <span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="at">color =</span> my_pal[[<span class="dv">10</span>]]</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                  , <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Technical advice network among data enthusiasts at MSI"</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>       , <span class="at">subtitle =</span> <span class="st">"tech-tech-tech-ni-cal"</span>) <span class="sc">+</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme.graph</span>() <span class="sc">+</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
-<p><img src="internal_networks_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="internal_networks_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<section id="network-statistics-1" class="level3">
-<h3 class="anchored" data-anchor-id="network-statistics-1">Network statistics</h3>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Repeat for tech side</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#techs &lt;- graph_from_data_frame(tech_edges)</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#add degree</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#techs$degree &lt;- degree(techs)</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#add edge_betweenness</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#techs$edge_betweenness &lt;- edge_betweenness(techs)</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#add neighborhood size (i.e. size of neighborhood within 2 edges of a node)</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#techs$degree2 &lt;- neighborhood.size(techs, 2)</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#tech_graph &lt;- ggraph(techs, layout = "with_kk") +</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_edge_link(color = my_pal[[10]]</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>           <span class="co">#      , alpha = .3) +</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_node_point(color = my_pal[[10]]</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>            <span class="co">#      , size = 4) +</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_node_text(aes(label = name)) +</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">#labs(title = "Technical advice network among data enthusiasts at MSI"</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>   <span class="co">#    , subtitle = "Larger nodes have more immediate neighbors and darker \nedges have greater betweenness") +</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme.graph() +</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme(legend.position = "none")</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#tech_graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>We</p>
 </section>
 </section>
 </section>
@@ -431,9 +195,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -498,6 +276,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

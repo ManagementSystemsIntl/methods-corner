@@ -1,0 +1,353 @@
+---
+title: MSI Statistical Training Series
+subtitle: Expectation Maximization (EM)
+date: April 2023
+toc: true
+toc-depth: 3
+number-sections: false
+format:
+  html:
+    code-fold: false
+    page-layout: full
+editor: visual
+reference-location: margin
+bibliography: references.bib
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+
+base_packages <- c("tidyverse", "easystats", "corrplot","DescTools","estimatr","extrafont","janitor",
+                   "reshape2", "haven", "broom","HH","Hmisc","plotrix","scales","sysfonts","foreign","car",
+                   "ICC","openxlsx","readr","readxl","sjmisc","sjPlot","flextable", "sjstats","sjlabelled","skimr",
+                   "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi", "kableExtra")
+
+lapply(base_packages, library, character.only=T)
+rm(base_packages)
+
+viz_packages <- c("patchwork","gganimate","ggstatsplot","ggthemes","ggrepel","ggpubr","cowplot","ggdist","ggtext",
+                  "geomtextpath","ggfortify", "ggridges", "gghighlight")
+lapply(viz_packages, library, character.only=T)
+rm(viz_packages)
+
+library(poLCA)
+
+options(digits=3, scipen=9)
+
+# set default
+base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                           panel.grid.minor.y=element_blank(),
+                           plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+                           plot.subtitle = element_text(size=16, family="Source Sans Pro"),
+                           plot.caption=element_text(size=12, family="Source Sans Pro"),
+                           axis.title=element_text(size=16, family="Source Sans Pro"),
+                           axis.text=element_text(size=14, family="Source Sans Pro"),
+                           legend.text=element_text(size=14, family="Source Sans Pro"),
+                           strip.text=element_text(size=14, family="Source Sans Pro"),
+                           panel.border=element_blank(),
+                           axis.ticks = element_blank())
+
+theme_set(base)
+rm(base)
+
+faceted <- theme_bw() +
+  theme(panel.grid.minor.x=element_blank(),
+        panel.grid.minor.y=element_blank(),
+        plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+        plot.subtitle = element_text(size=16, family="Source Sans Pro"),
+        plot.caption=element_text(size=12, family="Source Sans Pro"),
+        axis.title=element_text(size=16, family="Source Sans Pro"),
+        axis.text=element_text(size=14, family="Source Sans Pro"),
+        legend.text=element_text(size=14, family="Source Sans Pro"),
+        strip.text=element_text(size=14, family="Source Sans Pro"))
+
+# facet_style <- function(){theme_bw() +
+#     theme(panel.grid.minor.x=element_blank(),
+#           panel.grid.minor.y=element_blank(),
+#           plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+#           plot.subtitle = element_text(size=16, family="Source Sans Pro"),
+#           plot.caption=element_text(size=12, family="Source Sans Pro"),
+#           axis.title=element_text(size=16, family="Source Sans Pro"),
+#           axis.text=element_text(size=14, family="Source Sans Pro"),
+#           legend.text=element_text(size=14, family="Source Sans Pro"),
+#           strip.text=element_text(size=14, family="Source Sans Pro"))
+# }
+
+col <- viridis(4)
+
+```
+
+
+## Background
+
+The MSI Statistical Training Series offers tutorials on a range of topics that are commonly applied in data analysis. The objective is to i) refresh readers on the derivation and application of methods from a first statistics course, ii) provide the underlying theory that goes beyond an introductory statistics course, iii) introduce readers to new methods that would not be covered in an introductory statistics course, and iv) provide practical, hands-on coding examples to enable users of statistical analysis software to gain proficiency in coding skills not just to run statistical procedures, but also to derive statistical procedures through the underlying theory.
+
+Exploration of each topic should include the underlying theory, a demonstration using toy or fake data, and a real-world application in data that MSI has generated for a client deliverable.
+
+## Introduction
+
+The Expectation Maximization (EM) algorithm is a popular approach to maximum likelihood estimation with missing data. The seminal reference is [@dempster1977], which is among the most often cited article in the field of statistics.
+
+The EM algorithm applies to problems of missing data, which has applications beyond the most direct use case of missing data imputation. For example, one may suspect that there is hidden structure in the data. We may have data on an outcome Y which shows a bimodal distribution. We may suspect that this bimodal shape represents the missing data of sex - or in this case a missing variable, or label, that designates which sex the outcome observation belongs to. Or, we may have a set of covariate values for an outcome, and there are particular patterns in the values of these covariates that suggests the presence of a hidden, or latent, variable. This leads to the use of EM for the purposes of identifiying these missing or latent variables, with one approach being that of Latent Class Analysis (LCA).
+
+## Underlying theory
+
+The EM algorithm comprises two steps. First, we compute the expected value of the missing data, given the values of the observed data and 'current' parameter values.[^1] For a latent class model, we compute $P(X=c|y_1, …, y_j)$ using the current parameter estimates. We then re-estimate the model probabilities $P(X=c)$ and $P(y_j|X=c)$ treating class membership as if it were observed and using the $P(X=c|y_1, ..., y_j)$ as weights.
+
+[^1]: 'Current' only denoting that we first start off with a guess of parameter values, then subsequently use the updated parameter values generated from the previous iteration of the EM algorithm.
+
+### Theory demonstration
+
+Consider a survey asking respondents about their attitude towards the limits of tolerance of anti-religious sentiment.[^2] The questions ask whether anti-religionists should be allowed to speak (y1), whether anti-religionists should be allowed to teach (y2), and whether anti-religious books ought to be allowed in public libraries (y3). For each item, 1 indicates agreement (allowed to speak, allowed to teach, allowed to keep books in library) and interpreted as high tolerance for anti-religious sentiment, and 2 indicates disagreement and interpreted as low tolerance for anti-religious sentiment.
+
+[^2]: This data comes from the 1987 General Social Science (GSS) survey. See the [gssr](https://kjhealy.github.io/gssr/index.html "gssr package for all GSS years") package for data on all years.
+
+
+```{r}
+
+d <- read_csv("gss87 antirel.csv")
+flextable(d[1:5,])
+
+```
+
+```{r}
+
+#| output: asis
+
+tab_stackfrq(d[,1:3],
+             digits=1)
+```
+
+
+A slight majority of respondents agreed with items one and three, while item two was about evenly split. Perhaps there are two broad groups of respondents, those who are typically tolerant of anti-religious sentiment, and those who are not.
+
+We are interested in using the patterns of responses on the y1, y2, y3 variables to identify these two broad classes of respondents, so we created a new variable that captures their pattern across each respondent. We can then tabulate the frequencies of these patterns.
+
+
+```{r}
+
+freqs <- data.frame(frq(d$cum)) %>%
+  .[1:8, c(2,4,5)] %>%
+  mutate(perc=round(raw.prc/100,3)) %>%
+  dplyr::select(-raw.prc)
+
+flextable(freqs)
+
+```
+
+
+We suspect the pattern of responses of each of the three indicator variables arise due to the existence of two components, or latent variables, in the data. We will call this latent variable X, which can take on values of component 1 (X=1) or component 2 (X=2). We will refer to the observed indicator variables as $y_1, y_2, .., y_n$.
+
+We want to use the observed frequencies of the response patterns to infer the existence of the components X. To do that, we posit a data-generating process, a model of $P(y_1, y_2, y_3)$ described in the table above. There are two key assumptions of this model:
+
+1.  The observed frequencies of the pattern of responses $y_1, y_2, y_3$ is the result of a mixture of two separate components, each with their own distribution. If this were true, then the observed frequency could be expressed as
+
+    $$
+    P(y_1, y_2, y_3)=P(X=1)P(y_1, y_2, y_3|X=1) + P(X=2)P(y_1, y_2, y_3|X=2)
+    $$ {#eq-ass1}
+
+    Note that the probabilities of the indicator variables for each component[^3], as well as the share of each component in the sample[^4] , are not observed - they are the parameters of the model.
+
+2.  Within each component, responses are independent (*local independence*). Within each component, knowing $y_1$ offers no information about $y_2$. If this is true, then the probability of observing a given pattern of responses is simply the product of their probabilities.
+
+    $$
+    P(y_1,y_2,y_3|X=1)=P(y_1|X=1)P(y_2|X=1)P(y_3|X=1)
+    $$ {#eq-ass2}
+
+    Again note that the notation above refers not to observed probabilities, but the parameter probabilities of the model.
+
+[^3]: $P(y_i|X=c)$
+
+[^4]: $P(X=c)$
+
+The above model assumptions identify two sets of parameters that will generate our observed information. The first set of parameters is the proportion of the sample belonging to each component. This is $P(X=1,2)$ from model assumption (1) above. Second, we need the proportion of each indicator variable (the y1, y2, y3) within each assigned component. This is $P(Y1=1|X=1,2), P(Y2=1|X=1,2), P(Y3=1|X=1,2)$. Knowing these parameter values allows us to generate the joint probability of the pattern of responses in the indicator variables described in model assumption (2).
+
+We will start by arbitrarily setting initial values for these parameters, and then use these values to estimate the probabilities that each observation belongs to each component.[^5] Let's start off by saying that components 1 and 2 are evenly apportioned in the sample, and that the probabilities of an observation being 1 for each of the indicator variables is 60 percent.
+
+[^5]: In other instructional content, you will often see the application of a clustering algorithm to estimate the probabilities of class membership for each observation. These class probabilities then start of the EM algorithm.
+
+
+```{r}
+
+p_x <- c(.5,.5)
+p_x1 <- .5
+p_x2 <- .5
+
+y1_x1 <- .6
+y2_x1 <- .6
+y3_x1 <- .6
+
+y1_x2 <- .4
+y2_x2 <- .4
+y3_x2 <- .4
+
+params1 <- data.frame(probs=c("P(X)","P(y1=1|X)","P(y2=1|X)", "P(y3=1|X)"),
+                     X1=c(.5,.6,.6,.6),
+                     X2=c(.5,.4,.4,.4))
+
+flextable(params1) %>%
+  set_header_labels(X1="X=1",
+                    X2="X=2")
+
+```
+
+
+We now use the initial indicator parameters to estimate a probability of observing a given response pattern $P(y_1, y_2, y_3|X=x)$, where the $y_1, y_2, y_3$ are the observed patterns of responses in the sample, and the Xs are the current parameter estimates of the probability of each indicator variable for each component. If you're trying to follow along, here are the observed indicator response pattern frequencies and initial parameter estimates.
+
+
+```{r results="hold"}
+
+freqs %>%
+  kable("html", align = 'clc', caption = 'Observed pattern of responses') %>%
+    kable_styling(full_width = F, position = "float_left")
+
+params1 %>%
+  kable("html", align = 'clc', caption = 'Initial parameter values') %>%
+    kable_styling(full_width = F, position = "float_right")
+
+```
+
+
+The most common response pattern is 1-1-1, which occurred in 41 percent of respondents.
+
+Given our initial model parameters that each indicator value has a 60 percent probability of belonging to component 1 and a 40 percent probability of belonging to component 2, then we would expect to see a pattern of 1-1-1 $.6*.6*.6$ = `r .6^3*100`% of the time in component 1, and $.4*.4*.4$ = `r .4^3*100`% of the time in component 2.
+
+Probability of response patterns, if they belonged to component 1.
+
+
+```{r}
+
+x1_111 <- y1_x1*y2_x1*y3_x1 
+# probability of 1-1-1 belonging to component 1
+x1_112 <- y1_x1*y1_x1*(1-y3_x1)
+# probability of 1-1-2 belonging to component 1
+x1_121 <- y1_x1*(1-y2_x1)*y3_x1
+# probability of 1-2-1 belonging to component 1
+x1_122 <- y1_x1*(1-y2_x1)*(1-y3_x1)
+x1_211 <- (1-y1_x1)*y2_x1*y3_x1
+x1_212 <- (1-y1_x1)*y2_x1*(1-y3_x1)
+x1_221 <- (1-y1_x1)*(1-y2_x1)*(y3_x1)
+x1_222 <- (1-y1_x1)*(1-y2_x1)*(1-y3_x1)
+
+jointy_x1 <- c(x1_111, x1_112, x1_121, x1_122, x1_211, x1_212, x1_221, x1_222)
+
+```
+
+
+Probability of response patterns, if they belonged to component 2.
+
+
+```{r}
+
+x2_111 <- y1_x2*y2_x2*y3_x2 
+# probability of 1-1-1 belonging to component 1
+x2_112 <- y1_x2*y1_x2*(1-y3_x2)
+# probability of 1-1-2 belonging to component 1
+x2_121 <- y1_x2*(1-y2_x2)*y3_x2
+# probability of 1-2-1 belonging to component 1
+x2_122 <- y1_x2*(1-y2_x2)*(1-y3_x2)
+x2_211 <- (1-y1_x2)*y2_x2*y3_x2
+x2_212 <- (1-y1_x2)*y2_x2*(1-y3_x2)
+x2_221 <- (1-y1_x2)*(1-y2_x2)*(y3_x2)
+x2_222 <- (1-y1_x2)*(1-y2_x2)*(1-y3_x2)
+
+jointy_x2 <- c(x2_111, x2_112, x2_121, x2_122, x2_211, x2_212, x2_221, x2_222)
+
+# joint_y <- data.frame(pattern=freqs$val,
+#                       frq=freqs$frq,
+#                       perc=freqs$perc,
+#                       iteration=1,
+#                       joint_x1=jointy_x1, 
+#                       joint_x2=jointy_x2)
+# 
+# flextable(joint_y)
+
+freqs1 <- freqs %>%
+  mutate(iteration=1,
+         joint_x1=jointy_x1,
+         joint_x2=jointy_x2)
+
+flextable(freqs1)
+
+```
+
+
+For each indicator selection pattern, we multiply the posited model probabilities together to get the joint probability of observing that pattern, if the posited parameter values were true. We do that for each posited component.
+
+::: callout-note
+Let's demo a callout. Something happens in my callout when I put a word in `quotes`.
+:::
+
+We then invoke @eq-ass1[^6] to estimate the observed frequency of the response pattern as the sum of two mixtures.
+
+[^6]: $$
+    P(y_1, y_2, y_3)=P(X=1)P(y_1, y_2, y_3|X=1) + P(X=2)P(y_1, y_2, y_3|X=2)
+    $$
+
+
+```{r}
+
+freqs1 <- freqs1 %>%
+  mutate(joint_y=joint_x1*p_x1 + joint_x2*p_x2)
+
+flextable(freqs1)
+
+```
+
+
+If the parameter estimates are true, then the generated joint probability of the indicator variables (joint_y) should match the observed joint probabilities of the indicator variables (perc). After this first iteration, they are not close.
+
+The steps we have taken so far have given us the predicted joint probability of observing a pattern of indicator variables, if the posited parameter values are true. This may be expressed as $P(y|X=c)$. Recall from the introduction of the EM algorithm is that what we are seeking to estimate, the E step, is $P(X=c|y)$. This would be an assignation of a probability of belonging to each component *c*, given the observed response pattern of the indicator variables.
+
+We can apply Bayes Theorem to recover our desired quantity.
+
+$$
+P(X=c|y_1, .., y_j)=\frac{P(X=c)P(y_1, .., y_j|X=c)}{P(y_1, .., y_j)}
+$$
+
+
+```{r}
+#| column: margin
+#| echo: false
+
+flextable(params1)
+```
+
+```{r}
+
+freqs1 <- freqs1 %>%
+  mutate(x1_y=(p_x1*joint_x1)/joint_y,
+         x2_y=(p_x2*joint_x2)/joint_y)
+
+flextable(freqs1)
+```
+
+
+Using the values of our initial parameter estimates, we have generated estimates of the probability of the respondent belonging to a given component, given their response pattern on the indicator variables. We can now use these estimated probabilities to estimate the number of respondents we expect to belong to each component.
+
+
+```{r}
+
+freqs1 <- freqs1 %>%
+  mutate(frq_x1=x1_y*frq,
+         frq_x2=x2_y*frq)
+
+flextable(freqs1)
+
+```
+
+
+Now that we have the predicted frequencies of cases exhibiting a particular response pattern for each component, we will use these probabilities to predict overall frequency counts of the parameters. 
+
+
+
+
+
+
+
+
+
+
+

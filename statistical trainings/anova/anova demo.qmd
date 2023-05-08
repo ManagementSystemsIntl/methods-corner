@@ -79,7 +79,35 @@ The MSI Statistical Training Series offers tutorials on a range of topics that a
 
 Exploration of each topic should include the underlying theory, a demonstration using toy or fake data, and a real-world application in data that MSI has generated for a client deliverable.
 
-## Analysis of Variance (ANOVA)
+## Introduction
+
+We use the F-distribution, which is constructed from the ratio of two chi-square statistics, to generate the probability of observing the data under the assumption that the null hypothesis is true. A high ratio of between variance to within variance will generate a high F-statistic, which will generate a low p-value.
+
+Introductory statistics texts provide a summary table to generate the F-statistic.
+
+```{r}
+
+# create anova table
+
+aov_ex <- data.frame(errors=c("Between","Within","Total"),
+                      squares=c("SSB","SSW","SST"),
+                      df=c("g-1","N-g","N-1"),
+                      mn_sq = c("SSB/DFB", "SSW/DFW", ""),
+                      F=c("MSB/MSW","","")) %>%
+  flextable() %>%
+  set_header_labels(values=list(
+    errors="Error type",
+    squares="Designation",
+    df="Degrees of Freedom",
+    mn_sq="Mean square"
+  )) %>%
+  autofit()
+
+aov_ex
+
+```
+
+## Underlying theory
 
 The analysis of variance theorem derives from the properties of conditional expectations -- see [@wooldridge2010], pages 31-32 for a proof. The ANOVA theorem states that
 
@@ -111,31 +139,7 @@ $$
 
 The key here is the variance term. If the sub-group means differ, their means will have a variance around the grand mean. If this 'between' variance of the sub-group means around the grand mean is large relative to the 'within' variance of group observations around the group mean (which by assumption would just be $\sigma^2$ for each sub-group), then we have evidence that the group means do in fact differ from the grand mean.
 
-We use the F-distribution, which is constructed from the ratio of two chi-square statistics, to generate the probability of observing the data under the assumption that the null hypothesis is true. A high ratio of between variance to within variance will generate a high F-statistic, which will generate a low p-value.
 
-Introductory statistics texts provide a summary table to generate the F-statistic.
-
-```{r}
-
-# create anova table
-
-aov_ex <- data.frame(errors=c("Between","Within","Total"),
-                      squares=c("SSB","SSW","SST"),
-                      df=c("g-1","N-g","N-1"),
-                      mn_sq = c("SSB/DFB", "SSW/DFW", ""),
-                      F=c("MSB/MSW","","")) %>%
-  flextable() %>%
-  set_header_labels(values=list(
-    errors="Error type",
-    squares="Designation",
-    df="Degrees of Freedom",
-    mn_sq="Mean square"
-  )) %>%
-  autofit()
-
-aov_ex
-
-```
 
 We will now demonstrate the use of the ANOVA theorem to test for the equality of sub-groups, using constructed data.
 
@@ -252,6 +256,89 @@ SSW=\sum_{i=1}^g(n_i-1)s_i^2
 $$
 
 This also matches the intuition that, under the null of equal variances, the variation of a sub-group observation around its sub-group mean is no different than the variation of any observation around the grand mean.
+
+Let's try to illustrate the different type of variation graphically.
+
+```{r}
+
+set.seed(422)
+
+grp_a <- sample(1:4, 4, T)
+grp_a
+
+grp_b <- sample(5:8, 4, T)
+grp_b
+
+grp_c <- sample(9:12, 4, T)
+grp_c
+
+d <- data.frame(id=1:12,
+                Group=rep(letters[1:3], each=4),
+                y=c(grp_a, grp_b, grp_c)) %>%
+  arrange(y) 
+
+d
+
+describe(d)
+
+grnd_mn <- mean(d$y)
+
+mns <- d %>%
+  group_by(Group) %>%
+  summarise(grp_mn=mean(y))
+
+mns
+
+mns2 <- unlist(mns$grp_mn)
+mns2
+
+mns[1,2]
+
+cols <- viridis(3)
+
+ggplot(d, aes(id, y, group=Group, color=Group, shape=Group)) + 
+  geom_hline(yintercept=grnd_mn, color="grey60", linewidth=2, alpha=.4) +
+  geom_point(size=3, alpha=.8) +
+#  scale_color_viridis_d() +
+  scale_color_manual(values=cols) +
+  scale_x_continuous(breaks=1:15) +
+  scale_y_continuous(breaks=1:30) +
+  geom_segment(aes(x=1, xend=4, y=mns2[1], yend=mns2[1]), 
+               color=cols[1],
+               size=1,
+               alpha=.4) +
+  geom_segment(aes(x=5, xend=8, y=mns2[2], yend=mns2[2]), 
+               color=cols[2],
+               size=1,
+               alpha=.4) +
+  geom_segment(aes(x=9, xend=12, y=mns2[3], yend=mns2[3]), 
+               color=cols[3],
+               size=1,
+               alpha=.4) +
+  geom_segment(aes(x=3, xend=3, y=mns2[1]+.1, yend=grnd_mn),
+               color=cols[1], linewidth=.7, linetype="dotted", alpha=.5) +
+  geom_segment(aes(x=8, xend=8, y=7.8, yend=mns2[2]),
+               color=cols[2], linewidth=.7, linetype="dotted", alpha=.5) +
+#  geom_segment(aes(x=5, xend=5, y=5.2, yend=grnd_mn),
+#               color=col[2], size=1, linetype="dotted", alpha=.5) +
+  geom_segment(aes(x=11, xend=11, y=11.8, yend=grnd_mn),
+               color=cols[3], linewidth=.7, linetype="dotted", alpha=.5) +
+  annotate("segment", x=5, xend=3.3, y=4.2, yend=4.7, color=cols[1], size=.8, arrow=arrow(), alpha=.5) +
+  annotate("text", x=5.6, y=3.8, label="Between\nvariation\n(SSB)", size=3.4, color=cols[1]) +
+  annotate("segment", x=9.6, xend=8.2, y=5.7, yend=7.2, color=cols[2], size=.8, arrow=arrow(), alpha=.5) +
+  annotate("text", x=9.75, y=4.7, label="Within\nvariation\n(SSW)", size=3.4, color=cols[2]) +
+#  geom_label(aes(x=5.8, y=4.1, label="Between\nvariation\n(SSB)"), 
+#             color=cols[1])
+  annotate("segment", x=8, xend=10.8, y=11.2, yend=11.2, color=cols[3], size=.8, arrow=arrow(), alpha=.5) +
+  annotate("text", x=7.2, y=11.2, label="Total\nvariation\n(SST)", size=3.4, color=cols[3]) +
+  theme(legend.position="bottom",
+        legend.title=element_blank()) +
+  labs(x="",
+       y="",
+       title="Types of variation",
+       caption="Variation summarized as\nsums of squared deviations")
+
+```
 
 We can see the squared deviations explicitly by constructing new variables in our data set.
 

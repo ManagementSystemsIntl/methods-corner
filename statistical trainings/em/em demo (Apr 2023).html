@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-04-01">
+
+<title>MSI Statistical Training Series</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="em demo (Apr 2023)_files/libs/clipboard/clipboard.min.js"></script>
+<script src="em demo (Apr 2023)_files/libs/quarto-html/quarto.js"></script>
+<script src="em demo (Apr 2023)_files/libs/quarto-html/popper.min.js"></script>
+<script src="em demo (Apr 2023)_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="em demo (Apr 2023)_files/libs/quarto-html/anchor.min.js"></script>
+<link href="em demo (Apr 2023)_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="em demo (Apr 2023)_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="em demo (Apr 2023)_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="em demo (Apr 2023)_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="em demo (Apr 2023)_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-full">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#underlying-theory" id="toc-underlying-theory" class="nav-link" data-scroll-target="#underlying-theory">Underlying theory</a>
+  <ul class="collapse">
+  <li><a href="#theory-demonstration" id="toc-theory-demonstration" class="nav-link" data-scroll-target="#theory-demonstration">Theory demonstration</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">MSI Statistical Training Series</h1>
+<p class="subtitle lead">Expectation Maximization (EM)</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 1, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>The MSI Statistical Training Series offers tutorials on a range of topics that are commonly applied in data analysis. The objective is to i) refresh readers on the derivation and application of methods from a first statistics course, ii) provide the underlying theory that goes beyond an introductory statistics course, iii) introduce readers to new methods that would not be covered in an introductory statistics course, and iv) provide practical, hands-on coding examples to enable users of statistical analysis software to gain proficiency in coding skills not just to run statistical procedures, but also to derive statistical procedures through the underlying theory.</p>
+<p>Exploration of each topic should include the underlying theory, a demonstration using toy or fake data, and a real-world application in data that MSI has generated for a client deliverable.</p>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The Expectation Maximization (EM) algorithm is a popular approach to maximum likelihood estimation with missing data. The seminal reference is <span class="citation" data-cites="dempster1977">(<a href="#ref-dempster1977" role="doc-biblioref">Dempster, Laird, and Rubin 1977</a>)</span>, which is among the most often cited article in the field of statistics.</p>
+<p>The EM algorithm applies to problems of missing data, which has applications beyond the most direct use case of missing data imputation. For example, one may suspect that there is hidden structure in the data. We may have data on an outcome Y which shows a bimodal distribution. We may suspect that this bimodal shape represents the missing data of sex - or in this case a missing variable, or label, that designates which sex the outcome observation belongs to. Or, we may have a set of covariate values for an outcome, and there are particular patterns in the values of these covariates that suggests the presence of a hidden, or latent, variable. This leads to the use of EM for the purposes of identifiying these missing or latent variables, with one approach being that of Latent Class Analysis (LCA).</p>
+</section>
+<section id="underlying-theory" class="level2">
+<h2 class="anchored" data-anchor-id="underlying-theory">Underlying theory</h2>
+<p>The EM algorithm comprises two steps. First, we compute the expected value of the missing data, given the values of the observed data and ‘current’ parameter values.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> For a latent class model, we compute <span class="math inline">\(P(X=c|y_1, …, y_j)\)</span> using the current parameter estimates. We then re-estimate the model probabilities <span class="math inline">\(P(X=c)\)</span> and <span class="math inline">\(P(y_j|X=c)\)</span> treating class membership as if it were observed and using the <span class="math inline">\(P(X=c|y_1, ..., y_j)\)</span> as weights.</p>
+<section id="theory-demonstration" class="level3">
+<h3 class="anchored" data-anchor-id="theory-demonstration">Theory demonstration</h3>
+<p>Consider a survey asking respondents about their attitude towards the limits of tolerance of anti-religious sentiment.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The questions ask whether anti-religionists should be allowed to speak (y1), whether anti-religionists should be allowed to teach (y2), and whether anti-religious books ought to be allowed in public libraries (y3). For each item, 1 indicates agreement (allowed to speak, allowed to teach, allowed to keep books in library) and interpreted as high tolerance for anti-religious sentiment, and 2 indicates disagreement and interpreted as low tolerance for anti-religious sentiment.</p>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-1_0b41fc3d70b5e908a8fbad6314e2af38">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"gss87 antirel.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">flextable</span>(d[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-cae18210{}.cl-cada4b80{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-cadd2346{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cadd2350{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cadd37be{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cadd37c8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cadd37c9{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cadd37d2{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cadd37dc{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cadd37dd{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-cae18210"><thead><tr style="overflow-wrap:break-word;"><th class="cl-cadd37be"><p class="cl-cadd2346"><span class="cl-cada4b80">y1</span></p></th><th class="cl-cadd37be"><p class="cl-cadd2346"><span class="cl-cada4b80">y2</span></p></th><th class="cl-cadd37be"><p class="cl-cadd2346"><span class="cl-cada4b80">y3</span></p></th><th class="cl-cadd37c8"><p class="cl-cadd2350"><span class="cl-cada4b80">cum</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37d2"><p class="cl-cadd2350"><span class="cl-cada4b80">1-1-1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37d2"><p class="cl-cadd2350"><span class="cl-cada4b80">1-1-1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">2</span></p></td><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">2</span></p></td><td class="cl-cadd37d2"><p class="cl-cadd2350"><span class="cl-cada4b80">1-2-2</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37c9"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37d2"><p class="cl-cadd2350"><span class="cl-cada4b80">1-1-1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cadd37dc"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37dc"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37dc"><p class="cl-cadd2346"><span class="cl-cada4b80">1</span></p></td><td class="cl-cadd37dd"><p class="cl-cadd2350"><span class="cl-cada4b80">1-1-1</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-2_c7eb3a8e7b1cca51710286394a7986b8">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: asis</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tab_stackfrq</span>(d[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>],</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">digits=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table style="border-collapse:collapse; border:none; border-bottom:double black;">
+<tbody><tr>
+<th style="border-top:double black; border-bottom:1px solid black; padding:0.2cm;">&nbsp;</th>
+<th style="border-top:double black; border-bottom:1px solid black; padding:0.2cm;">1</th>
+<th style="border-top:double black; border-bottom:1px solid black; padding:0.2cm;">2</th>
+</tr>
+<tr>
+<td style="font-style:italic;">y1</td>
+<td style="padding:0.2cm; text-align:center;">68.2&nbsp;%</td>
+<td style="padding:0.2cm; text-align:center;">31.8&nbsp;%</td>
+</tr>
+<tr>
+<td style="font-style:italic;">y2</td>
+<td style="padding:0.2cm; text-align:center;">47.7&nbsp;%</td>
+<td style="padding:0.2cm; text-align:center;">52.3&nbsp;%</td>
+</tr>
+<tr>
+<td style="font-style:italic;">y3</td>
+<td style="padding:0.2cm; text-align:center;">66.0&nbsp;%</td>
+<td style="padding:0.2cm; text-align:center;">34.0&nbsp;%</td>
+</tr>
+ 
+</tbody></table>
+</div>
+</div>
+<p>A slight majority of respondents agreed with items one and three, while item two was about evenly split. Perhaps there are two broad groups of respondents, those who are typically tolerant of anti-religious sentiment, and those who are not.</p>
+<p>We are interested in using the patterns of responses on the y1, y2, y3 variables to identify these two broad classes of respondents, so we created a new variable that captures their pattern across each respondent. We can then tabulate the frequencies of these patterns.</p>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-3_39aff4f3b09c3fcdc3cbc0da8857119b">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: collapse</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>freqs <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">frq</span>(d<span class="sc">$</span>cum)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  .[<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">5</span>)] <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">perc=</span><span class="fu">round</span>(raw.prc<span class="sc">/</span><span class="dv">100</span>,<span class="dv">3</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>raw.prc)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">flextable</span>(freqs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-77e0a796{}.cl-77d99992{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-77dc6eec{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-77dc6ef6{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-77dc81d4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-77dc81de{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-77dc81e8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-77dc81e9{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-77dc81ea{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-77dc81f2{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-77e0a796"><thead><tr style="overflow-wrap:break-word;"><th class="cl-77dc81d4"><p class="cl-77dc6eec"><span class="cl-77d99992">val</span></p></th><th class="cl-77dc81de"><p class="cl-77dc6ef6"><span class="cl-77d99992">frq</span></p></th><th class="cl-77dc81de"><p class="cl-77dc6ef6"><span class="cl-77d99992">perc</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-77dc81e8"><p class="cl-77dc6eec"><span class="cl-77d99992">1-1-1</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">696</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">0.406</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-77dc81e8"><p class="cl-77dc6eec"><span class="cl-77d99992">1-1-2</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">68</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">0.040</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-77dc81e8"><p class="cl-77dc6eec"><span class="cl-77d99992">1-2-1</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">275</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">0.160</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-77dc81e8"><p class="cl-77dc6eec"><span class="cl-77d99992">1-2-2</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">130</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">0.076</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-77dc81e8"><p class="cl-77dc6eec"><span class="cl-77d99992">2-1-1</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">34</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">0.020</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-77dc81e8"><p class="cl-77dc6eec"><span class="cl-77d99992">2-1-2</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">19</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">0.011</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-77dc81e8"><p class="cl-77dc6eec"><span class="cl-77d99992">2-2-1</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">125</span></p></td><td class="cl-77dc81e9"><p class="cl-77dc6ef6"><span class="cl-77d99992">0.073</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-77dc81ea"><p class="cl-77dc6eec"><span class="cl-77d99992">2-2-2</span></p></td><td class="cl-77dc81f2"><p class="cl-77dc6ef6"><span class="cl-77d99992">366</span></p></td><td class="cl-77dc81f2"><p class="cl-77dc6ef6"><span class="cl-77d99992">0.214</span></p></td></tr></tbody></table></div>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: margin</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">plot</span>(<span class="fu">flextable</span>(freqs))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="em-demo--Apr-2023-_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="576"></p>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>a</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We suspect there are two patterns in how respondents answer the three survey items, and that these patterns arise due to the existence of two components, or latent variables, in the data. We will call this latent variable X, which can take on values of component 1 (X=1) or component 2 (X=2). We will refer to the observed indicator variables as <span class="math inline">\(y_1, y_2, .., y_n\)</span>.</p>
+<p>We want to use the observed frequencies of the response patterns to infer the existence of the components X. To do that, we posit a data-generating process, a model of <span class="math inline">\(P(y_1, y_2, y_3)\)</span> described in the table above. There are two key assumptions of this model:</p>
+<ol type="1">
+<li><p>The observed frequencies of the pattern of responses <span class="math inline">\(y_1, y_2, y_3\)</span> is the result of a mixture of two separate components, each with their own distribution.</p>
+<p><span id="eq-ass1"><span class="math display">\[
+P(y_1, y_2, y_3)=P(X=1)P(y_1, y_2, y_3|X=1) + P(X=2)P(y_1, y_2, y_3|X=2)
+\tag{1}\]</span></span></p>
+<p>Note that the probabilities of the indicator variables and of each component are not observed - they are the parameters of the model.</p></li>
+<li><p>Within each component, responses are independent (<em>local independence</em>). Within each component, knowing <span class="math inline">\(y_1\)</span> offers no information about <span class="math inline">\(y_2\)</span>. If this is true, then the probability of observing a given pattern of responses is simply the product of their probabilities.</p>
+<p><span class="math display">\[
+P(y_1,y_2,y_3|X=1)=P(y_1|X=1)P(y_2|X=1)P(y_3|X=1)
+\]</span></p>
+<p>Again note that the notation above refers not to observed probabilities, but the parameter probabilities of the model.</p></li>
+</ol>
+<p>The above model assumptions identify two sets of parameters that will generate our observed information. The first set of parameters is the proportion of the sample belonging to each component. This is <span class="math inline">\(P(X=1,2)\)</span> from model assumption (1) above. Second, we need the proportion of each indicator variable (the y1, y2, y3) within each assigned component. This is <span class="math inline">\(P(Y1=1|X=1,2), P(Y2=1|X=1,2), P(Y3=1|X=1,2)\)</span>. Knowing these parameter values allows us to generate the joint probability of the pattern of responses in the indicator variables described in model assumption (2).</p>
+<p>We will start by arbitrarily setting initial values for these parameters, and then use these values to estimate the probabilities that each observation belongs to each component.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Let’s start off by saying that components 1 and 2 are evenly apportioned in the sample, and that the probabilities of an observation being 1 for each of the indicator variables is 60 percent.</p>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-4_7cd5b5940a1166c0ed145dc75ed706a4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>p_x <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">5</span>,.<span class="dv">5</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>p_x1 <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>p_x2 <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>y1_x1 <span class="ot">&lt;-</span> .<span class="dv">6</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>y2_x1 <span class="ot">&lt;-</span> .<span class="dv">6</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>y3_x1 <span class="ot">&lt;-</span> .<span class="dv">6</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>y1_x2 <span class="ot">&lt;-</span> .<span class="dv">4</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>y2_x2 <span class="ot">&lt;-</span> .<span class="dv">4</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>y3_x2 <span class="ot">&lt;-</span> .<span class="dv">4</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">probs=</span><span class="fu">c</span>(<span class="st">"P(X)"</span>,<span class="st">"P(y1=1|X)"</span>,<span class="st">"P(y2=1|X)"</span>, <span class="st">"P(y3=1|X)"</span>),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">X1=</span><span class="fu">c</span>(.<span class="dv">5</span>,.<span class="dv">6</span>,.<span class="dv">6</span>,.<span class="dv">6</span>),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                     <span class="at">X2=</span><span class="fu">c</span>(.<span class="dv">5</span>,.<span class="dv">4</span>,.<span class="dv">4</span>,.<span class="dv">4</span>))</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="fu">flextable</span>(params) <span class="sc">%&gt;%</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_header_labels</span>(<span class="at">X1=</span><span class="st">"X=1"</span>,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>                    <span class="at">X2=</span><span class="st">"X=2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-cbe0fe52{}.cl-cbd9436a{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-cbdc59c4{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cbdc59ce{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-cbdc6ad6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cbdc6ad7{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cbdc6ae0{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cbdc6ae1{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cbdc6ae2{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-cbdc6aea{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-cbe0fe52"><thead><tr style="overflow-wrap:break-word;"><th class="cl-cbdc6ad6"><p class="cl-cbdc59c4"><span class="cl-cbd9436a">probs</span></p></th><th class="cl-cbdc6ad7"><p class="cl-cbdc59ce"><span class="cl-cbd9436a">X=1</span></p></th><th class="cl-cbdc6ad7"><p class="cl-cbdc59ce"><span class="cl-cbd9436a">X=2</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-cbdc6ae0"><p class="cl-cbdc59c4"><span class="cl-cbd9436a">P(X)</span></p></td><td class="cl-cbdc6ae1"><p class="cl-cbdc59ce"><span class="cl-cbd9436a">0.5</span></p></td><td class="cl-cbdc6ae1"><p class="cl-cbdc59ce"><span class="cl-cbd9436a">0.5</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cbdc6ae0"><p class="cl-cbdc59c4"><span class="cl-cbd9436a">P(y1=1|X)</span></p></td><td class="cl-cbdc6ae1"><p class="cl-cbdc59ce"><span class="cl-cbd9436a">0.6</span></p></td><td class="cl-cbdc6ae1"><p class="cl-cbdc59ce"><span class="cl-cbd9436a">0.4</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cbdc6ae0"><p class="cl-cbdc59c4"><span class="cl-cbd9436a">P(y2=1|X)</span></p></td><td class="cl-cbdc6ae1"><p class="cl-cbdc59ce"><span class="cl-cbd9436a">0.6</span></p></td><td class="cl-cbdc6ae1"><p class="cl-cbdc59ce"><span class="cl-cbd9436a">0.4</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-cbdc6ae2"><p class="cl-cbdc59c4"><span class="cl-cbd9436a">P(y3=1|X)</span></p></td><td class="cl-cbdc6aea"><p class="cl-cbdc59ce"><span class="cl-cbd9436a">0.6</span></p></td><td class="cl-cbdc6aea"><p class="cl-cbdc59ce"><span class="cl-cbd9436a">0.4</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-5_90d13d7943809e1c632e61c16b09177e">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gr_params <span class="ot">&lt;-</span> <span class="fu">gen_grob</span>(<span class="fu">flextable</span>(params), </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">fit=</span><span class="st">"fixed"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">just=</span><span class="st">"center"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>gr_params_dims <span class="ot">&lt;-</span> <span class="fu">dim</span>(gr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in eval(expr, envir, enclos): object 'gr' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>svglite<span class="sc">::</span><span class="fu">svglite</span>(<span class="st">"params.png"</span>, </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">width=</span>gr_dims<span class="sc">$</span>width<span class="fl">+.1</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">height=</span>gr_dims<span class="sc">$</span>height<span class="fl">+.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in svglite_(filename, bg, width, height, pointsize, standalone, : object 'gr_dims' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">agg_png</span>(<span class="st">"params.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in agg_png("params.png"): could not find function "agg_png"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in plot(gr): object 'gr' not found</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>gr_freqs <span class="ot">&lt;-</span> <span class="fu">gen_grob</span>(<span class="fu">flextable</span>(freqs),</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fit=</span><span class="st">"fixed"</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">just=</span><span class="st">"center"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-6_95e5b8ecd6e9a67e9c4431b509098cff">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">plot</span>(<span class="fu">flextable</span>(freqs))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="em-demo--Apr-2023-_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="576"></p>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">plot</span>(<span class="fu">flextable</span>(params))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="em-demo--Apr-2023-_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="576"></p>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>a <span class="sc">+</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>integer(0)</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-7_6858317edc1ef843b7fe876bd004977a">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gr_params) <span class="sc">+</span> <span class="fu">plot</span>(gr_freqs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="em-demo--Apr-2023-_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="576"></p>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in plot(gr_params) + plot(gr_freqs): non-numeric argument to binary operator</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="em-demo--Apr-2023-_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>We now apply the initial indicator parameters to the observed data, to get a joint probability of the pattern of all three responses and either component. This is <span class="math inline">\(P(y_1, y_2, y_3|X=x)\)</span>, where the <span class="math inline">\(y_1, y_2, y_3\)</span> are the observed patterns of responses in the sample, and the Xs are the current parameter estimates of the probability of each indicator variable for each component.</p>
+<p>Probability of response patterns, if they belonged to component 1.</p>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-8_925dfdfc53b1d681191725c543e38fd5">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#|layout-ncol: 2</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>freqs <span class="sc">%&gt;%</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"html"</span>, <span class="at">align =</span> <span class="st">'clc'</span>, <span class="at">caption =</span> <span class="st">'Observed pattern of responses'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">"float_left"</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>params <span class="sc">%&gt;%</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"html"</span>, <span class="at">align =</span> <span class="st">'clc'</span>, <span class="at">caption =</span> <span class="st">'Initial parameter values'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable_styling</span>(<span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">"float_right"</span>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>x1_111 <span class="ot">&lt;-</span> y1_x1<span class="sc">*</span>y2_x1<span class="sc">*</span>y3_x1 </span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of 1-1-1 belonging to component 1</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>x1_112 <span class="ot">&lt;-</span> y1_x1<span class="sc">*</span>y1_x1<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y3_x1)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of 1-1-2 belonging to component 1</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>x1_121 <span class="ot">&lt;-</span> y1_x1<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y2_x1)<span class="sc">*</span>y3_x1</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of 1-2-1 belonging to component 1</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>x1_122 <span class="ot">&lt;-</span> y1_x1<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y2_x1)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y3_x1)</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>x1_211 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>y1_x1)<span class="sc">*</span>y2_x1<span class="sc">*</span>y3_x1</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>x1_212 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>y1_x1)<span class="sc">*</span>y2_x1<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y3_x1)</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>x1_221 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>y1_x1)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y2_x1)<span class="sc">*</span>(y3_x1)</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>x1_222 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>y1_x1)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y2_x1)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y3_x1)</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>jointy_x1 <span class="ot">&lt;-</span> <span class="fu">c</span>(x1_111, x1_112, x1_121, x1_122, x1_211, x1_212, x1_221, x1_222)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table class="table" style="width: auto !important; float: left; margin-right: 10px;">
+<caption>Observed pattern of responses</caption>
+ <thead>
+  <tr>
+   <th style="text-align:center;"> val </th>
+   <th style="text-align:left;"> frq </th>
+   <th style="text-align:center;"> perc </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:center;"> 1-1-1 </td>
+   <td style="text-align:left;"> 696 </td>
+   <td style="text-align:center;"> 0.406 </td>
+  </tr>
+  <tr>
+   <td style="text-align:center;"> 1-1-2 </td>
+   <td style="text-align:left;"> 68 </td>
+   <td style="text-align:center;"> 0.040 </td>
+  </tr>
+  <tr>
+   <td style="text-align:center;"> 1-2-1 </td>
+   <td style="text-align:left;"> 275 </td>
+   <td style="text-align:center;"> 0.160 </td>
+  </tr>
+  <tr>
+   <td style="text-align:center;"> 1-2-2 </td>
+   <td style="text-align:left;"> 130 </td>
+   <td style="text-align:center;"> 0.076 </td>
+  </tr>
+  <tr>
+   <td style="text-align:center;"> 2-1-1 </td>
+   <td style="text-align:left;"> 34 </td>
+   <td style="text-align:center;"> 0.020 </td>
+  </tr>
+  <tr>
+   <td style="text-align:center;"> 2-1-2 </td>
+   <td style="text-align:left;"> 19 </td>
+   <td style="text-align:center;"> 0.011 </td>
+  </tr>
+  <tr>
+   <td style="text-align:center;"> 2-2-1 </td>
+   <td style="text-align:left;"> 125 </td>
+   <td style="text-align:center;"> 0.073 </td>
+  </tr>
+  <tr>
+   <td style="text-align:center;"> 2-2-2 </td>
+   <td style="text-align:left;"> 366 </td>
+   <td style="text-align:center;"> 0.214 </td>
+  </tr>
+</tbody>
+</table>
+
+<table class="table" style="width: auto !important; float: right; margin-left: 10px;">
+<caption>Initial parameter values</caption>
+ <thead>
+  <tr>
+   <th style="text-align:center;"> probs </th>
+   <th style="text-align:left;"> X1 </th>
+   <th style="text-align:center;"> X2 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:center;"> P(X) </td>
+   <td style="text-align:left;"> 0.5 </td>
+   <td style="text-align:center;"> 0.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:center;"> P(y1=1|X) </td>
+   <td style="text-align:left;"> 0.6 </td>
+   <td style="text-align:center;"> 0.4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:center;"> P(y2=1|X) </td>
+   <td style="text-align:left;"> 0.6 </td>
+   <td style="text-align:center;"> 0.4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:center;"> P(y3=1|X) </td>
+   <td style="text-align:left;"> 0.6 </td>
+   <td style="text-align:center;"> 0.4 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>Probability of response patterns, if they belonged to component 2.</p>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-9_88eb6bb27da5b0ee56be92c2b4bf4126">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>x2_111 <span class="ot">&lt;-</span> y1_x2<span class="sc">*</span>y2_x2<span class="sc">*</span>y3_x2 </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of 1-1-1 belonging to component 1</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>x2_112 <span class="ot">&lt;-</span> y1_x2<span class="sc">*</span>y1_x2<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y3_x2)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of 1-1-2 belonging to component 1</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>x2_121 <span class="ot">&lt;-</span> y1_x2<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y2_x2)<span class="sc">*</span>y3_x2</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># probability of 1-2-1 belonging to component 1</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>x2_122 <span class="ot">&lt;-</span> y1_x2<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y2_x2)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y3_x2)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>x2_211 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>y1_x2)<span class="sc">*</span>y2_x2<span class="sc">*</span>y3_x2</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>x2_212 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>y1_x2)<span class="sc">*</span>y2_x2<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y3_x2)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>x2_221 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>y1_x2)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y2_x2)<span class="sc">*</span>(y3_x2)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>x2_222 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>y1_x2)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y2_x2)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>y3_x2)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>jointy_x2 <span class="ot">&lt;-</span> <span class="fu">c</span>(x2_111, x2_112, x2_121, x2_122, x2_211, x2_212, x2_221, x2_222)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>joint_y <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">pattern=</span>freqs<span class="sc">$</span>val,</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>                      <span class="at">frq=</span>freqs<span class="sc">$</span>frq,</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>                      <span class="at">perc=</span>freqs<span class="sc">$</span>perc,</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>                      <span class="at">iteration=</span><span class="dv">1</span>,</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>                      <span class="at">joint_x1=</span>jointy_x1, </span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>                      <span class="at">joint_x2=</span>jointy_x2)</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="fu">flextable</span>(joint_y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-8b3095f4{}.cl-8b28d4ea{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8b2c046c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8b2c0476{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8b2c19c0{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b2c19ca{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b2c19d4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b2c19d5{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b2c19d6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8b2c19de{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-8b3095f4"><thead><tr style="overflow-wrap:break-word;"><th class="cl-8b2c19c0"><p class="cl-8b2c046c"><span class="cl-8b28d4ea">pattern</span></p></th><th class="cl-8b2c19ca"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">frq</span></p></th><th class="cl-8b2c19ca"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">perc</span></p></th><th class="cl-8b2c19ca"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">iteration</span></p></th><th class="cl-8b2c19ca"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">joint_x1</span></p></th><th class="cl-8b2c19ca"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">joint_x2</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-8b2c19d4"><p class="cl-8b2c046c"><span class="cl-8b28d4ea">1-1-1</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">696</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.406</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">1</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.216</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.064</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-8b2c19d4"><p class="cl-8b2c046c"><span class="cl-8b28d4ea">1-1-2</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">68</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.040</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">1</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.144</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.096</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-8b2c19d4"><p class="cl-8b2c046c"><span class="cl-8b28d4ea">1-2-1</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">275</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.160</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">1</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.144</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.096</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-8b2c19d4"><p class="cl-8b2c046c"><span class="cl-8b28d4ea">1-2-2</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">130</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.076</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">1</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.096</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.144</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-8b2c19d4"><p class="cl-8b2c046c"><span class="cl-8b28d4ea">2-1-1</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">34</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.020</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">1</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.144</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.096</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-8b2c19d4"><p class="cl-8b2c046c"><span class="cl-8b28d4ea">2-1-2</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">19</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.011</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">1</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.096</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.144</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-8b2c19d4"><p class="cl-8b2c046c"><span class="cl-8b28d4ea">2-2-1</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">125</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.073</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">1</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.096</span></p></td><td class="cl-8b2c19d5"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.144</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-8b2c19d6"><p class="cl-8b2c046c"><span class="cl-8b28d4ea">2-2-2</span></p></td><td class="cl-8b2c19de"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">366</span></p></td><td class="cl-8b2c19de"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.214</span></p></td><td class="cl-8b2c19de"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">1</span></p></td><td class="cl-8b2c19de"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.064</span></p></td><td class="cl-8b2c19de"><p class="cl-8b2c0476"><span class="cl-8b28d4ea">0.216</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<p>For each indicator selection pattern, we multiply the posited model probabilities together to get the joint probability of observing that pattern, if the posited parameter values were true. We do that for each posited component.</p>
+<p>We then invoke model assumption (1) to estimate the observed frequency of the response pattern as the sum of two mixtures.@eq-ass1</p>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-10_40ff57f70632ffca6fdc75a3d917cb83">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>joint_y <span class="ot">&lt;-</span> joint_y <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">joint_y=</span>joint_x1<span class="sc">*</span>p_x1 <span class="sc">+</span> joint_x2<span class="sc">*</span>p_x2)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">flextable</span>(joint_y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-0dec55fe{}.cl-0de4c348{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-0de7bb7a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-0de7bb84{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-0de7cc46{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0de7cc47{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0de7cc50{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0de7cc51{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0de7cc52{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0de7cc5a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-0dec55fe"><thead><tr style="overflow-wrap:break-word;"><th class="cl-0de7cc46"><p class="cl-0de7bb7a"><span class="cl-0de4c348">pattern</span></p></th><th class="cl-0de7cc47"><p class="cl-0de7bb84"><span class="cl-0de4c348">frq</span></p></th><th class="cl-0de7cc47"><p class="cl-0de7bb84"><span class="cl-0de4c348">perc</span></p></th><th class="cl-0de7cc47"><p class="cl-0de7bb84"><span class="cl-0de4c348">iteration</span></p></th><th class="cl-0de7cc47"><p class="cl-0de7bb84"><span class="cl-0de4c348">joint_x1</span></p></th><th class="cl-0de7cc47"><p class="cl-0de7bb84"><span class="cl-0de4c348">joint_x2</span></p></th><th class="cl-0de7cc47"><p class="cl-0de7bb84"><span class="cl-0de4c348">joint_y</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-0de7cc50"><p class="cl-0de7bb7a"><span class="cl-0de4c348">1-1-1</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">696</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.406</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">1</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.216</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.064</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.14</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0de7cc50"><p class="cl-0de7bb7a"><span class="cl-0de4c348">1-1-2</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">68</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.040</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">1</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.144</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.096</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.12</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0de7cc50"><p class="cl-0de7bb7a"><span class="cl-0de4c348">1-2-1</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">275</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.160</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">1</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.144</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.096</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.12</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0de7cc50"><p class="cl-0de7bb7a"><span class="cl-0de4c348">1-2-2</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">130</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.076</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">1</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.096</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.144</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.12</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0de7cc50"><p class="cl-0de7bb7a"><span class="cl-0de4c348">2-1-1</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">34</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.020</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">1</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.144</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.096</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.12</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0de7cc50"><p class="cl-0de7bb7a"><span class="cl-0de4c348">2-1-2</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">19</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.011</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">1</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.096</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.144</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.12</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0de7cc50"><p class="cl-0de7bb7a"><span class="cl-0de4c348">2-2-1</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">125</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.073</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">1</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.096</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.144</span></p></td><td class="cl-0de7cc51"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.12</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0de7cc52"><p class="cl-0de7bb7a"><span class="cl-0de4c348">2-2-2</span></p></td><td class="cl-0de7cc5a"><p class="cl-0de7bb84"><span class="cl-0de4c348">366</span></p></td><td class="cl-0de7cc5a"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.214</span></p></td><td class="cl-0de7cc5a"><p class="cl-0de7bb84"><span class="cl-0de4c348">1</span></p></td><td class="cl-0de7cc5a"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.064</span></p></td><td class="cl-0de7cc5a"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.216</span></p></td><td class="cl-0de7cc5a"><p class="cl-0de7bb84"><span class="cl-0de4c348">0.14</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<p>If the parameter estimates are true, then the generated joint probability of the indicator variables (joint_y) should match the observed joint probabilities of the indicator variables (perc). After this first iteration, they are not close.</p>
+<p>The steps we have taken so far have given us the predicted joint probability of observing a pattern of indicator variables, if the posited parameter values are true. This may be expressed as <span class="math inline">\(P(y|X=c)\)</span>. Recall from the introduction of the EM algorithm is that what we are seeking to estimate, the E step, is <span class="math inline">\(P(X=c|y)\)</span>. This would be an assignation of a probability of belonging to each component <em>c</em>, given the observed response pattern of the indicator variables.</p>
+<p>We can apply Bayes Theorem to recover our desired quantity.</p>
+<p><span class="math display">\[
+P(X=c|y_1, .., y_j)=\frac{P(X=c)P(y_1, .., y_j|X=c)}{P(y_1, .., y_j)}
+\]</span></p>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-11_5de320a98995b713c9652b0520efe72d">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>joint_y <span class="ot">&lt;-</span> joint_y <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x1_y=</span>(p_x1<span class="sc">*</span>joint_x1)<span class="sc">/</span>joint_y,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">x2_y=</span>(p_x2<span class="sc">*</span>joint_x2)<span class="sc">/</span>joint_y)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">flextable</span>(params)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-0e0caf02{}.cl-0e04adac{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-0e0790da{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-0e0790e4{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-0e07a192{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e07a193{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e07a19c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e07a19d{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e07a1a6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e07a1a7{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-0e0caf02"><thead><tr style="overflow-wrap:break-word;"><th class="cl-0e07a192"><p class="cl-0e0790da"><span class="cl-0e04adac">probs</span></p></th><th class="cl-0e07a193"><p class="cl-0e0790e4"><span class="cl-0e04adac">X1</span></p></th><th class="cl-0e07a193"><p class="cl-0e0790e4"><span class="cl-0e04adac">X2</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-0e07a19c"><p class="cl-0e0790da"><span class="cl-0e04adac">P(X)</span></p></td><td class="cl-0e07a19d"><p class="cl-0e0790e4"><span class="cl-0e04adac">0.5</span></p></td><td class="cl-0e07a19d"><p class="cl-0e0790e4"><span class="cl-0e04adac">0.5</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e07a19c"><p class="cl-0e0790da"><span class="cl-0e04adac">P(y1=1|X)</span></p></td><td class="cl-0e07a19d"><p class="cl-0e0790e4"><span class="cl-0e04adac">0.6</span></p></td><td class="cl-0e07a19d"><p class="cl-0e0790e4"><span class="cl-0e04adac">0.4</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e07a19c"><p class="cl-0e0790da"><span class="cl-0e04adac">P(y2=1|X)</span></p></td><td class="cl-0e07a19d"><p class="cl-0e0790e4"><span class="cl-0e04adac">0.6</span></p></td><td class="cl-0e07a19d"><p class="cl-0e0790e4"><span class="cl-0e04adac">0.4</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e07a1a6"><p class="cl-0e0790da"><span class="cl-0e04adac">P(y3=1|X)</span></p></td><td class="cl-0e07a1a7"><p class="cl-0e0790e4"><span class="cl-0e04adac">0.6</span></p></td><td class="cl-0e07a1a7"><p class="cl-0e0790e4"><span class="cl-0e04adac">0.4</span></p></td></tr></tbody></table></div>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">flextable</span>(joint_y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-0e227bde{}.cl-0e198e3e{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-0e1d7828{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-0e1d7832{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-0e1d9038{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e1d9042{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e1d9043{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e1d9044{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e1d904c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e1d904d{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-0e227bde"><thead><tr style="overflow-wrap:break-word;"><th class="cl-0e1d9038"><p class="cl-0e1d7828"><span class="cl-0e198e3e">pattern</span></p></th><th class="cl-0e1d9042"><p class="cl-0e1d7832"><span class="cl-0e198e3e">frq</span></p></th><th class="cl-0e1d9042"><p class="cl-0e1d7832"><span class="cl-0e198e3e">perc</span></p></th><th class="cl-0e1d9042"><p class="cl-0e1d7832"><span class="cl-0e198e3e">iteration</span></p></th><th class="cl-0e1d9042"><p class="cl-0e1d7832"><span class="cl-0e198e3e">joint_x1</span></p></th><th class="cl-0e1d9042"><p class="cl-0e1d7832"><span class="cl-0e198e3e">joint_x2</span></p></th><th class="cl-0e1d9042"><p class="cl-0e1d7832"><span class="cl-0e198e3e">joint_y</span></p></th><th class="cl-0e1d9042"><p class="cl-0e1d7832"><span class="cl-0e198e3e">x1_y</span></p></th><th class="cl-0e1d9042"><p class="cl-0e1d7832"><span class="cl-0e198e3e">x2_y</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-0e1d9043"><p class="cl-0e1d7828"><span class="cl-0e198e3e">1-1-1</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">696</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.406</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">1</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.216</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.064</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.14</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.771</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.229</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e1d9043"><p class="cl-0e1d7828"><span class="cl-0e198e3e">1-1-2</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">68</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.040</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">1</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.144</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.096</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.12</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.600</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.400</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e1d9043"><p class="cl-0e1d7828"><span class="cl-0e198e3e">1-2-1</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">275</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.160</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">1</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.144</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.096</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.12</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.600</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.400</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e1d9043"><p class="cl-0e1d7828"><span class="cl-0e198e3e">1-2-2</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">130</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.076</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">1</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.096</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.144</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.12</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.400</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.600</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e1d9043"><p class="cl-0e1d7828"><span class="cl-0e198e3e">2-1-1</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">34</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.020</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">1</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.144</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.096</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.12</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.600</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.400</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e1d9043"><p class="cl-0e1d7828"><span class="cl-0e198e3e">2-1-2</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">19</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.011</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">1</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.096</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.144</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.12</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.400</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.600</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e1d9043"><p class="cl-0e1d7828"><span class="cl-0e198e3e">2-2-1</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">125</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.073</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">1</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.096</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.144</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.12</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.400</span></p></td><td class="cl-0e1d9044"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.600</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e1d904c"><p class="cl-0e1d7828"><span class="cl-0e198e3e">2-2-2</span></p></td><td class="cl-0e1d904d"><p class="cl-0e1d7832"><span class="cl-0e198e3e">366</span></p></td><td class="cl-0e1d904d"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.214</span></p></td><td class="cl-0e1d904d"><p class="cl-0e1d7832"><span class="cl-0e198e3e">1</span></p></td><td class="cl-0e1d904d"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.064</span></p></td><td class="cl-0e1d904d"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.216</span></p></td><td class="cl-0e1d904d"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.14</span></p></td><td class="cl-0e1d904d"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.229</span></p></td><td class="cl-0e1d904d"><p class="cl-0e1d7832"><span class="cl-0e198e3e">0.771</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<p>We can use this formulation to get our estimation of the overall probability of observing the observed pattern of responses, given our values for the parameters. Recall that our initial values for the proportion of each component is 50/50. So,</p>
+<div class="cell" data-hash="em-demo--Apr-2023-_cache/html/unnamed-chunk-12_6edd33f782a0801d7d4691491e7404b6">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ov_y &lt;- data.frame(ov_p=c())</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>joint_y <span class="ot">&lt;-</span> joint_y <span class="sc">%&gt;%</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_perc =</span> joint_x1<span class="sc">*</span>p_x1 <span class="sc">+</span> joint_x2<span class="sc">*</span>p_x2,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">loglik=</span><span class="fu">log</span>(new_perc)<span class="sc">*</span>frq)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="fu">flextable</span>(joint_y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="tabwid"><style>.cl-0e4bf86a{}.cl-0e42ef72{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-0e46abda{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-0e46abe4{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-0e46c2aa{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e46c2ab{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e46c2b4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e46c2b5{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e46c2b6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-0e46c2be{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-0e4bf86a"><thead><tr style="overflow-wrap:break-word;"><th class="cl-0e46c2aa"><p class="cl-0e46abda"><span class="cl-0e42ef72">pattern</span></p></th><th class="cl-0e46c2ab"><p class="cl-0e46abe4"><span class="cl-0e42ef72">frq</span></p></th><th class="cl-0e46c2ab"><p class="cl-0e46abe4"><span class="cl-0e42ef72">perc</span></p></th><th class="cl-0e46c2ab"><p class="cl-0e46abe4"><span class="cl-0e42ef72">iteration</span></p></th><th class="cl-0e46c2ab"><p class="cl-0e46abe4"><span class="cl-0e42ef72">joint_x1</span></p></th><th class="cl-0e46c2ab"><p class="cl-0e46abe4"><span class="cl-0e42ef72">joint_x2</span></p></th><th class="cl-0e46c2ab"><p class="cl-0e46abe4"><span class="cl-0e42ef72">joint_y</span></p></th><th class="cl-0e46c2ab"><p class="cl-0e46abe4"><span class="cl-0e42ef72">x1_y</span></p></th><th class="cl-0e46c2ab"><p class="cl-0e46abe4"><span class="cl-0e42ef72">x2_y</span></p></th><th class="cl-0e46c2ab"><p class="cl-0e46abe4"><span class="cl-0e42ef72">new_perc</span></p></th><th class="cl-0e46c2ab"><p class="cl-0e46abe4"><span class="cl-0e42ef72">loglik</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-0e46c2b4"><p class="cl-0e46abda"><span class="cl-0e42ef72">1-1-1</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">696</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.406</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">1</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.216</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.064</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.14</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.771</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.229</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.14</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">-1,368.4</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e46c2b4"><p class="cl-0e46abda"><span class="cl-0e42ef72">1-1-2</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">68</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.040</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">1</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.144</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.096</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.600</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.400</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">-144.2</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e46c2b4"><p class="cl-0e46abda"><span class="cl-0e42ef72">1-2-1</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">275</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.160</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">1</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.144</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.096</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.600</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.400</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">-583.1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e46c2b4"><p class="cl-0e46abda"><span class="cl-0e42ef72">1-2-2</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">130</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.076</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">1</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.096</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.144</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.400</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.600</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">-275.6</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e46c2b4"><p class="cl-0e46abda"><span class="cl-0e42ef72">2-1-1</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">34</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.020</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">1</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.144</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.096</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.600</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.400</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">-72.1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e46c2b4"><p class="cl-0e46abda"><span class="cl-0e42ef72">2-1-2</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">19</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.011</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">1</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.096</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.144</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.400</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.600</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">-40.3</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e46c2b4"><p class="cl-0e46abda"><span class="cl-0e42ef72">2-2-1</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">125</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.073</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">1</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.096</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.144</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.400</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.600</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.12</span></p></td><td class="cl-0e46c2b5"><p class="cl-0e46abe4"><span class="cl-0e42ef72">-265.0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-0e46c2b6"><p class="cl-0e46abda"><span class="cl-0e42ef72">2-2-2</span></p></td><td class="cl-0e46c2be"><p class="cl-0e46abe4"><span class="cl-0e42ef72">366</span></p></td><td class="cl-0e46c2be"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.214</span></p></td><td class="cl-0e46c2be"><p class="cl-0e46abe4"><span class="cl-0e42ef72">1</span></p></td><td class="cl-0e46c2be"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.064</span></p></td><td class="cl-0e46c2be"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.216</span></p></td><td class="cl-0e46c2be"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.14</span></p></td><td class="cl-0e46c2be"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.229</span></p></td><td class="cl-0e46c2be"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.771</span></p></td><td class="cl-0e46c2be"><p class="cl-0e46abe4"><span class="cl-0e42ef72">0.14</span></p></td><td class="cl-0e46c2be"><p class="cl-0e46abe4"><span class="cl-0e42ef72">-719.6</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-dempster1977" class="csl-entry" role="doc-biblioentry">
+Dempster, A. P., N. M. Laird, and D. B. Rubin. 1977. <span>“Maximum Likelihood from Incomplete Data Via the EM Algorithm.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 39 (1): 1–22. <a href="https://doi.org/10.1111/j.2517-6161.1977.tb01600.x">https://doi.org/10.1111/j.2517-6161.1977.tb01600.x</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>‘Current’ only denoting that we first start off with a guess of parameter values, then subsequently use the updated parameter values generated from the previous iteration of the EM algorithm.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This data comes from the 1987 General Social Science (GSS) survey. See the <a href="https://kjhealy.github.io/gssr/index.html" title="gssr package for all GSS years">gssr</a> package for data on all years.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>In other instructional content, you will often see the application of a clustering algorithm to estimate the probabilities of class membership for each observation. These class probabilities then start of the EM algorithm.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

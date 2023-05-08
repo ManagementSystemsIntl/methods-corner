@@ -85,20 +85,24 @@ df1_nodes <- as_tibble(unique(c(df2$Name, df2$to_mentor3))) |>
 
 #Create a nodes df with all attributes
 #create the list of nodes
-df1_nodes <- as_tibble(unique(c(df1_ties$Name, df1_ties$to_mentor3)))
+df1_nodes <- unique(c(df1_ties$Name, df1_ties$to_mentor3)) |>
+  data.frame() |>
+  rename(value = 1)
 
 #join it to the attributes
 df2_nodes <- df1_nodes |>
   left_join(df2, by = c("value" = "Name"))
 
+#write in some of the data for missing people in our network
+df2_nodes$home_field <- df2_nodes$home_field |>
+  replace_na("Home office")
+
+df2_nodes$practice_area <- df2_nodes$practice_area |>
+  replace_na("SEA")
+
+
 #delete any duplicate nodes
 df2_vertices <- subset(df2_nodes, !duplicated(value)) 
-
-###create graph object
-
-df_graph_ment <- graph_from_data_frame(df1_ties
-                                       , directed = FALSE
-                                       , vertices = df2_vertices)
 
 
 
@@ -183,6 +187,14 @@ df_tech_nodes1 <- df_tech_nodes |>
 #delete any duplicate nodes
 df_tech_vertices <- subset(df_tech_nodes1, !duplicated(value)) 
 
+#replace some missing values
+df_tech_vertices$home_field <- df_tech_vertices$home_field |>
+  replace_na("Home office")
+
+df_tech_vertices$practice_area <- df_tech_vertices$practice_area |>
+  replace_na("SEA")
+
+#make a graph object
 df_graph_tech <- graph_from_data_frame(df_tech_ties
                                        , directed = FALSE
                                        , vertices = df_tech_vertices)
@@ -193,3 +205,68 @@ ggraph(df_graph_tech, "with_kk") +
   geom_node_text(aes(label = df_tech_vertices$value))
 
 
+###Lists to anonymize networks----
+
+#Add a number column that can be used to anonymize each network 
+df_anon <- unique(c(df1_ties$Name
+                      , df1_ties$to_mentor3
+                      , df_tech_ties$Name
+                      , df_tech_ties$to_tech3)) |>
+  as.data.frame() |>
+  mutate(number = row_number()
+         , .before = everything()) |>
+  rename(names = 2)
+
+#This object has mentor ties anonymized
+ment_ties_anon <- df1_ties |>
+  left_join(df_anon, by = c("Name" = "names")) |>
+  left_join(df_anon, by = c("to_mentor3" = "names")) |>
+  rename(number.name = 3, number.to = 4) |>
+  select(number.name, number.to)
+
+#Saving this as an xlsx file to use in the quarto file
+#writexl::write_xlsx(ment_ties_anon
+ #                    , "./network_analysis_sandbox/data/edges_mentor.xlsx")
+
+#This object has mentor nodes anonymized
+ment_nodes_anon <- df2_vertices |>
+  left_join(df_anon, by = c("value" = "names")) |>
+  relocate(number) |>
+  select(number, 5:10, new)
+
+#Saving this as an xlsx file to use in the quarto file
+#writexl::write_xlsx(ment_nodes_anon
+ #                  , "./network_analysis_sandbox/data/nodes_mentor.xlsx")
+
+#This object has tech ties anonymized
+tech_ties_anon <- df_tech_ties |>
+  left_join(df_anon, by = c("Name" = "names")) |>
+  left_join(df_anon, by = c("to_tech3" = "names")) |>
+  rename(number.name = 3, number.to = 4) |>
+  select(number.name, number.to)
+
+#Saving this as an xlsx file to use in the quarto file
+#writexl::write_xlsx(tech_ties_anon
+ #                   , "./network_analysis_sandbox/data/edges_tech.xlsx")
+
+
+#This object has tech nodes anonymized
+tech_nodes_anon <- df_tech_vertices |>
+  left_join(df_anon, by = c("value" = "names")) |>
+  relocate(number) |>
+  select(number, 5:10, new)
+
+
+#Saving this as an xlsx file to use in the quarto file
+#writexl::write_xlsx(tech_nodes_anon
+ #                   , "./network_analysis_sandbox/data/nodes_tech.xlsx")
+
+
+#anonymized graph object for mentorship network
+graph_ment_anon <- graph_from_data_frame(ment_ties_anon
+                                       , directed = FALSE
+                                       , vertices = ment_nodes_anon)
+
+graph_tech_anon <- graph_from_data_frame(tech_ties_anon
+                                         , directed = FALSE
+                                         , vertices = tech_nodes_anon)
