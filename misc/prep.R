@@ -1,4 +1,3 @@
-
 # prep
 
 # packages <- c("arm", "BMA", "brms", "corrplot","DescTools", "estimatr","extrafont", "extrafontdb", "janitor", 
@@ -18,7 +17,7 @@
 base_packages <- c("tidyverse", "easystats", "corrplot","DescTools","estimatr","extrafont","janitor",
                    "reshape2", "haven", "broom","HH","Hmisc","plotrix","scales","sysfonts","foreign","car",
                    "ICC","openxlsx","readr","readxl","sjmisc","sjPlot","flextable", "sjstats","sjlabelled","skimr",
-                   "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi", "citr")
+                   "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi")
 
 lapply(base_packages, library, character.only=T)
 
@@ -55,19 +54,6 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
 theme_set(base)
 
 faceted <- theme_bw() +
-  theme(panel.grid.minor.x=element_blank(),
-        panel.grid.minor.y=element_blank(),
-        plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
-        plot.subtitle = element_text(size=16, family="Source Sans Pro"),
-        plot.caption=element_text(size=12, family="Source Sans Pro"),
-        axis.title=element_text(size=16, family="Source Sans Pro"),
-        axis.text=element_text(size=14, family="Source Sans Pro"),
-        legend.text=element_text(size=14, family="Source Sans Pro"),
-        strip.text=element_text(size=14, family="Source Sans Pro"))
-
-
-
-facet_style <- function(){theme_bw() +
     theme(panel.grid.minor.x=element_blank(),
           panel.grid.minor.y=element_blank(),
           plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
@@ -77,9 +63,21 @@ facet_style <- function(){theme_bw() +
           axis.text=element_text(size=14, family="Source Sans Pro"),
           legend.text=element_text(size=14, family="Source Sans Pro"),
           strip.text=element_text(size=14, family="Source Sans Pro"))
+
+
+
+facet_style <- function(){theme_bw() +
+        theme(panel.grid.minor.x=element_blank(),
+              panel.grid.minor.y=element_blank(),
+              plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+              plot.subtitle = element_text(size=16, family="Source Sans Pro"),
+              plot.caption=element_text(size=12, family="Source Sans Pro"),
+              axis.title=element_text(size=16, family="Source Sans Pro"),
+              axis.text=element_text(size=14, family="Source Sans Pro"),
+              legend.text=element_text(size=14, family="Source Sans Pro"),
+              strip.text=element_text(size=14, family="Source Sans Pro"))
 }
 
 
 # read data
-
 
