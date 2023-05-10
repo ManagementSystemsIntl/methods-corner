@@ -17,11 +17,7 @@
 base_packages <- c("tidyverse", "easystats", "corrplot","DescTools","estimatr","extrafont","janitor",
                    "reshape2", "haven", "broom","HH","Hmisc","plotrix","scales","sysfonts","foreign","car",
                    "ICC","openxlsx","readr","readxl","sjmisc","sjPlot","flextable", "sjstats","sjlabelled","skimr",
-<<<<<<< HEAD
-                   "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi")
-=======
                    "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi", "citr", "kableExtra")
->>>>>>> d5146db472256a9d49a660e379e44c3672003404
 
 lapply(base_packages, library, character.only=T)
 
