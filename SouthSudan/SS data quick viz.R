@@ -50,7 +50,10 @@ mapview(states)
 ggplot(states) +
   geom_sf() +
   geom_sf(data = events_sf, aes(color = event_type)
-          , alpha = .4) +
+          , size=.8,
+          alpha = .6) 
+
++
   theme.plot()
 
 #sampling
