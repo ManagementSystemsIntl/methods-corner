@@ -30,6 +30,8 @@ Weighted frequency output of the Palestian Perception Survey
 [Introduction to Causal Inference](https://managementsystemsintl.github.io/methods-corner/Introduction%20to%20Casual%20Inference/Introduction_to_Causal_Inference.html)  
 A gentle introduction to the field
 
+[South Sudan resilience](https://managementsystemsintl.github.io/methods-corner/South%20Sudan%20resilience/03%20South%20Sudan%20resilience%20panel%20survey%20-%20indicators.html)
+Frequencies of the first South Sudan resilience panel survey
 
 
 
