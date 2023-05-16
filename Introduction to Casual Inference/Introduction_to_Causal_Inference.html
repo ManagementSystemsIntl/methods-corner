@@ -359,7 +359,7 @@ Sheng Cao
 <h1>Introduction</h1>
 
 </section>
-<section id="what-is-causal-inference" class="slide level2">
+<section id="what-is-causal-inference" class="slide level2 center">
 <h2>What is causal inference?</h2>
 <ul>
 <li><p>Cause-and-effect questions: Does X cause Y ? If X causes Y, how large is the effect of X on Y? Is the size of this effect large relative to the effects of other causes of Y? <span class="citation" data-cites="morgan2014">(<a href="#/references" role="doc-biblioref" onclick="">Morgan and Winship 2014</a>)</span></p>
@@ -369,7 +369,7 @@ Sheng Cao
 </ul></li>
 </ul>
 </section>
-<section id="why-is-it-important" class="slide level2">
+<section id="why-is-it-important" class="slide level2 center">
 <h2>Why is it important?</h2>
 <ul>
 <li><p><strong>It is essential to science:</strong> If we are choosing between treatments for a disease, we want to choose the treatment that causes the most people to be cured, without causing too many bad side effects. <span class="citation" data-cites="neal2020">(<a href="#/references" role="doc-biblioref" onclick="">Neal 2020</a>)</span></p></li>
@@ -381,20 +381,20 @@ Sheng Cao
 <h1>Background</h1>
 
 </section>
-<section id="correlation-is-not-causation" class="slide level2">
+<section id="correlation-is-not-causation" class="slide level2 center">
 <h2>Correlation is not Causation</h2>
 <ul>
 <li><p>How wearing shoes to bed and headaches are associated without either being a cause of the other? It turns out that they are both caused by a common cause: drinking the night before. The total association observed can be made up of both confounding association and causal association. It could be the case that wearing shoes to bed does have some small causal effect on waking up with a headache. Then, the total association would not be solely confounding association nor solely causal association. It would be a mixture of both. <span class="citation" data-cites="neal2020">(<a href="#/references" role="doc-biblioref" onclick="">Neal 2020</a>)</span></p>
 <p><img data-src="images/Correlation%20is%20not%20Causation.PNG"></p></li>
 </ul>
 </section>
-<section id="directed-acyclic-graph-dag" class="slide level2">
+<section id="directed-acyclic-graph-dag" class="slide level2 center">
 <h2>Directed Acyclic Graph (DAG)</h2>
 <ul>
 <li><strong>Definition:</strong> A graph is a collection of nodes (also called “vertices”) and edges that connect the nodes. A directed path is a path that consists of directed edges that are all directed in the same direction. If there are no cycles, which are directed paths from some node X back to itself, in a directed graph, the graph is known as a directed acyclic graph (DAG). <span class="citation" data-cites="neal2020">(<a href="#/references" role="doc-biblioref" onclick="">Neal 2020</a>)</span></li>
 </ul>
 </section>
-<section class="slide level2">
+<section class="slide level2 center">
 
 <ul>
 <li><p><strong>Causal Chain:</strong> In chain graphs, <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_3\)</span> are usually dependent simply because <span class="math inline">\(X_1\)</span> causes changes in <span class="math inline">\(X_2\)</span> which then causes changes in <span class="math inline">\(X_3\)</span>. <span class="math inline">\(X_2\)</span> can be called the mechanism. <span class="citation" data-cites="neal2020">(<a href="#/references" role="doc-biblioref" onclick="">Neal 2020</a>)</span></p>
@@ -404,7 +404,7 @@ Sheng Cao
 </ul></li>
 </ul>
 </section>
-<section class="slide level2">
+<section class="slide level2 center">
 
 <ul>
 <li><p><strong>Fork (Confounding Junction):</strong> Confounding bias occurs when a variable influences both who is selected for the treatment and the outcome of the experiment. In the figure, q is a confounder of X and Y. <span class="citation" data-cites="pearl2019">(<a href="#/references" role="doc-biblioref" onclick="">Pearl 2019</a>)</span></p>
@@ -414,14 +414,14 @@ Sheng Cao
 </ul></li>
 </ul>
 </section>
-<section class="slide level2">
+<section class="slide level2 center">
 
 <ul>
 <li><p><strong>Collider (M-bias):</strong> In a collider graph, The variables X and Y start out independent, so that information about X tells you nothing about Y. But if you control for z, then information starts flowing through the “pipe”, due to the explain-away effect. <span class="citation" data-cites="pearl2019">(<a href="#/references" role="doc-biblioref" onclick="">Pearl 2019</a>)</span> Therefore, we cannot control for z when exploring the causal relationship between X and Y.</p>
 <p><img data-src="images/collider-01.png"></p></li>
 </ul>
 </section>
-<section class="slide level2">
+<section class="slide level2 center">
 
 <ul>
 <li><strong>Fundamental Rule:</strong> Controlling for descendants (or proxies) of a variable is like “partially” controlling for the variable itself. Controlling for a descendant of a mediator partly closes the pipe; controlling for a descendant of a collider partly opens the pipe. <span class="citation" data-cites="pearl2019">(<a href="#/references" role="doc-biblioref" onclick="">Pearl 2019</a>)</span></li>
@@ -442,7 +442,7 @@ Sheng Cao
 <h1>Experimental methods</h1>
 
 </section>
-<section id="definition" class="slide level2">
+<section id="definition" class="slide level2 center">
 <h2>Definition</h2>
 <ul>
 <li>The individuals or material investigated, the nature of the treatments or manipulations under study and the measurement procedures used are all selected, in their important features at least, by the investigator. <span class="citation" data-cites="cox2000">(<a href="#/references" role="doc-biblioref" onclick="">Cox and Reid 2000</a>)</span>
@@ -451,7 +451,7 @@ Sheng Cao
 </ul></li>
 </ul>
 </section>
-<section id="randomized-controlled-trial-rct" class="slide level2">
+<section id="randomized-controlled-trial-rct" class="slide level2 center">
 <h2>Randomized Controlled Trial (RCT)</h2>
 <ul>
 <li><p>This is a type of experiment in which participants are randomly assigned to an intervention group (that receives a treatment or intervention) or a control group (that does not receive the treatment).</p>
@@ -460,7 +460,7 @@ Sheng Cao
 </ul></li>
 </ul>
 </section>
-<section id="pros-and-cons-of-rct" class="slide level2">
+<section id="pros-and-cons-of-rct" class="slide level2 center">
 <h2>Pros and Cons of RCT</h2>
 <ul>
 <li><p><strong>Pros:</strong> Association is causation. Randomized experiments guarantee that there is no confounding. As the Directed Acyclic Graph (DAG) shows, X is a confounder of the effect of T on Y. Non-causal association flows along the backdoor path T ← X → Y. However, if we randomize T, T no longer has any causal parents. This is because T is purely random. <span class="citation" data-cites="neal2020">(<a href="#/references" role="doc-biblioref" onclick="">Neal 2020</a>)</span></p>
@@ -473,42 +473,41 @@ Sheng Cao
 <h1>Observational methods</h1>
 
 </section>
-<section id="definition-1" class="slide level2">
+<section id="definition-1" class="slide level2 center">
 <h2>Definition</h2>
 <ul>
 <li>In an observational study some of these features, and in particular the allocation of individuals to treatment groups, are outside the investigator’s control. <span class="citation" data-cites="cox2000">(<a href="#/references" role="doc-biblioref" onclick="">Cox and Reid 2000</a>)</span></li>
 </ul>
 </section>
-<section id="quasi-experiment" class="slide level2">
+<section id="quasi-experiment" class="slide level2 center">
 <h2>Quasi-experiment</h2>
 <ul>
 <li>We often rely on variation in policy-relevant variables that is “as-if” random since experimental methods are expensive, time-consuming and have external validity problems.</li>
 <li>Quasi-experiments use observational (rather than experimental) data.</li>
-<li>Quasi-experiments tend to “score better” than randomized experiments (but not perfectly) in terms of external validity, less well in terms of internal validity.</li>
 </ul>
 </section>
-<section id="quasi-experimental-method-1-instrumental-variables" class="slide level2">
+<section id="quasi-experimental-method-1-instrumental-variables" class="slide level2 center">
 <h2>Quasi-experimental Method 1: Instrumental Variables</h2>
 <ul>
 <li><p><strong>Definition:</strong> The information about the movements in X that are uncorrelated with (the error term) is gleaned from one or more additional variables, called instrumental variables or simply instruments. Instrumental variables regression uses these additional variables as tools or “instruments” to isolate the movements in X that are uncorrelated with (the error term)… <span class="citation" data-cites="stock2020">(<a href="#/references" role="doc-biblioref" onclick="">Stock and Watson 2020</a>)</span></p></li>
-<li><p><strong>Example:</strong> <span class="citation" data-cites="dee2004">(<a href="#/references" role="doc-biblioref" onclick="">Dee 2004</a>)</span> The authorwas attempting to answer the following question: what is the effect of educational attainment on adults’ civic engagement? The author instrumented for educational attainment (measured in the main analysis via a dummy variable reflecting college entrance) using two arguably exogenous measures of community college availability: proximity to the nearest two-year college and the number of two-year colleges in one’s county of residence. The results suggest that educational attainment has large and statistically significant effects on subsequent voter participation and support for free speech.</p></li>
+<li><p><strong>Example:</strong> <span class="citation" data-cites="miguel2004">(<a href="#/references" role="doc-biblioref" onclick="">Miguel, Satyanath, and Sergenti 2004</a>)</span> This paper is estimating the impact of economic conditions on the likelihood of civil conflict. The author uses rainfall variation as an instrumental variable for economic growth in 41 African countries during 1981-1999. Weather shocks are plausible instruments for growth in gross domestic product in economies that largely rely on rain fed agriculture, that is, neither have extensive irrigation systems nor are heavily industrialized. Sub-Saharan Africa is the ideal region for this identification strategy: the World Development Indicator database indicates that only 1 percent of cropland is irrigated in the median African country, and the agricultural sector remains large.</p></li>
 </ul>
 </section>
-<section id="quasi-experimental-method-2-regression-discontinuity" class="slide level2">
+<section id="quasi-experimental-method-2-regression-discontinuity" class="slide level2 center">
 <h2>Quasi-experimental Method 2: Regression Discontinuity</h2>
 <ul>
 <li><p><strong>Definition:</strong> For some programs, there is a clear eligibility threshold (cutoff): if you are below (above) that threshold, you qualify for the program and, if you are above (below) the threshold, you don’t. RD takes advantage of the cutoff. As long as the only thing that changes at the cutoff is that the person gets the treatment, then any jump up or down in the dependent variable at the cutoff will reflect the causal effect of treatment. <span class="citation" data-cites="bailey2019">(<a href="#/references" role="doc-biblioref" onclick="">Bailey 2019</a>)</span></p>
 <p><img data-src="images/regression%20discontinuity-01.jpg" width="557"></p></li>
 </ul>
 </section>
-<section class="slide level2">
+<section class="slide level2 center">
 
 <ul>
 <li><p><strong>Example:</strong> <span class="citation" data-cites="gormley2005">(<a href="#/references" role="doc-biblioref" onclick="">Gormley and Gayer 2005</a>)</span> The author explores the effect of Oklahoma’s universal pre-kindergarten (pre-K) program for four-year-olds on children’s test scores in Tulsa Public Schools. The author uses a regression-discontinuity approach that contrasts the performance in the test of children born just before the cut-off date (the treatment group) to the performance of children born just after the cut-off date (the control group), at the same time controlling for continuous age effects.</p>
-<p><img data-src="images/Regression%20Discontinuity-01.png"></p></li>
+<p><img data-src="images/Regression%20Discontinuity-01.png" width="1024"></p></li>
 </ul>
 </section>
-<section id="quasi-experimental-method-3-difference-in-difference" class="slide level2">
+<section id="quasi-experimental-method-3-difference-in-difference" class="slide level2 center">
 <h2>Quasi-experimental Method 3: Difference in Difference</h2>
 <ul>
 <li><p><strong>Definition:</strong> To control for systematic differences between the control and treatment groups, we need two years of data, one before the policy change and one after the change. Thus, our sample is usefully broken into four groups: the control group before the change, the control group after the change, the treatment group before the change, and the treatment group after the change. <span class="citation" data-cites="wooldridge2016">(<a href="#/references" role="doc-biblioref" onclick="">Wooldridge 2016</a>)</span> By having two before-after comparisons, we create a much stronger study: a difference-in-difference study. The study gets its name from the fact that it compares the differences between two before-after differences. <span class="citation" data-cites="remler2015">(<a href="#/references" role="doc-biblioref" onclick="">Remler and Van Ryzin 2015</a>)</span></p>
@@ -544,20 +543,21 @@ Sheng Cao
 </table></li>
 </ul>
 </section>
-<section class="slide level2">
+<section class="slide level2 center">
 
 <ul>
-<li><strong>Example:</strong> <span class="citation" data-cites="eissa1996">(<a href="#/references" role="doc-biblioref" onclick="">Eissa and Liebman 1996</a>)</span> This paper examines the impact of the Tax Reform Act of 1986 (TRA86) on the labor force participation and hours of work of single women with children. This paper uses all single women with children as the control group. The difference between the change in labor force participation of single women with children and the change of single women without children is the estimate of the effect of TRA886 on participation. This is essentially the difference-in-differences approach.</li>
+<li><p><strong>Example:</strong> <span class="citation" data-cites="eissa1996">(<a href="#/references" role="doc-biblioref" onclick="">Eissa and Liebman 1996</a>)</span> This paper examines the impact of the Tax Reform Act of 1986 (TRA86) on the labor force participation and hours of work of single women with children. This paper uses all single women with children as the control group. The difference between the change in labor force participation of single women with children and the change of single women without children is the estimate of the effect of TRA886 on participation. This is essentially the difference-in-differences approach.</p>
+<p><img data-src="images/d-i-d%203-01.jpg" width="819"></p></li>
 </ul>
 </section>
-<section id="quasi-experimental-method-4-fixed-effects" class="slide level2">
+<section id="quasi-experimental-method-4-fixed-effects" class="slide level2 center">
 <h2>Quasi-experimental Method 4: Fixed Effects</h2>
 <ul>
 <li><p><strong>Definition:</strong> If we include fixed effects in our regression model, we are controlling for every single fixed characteristic of every single member of our sample, including characteristics for which we don’t even have data.</p></li>
 <li><p><strong>Example:</strong> <span class="citation" data-cites="waldfogel1997">(<a href="#/references" role="doc-biblioref" onclick="">Waldfogel 1997</a>)</span> This paper is trying to answer the question: Does having children affect the wages of women in the United States? If women with lower motivation to succeed in the labor market are more likely to have children and less likely to have high earnings, then this unobserved heterogeneity might explain the observed negative relationship of wages and having children. The author controls for this heterogeneity via fixed effects and first-differences models.</p></li>
 </ul>
 </section>
-<section id="quasi-experimental-method-5-propensity-score-matching" class="slide level2">
+<section id="quasi-experimental-method-5-propensity-score-matching" class="slide level2 center">
 <h2>Quasi-experimental Method 5: Propensity Score Matching</h2>
 <ul>
 <li><p><strong>Definition:</strong> Assume that we want to measure the effect of some policy “treatment,” but that people aren’t randomly assigned to this treatment. We could address selection bias by accounting for observed characteristics that are part of the “selection process” via stratification or multiple regression or use same set of variables to model the selection process explicitly, which is the approach taken by propensity score matching.</p></li>
@@ -589,10 +589,14 @@ Bailey, Michael. 2019. <em>Real Econometrics: The Right Tools to Answer Importan
 <div id="ref-cox2000" class="csl-entry" role="doc-biblioentry">
 Cox, David, and Nancy Reid. 2000. <span>“The Theory of Design of Experiments,”</span> January.
 </div>
+<<<<<<< HEAD
 <div id="ref-dee2004" class="csl-entry" role="doc-biblioentry">
 Dee, Thomas S. 2004. <span>“Are There Civic Returns to Education?”</span> <em>Journal of Public Economics</em> 88 (9): 1697–1720. <a href="https://doi.org/10.1016/j.jpubeco.2003.11.002">https://doi.org/10.1016/j.jpubeco.2003.11.002</a>.
 </div>
 <div id="ref-eissa1996" class="csl-entry" role="doc-biblioentry">
+=======
+<div id="ref-eissa1996" class="csl-entry" role="listitem">
+>>>>>>> 79ff760ac8d4ef50c9f6df841c4c6a85ec298efb
 Eissa, Nada, and Jeffrey B. Liebman. 1996. <span>“Labor Supply Response to the Earned Income Tax Credit.”</span> <em>Quarterly Journal of Economics</em> 111 (2): 605–37. <a href="https://doi.org/10.2307/2946689">https://doi.org/10.2307/2946689</a>.
 </div>
 <div id="ref-gormley2005" class="csl-entry" role="doc-biblioentry">
@@ -604,7 +608,14 @@ Harding, David&nbsp;J. 2003. <span>“Counterfactual Models of Neighborhood Effe
 <div id="ref-holland1986" class="csl-entry" role="doc-biblioentry">
 Holland, Paul W. 1986. <span>“Statistics and Causal Inference.”</span> <em>Journal of the American Statistical Association</em> 81 (396): 945–60. <a href="https://doi.org/10.2307/2289064">https://doi.org/10.2307/2289064</a>.
 </div>
+<<<<<<< HEAD
 <div id="ref-morgan2014" class="csl-entry" role="doc-biblioentry">
+=======
+<div id="ref-miguel2004" class="csl-entry" role="listitem">
+Miguel, Edward, Shanker Satyanath, and Ernest Sergenti. 2004. <span>“Economic Shocks and Civil Conflict: An Instrumental Variables Approach.”</span> <em>Journal of Political Economy</em> 112 (4): 725–53. <a href="https://doi.org/10.1086/421174">https://doi.org/10.1086/421174</a>.
+</div>
+<div id="ref-morgan2014" class="csl-entry" role="listitem">
+>>>>>>> 79ff760ac8d4ef50c9f6df841c4c6a85ec298efb
 Morgan, Stephen L., and Christopher Winship. 2014. <em>Counterfactuals and Causal Inference: Methods and Principles for Social Research</em>. 2nd ed. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9781107587991">https://doi.org/10.1017/CBO9781107587991</a>.
 </div>
 <div id="ref-neal2020" class="csl-entry" role="doc-biblioentry">
@@ -711,7 +722,7 @@ Wooldridge, Jeffrey M. 2016. <em>Introductory Econometrics: A Modern Approach</e
         disableLayout: false,
 
         // Vertical centering of slides
-        center: false,
+        center: true,
 
         // Enables touch navigation on devices with touch input
         touch: true,
