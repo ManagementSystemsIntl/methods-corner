@@ -144,7 +144,7 @@ inc_labs2 <- c("a. Farm/crop production",
                "s. Gifts/inheritance",
                "t. Food / cash safety net")
 
-inc_key <- read_csv(here("output/tables/keys/inc key.csv"))
+inc_key <- read_csv(here("South Sudan resilience/output/tables/keys/inc key.csv"))
 inc_key
 
 # inc_key <- data.frame(inc_code=1:20,
@@ -156,7 +156,7 @@ inc_key
 #  
 #  
 
-shock_key <- read_csv(here("output/tables/keys/shock key.csv"))
+shock_key <- read_csv(here("South Sudan resilience/output/tables/keys/shock key.csv"))
 
 shock_labs <- c("Floods",
                 "Drought",
@@ -212,7 +212,7 @@ reg_county_labs <- c("Greater Upper Nile - Akobo",
 # 
 # cnty_key 
 
-county_key <- read_csv(here("output/tables/keys/county_key.csv"))
+county_key <- read_csv(here("South Sudan resilience/output/tables/keys/county_key.csv"))
 county_key
 
 # reg_state_cnty_key <- dat %>%
@@ -222,7 +222,7 @@ county_key
 # 
 # reg_state_cnty_key 
 
-geo_key <- read_csv(here("output/tables/keys/geo key.csv"))
+geo_key <- read_csv(here("South Sudan resilience/output/tables/keys/geo key.csv"))
 
 
 diet_labs <- c("Cereals",
@@ -246,7 +246,7 @@ diet_labs <- c("Cereals",
 diet_key <- data.frame(diet_code=1:17,
                        diet_lab=diet_labs) 
 
-fies_key <- read_csv(here("output/tables/keys/fies key.csv"))
+fies_key <- read_csv(here("South Sudan resilience/output/tables/keys/fies key.csv"))
 
 conf_labs <- c("Land",
                "Water",
@@ -271,7 +271,7 @@ conf_labs <- c("Land",
 #  
 # write_csv(conf_key, "output/tables/conf_key.csv")
 
-conf_key <- read_csv(here("output/tables/keys/conf_key.csv"))
+conf_key <- read_csv(here("South Sudan resilience/output/tables/keys/conf_key.csv"))
 
 conf_key 
 
@@ -396,7 +396,7 @@ traffic_key
 
 # read data ---- 
 
-dat <- read_rds(here("data/prepared/South Sudan resilience panel survey - prepared.rds"))
+dat <- read_rds(here("South Sudan resilience/data/prepared/South Sudan resilience panel survey - prepared.rds"))
 
 
 

@@ -18,7 +18,8 @@ citation-location: margin
 ---
 
 ```{r global_options, include=F, warning=F, message=F, echo=F, error=F, fig.height=4, fig.width=6}
-source("0 South Sudan resilience panel survey - prep.r")
+library(here)
+source(here("South Sudan resilience/scripts/0 South Sudan resilience panel survey - prep.r"))
 #d <- read_rds(here("data/prepared/South Sudan resilience panel survey - prepared.rds"))
 getwd()
 here()
@@ -39,7 +40,7 @@ here()
 :::
 
 ```{r out.height="60%", out.width="70%"}
-include_graphics(here("output/viz/income sources 2.png"))
+include_graphics(here("South Sudan resilience/output/viz/income sources 2.png"))
 ```
 
 ## Food Insecurity
@@ -55,7 +56,7 @@ include_graphics(here("output/viz/income sources 2.png"))
 ### Scale frequencies
 
 ```{r out.height="60%", out.width="70%"}
-include_graphics(here("output/viz/household hunger bar.png"))
+include_graphics(here("South Sudan resilience/output/viz/household hunger bar.png"))
 
 ```
 
@@ -68,7 +69,7 @@ include_graphics(here("output/viz/household hunger bar.png"))
 
 ```{r}
 
-shk <- read_csv(here("output/tables/Shock incidence.csv"),
+shk <- read_csv(here("South Sudan resilience/output/tables/Shock incidence.csv"),
                 show_col_types=F)
 
 shk_gt <- shk %>%
@@ -84,7 +85,7 @@ shk_gt
 ```
 
 ```{r}
-include_graphics(here("output/viz/Exposure to shocks.png"))
+include_graphics(here("South Sudan resilience/output/viz/Exposure to shocks.png"))
 ```
 
 :::
@@ -93,7 +94,7 @@ include_graphics(here("output/viz/Exposure to shocks.png"))
 
 ```{r}
 
-resil <- read_csv(here("output/tables/Resilience binaries.csv"),
+resil <- read_csv(here("South Sudan resilience/output/tables/Resilience binaries.csv"),
                   show_col_types=F)
 
 resil_gt <- resil %>%
