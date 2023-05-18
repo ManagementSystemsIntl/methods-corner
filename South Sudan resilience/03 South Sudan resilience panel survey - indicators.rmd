@@ -20,6 +20,8 @@ citation-location: margin
 ```{r global_options, include=F, warning=F, message=F, echo=F, error=F, fig.height=4, fig.width=6}
 source("0 South Sudan resilience panel survey - prep.r")
 #d <- read_rds(here("data/prepared/South Sudan resilience panel survey - prepared.rds"))
+getwd()
+here()
 ```
 
 # Introduction
