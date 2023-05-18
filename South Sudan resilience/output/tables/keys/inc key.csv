@@ -1,0 +1,21 @@
+inc_code,varname,inc_lab,inc_lab2
+1,q_401_a_bin,Farm/crop production,a. Farm/crop production
+2,q_401_b_bin,Cattle production/sales,b. Cattle production/sales
+3,q_401_c_bin,Goat production/sales,c. Goat production/sales
+4,q_401_d_bin,Sheep production/sales,d. Sheep production/sales
+5,q_401_e_bin,Fishing and sales,e. Fishing and sales
+6,q_401_f_bin,Ag wage labor in village,f. Ag wage labor in village
+7,q_401_g_bin,Ag wage labor outside village,g. Ag wage labor outside village
+8,q_401_h_bin,Wage labor in village,h. Wage labor in village
+9,q_401_i_bin,Wage labor outside village,i. Wage labor outside village
+10,q_401_j_bin,Salaried work,j. Salaried work
+11,q_401_k_bin,Wild bush sales,k. Wild bush sales
+12,q_401_l_bin,Honey production/sales,l. Honey production/sales
+13,q_401_m_bin,Petty trade other products,m. Petty trade other products
+14,q_401_n_bin,Petty trade own products,n. Petty trade own products
+15,q_401_o_bin,Other self-employment ag,o. Other self-employment ag
+16,q_401_p_bin,Other self-employment non-ag,p. Other self-employment non-ag
+17,q_401_q_bin,Rental of land/property,q. Rental of land/property
+18,q_401_r_bin,Remittances,r. Remittances
+19,q_401_s_bin,Gifts/inheritance,s. Gifts/inheritance
+20,q_401_t_bin,Food / cash safety net,t. Food / cash safety net

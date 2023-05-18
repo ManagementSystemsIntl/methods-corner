@@ -1,0 +1,17 @@
+varname,conf_key,conf_lab
+conf_land,1,Land
+conf_water,2,Water
+conf_pasture,3,Pasture
+conf_forestry,4,Forestry
+conf_cattle,5,Cattle
+conf_goat,6,Goat
+conf_migration,7,Migration route
+conf_boundary,8,Boundary
+conf_revenge,9,Revenge
+conf_dowry,10,Dowry
+conf_elope,11,Elopement
+conf_raid,12,Cattle raid
+conf_fishing,13,Fishing grudge
+conf_gbv,14,Gender based violence
+conf_livelihood,15,Livelihood
+conf_ag,16,Agriculture

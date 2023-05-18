@@ -1,0 +1,17 @@
+shock,shock_lab,var_name
+1,Floods,shock_flood
+2,Drought,shock_drought
+3,Erosion,shock_erosion
+4,Loss of land,shock_lostland
+5,Increase in food prices,shock_foodprice
+6,Theft,shock_theft
+7,No crop inputs,shock_cropinputs
+8,Crop disease,shock_cropdisease
+9,Crop pests,shock_croppests
+10,Crop theft,shock_croptheft
+11,No livestock inputs,shock_livestockinputs
+12,Livestock disease,shock_livestockdisease
+13,Livestock theft,shock_livestocktheft
+14,Unable to sell,shock_nosell
+15,Illness in household,shock_illness
+16,Death in household,shock_death
