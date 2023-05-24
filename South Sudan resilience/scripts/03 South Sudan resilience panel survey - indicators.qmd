@@ -1,0 +1,104 @@
+---
+title: South Sudan
+subtitle: Resilience Panel Survey
+date: "`r Sys.Date()`"
+#toc: true
+#toc-depth: 3
+execute-dir: project
+number-sections: false
+format:
+  html:
+    code-fold: true
+    page-layout: full
+    #toc-location: left
+editor: visual
+reference-location: margin
+citation-location: margin
+#bibliography: references.bib
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F, fig.height=4, fig.width=6}
+source("0 South Sudan resilience panel survey - prep.r")
+#d <- read_rds(here("data/prepared/South Sudan resilience panel survey - prepared.rds"))
+```
+
+# Introduction
+
+# Household
+
+## Household structure
+
+::: panel-tabset
+:::
+
+## Sources of Income
+
+::: panel-tabset
+:::
+
+```{r out.height="60%", out.width="70%"}
+include_graphics(here("output/viz/income sources 2.png"))
+```
+
+## Food Insecurity
+
+```{r}
+
+
+```
+
+## Household Hunger Scale
+
+::: panel-tabset
+### Scale frequencies
+
+```{r out.height="60%", out.width="70%"}
+include_graphics(here("output/viz/household hunger bar.png"))
+
+```
+
+### By county
+:::
+
+## Household Shocks
+
+```{r}
+
+```
+
+:::
+
+## Resilience
+
+::: panel-tabset
+:::
+
+## Trafficking in Persons
+
+```{r}
+
+frq(dat$`829`)
+
+```
+
+```{r}
+
+q829 <- data.frame(frq(dat$`829`))
+
+q829_flx <- q829 %>%
+  flextable()
+  
+#   q1 %>%
+#   select(Donor, Number, Percent, `Confidence interval`=ci) %>%
+#   flextable() %>%
+#   colformat_double(j=2,
+#                    digits=0) %>%
+#   set_formatter(Percent=function(x) sprintf("%.1f%%", x*100)) %>%
+#   align(j=4, align="center") %>%
+#   set_table_properties(layout="autofit") %>%
+#   add_footer_lines(values="Q1. Seen donor logo in past year")
+# 
+# save_as_docx(q1_flx, path=here("output/tables/eval Q1/q1 logos.docx"))
+
+q829_flx
+```
