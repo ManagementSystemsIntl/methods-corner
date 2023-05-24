@@ -144,7 +144,7 @@ inc_labs2 <- c("a. Farm/crop production",
                "s. Gifts/inheritance",
                "t. Food / cash safety net")
 
-inc_key <- read_csv(here("South Sudan resilience/output/tables/keys/inc key.csv"))
+inc_key <- read_csv(here("output/tables/keys/inc key.csv"))
 inc_key
 
 # inc_key <- data.frame(inc_code=1:20,
@@ -156,7 +156,7 @@ inc_key
 #  
 #  
 
-shock_key <- read_csv(here("South Sudan resilience/output/tables/keys/shock key.csv"))
+shock_key <- read_csv(here("output/tables/keys/shock key.csv"))
 
 shock_labs <- c("Floods",
                 "Drought",
@@ -174,6 +174,16 @@ shock_labs <- c("Floods",
                 "Unable to sell",
                 "Illness in household",
                 "Death in household")
+
+resil_labs <- c("Anticipatory capacity","Absorptive capacity","Transformative capacity","Adaptive capacity","Financial capital",
+                "Social capital","Institutional capital","Human capital")
+
+resil_items <- c("Prepared for future shock","Able to recover from shock","Able to change livelihood to adapt to any shock","Able to adapt to increased frequency or severity of shock",
+                 "Able to access financial support","Can rely on family and friends","Can rely on government support","Have learned from past shocks")
+
+
+resil_key <- data.frame(resil_num=1:8, resil=resil_labs, item=resil_items)
+resil_key
 
 county_labs <- c("Akobo",
                  "Budi",
@@ -212,7 +222,7 @@ reg_county_labs <- c("Greater Upper Nile - Akobo",
 # 
 # cnty_key 
 
-county_key <- read_csv(here("South Sudan resilience/output/tables/keys/county_key.csv"))
+county_key <- read_csv(here("output/tables/keys/county_key.csv"))
 county_key
 
 # reg_state_cnty_key <- dat %>%
@@ -222,7 +232,7 @@ county_key
 # 
 # reg_state_cnty_key 
 
-geo_key <- read_csv(here("South Sudan resilience/output/tables/keys/geo key.csv"))
+geo_key <- read_csv(here("output/tables/keys/geo key.csv"))
 
 
 diet_labs <- c("Cereals",
@@ -246,7 +256,7 @@ diet_labs <- c("Cereals",
 diet_key <- data.frame(diet_code=1:17,
                        diet_lab=diet_labs) 
 
-fies_key <- read_csv(here("South Sudan resilience/output/tables/keys/fies key.csv"))
+fies_key <- read_csv(here("output/tables/keys/fies key.csv"))
 
 conf_labs <- c("Land",
                "Water",
@@ -271,11 +281,11 @@ conf_labs <- c("Land",
 #  
 # write_csv(conf_key, "output/tables/conf_key.csv")
 
-conf_key <- read_csv(here("South Sudan resilience/output/tables/keys/conf_key.csv"))
+conf_key <- read_csv(here("output/tables/keys/conf_key.csv"))
 
 conf_key 
 
-res_labs <- c("Dialogue",
+resolve_labs <- c("Dialogue",
               "Alternative dispute resolution",
               "Traditional elders",
               "Faith-based organization",
@@ -284,10 +294,14 @@ res_labs <- c("Dialogue",
               "UN",
               "Other")
 
-res_key <- data.frame(res_num=1:8,
-                      res_lab=res_labs)
+resolve_key <- data.frame(res_num=1:8,
+                      res_lab=resolve_labs)
 
-res_key  
+resolve_key  
+
+satis_labs <- c("Not at all satisfied","A little satisfied","Satisfied","Very satisfied")
+
+effect_labs <- c("Not effective","A little effective","Effective","Very effective")
 
 socap_labs <- c("Able to lean on relatives\nin community (Bonding)",
                 "Able to help relatives\nin community (Bonding)",
@@ -396,7 +410,7 @@ traffic_key
 
 # read data ---- 
 
-dat <- read_rds(here("South Sudan resilience/data/prepared/South Sudan resilience panel survey - prepared.rds"))
+dat <- read_rds(here("data/prepared/South Sudan resilience panel survey - prepared.rds"))
 
 
 
