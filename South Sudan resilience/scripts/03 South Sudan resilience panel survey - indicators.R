@@ -100,6 +100,51 @@ gtsave(inc_gt, "output/tables/Income sources.html")
 
 # Household Hunger ---- 
 
+hhs_labs <- c("")
+
+lapply(hhs, frq)
+
+hhs <- dat %>%
+  select(hhs1, hhs3, hhs5, hhs_severe) %>%
+  describe() %>%
+  as.data.frame() %>%
+  mutate(lower=mean-1.96*se,
+         upper=mean+1.96*se,
+         `In previous four weeks..`=c("Lack of resources to get food",
+                                      "Went to sleep hungry",
+                                      "Whole day without eating",
+                                      #"Household Hunger Scale (0-6)",
+                                      "Severe household hunger")) %>%
+  dplyr::select(last_col(), Percent=mean, lower, upper, everything()) 
+
+#%>%
+#  arrange(desc(Percent))
+
+hhs
+
+?last
+
+str(shk)
+frq(d$`436`)
+
+write_csv(hhs, "output/tables/Household hunger scale.csv")
+
+hhs_gt <- hhs %>%
+  dplyr::select(1, Percent) %>%
+  mutate(Bar=Percent*100) %>%
+  gt() %>%
+  gt_plt_bar_pct(column=Bar, fill=usaid_blue, background=light_grey, scaled=T) %>%
+  cols_width(3 ~ px(125)) %>%
+  fmt_percent(2, decimals=0) %>%
+  cols_label(Bar="")
+
+hhs_gt
+
+gtsave(hhs_gt, "output/tables/Household hunger scale.html")
+
+
+
+
 ggplot(dat, aes(x=hhs)) + 
   geom_bar(width=.4, fill="dodgerblue2", alpha=.8) +
   scale_x_continuous(breaks=0:6) + 
