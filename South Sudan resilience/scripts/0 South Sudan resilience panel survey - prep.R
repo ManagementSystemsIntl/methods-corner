@@ -6,7 +6,7 @@ base_packages <- c("tidyverse", "easystats", "corrplot","DescTools","estimatr","
                    "reshape2", "haven", "broom","HH","Hmisc","plotrix","scales","sysfonts","foreign",
                    "car", "ICC","openxlsx","readr","readxl","sjmisc","sjPlot","flextable", "sjstats",
                    "sjlabelled","skimr", "labelled", "texreg","psych","viridis","here","jtools",
-                   "huxtable","stringi", "citr", "kableExtra", "knitr")
+                   "huxtable","stringi", "kableExtra", "knitr")
 
 lapply(base_packages, library, character.only=T)
 
@@ -18,20 +18,23 @@ model_packages <- c("plm","estimatr")
 lapply(model_packages, library, character.only=T)
 
 
-bayes_packages <- c("rstan","rstanarm","brms","rethinking")
+bayes_packages <- c("rstan","rstanarm","brms")
 lapply(bayes_packages, library, character.only=T)
 
-ie_packages <- c("gsynth", "MatchIt", "did", "bacondecomp")
+
+ie_packages <- c("gsynth")
 lapply(ie_packages, library, character.only=T)
 
-
 map_packages <- c("rgeoboundaries", "ggmap", "sf","rnaturalearth","rnaturalearthdata",
-                  "mapview", "spData", "spDataLarge", "tmap", "crsuggest")
+                  "mapview", "spData", "tmap", "crsuggest")
 
 lapply(map_packages, library, character.only=T)
 
 table_packages <- c("gt", "gtsummary", "gtExtras","flextable")
 lapply(table_packages, library, character.only=T)
+
+miss_packages <- c("missForest","missMDA")
+lapply(miss_packages,library, character.only=T)
 
 library(dplyr)
 
@@ -99,7 +102,7 @@ light_grey <- "#CFCDC9"
 sex_key <- data.frame(sex=1:2,
                       sex_lab=c("Male","Female"))
 
-sex_key 
+sex_key
 
 
 inc_labs <- c("Farm/crop production",
@@ -147,12 +150,12 @@ inc_labs2 <- c("a. Farm/crop production",
 inc_key <- read_csv(here("output/tables/keys/inc key.csv"))
 inc_key
 
-# inc_key <- data.frame(inc_code=1:20,
-#                        varname=names(inc),
-#                        inc_lab=inc_labs,
-#                        inc_lab2=inc_labs2)
-#  
-# write_csv(inc_key, here("output/tables/inc key.csv"))
+inc_key <- data.frame(inc_code=1:20,
+                        varname=names(inc_key),
+                       inc_lab=inc_labs,
+                        inc_lab2=inc_labs2)
+  
+write_csv(inc_key, here("output/tables/inc key.csv"))
 #  
 #  
 

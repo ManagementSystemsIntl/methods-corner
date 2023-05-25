@@ -1,9 +1,7 @@
 # South Sudan resilience panel
 # prep
 
-getwd()
-
-source("scripts/0 South Sudan resilience panel survey - prep.r")
+#source("scripts/0 South Sudan resilience panel survey - prep.r")
 
 d <- read_csv("data/daily/mels_resilience_panel_survey_english (5-24-23).csv")
 
@@ -91,6 +89,48 @@ d <- d %>%
                              inc_agwagein2, inc_nonagout2, inc_nonagin2, inc_salary2, inc_bush2, inc_honey2,
                              inc_tradeother2, inc_tradeown2, inc_selfag2, inc_selfnonag2, inc_rent2,
                              inc_remit2, inc_inherit2, inc_assist2, inc_other2, sep="-"))
+# d <- d %>%
+#   mutate(inc_pattern = paste(inc_farm2, inc_cattle2, inc_goats2, inc_sheep2, inc_fishing2, inc_agwageout2,
+#                              inc_agwagein2, inc_nonagout2, inc_nonagin2, inc_salary2, inc_bush2, inc_honey2,
+#                              inc_tradeother2, inc_tradeown2, inc_selfag2, inc_selfnonag2, inc_rent2,
+#                              inc_remit2, inc_inherit2, inc_assist2, inc_other2, sep="-"))
+
+frq(d$inc_pattern)
+
+names(d)
+
+frq(d$inc_farm2)
+
+lapply(d[,166:186], frq)
+
+inc <- describe(d[,166:186]) %>%
+  as.data.frame() %>%
+  rownames_to_column(var="var") %>%
+  mutate(lab = c(inc_labs, "Other"),
+         lower=mean - 1.96*se,
+         upper=mean + 1.96*se,
+         lower=ifelse(lower<0,0, lower),
+         upper=ifelse(upper>1, 1, upper)) %>%
+  dplyr::select(lab, everything())
+
+?rownames_to_column
+
+
+str(inc)
+inc
+
+frq
+describe
+
+inc2 <- describe(d[,187:207]) %>%
+  as.data.frame() %>%
+  rownames_to_column(var="var") %>%
+  mutate(lab = c(inc_labs, "Other"),
+         lower=mean - 1.96*se,
+         upper=mean + 1.96*se,
+         lower=ifelse(lower<0,0, lower),
+         upper=ifelse(upper>1, 1, upper)) %>%
+  dplyr::select(lab, everything())
 
 frq(d$inc_pattern)
 
@@ -355,6 +395,10 @@ d <- d %>%
   mutate(shocks_sev = floods_fs + drought_fs + erosion_fs + land_fs + food_fs + theft_fs)
 
 shock_labs
+
+frq(d$floods)
+
+?case_when
 
 d %>%
   dplyr::select(floods_fs:theft_fs) %>%
@@ -662,6 +706,11 @@ d <- d %>%
   mutate(traffic_unaccept = ifelse(`829`==6, 1,0))
 
 frq(d$traffic_unaccept)
+
+frq(d$`830`)
+
+d <- d %>%
+  mutate(traffic_unaccept = ifelse(`830`==1:3, 1,0))
 
 # save prepared file ---- 
 

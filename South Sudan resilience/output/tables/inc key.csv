@@ -1,0 +1,21 @@
+inc_code,varname,inc_lab,inc_lab2
+1,inc_code,Farm/crop production,a. Farm/crop production
+2,varname,Cattle production/sales,b. Cattle production/sales
+3,inc_lab,Goat production/sales,c. Goat production/sales
+4,inc_lab2,Sheep production/sales,d. Sheep production/sales
+5,inc_code,Fishing and sales,e. Fishing and sales
+6,varname,Ag wage labor in village,f. Ag wage labor in village
+7,inc_lab,Ag wage labor outside village,g. Ag wage labor outside village
+8,inc_lab2,Wage labor in village,h. Wage labor in village
+9,inc_code,Wage labor outside village,i. Wage labor outside village
+10,varname,Salaried work,j. Salaried work
+11,inc_lab,Wild bush sales,k. Wild bush sales
+12,inc_lab2,Honey production/sales,l. Honey production/sales
+13,inc_code,Petty trade other products,m. Petty trade other products
+14,varname,Petty trade own products,n. Petty trade own products
+15,inc_lab,Other self-employment ag,o. Other self-employment ag
+16,inc_lab2,Other self-employment non-ag,p. Other self-employment non-ag
+17,inc_code,Rental of land/property,q. Rental of land/property
+18,varname,Remittances,r. Remittances
+19,inc_lab,Gifts/inheritance,s. Gifts/inheritance
+20,inc_lab2,Food / cash safety net,t. Food / cash safety net

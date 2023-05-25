@@ -72,7 +72,8 @@ inc_gt
 
 ```{r}
 
-hhs <- read_csv(here("output/tables/Household hunger scale.csv"))
+hhs <- read_csv(here("output/tables/Household hunger scale.csv"),
+                show_col_types=F)
 
 hhs_gt <- hhs %>%
   dplyr::select(1, Percent) %>%
@@ -89,7 +90,6 @@ hhs_gt
 :::
 
 ::: panel-tabset
-
 ### Scale frequencies
 
 ```{r out.height="60%", out.width="70%"}
@@ -153,7 +153,8 @@ resil_gt
 
 ```{r}
 
-asp <- read_csv(here("output/tables/Aspirations binaries.csv"))
+asp <- read_csv(here("output/tables/Aspirations binaries.csv"),
+                show_col_types = F)
 
 asp_gt <- asp %>%
   dplyr::select(Aspiration, Percent) %>%
