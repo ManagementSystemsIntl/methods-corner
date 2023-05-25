@@ -3,7 +3,7 @@
 
 #source("scripts/0 South Sudan resilience panel survey - prep.r")
 
-d <- read_csv("data/daily/mels_resilience_panel_survey_english (5-24-23).csv")
+d <- read_csv("data/daily/mels_resilience_panel_survey_english (5-25-23).csv")
 
 d <- d %>%
   mutate(id = 1:nrow(d)) %>%
@@ -396,7 +396,7 @@ d <- d %>%
 
 shock_labs
 
-frq(d$floods)
+frq(d$floods_fs)
 
 ?case_when
 
@@ -678,25 +678,25 @@ frq(d$asp6)
 frq(d$asp1_miss)
 frq(d$asp1)
 
-asp <- d %>%
-  dplyr::select(asp1:asp6)
-
-lapply(asp, frq)
-
-names(d)
-
-d %>%
-  dplyr::select(asp1_miss:asp6_miss) %>%
-  lapply(., frq)
-
-asp_impute <- imputePCA(asp,
-                        method="regularized")
-asp_impute
-
-asp_imputed <- asp_impute$completeObs %>%
-  as.data.frame()
-
-lapply(asp_imputed, mean)
+# asp <- d %>%
+#   dplyr::select(asp1:asp6)
+# 
+# lapply(asp, frq)
+# 
+# names(d)
+# 
+# d %>%
+#   dplyr::select(asp1_miss:asp6_miss) %>%
+#   lapply(., frq)
+# 
+# asp_impute <- imputePCA(asp,
+#                         method="regularized")
+# asp_impute
+# 
+# asp_imputed <- asp_impute$completeObs %>%
+#   as.data.frame()
+# 
+# lapply(asp_imputed, mean)
 
 # Trafficking in Persons ---- 
 
@@ -706,11 +706,6 @@ d <- d %>%
   mutate(traffic_unaccept = ifelse(`829`==6, 1,0))
 
 frq(d$traffic_unaccept)
-
-frq(d$`830`)
-
-d <- d %>%
-  mutate(traffic_unaccept = ifelse(`830`==1:3, 1,0))
 
 # save prepared file ---- 
 

@@ -67,8 +67,6 @@ inc_gt
 
 gtsave(inc_gt, "output/tables/Income sources.html")
 
-
-
 # income rank ---- 
 
 # rnk <- dat %>%
@@ -100,10 +98,6 @@ gtsave(inc_gt, "output/tables/Income sources.html")
 
 # Household Hunger ---- 
 
-hhs_labs <- c("")
-
-lapply(hhs, frq)
-
 hhs <- dat %>%
   select(hhs1, hhs3, hhs5, hhs_severe) %>%
   describe() %>%
@@ -121,11 +115,8 @@ hhs <- dat %>%
 #  arrange(desc(Percent))
 
 hhs
+lapply(hhs, frq)
 
-?last
-
-str(shk)
-frq(d$`436`)
 
 write_csv(hhs, "output/tables/Household hunger scale.csv")
 
@@ -161,9 +152,6 @@ ggsave("output/viz/household hunger bar.png",
 
 
 describe(dat$hhs)
-
-
-
 
 names(dat)
 
@@ -205,7 +193,6 @@ shk <- dat %>%
 
 shk
 str(shk)
-frq(d$`436`)
 
 write_csv(shk, "output/tables/Shock incidence.csv")
 
@@ -242,8 +229,6 @@ shk_gt
 
 gtsave(shk_gt, "output/tables/Shock incidence.html")
 
-
-
 # Resilience ---- 
 
 resil <- dat %>%
@@ -258,8 +243,6 @@ resil <- dat %>%
   arrange(desc(Percent))
 
 resil
-str(shk)
-frq(d$`436`)
 
 write_csv(resil, "output/tables/Resilience binaries.csv")
 
@@ -275,8 +258,6 @@ resil_gt <- resil %>%
 resil_gt
 
 gtsave(resil_gt, "output/tables/Resilience binaries.html")
-
-
 
 
 # res3 <- fa(res[,2:9],
@@ -328,8 +309,6 @@ asp <- dat %>%
   arrange(desc(Percent))
 
 asp
-str(shk)
-frq(d$`436`)
 
 write_csv(asp, "output/tables/Aspirations binaries.csv")
 
@@ -345,14 +324,5 @@ asp_gt <- asp %>%
 asp_gt
 
 gtsave(asp_gt, "output/tables/Aspiration binaries.html")
-
-
-
-
-
-
-
-
-
 
 

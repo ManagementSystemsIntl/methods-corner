@@ -24,6 +24,8 @@ source("0 South Sudan resilience panel survey - prep.r")
 
 # Introduction
 
+There are `r nrow(dat)` records in this dataset.
+
 # Household
 
 ## Household structure
