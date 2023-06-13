@@ -41,18 +41,24 @@ map_packages <- c("rgeoboundaries", "ggmap", "sf","rnaturalearth","rnaturalearth
 
 lapply(map_packages, library, character.only=T)
 
+table_packages <- c("gt", "gtsummary", "gtExtras","flextable", "officer")
+lapply(table_packages, library, character.only=T)
+
+miss_packages <- c("missForest","missMDA")
+lapply(miss_packages,library, character.only=T)
+
 options(digits=3, scipen=6)
 
 # set default
 base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            panel.grid.minor.y=element_blank(),
-                           plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
-                           plot.subtitle = element_text(size=16, family="Source Sans Pro"),
-                           plot.caption=element_text(size=12, family="Source Sans Pro"),
-                           axis.title=element_text(size=16, family="Source Sans Pro"),
-                           axis.text=element_text(size=14, family="Source Sans Pro"),
-                           legend.text=element_text(size=14, family="Source Sans Pro"),
-                           strip.text=element_text(size=14, family="Source Sans Pro"),
+                           plot.title=element_text(face="bold",size=16, hjust=.5, family = "Source Sans Pro"),
+                           plot.subtitle = element_text(size=14, family="Source Sans Pro"),
+                           plot.caption=element_text(size=11, family="Source Sans Pro"),
+                           axis.title=element_text(size=14, family="Source Sans Pro"),
+                           axis.text=element_text(size=12, family="Source Sans Pro"),
+                           legend.text=element_text(size=12, family="Source Sans Pro"),
+                           strip.text=element_text(size=12, family="Source Sans Pro"),
                            panel.border=element_blank(),
                            axis.ticks = element_blank())
 
