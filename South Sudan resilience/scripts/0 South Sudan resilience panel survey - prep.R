@@ -409,11 +409,19 @@ traffic_labs <- c("Revenge","Money","Support household","Feed community","Have m
 traffic_key <- data.frame(traffic_num=1:6,
                           traffic_lab=traffic_labs)
 
-traffic_key
+traffic_labs2 <- c("Strongly Disagree", "Disagree", "Slightly Disagree", "Sligthly Agree", "Agree", "Strongly Agree")
+
+traffic_labs4 <-c("Acceptable", "Never Acceptable")
+
+traffic_key2 <- data.frame(traffic_num=1:6,
+                          traffic_lab=traffic_labs2)
+
+traffic_key2
+
 
 # read data ---- 
 
 dat <- read_rds(here("data/prepared/South Sudan resilience panel survey - prepared.rds"))
 
-
+datNames <- data.frame(names(dat))
 

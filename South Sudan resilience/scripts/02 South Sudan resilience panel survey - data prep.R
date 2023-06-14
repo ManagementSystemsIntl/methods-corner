@@ -1,13 +1,34 @@
 # South Sudan resilience panel
 # prep
 
-#source("scripts/0 South Sudan resilience panel survey - prep.r")
+source("scripts/0 South Sudan resilience panel survey - prep.r")
 
 d <- read_csv("data/daily/mels_resilience_panel_survey_english (5-29-23).csv")
 
 d <- d %>%
   mutate(id = 1:nrow(d)) %>%
   dplyr::select(id, everything())
+
+# demographics ---- 
+
+d$state <- NA
+d$county <- NA
+d$payam <- NA
+d$village <- NA
+
+d <- separate(d, state_county_payam_village, 
+              into = c("state", "county", "payam", "village"), 
+              sep = ",")
+
+d <- d %>% left_join(geo_key) %>%
+  relocate(region, .before=state)
+
+geo_key
+view(d)
+frq(d$region)
+
+str(geo_key)
+str(d)
 
 # sources of income ---- 
 
@@ -112,9 +133,6 @@ inc <- describe(d[,166:186]) %>%
          lower=ifelse(lower<0,0, lower),
          upper=ifelse(upper>1, 1, upper)) %>%
   dplyr::select(lab, everything())
-
-?rownames_to_column
-
 
 str(inc)
 inc
@@ -306,7 +324,7 @@ frq(d$hhs_severe)
 #hhs_county <- dat %>%
 #  group_by(county)
 
-describe(dat$hhs)
+#describe(dat$hhs)
 
 
 frq(d$`436`)
@@ -398,8 +416,6 @@ shock_labs
 
 frq(d$floods_fs)
 
-?case_when
-
 d %>%
   dplyr::select(floods_fs:theft_fs) %>%
   lapply(., frq)
@@ -481,13 +497,13 @@ frq(d$`504`) %>%
   gtsave("output/tables/q504.html")
 
 
-# Confidence in sub-national institutions ---- 
+# Development assistance ---- 
 
 frq(d$`504`)
 frq(d$`508`)
 frq(d$`509`)
-q509a <- data.frame(frq(d$`509_a`))
-q509a
+#q509a <- data.frame(frq(d$`509_a`))
+#q509a
 
 frq(d$`510`)
 
@@ -503,7 +519,8 @@ d <- d %>%
                                   `510`==3 ~ 1,
                                   `510`==4 ~ 2,
                                   is.na(`504`) ~ 0,
-                                  is.na(`510`) ~ 0))
+                                  is.na(`510`) ~ 0),
+         oversee_conf_bin = ifelse(oversee_conf > 0, 1, 0))
 
 
 frq(d$donor_act)
@@ -539,14 +556,13 @@ d <- d %>%
                                    `513`==2 ~ -1,
                                    `513`==3 ~ 1,
                                    `513`==4 ~ 2,
-                                   is.na(`513`) ~ 0))
-
-
+                                   is.na(`513`) ~ 0),
+         resource_conf_bin = ifelse(resource_conf>0, 1,0))
 
 frq(d$resource_govern)
 frq(d$govern_plants)
 frq(d$govern_land)
-frq(d$resource_conf)
+frq(d$resource_conf_bin)
 
 # Conflict ---- 
 
@@ -598,18 +614,18 @@ frq(d$conflict_land)
 
 frq(d$`606`)
 
-?set_labels
-
-
 d <- d %>%
   mutate(conflict_sev = `603` - 1,
          conflict_sev = case_when(conflict_sev>6 ~ 0,
                                   is.na(conflict_sev) ~ 0,
                                   TRUE ~ conflict_sev),
+         conflict_sev_bin = ifelse(conflict_sev > 1, 1,0),
          how_resolved=set_labels(`605`, labels = resolve_labs),
-         satis_elders = set_labels(`606`, labels=satis_labs))
+         satis_elders = set_labels(`606`, labels=satis_labs),
+         satis_elders_bin = ifelse(satis_elders > 2, 1,0))
 
 frq(d$satis_elders)
+frq(d$conflict_sev_bin)
 
 
 # Emergency action plans ---- 
@@ -622,12 +638,11 @@ d <- d %>%
          emerg_targeted = case_when(`611`==1 ~ 1,
                                     `611`==2 ~ 0,
                                     TRUE ~ NA_real_),
-         emerg_effective = `612` - 1)
-         # emerg_effectve = case_when(is.na(emerg_effective) ~ 0),
-         # emerg_effective = case_when(is.na(emerg_plan) ~ NA_real_,
-         #                             TRUE ~ emerg_effective))
+         emerg_effective = `612` - 1,
+         emerg_effective_bin = case_when(emerg_effective > 2 ~ 1,
+                                         emerg_effective < 3 ~ 0,
+                                         TRUE ~ NA_real_))
          
-
 frq(d$emerg_plan)
 frq(d$emerg_targeted)
 frq(d$emerg_effective)
@@ -659,53 +674,273 @@ d <- d %>%
                           `633`==4 | `633` ==5 ~ 1,
                           TRUE ~ 0))
 
-frq(d$`633`)         
+frq(d$`629`)         
 frq(d$asp6)
          
-# asp1 = ifelse(`629`==1, 1,0),
-#          asp2 = ifelse(`630`==1, 1,0),
-#          asp3 = case_when(`634` < 4 ~ 1,
-#                           `634` > 3 ~0,
-#                           TRUE ~ NA_real_),
-#          asp4 = case_when(`635` < 4 ~ 1,
-#                           `635` > 3 ~ 0,
-#                           TRUE ~ NA_real_),
-#          asp5 = ifelse(`632`==1, 1,0),
-#          asp6 = ifelse(`633`==6, NA,
-#                        ifelse(`633`==4 | `633`==5, 1, 0))
-#          )
 
 frq(d$asp1_miss)
 frq(d$asp1)
 
-# asp <- d %>%
-#   dplyr::select(asp1:asp6)
-# 
-# lapply(asp, frq)
-# 
-# names(d)
-# 
-# d %>%
-#   dplyr::select(asp1_miss:asp6_miss) %>%
-#   lapply(., frq)
-# 
-# asp_impute <- imputePCA(asp,
-#                         method="regularized")
-# asp_impute
-# 
-# asp_imputed <- asp_impute$completeObs %>%
+ asp <- d %>%
+   dplyr::select(asp1:asp6)
+ 
+ lapply(asp, frq)
+ 
+ names(d)
+ 
+ d %>%
+   dplyr::select(asp1_miss:asp6_miss) %>%
+   lapply(., frq)
+ 
+ asp_impute <- imputePCA(asp,
+                         method="regularized")
+ asp_impute
+ 
+ #asp_imputed <- asp_impute$completeObs %>%
 #   as.data.frame()
-# 
+ 
 # lapply(asp_imputed, mean)
+ 
+ fa.parallel(asp, cor="tet")
+ 
+ asp_pc <- principal(asp, 
+                     cor="tet")
+ 
+ asp_pc
+
+ asp_pc_scrs <- asp_pc$scores %>%
+   unlist() %>%
+   as.data.frame()
+ 
+ d <- d %>%
+   mutate(aspirations_comp=asp_pc_scrs$PC1,
+          aspirations_comp_resc = scales::rescale(aspirations_comp, to = c(0, 100)))
+ 
+ describe(d$aspirations_comp_resc)
+ 
+ ggplot(d, aes(x=aspirations_comp_resc)) + 
+   geom_density()
+ 
+ # Locus of control comp ---- 
+ 
+ frq(d$`612`)
+ frq(d$`636`)
+ 
+ loc <- d %>%
+   select(`636`:`638`) 
+ 
+ loc_impute <- imputePCA(loc, method="regularized")
+ 
+ loc_imputed <- loc_impute$completeObs
+ loc_imputed
+ 
+ fa.parallel(loc_imputed,
+             cor="poly")
+ 
+ loc_pc <- principal(loc_imputed,
+                     cor="poly")
+ 
+ loc_pc
+ summary(loc_pc)
+ 
+ loc_pc_scrs <- loc_pc$scores %>%
+   unlist() %>%
+   as.data.frame()
+ 
+ d <- d %>%
+   mutate(loc_comp = loc_pc_scrs$PC1,
+          loc_comp_resc = scales::rescale(loc_comp, to=c(0,100)))
+ 
+ 
+ # Agency latent ---- 
+ 
+d %>%
+   select(aspirations_comp,
+          loc_comp) %>%
+   fa.parallel()
+ 
+agency_fa <- d %>%
+   select(aspirations_comp,
+          loc_comp) %>%
+   fa(scores="tenBerge",
+      fm="ml")
+ 
+agency_fa
+ 
+agency_fa_scrs <- agency_fa$scores %>%
+   unlist() %>%
+   as.data.frame()
+ 
+d <- d %>%
+   mutate(agency_latent = agency_fa_scrs$ML1,
+          agency_latent_resc = scales::rescale(agency_latent, c(0,100)))
+ 
+ggplot(d, aes(x=agency_latent_resc)) + 
+  geom_density()
+ 
+# Sexual and gender based violence ---- 
+ 
+gbv_labs <- c("Never",
+              "Within a relationship, unmarried",
+              "Within a relationship, married",
+              "In a time of conflict",
+              "To resolve dispute within the family",
+              "To resolve a dispute within a marriage",
+              "Other") 
+ 
+gbv_key <- data.frame(gbv=1:7,
+                      gbv_lab=gbv_labs)
+
+
+d <- d %>%
+  mutate(gbv_nev = case_when(`812`==1 ~ 1,
+                             TRUE ~ 0),
+         gbv_accept = case_when(`812`!=1 ~ 1,
+                                TRUE ~ 0))
+
+frq(d$gbv_accept)  
+
+# Education ---- 
+
+
+# Bride Price ----
+
+frq(d$`824`)
+
+d <- d %>% 
+  mutate(bp_accept_bin=case_when(`824` < 3 ~ 0,
+                                 `824` > 2 ~ 1,
+                                 TRUE ~ 0),
+         bp_disagree_bin = case_when(`824` < 3 ~ 1,
+                                     TRUE ~ 0),
+         bp_fin_bin = case_when(`825` < 4 ~ 0,
+                                `825` > 3 ~ 1,
+                                TRUE ~ 0),
+         bp_trad_bin = case_when(`827` > 3 ~ 1,
+                                 TRUE ~ 0))
+
+frq(d$`824`)
+frq(d$bp_disagree_bin)
+
+bp <- d %>%
+  select(`824`, `825`, `827`)
+
+
+bp_impute <- imputePCA(bp,
+                        method="regularized")
+
+bp_impute
+
+bp_imputed <- bp_impute$completeObs %>%
+   as.data.frame() %>%
+  mutate(bp_against = case_when(`824` < 3 &
+                                `825` < 4 ~ 1,
+#                                `827` < 4 ~ 1,
+                                TRUE ~ 0))
+
+head(bp_imputed)
+lapply(bp_imputed, frq)
+
+fa.parallel(bp_imputed[,1:3], 
+            cor="poly")
+
+?fa
+bp_fac <- fa(bp_imputed[,1:3],
+             fm="ml",
+             scores="tenBerge")
+
+bp_fac
+summary(bp_fac)
+
+bp_scrs <- bp_fac$scores %>%
+  as.data.frame()
+
+describe(bp_scrs)
+
+ggplot(bp_scrs, aes(x=ML1)) + 
+  geom_density(geom="line")
+
 
 # Trafficking in Persons ---- 
 
 frq(d$`829`)
 
 d <- d %>%
-  mutate(traffic_unaccept = ifelse(`829`==6, 1,0))
+  mutate(traffic_unaccept_bin = ifelse(`829`==6, 1,0),
+         traffic_accept_bin = ifelse(`829` ==6, 0,1))
 
 frq(d$traffic_unaccept)
+frq(d$traffic_accept)
+
+
+# TIP_accept_cnty <- d %>%
+#   group_by(county) %>%
+#   summarise(se=std.error(traffic_accept),
+#             traffic_accept=mean(traffic_accept)) %>%
+#   arrange(desc(traffic_accept))
+# 
+# TIP_accept_cnty
+# 
+# 
+# TIP_accept_cnty <- d %>%
+#   group_by(county) %>%
+#   summarise(se=std.error(traffic_accept),
+#             traffic_unaccept=mean(traffic_accept))
+# TIP_accept_cnty
+
+
+
+# ggplot(d, aes(x=traffic_unaccept)) + 
+# geom_bar(width=.4, fill="dodgerblue2", alpha=.6) +  
+#   scale_x_continuous(breaks=0:1,
+#                      labels=c("Acceptable", "Unacceptable")) + 
+#    theme(axis.title.y=element_blank(),
+#          axis.ticks.y=element_blank()) +
+#    labs(x="",
+#         y="",
+#         title="TIP Acceptability")
+
+frq(d$`830_new`)
+
+# d <- d %>%
+# mutate(TIP_agree = case_when(`830_new`==1 ~ 1,
+#                              `830_new`==2 ~ 1,
+#                              `830_new`==3 ~ 1,
+#                              `830_new`==4 ~ 2,
+#                              `830_new`==5 ~ 2,
+#                              `830_new`==6 ~ 2,))
+
+frq(d$TIP_agree)
+
+d <- d %>%
+  mutate(TIP_miss1 = ifelse(is.na(`830_new`), 1,0),
+         TIP_miss2 = ifelse(is.na(`831_new`), 1,0),
+         TIP_miss3 = ifelse(is.na(`832_new`), 1,0),
+         TIP_agree1 = case_when(`830_new` < 4 ~ 0,
+                          `830_new` > 3 ~ 1,
+                          TRUE ~ 0),
+         TIP_agree2 = case_when(`831_new` < 4 ~ 0,
+                          `831_new` > 3 ~ 1,
+                          TRUE ~ 0),
+         TIP_agree3 = case_when(`832_new` < 4 ~ 0,
+                                `832_new` > 3 ~ 1,
+                       TRUE ~ 0))
+
+frq(d$TIP_miss1)
+frq(d$TIP_miss2)
+frq(d$TIP_miss3)
+
+frq(d$TIP_agree1)
+frq(d$TIP_agree2)
+frq(d$TIP_agree3)
+
+
+TIP_agree <- d %>%
+  dplyr::select(TIP_agree1:TIP_agree3)
+
+lapply(TIP_agree, frq)
+
+names(d)
 
 # save prepared file ---- 
 

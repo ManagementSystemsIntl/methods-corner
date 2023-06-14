@@ -1,0 +1,8 @@
+variable,val,label,frq,raw.prc,cum.prc,gbv_lab,Percent
+x,1,<none>,335,54.65,54.92,Never,0.5491803278688525
+x,2,<none>,13,2.12,57.05,"Within a relationship, unmarried",0.021311475409836064
+x,3,<none>,141,23,80.16,"Within a relationship, married",0.23114754098360657
+x,4,<none>,31,5.06,85.25,In a time of conflict,0.05081967213114754
+x,5,<none>,67,10.93,96.23,To resolve dispute within the family,0.10983606557377049
+x,6,<none>,16,2.6100000000000003,98.85000000000001,To resolve a dispute within a marriage,0.02622950819672131
+x,7,<none>,7,1.1400000000000001,100,Other,0.011475409836065573

@@ -1,0 +1,5 @@
+variable,val,label,frq,raw.prc,cum.prc,traffic_labs,Percent
+x,1,<none>,35,5.71,5.71,Revenge,0.057096247960848286
+x,2,<none>,2,0.33,6.04,Money,0.0032626427406199023
+x,5,<none>,1,0.16,6.2,Have more children,0.0016313213703099511
+x,6,<none>,575,93.8,100,Never acceptable,0.9380097879282219

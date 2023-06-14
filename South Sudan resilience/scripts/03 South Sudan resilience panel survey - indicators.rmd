@@ -2,15 +2,15 @@
 title: South Sudan
 subtitle: Resilience Panel Survey
 date: "`r Sys.Date()`"
-#toc: true
-#toc-depth: 3
+toc: true
+toc-depth: 3
 execute-dir: project
 number-sections: false
 format:
   html:
     code-fold: true
     page-layout: full
-    #toc-location: left
+    toc-location: left
 editor: visual
 reference-location: margin
 citation-location: margin
@@ -22,11 +22,9 @@ source("0 South Sudan resilience panel survey - prep.r")
 #d <- read_rds(here("data/prepared/South Sudan resilience panel survey - prepared.rds"))
 ```
 
-# Introduction
+## Introduction
 
 There are `r nrow(dat)` records in this dataset.
-
-# Household
 
 ## Household structure
 
@@ -89,9 +87,7 @@ hhs_gt <- hhs %>%
 hhs_gt
 
 ```
-:::
 
-::: panel-tabset
 ### Scale frequencies
 
 ```{r out.height="60%", out.width="70%"}
@@ -100,10 +96,30 @@ include_graphics(here("output/viz/household hunger bar.png"))
 ```
 
 ### By county
+
+```{r}
+
+hhs_sev_cnty <- read_csv(here("output/tables/hhs severe county.csv"),
+                         show_col_types=F)
+
+hhs_sev_cnty_gt <- hhs_sev_cnty %>%
+  dplyr::select(county, hhs_severe) %>%
+  mutate(Bar=hhs_severe*100) %>%
+  gt() %>%
+  gt_plt_bar_pct(column=Bar, fill=usaid_blue, background=light_grey, scaled=T) %>%
+  cols_width(3 ~ px(125)) %>%
+  fmt_percent(2, decimals=0) %>%
+  cols_label(hhs_severe="Severe household hunger",
+    Bar="")
+
+hhs_sev_cnty_gt
+
+```
 :::
 
 ## Household Shocks
 
+::: panel-tabset
 ### Individual shocks
 
 ```{r}
@@ -123,13 +139,34 @@ shk_gt <- shk %>%
 shk_gt
 ```
 
+### Total shock exposure
+
 ```{r}
 include_graphics(here("output/viz/Exposure to shocks.png"))
 ```
 
+### Shock exposure, by county
+
+```{r}
+
+shocks_sev_cnty <- read_csv(here("output/tables/Shock severity county.csv"),
+                            show_col_types = F)
+
+shocks_sev_cnty_gt <- shocks_sev_cnty %>%
+  dplyr::select(County, shocks_sev) %>%
+  gt() %>%
+  fmt_number(2, decimals=1) %>%
+  cols_label(shocks_sev="Shock severity (0-24)")
+
+shocks_sev_cnty_gt
+
+```
 :::
 
 ## Resilience
+
+::: panel-tabset
+### Resilience items
 
 ```{r}
 
@@ -149,9 +186,64 @@ resil_gt
 
 ```
 
-## 
+### Overall resilience
+
+### Resilience, by county
+:::
+
+## Development assistance
+
+
+## Natural resource management
+
+
+## Conflict
+
+
+## Community actions plans
+
+::: panel-tabset
+
+### Individual items
+
+```{r}
+
+emerg <- read_csv(here("output/tables/Community action plan binaries.csv"),
+                  show_col_types = F)
+
+emerg_gt <- emerg %>%
+  dplyr::select(Item, Percent) %>%
+  gt() %>%
+  fmt_percent(2, decimals=0)
+
+emerg_gt
+
+```
+
+
+### by county
+
+```{r}
+emerg_cnty <- read_csv(here("output/tables/Emergency action plans county.csv"),
+                       show_col_types = F)
+
+emerg_cnty_gt <- emerg_cnty %>%
+  #dplyr::select(County, emerg_resc) %>%
+  gt() %>%
+  fmt_percent(2:4, decimals=0) %>%
+  cols_label(emerg_plan="Emergency plan in place",
+             emerg_targeted="Plan targeted to need",
+             emerg_effective_bin="Plan effective")
+
+emerg_cnty_gt
+```
+
+:::
 
 ## Aspirations
+
+::: panel-tabset
+### Aspirations items
 
 ```{r}
 
@@ -171,3 +263,170 @@ asp_gt
 
 
 ```
+
+### Overall aspirations
+
+### Aspirations, by county
+:::
+
+## Social norms
+
+::: panel-tabset
+### Acceptability of social and gender-based violence
+
+```{r}
+
+q812 <- read_csv(here("output/tables/q812.csv"),
+                show_col_types = F)
+
+q812_gt <- q812 %>%
+  dplyr::select(gbv_lab, Percent) %>%
+  mutate(Bar=Percent*100) %>%
+  arrange(desc(Percent)) %>%
+  gt() %>%
+  gt_plt_bar_pct(column=Bar, fill=usaid_blue, background=light_grey, scaled=T) %>%
+  cols_width(3 ~ px(125)) %>%
+  fmt_percent(2, decimals=0) %>%
+  cols_label(gbv_lab="Acceptability of violence",
+             Bar="")
+
+q812_gt
+
+```
+
+### Acceptability of violence, by county
+
+```{r}
+
+gbv_accept_cnty <- read_csv(here("output/tables/Gender based violence acceptance county.csv"),
+                            show_col_types = F)
+
+gbv_accept_cnty_gt <- gbv_accept_cnty %>%
+  dplyr::select(County, gbv_accept) %>%
+  mutate(Bar=gbv_accept*100) %>%
+  gt() %>%
+  gt_plt_bar_pct(column=Bar, fill=usaid_blue, background=light_grey, scaled=T) %>%
+  cols_width(3 ~ px(125)) %>%
+  fmt_percent(2, decimals=0) %>%
+  cols_label(gbv_accept="Acceptibility of gender-based violence",
+             Bar="")
+
+gbv_accept_cnty_gt
+
+```
+:::
+
+### Girls' education
+
+::: panel-tabset
+
+```{r}
+
+```
+
+### Bride price
+
+::: panel-tabset
+#### Acceptability of bride price
+
+```{r}
+
+bp <- read_csv(here("output/tables/Bride price binaries.csv"),
+               show_col_types=F)
+
+bp_gt <- bp %>%
+  dplyr::select(Attitude, Percent) %>%
+  mutate(Bar=Percent*100) %>%
+  gt() %>%
+  gt_plt_bar_pct(column=Bar, fill=usaid_blue, background=light_grey, scaled=T) %>%
+  cols_width(3 ~ px(125)) %>%
+  fmt_percent(2, decimals=0) %>%
+  cols_label(Bar="")
+
+bp_gt
+
+
+```
+
+#### Acceptability, by county
+
+```{r}
+
+bp_accept_cnty <- read_csv(here("output/tables/Bride price acceptance county.csv"),
+                           show_col_types = F)
+
+bp_accept_cnty_gt <- bp_accept_cnty %>%
+  dplyr::select(County, bp_accept) %>%
+  mutate(Bar=bp_accept*100) %>%
+  gt() %>%
+  gt_plt_bar_pct(column=Bar, fill=usaid_blue, background=light_grey, scaled=T) %>%
+  cols_width(3 ~ px(125)) %>%
+  fmt_percent(2, decimals=0) %>%
+  cols_label(bp_accept="Acceptability of bride price",
+             Bar="")
+
+bp_accept_cnty_gt
+
+```
+:::
+
+### Trafficking in persons
+
+::: panel-tabset
+#### Acceptability of trafficking
+
+```{r}
+
+traffic_accept <- read_csv(here("output/tables/q829 TIP.csv"),
+                             show_col_types = F)
+
+traffic_accept_gt <- traffic_accept %>%
+  dplyr::select(traffic_labs, Percent) %>%
+  mutate(Bar=Percent*100) %>%
+  gt() %>%
+  gt_plt_bar_pct(column=Bar, fill=usaid_blue, background=light_grey, scaled=T) %>%
+  cols_width(3 ~ px(125)) %>%
+  fmt_percent(2, decimals=0) %>%
+  cols_label(traffic_labs="Trafficking Acceptability",
+             Bar="")
+
+traffic_accept_gt
+```
+
+```{r}
+TIP_agree <- read_csv(here("output/tables/TIP Binaries.csv"),
+                      show_col_types = F)
+
+TIP_gt <- TIP_agree %>%
+  dplyr::select(TIP_agree, Percent) %>%
+  mutate(Bar=Percent*100) %>%
+  gt() %>%
+  gt_plt_bar_pct(column=Bar, fill=usaid_blue, background=light_grey, scaled=T) %>%
+  cols_width(3 ~ px(125)) %>%
+  fmt_percent(2, decimals=0) %>%
+  cols_label(TIP_agree="Acceptance of Trafficking",
+              Bar="")
+
+TIP_gt
+```
+
+#### Acceptance of trafficking, by county
+
+```{r}
+
+TIP_accept_cnty <- read_csv(here("output/tables/TIP acceptance county.csv"),
+                            show_col_types = F)
+
+TIP_accept_cnty_gt <- TIP_accept_cnty %>%
+  dplyr::select(County=county, Percent=traffic_accept) %>%
+  mutate(Bar=Percent*100) %>%
+  gt() %>%
+  gt_plt_bar_pct(column=Bar, fill=usaid_blue, background=light_grey, scaled=T) %>%
+  cols_width(3 ~ px(125)) %>%
+  fmt_percent(2, decimals=0) %>%
+  cols_label(#traffic_labs="Trafficking Acceptability",
+             Bar="")
+
+TIP_accept_cnty_gt
+```
+:::
