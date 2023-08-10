@@ -94,6 +94,7 @@ lapply(d[,4:8], mean)
 
 vars <- c("alcohol", "truant","vandalism","theft","weapon") 
 
+
 d2 <- d
 
 for (i in 1:length(vars)){
@@ -101,6 +102,7 @@ for (i in 1:length(vars)){
 }
 
 head(d2)
+str(d2)
 
 f1 <- as.formula(cbind(alcohol, truant, vandalism, theft, weapon) ~1 )
 
