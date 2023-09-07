@@ -1,0 +1,54 @@
+---
+title: "USAID impact evaluation trends"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+source("../misc/prep.r")
+library(knitr)
+
+```
+
+
+---
+class: center, middle
+
+# USAID count of evaluations 2016-2022
+
+```{r}
+
+include_graphics("ie pe trends 2016-2022 fill.png")
+
+```
+
+
+---
+class: inverse, center, middle
+
+# Compare to MSI inventory in 2020
+
+```{r}
+include_graphics("msi and usaid count of IEs.png")
+```
+
+
+---
+
+# 
+
+```{r}
+include_graphics("ie quality over time (MSI 2020).png")
+```
+
+
+
+

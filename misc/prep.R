@@ -52,7 +52,8 @@ options(digits=3, scipen=6)
 # set default
 base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            panel.grid.minor.y=element_blank(),
-                           plot.title=element_text(face="bold",size=16, hjust=.5, family = "Source Sans Pro"),
+                           plot.title=element_text(#face="bold",
+                                                   size=16, hjust=.5, family = "Source Sans Pro"),
                            plot.subtitle = element_text(size=14, family="Source Sans Pro"),
                            plot.caption=element_text(size=11, family="Source Sans Pro"),
                            axis.title=element_text(size=14, family="Source Sans Pro"),
@@ -67,7 +68,8 @@ theme_set(base)
 faceted <- theme_bw() +
     theme(panel.grid.minor.x=element_blank(),
           panel.grid.minor.y=element_blank(),
-          plot.title=element_text(face="bold",size=18, hjust=.5, family = "Source Sans Pro"),
+          plot.title=element_text(#face="bold",
+                                  size=18, hjust=.5, family = "Source Sans Pro"),
           plot.subtitle = element_text(size=16, family="Source Sans Pro"),
           plot.caption=element_text(size=12, family="Source Sans Pro"),
           axis.title=element_text(size=16, family="Source Sans Pro"),
