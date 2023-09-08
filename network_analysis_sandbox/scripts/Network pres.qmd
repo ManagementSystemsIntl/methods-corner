@@ -1,0 +1,59 @@
+---
+title: "Social Network Analysis: In 15 minutes"
+format: revealjs
+editor: visual
+---
+
+
+```{r echo = FALSE, output = FALSE}
+
+source(here::here("./network_analysis_sandbox/prep/prep.R"))
+```
+
+## Agenda
+
+ - What is a network
+ - Why is it important
+ - How do I understand a network
+
+
+# What is a network
+
+## A network is ...
+
+ - A grouping of more than two people or things (for today we'll focus on people)
+ 
+ 
+```{r echo = FALSE}
+
+#develop random network
+
+df <- data.frame(name = c("Steve", "Steve", "Steve", "Chris", "Cheryl", "Cheryl", "Stephanie", "Stephanie", "Stephanie", "Paulo")
+                 , friend = c("Chris", "Cheryl", "Stephanie", "Paulo", "Paulo", "Stephanie", "Steve", "Chris", "Paulo", "Chris"))
+
+df <- df |>
+  mutate(team = case_when(name == "Steve" | name == "Chris" ~ "A", name == "Cheryl" | name == "Paulo" ~ "B", name == "Stephanie" ~ "C"))
+
+g <- graph_from_data_frame(df, directed = FALSE)
+
+
+plot(g)
+
+```
+
+Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.
+
+## Bullets
+
+When you click the **Render** button a document will be generated that includes:
+
+-   Content authored with markdown
+-   Output from executable code
+
+## Code
+
+When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
