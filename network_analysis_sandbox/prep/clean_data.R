@@ -11,8 +11,9 @@ set.seed(13287)
 
 #SEA only and only those who listed mentors
 
-df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
-  select(ID
+df <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx"), 
+                           sheet="Sheet1") |>
+  dplyr::select(ID
          , Name 
          , home_field = `Are you home office or field office staff?` 
          , practice_area = `Practice Area` 
@@ -27,7 +28,7 @@ df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-2
          & !is.na(to_mentor))
 
 df$practice_area <- df$practice_area |>
-  recode("Strategy, Evaluation and Analysis" = "SEA"
+  dplyr::recode("Strategy, Evaluation and Analysis" = "SEA"
          , "Education" = "SEA")
 
 #reworking this data set for mentoring
@@ -52,7 +53,7 @@ unique(df1$to_mentor3)
 #this fixes the names of the to_mentor3 column
 df1$to_mentor3 <- df1$to_mentor3 |>
   str_trim() |> #eliminates extra spaces before and after text
-  recode("Tim R" = "Tim Reilly"
+  dplyr::recode("Tim R" = "Tim Reilly"
          , "Michelle" = "Michelle Adams-Matson"
          , "Tim R." = "Tim Reilly"
          , "None" = "skip"
@@ -95,10 +96,10 @@ df2_nodes <- df1_nodes |>
 
 #write in some of the data for missing people in our network
 df2_nodes$home_field <- df2_nodes$home_field |>
-  replace_na("Home office")
+  tidyr::replace_na("Home office")
 
 df2_nodes$practice_area <- df2_nodes$practice_area |>
-  replace_na("SEA")
+  tidyr::replace_na("SEA")
 
 
 #delete any duplicate nodes
@@ -110,7 +111,7 @@ df2_vertices <- subset(df2_nodes, !duplicated(value))
 
 #SEA only and only those who listed tech advisors
 
-df_tech <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
+df_tech <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
   select(ID
          , Name 
          , home_field = `Are you home office or field office staff?` 
@@ -126,7 +127,7 @@ df_tech <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data
          & !is.na(to_tech_ques))
 
 df_tech$practice_area <- df_tech$practice_area |>
-  recode("Strategy, Evaluation and Analysis" = "SEA"
+  dplyr::recode("Strategy, Evaluation and Analysis" = "SEA"
          , "Education" = "SEA")
 
 #reworking this data set for mentoring
@@ -146,7 +147,7 @@ unique(df_tech1$to_tech2)
 #this fixes the names of the to_mentor3 column
 df_tech1$to_tech3 <- df_tech1$to_tech2 |>
   str_trim() |> #eliminates extra spaces before and after text
-  recode("No one right now" = "skip"
+  dplyr::recode("No one right now" = "skip"
          , "Dan" = "Dan Killian"
          , "David" = "David Hinkle"
          , "Tim S." = "Tim Shifflett"
@@ -189,10 +190,10 @@ df_tech_vertices <- subset(df_tech_nodes1, !duplicated(value))
 
 #replace some missing values
 df_tech_vertices$home_field <- df_tech_vertices$home_field |>
-  replace_na("Home office")
+  tidyr::replace_na("Home office")
 
 df_tech_vertices$practice_area <- df_tech_vertices$practice_area |>
-  replace_na("SEA")
+  tidyr::replace_na("SEA")
 
 #make a graph object
 df_graph_tech <- graph_from_data_frame(df_tech_ties
