@@ -1,0 +1,41 @@
+<style>
+
+/* Make all slide backgrounds dark blue */
+.reveal-test {
+  background-color: #003478 !important;
+  background-opacity: .3;
+}
+
+
+/* Style all slides*/
+.slide {
+  font-family: Corbel;
+  font-size: 20px;
+  color: #003478;
+  background-color: #FDF5E6;
+  background-opacity: .001;
+  }
+
+h1 {
+  font-family: Corbel;
+  color: #003478; 
+    font-size: 38px;
+}
+
+h2 {
+  font-family: Corbel;
+  color: #007C92;
+  font-size: 32px;
+}
+
+h3 {
+  font-family: Corbel;
+  color: #6639B7;
+  font-size: 28px;
+}
+
+p.caption{
+font-size: small;
+}
+
+</style>

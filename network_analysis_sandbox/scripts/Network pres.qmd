@@ -2,9 +2,9 @@
 title: "Social Network Analysis: In 15 minutes"
 title-slide-attributes:
   background-color: #003478
+css: styles.css
 format: revealjs
 editor: visual
-css: styles.css
 ---
 
 
@@ -13,14 +13,16 @@ css: styles.css
 source(here::here("./network_analysis_sandbox/prep/prep.R"))
 ```
 
-## Agenda {background-color="#003478"}
+## Agenda {.slide}
 
  - What is a network
  - Why is it important
  - How do I understand a network
 
 
-# What is a network?
+# What is a network?  
+
+What is this? 
 
 ## A network is ...
 
