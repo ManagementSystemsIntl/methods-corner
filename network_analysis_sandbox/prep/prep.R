@@ -2,14 +2,19 @@ packages <- c("bookdown", "cowplot", "extrafont", "extrafontdb"
               , "flextable", "lubridate", "igraph", "ggraph", "knitr", "patchwork", "reactable", "reactablefmtr", "readxl"
               , "tidygraph", "tidyverse", "visNetwork")
 
-
-lapply(packages, library, character.only=T)
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+# Packages loading
+lapply(packages, library, character.only = TRUE) |>
+  invisible()
 
 ## custom colors
-my_pal <- c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288",
-                     "#AA4499", "#44AA99", "#999933", "#882255", "#661100",
-                     "#6699CC", "#888888", "#764E9F", "#ED645A", "#edd9a3")
-                     
+my_pal <- c("#003478", "#747678", "#0065BD", "#008524", "#007C92",
+            "#6639B7", "#D0103A", "#C84E00", "#935E3A")
+
 #theme for ggplot2 objects
 theme.plot <- function(){
   require(extrafont)

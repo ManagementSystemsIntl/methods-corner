@@ -1,28 +1,31 @@
 ---
 title: "Social Network Analysis: In 15 minutes"
+title-slide-attributes:
+  background-color: #003478
 format: revealjs
 editor: visual
+css: styles.css
 ---
 
 
-```{r echo = FALSE, output = FALSE}
+```{r echo = FALSE, output = FALSE, warning = FALSE}
 
 source(here::here("./network_analysis_sandbox/prep/prep.R"))
 ```
 
-## Agenda
+## Agenda {background-color="#003478"}
 
  - What is a network
  - Why is it important
  - How do I understand a network
 
 
-# What is a network
+# What is a network?
 
 ## A network is ...
 
  - A grouping of more than two people or things (for today we'll focus on people)
- 
+ - It describes the interconnectedness of the elements within it and how the different nodes (people) work together
  
 ```{r echo = FALSE}
 
