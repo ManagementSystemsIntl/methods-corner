@@ -33,8 +33,9 @@ Let's start by looking at which analytical softwares are used most frequently by
 ```{r, echo = FALSE, output = FALSE, warning = FALSE}
 #importing and cleaning column names
 
-df <- read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx")) |>
-  select(Name 
+df <- readxl::read_xlsx(here::here("network_analysis_sandbox/data/staff_survey_data_03-21.xlsx"),
+                sheet=1) |>
+  dplyr::select(Name 
         , home_field = `Are you home office or field office staff?` 
         , practice_area = `Practice Area` 
         , training = `Training/Credential specific to data analytics` 
@@ -66,7 +67,7 @@ df1 <- df |>
 
 #clean up a few software names
 df1$new <- df1$new |>
-  recode("STATA" = "Stata"
+  dplyr::recode("STATA" = "Stata"
          , "Spss" = "SPSS"
          , "EXCEL" = "Excel") 
 
@@ -109,10 +110,10 @@ Next, let's look at the networks. We collected data for two networks -- one rela
 ```{r echo = FALSE, output = TRUE }
 
 #load network data from files
-edges_mentor <- read_xlsx(here::here("./network_analysis_sandbox/data/edges_mentor.xlsx"))
-nodes_mentor <- read_xlsx(here::here("./network_analysis_sandbox/data/nodes_mentor.xlsx"))
-edges_tech <- read_xlsx(here::here("./network_analysis_sandbox/data/edges_tech.xlsx"))
-nodes_tech <- read_xlsx(here::here("./network_analysis_sandbox/data/nodes_tech.xlsx"))
+edges_mentor <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/edges_mentor.xlsx"))
+nodes_mentor <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/nodes_mentor.xlsx"))
+edges_tech <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/edges_tech.xlsx"))
+nodes_tech <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/nodes_tech.xlsx"))
 
 
 ###create graph object
@@ -158,8 +159,7 @@ g2 <- ggraph(graph_tech, layout = "with_kk") +
   theme.graph() +
   theme(legend.position = "none")
 
-g1
-g2
+g1 + g2
 
 ```
 
@@ -172,9 +172,9 @@ g2
 #| layout-nrow: 1
 #| title: "Dan, I wanted the above graphs to spread out like this"
 
-plot(cars, main = "Dan, I wanted the above graphs to spread out like this")
-plot(iris)
-plot(pressure)
+#plot(cars, main = "Dan, I wanted the above graphs to spread out like this")
+#plot(iris)
+#plot(pressure)
 ```
 ### Network statistics
 
@@ -202,7 +202,7 @@ density_ment <- edge_density(graph_ment)
 #calculate the mean_distance
 avg_dist_ment <- mean_distance(graph_ment, directed = FALSE)
 #calculate the betweeness
-b1 <- betweenness(graph_ment, directed = FALSE)
+b1 <- igraph::betweenness(graph_ment, directed = FALSE)
 between_ment <- mean(b1)
 #calculate the transitivity of the network
 trans_ment <- transitivity(graph_ment)
@@ -232,7 +232,7 @@ density_tech <- edge_density(graph_tech)
 avg_dist_tech <- mean_distance(graph_tech, directed = FALSE)
 
 #calculate the betweeness
-b2 <- betweenness(graph_tech, directed = FALSE)
+b2 <- igraph::betweenness(graph_tech, directed = FALSE)
 
 between_tech <- mean(b2)
 #calculate the transitivity of the network
