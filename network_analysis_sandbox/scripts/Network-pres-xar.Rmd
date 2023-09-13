@@ -50,7 +50,7 @@ class: left, top
 ]
 
 .pull-right[
-![Friends network](./network_analysis_sandbox/viz/friend-plot.png")
+![Friends network](./network_analysis_sandbox/viz/friend-plot.png)
 ]
 
 ---
@@ -84,7 +84,7 @@ g_plot <- ggraph(g, layout = "kk") +
 
 ggsave(plot = g_plot
        , filename  = "friend-plot.png"
-       , path = "./network_analysis_sandbox/viz"
+       , path = "./network_analysis_sandbox/viz/"
        , height = 4
        , width = 6
        , units = "in")
