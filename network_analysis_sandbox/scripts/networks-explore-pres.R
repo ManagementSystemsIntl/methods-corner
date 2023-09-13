@@ -11,11 +11,11 @@ df <- df |>
 g <- graph_from_data_frame(df, directed = TRUE)
 
 
-g_plot <- ggraph(g)+#, layout = "kk") +
+g_plot <- ggraph(g, layout = "stress") +
   geom_edge_link(width = 1
                  , color = "#6639B7") +
   geom_node_point(color = "white"
-                  , size = 24)+
+                  , size = 20)+
   geom_node_text(aes(label = name)
                  , color = "#6639B7"
                  , size = 4)+ 
