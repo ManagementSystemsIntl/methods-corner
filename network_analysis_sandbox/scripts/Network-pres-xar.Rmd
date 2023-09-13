@@ -18,6 +18,7 @@ output:
 options(htmltools.dir.version = FALSE)
 
 source(here::here("./network_analysis_sandbox/prep/prep.R"))
+source(here::here("./network_analysis_sandbox/scripts/networks-explore-pres.R"))
 
 ```
 
