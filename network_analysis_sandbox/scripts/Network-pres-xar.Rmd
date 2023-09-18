@@ -51,7 +51,7 @@ background-size: 65%
 --
 
 .pull-right[
-A set of relationships between "stuff"
+A set of relationships between ...
 - People
 - Organizations
 - Nations
@@ -67,7 +67,7 @@ class: left, top
 
 # What is a network? 
 
-How should I understand a network? 
+## Why are networks interesting? 
 
 
 ---
