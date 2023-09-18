@@ -36,29 +36,39 @@ style_mono_accent(
 
  - What is a network
  - Why is it important
- - How do I understand a network
+ - How do I understand social networks?
 
 
 
 ---
 class: left, top
+background-image: url("./network_analysis_sandbox/viz/friend-plot.png")
+background-position: left
+background-size: 65%
 # What is a network?  
 
-.pull-left[
-- One bullet.
 
-- Another bullet.
-]
+--
 
 .pull-right[
-![Friends network](./network_analysis_sandbox/viz/friend-plot.png)
+A set of relationships between "stuff"
+- People
+- Organizations
+- Nations
+- Purchases on Amazon.com
+- Brain cells
+- Computers
+- Social media connections
 ]
 
+
 ---
+class: left, top
 
+# What is a network? 
 
+How should I understand a network? 
 
-# Get Started
 
 ---
 class: left, top

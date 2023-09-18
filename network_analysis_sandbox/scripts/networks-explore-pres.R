@@ -16,12 +16,13 @@ g <- graph_from_data_frame(df, directed = TRUE)
 
 g_plot <- ggraph(g, layout = "kk") +
   geom_edge_link(width = 1
-                 , color = "#6639B7") +
+                 , color = "grey"
+                 , alpha = .7) +
   geom_node_point(color = "white"
                   , size = 16)+
   geom_node_text(aes(label = name)
                  , color = "#6639B7"
-                 , size = 2)+ 
+                 , size = 5.5)+ 
   theme_graph(plot_margin = unit(c(1, 0, 1, 0), "cm"))
 
 g_plot
