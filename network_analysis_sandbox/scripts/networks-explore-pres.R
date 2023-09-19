@@ -108,3 +108,8 @@ ggsave(plot = g_ment
        , height = 5
        , width = 7
        , units = "in")
+
+#testing out community finding algorithm
+fun <- fastgreedy.community(graph_ment)
+
+plot(fun, graph_ment)
