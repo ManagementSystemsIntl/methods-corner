@@ -32,3 +32,79 @@ ggsave(plot = g_plot
        , height = 4
        , width = 6
        , units = "in")
+
+
+# an org chart type graph
+#adapted from https://r-graph-gallery.com/334-basic-dendrogram-with-ggraph.html
+
+# create a data frame 
+data <- data.frame(
+  level1="CEO",
+  level2=c( rep("They",4), rep("Them",4)),
+  level3=c("Steve", "Brian", "Steph", "Barb", "Lindsay", "Ingrid", "Lynn", "Chris"))
+
+# transform it to a edge list!
+edges_level1_2 <- data %>% select(level1, level2) %>% unique %>% rename(from=level1, to=level2)
+edges_level2_3 <- data %>% select(level2, level3) %>% unique %>% rename(from=level2, to=level3)
+edge_list=rbind(edges_level1_2, edges_level2_3)
+
+# Now we can plot that
+mygraph <- graph_from_data_frame( edge_list )
+ggraph(mygraph, layout = 'dendrogram', circular = FALSE) + 
+  geom_edge_diagonal(width = 1
+                     , color = "grey"
+                     , alpha = .7) +
+  geom_node_point(color = "white"
+                  , size = 16) +
+  geom_node_text(aes(label = name)
+                 , color = "#6639B7"
+                 , size = 5)+
+  theme_graph()
+
+
+ggsave(plot = last_plot()
+       , filename  = "hierarchy.png"
+       , path = "./network_analysis_sandbox/viz/"
+       , height = 4
+       , width = 6
+       , units = "in")
+
+## Another example to include in the presentation
+
+#load network data from files
+edges_mentor <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/edges_mentor.xlsx"))
+nodes_mentor <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/nodes_mentor.xlsx"))
+edges_tech <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/edges_tech.xlsx"))
+nodes_tech <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/nodes_tech.xlsx"))
+
+nodes_mentor <- nodes_mentor |>
+  mutate(R_user = case_when(grepl("R", software) ~ "R"
+                            , TRUE ~ "Other"))
+
+###create graph object
+graph_ment <- graph_from_data_frame(edges_mentor
+                                    , directed = FALSE
+                                    , vertices = nodes_mentor)
+graph_tech <- graph_from_data_frame(edges_tech
+                                    , directed = FALSE
+                                    , vertices = nodes_tech)
+
+
+g_ment <- ggraph(graph_ment, layout = "with_kk") +
+  geom_edge_link(color = my_pal[[5]]
+                 , alpha = .3) +
+  geom_node_point(aes(color = V(graph_ment)$R_user)#my_pal[[5]]
+                  , size = 8) +
+  geom_node_text(aes(label = name)
+                 , color = "white")+
+  theme.graph()
+  
+
+g_ment
+
+ggsave(plot = g_ment
+       , filename  = "mentor_R.png"
+       , path = "./network_analysis_sandbox/viz/"
+       , height = 5
+       , width = 7
+       , units = "in")

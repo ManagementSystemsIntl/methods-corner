@@ -30,15 +30,28 @@ style_mono_accent(
   code_font_google   = google_font("Fira Mono")
 )
 ```
-
+class: left, top
+background-image: url("./network_analysis_sandbox/viz/mentor_R.png")
+background-position: 90% 75%
+background-size: 75%
 
 # Agenda
-
- - What is a network
- - Why is it important
- - How do I understand social networks?
-
-
+ 
+--
+ 
+ - What is a network?
+ <br>
+ <br>
+ 
+--
+ 
+ - Why are networks interesting?
+ <br>
+ <br>
+ 
+--
+ 
+ - How do I make <br>sense of social networks?
 
 ---
 class: left, top
@@ -46,7 +59,6 @@ background-image: url("./network_analysis_sandbox/viz/friend-plot.png")
 background-position: left
 background-size: 65%
 # What is a network?  
-
 
 --
 
@@ -64,42 +76,40 @@ A set of relationships between ...
 
 ---
 class: left, top
+background-image: url("./network_analysis_sandbox/viz/hierarchy.png")
+background-position: 90% 75%
+background-size: 55%
+.footnote[*image adapted from www.r-graph-gallery.com]
+# What makes networks interesting? 
 
-# What is a network? 
+--
 
-## Why are networks interesting? 
+- Connections
+
+--
+
+- Information flows - both formal and informal
+
+--
+
+- Same time, same place
+
+--
+
+- Birds of a feather, <br> flock together
+
+--
+
+- Humans
 
 
 ---
 class: left, top
 
-# Hello World
+# How do I make sense of social networks?
 
-Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
 
-```{r eval=FALSE, tidy=FALSE}
-remotes::install_github("yihui/xaringan")
-```
 
---
-
-You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
-
-- Create a new R Markdown document from the menu `File -> New File -> R Markdown -> From Template -> Ninja Presentation`;<sup>1</sup>
-
---
-
-- Click the `Knit` button to compile it;
-
---
-
-- or use the [RStudio Addin](https://rstudio.github.io/rstudioaddins/)<sup>2</sup> "Infinite Moon Reader" to live preview the slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.
-
-.footnote[
-[1] 中文用户请看[这份教程](https://slides.yihui.org/xaringan/zh-CN.html)
-
-[2] See [#2](https://github.com/yihui/xaringan/issues/2) if you do not see the template or addin in RStudio.
-]
 
 ---
 background-image: url(`r xaringan:::karl`)
