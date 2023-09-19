@@ -1,6 +1,6 @@
 packages <- c("bookdown", "cowplot", "extrafont", "extrafontdb"
               , "flextable", "lubridate", "igraph", "ggraph", "knitr", "patchwork", "reactable", "reactablefmtr", "readxl"
-              , "tidygraph", "tidyverse", "visNetwork", "xaringan", "xaringanthemer")
+              , "threejs", "tidygraph", "tidyverse", "visNetwork", "xaringan", "xaringanthemer")
 
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())

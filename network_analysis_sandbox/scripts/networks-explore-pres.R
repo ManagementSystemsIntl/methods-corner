@@ -112,4 +112,33 @@ ggsave(plot = g_ment
 #testing out community finding algorithm
 fun <- fastgreedy.community(graph_ment)
 
-plot(fun, graph_ment)
+fun2 <- edge.betweenness.community(graph_ment)
+
+fun3 <- cluster_fast_greedy(graph_ment)
+
+png("./network_analysis_sandbox/viz/community.png", width=8, height=6, units="in", res=300)
+par(mfrow = c(2, 2))
+plot(fun, graph_ment, main = "Communities Option 1")
+plot(fun2, graph_ment, main = "Communities Option 2")
+plot(fun3, graph_ment, main = "Communities Option 3")
+dev.off()
+
+
+#Interactive version
+# Set a vertex attribute called 'color' to 'dodgerblue' 
+ment_int <- set_vertex_attr(graph_ment, "color", value = "dodgerblue")
+
+# Redraw the graph and make the vertex size 1
+graphjs(ment_int, vertex.size = 1)
+
+# Create numerical vector of vertex eigenvector centralities 
+ec <- as.numeric(eigen_centrality(graph_ment)$vector)
+
+# Create new vector 'v' that is equal to the square-root of 'ec' multiplied by 5
+v <- 5*sqrt(ec)
+
+# Plot threejs plot of graph setting vertex size to v
+graphjs(graph_ment, vertex.size = v)
+
+
+
