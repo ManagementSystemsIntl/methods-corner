@@ -54,6 +54,14 @@ background-size: 75%
  - How do I make <br>sense of social networks?
 
 ---
+background-image: url("./network_analysis_sandbox/viz/community.png")
+background-position: 50% 70%
+background-size: 75%
+class: left, top
+
+## Mentor network communities 
+
+---
 class: left, top
 background-image: url("./network_analysis_sandbox/viz/friend-plot.png")
 background-position: left
@@ -64,37 +72,29 @@ background-size: 65%
 
 .pull-right[
 A set of relationships between ...
-
---
-
-- People
-
---
-
-- Organizations
-
---
-
-- Nations
-
---
-
---
-
-- Purchases on Amazon.com
-
---
-
-- Brain cells
-
---
-
-- Computers
-
---
-
-- Social media connections
 ]
+
+--
+.pull-right[
+ - People]
+--
+.pull-right[
+ - Organizations]
+--
+.pull-right[
+ - Nations]
+--
+.pull-right[
+ - Purchases on Amazon.com]
+--
+.pull-right[
+ - Brain cells]
+--
+.pull-right[
+ - Computers]
+--
+.pull-right[
+ - Social media connections]
 
 
 ---
@@ -104,6 +104,7 @@ background-position: 90% 75%
 background-size: 55%
 .footnote[*image adapted from www.r-graph-gallery.com]
 # What makes networks interesting? 
+
 
 --
 
@@ -131,17 +132,24 @@ class: left, top
 
 # How do I make sense of social networks?
 
+```{r out.width='100%', echo=FALSE, fig.height=7, fig.width = 5, eval = require('networkD3')}
 
+#Render your D3.js network
+netd3 <- forceNetwork(
+  Links = nd3$links, 
+  Nodes = nd3$nodes, 
+  Source = "source", 
+  Target = "target", 
+  NodeID = "name",
+  Group = "group",  
+  legend = TRUE, 
+  fontSize = 20,
+  opacity = .8
+)
 
+netd3
 
----
-background-image: url("./network_analysis_sandbox/viz/community.png")
-background-position: 50% 50%
-background-size: 75%
-class: center, bottom
-
-# Communities within a network!
-
+```
 ---
 
 # Hello Ninja
