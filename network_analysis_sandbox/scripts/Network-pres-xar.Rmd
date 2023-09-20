@@ -64,12 +64,35 @@ background-size: 65%
 
 .pull-right[
 A set of relationships between ...
+
+--
+
 - People
+
+--
+
 - Organizations
+
+--
+
 - Nations
+
+--
+
+--
+
 - Purchases on Amazon.com
+
+--
+
 - Brain cells
+
+--
+
 - Computers
+
+--
+
 - Social media connections
 ]
 
@@ -112,11 +135,12 @@ class: left, top
 
 
 ---
-background-image: url(`r xaringan:::karl`)
+background-image: url("./network_analysis_sandbox/viz/community.png")
 background-position: 50% 50%
-class: center, bottom, inverse
+background-size: 75%
+class: center, bottom
 
-# You only live once!
+# Communities within a network!
 
 ---
 

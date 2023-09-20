@@ -1,5 +1,7 @@
 packages <- c("bookdown", "cowplot", "extrafont", "extrafontdb"
-              , "flextable", "lubridate", "igraph", "ggraph", "knitr", "patchwork", "reactable", "reactablefmtr", "readxl"
+              , "flextable", "lubridate", "igraph", "ggiraph"
+              , "ggnetwork", "ggraph", "knitr", "networkD3"
+              , "patchwork", "reactable", "reactablefmtr", "readxl"
               , "threejs", "tidygraph", "tidyverse", "visNetwork", "xaringan", "xaringanthemer")
 
 # Install packages not yet installed

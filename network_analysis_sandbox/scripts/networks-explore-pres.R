@@ -100,6 +100,7 @@ g_ment <- ggraph(graph_ment, layout = "with_kk") +
   theme.graph()
   
 
+
 g_ment
 
 ggsave(plot = g_ment
@@ -117,11 +118,35 @@ fun2 <- edge.betweenness.community(graph_ment)
 fun3 <- cluster_fast_greedy(graph_ment)
 
 png("./network_analysis_sandbox/viz/community.png", width=8, height=6, units="in", res=300)
-par(mfrow = c(2, 2))
+par(mfrow = c(2, 2)
+    , mar = c(1, 1, 1, 1))
 plot(fun, graph_ment, main = "Communities Option 1")
 plot(fun2, graph_ment, main = "Communities Option 2")
 plot(fun3, graph_ment, main = "Communities Option 3")
 dev.off()
+
+## Create an object 'i' containing the memberships of the fast-greedy community detection
+i <-  membership(fun)
+
+# Check the number of different communities
+sizes(fun)
+
+# Add a color attribute to each vertex, setting the vertex color based on community membership
+g_test <- set_vertex_attr(graph_ment, "color", value = c("yellow", "blue", "red", "purple")[i])
+
+# Plot the graph using threejs
+graphjs(g_test)
+i <- membership(fun)
+
+g_ment <- ggraph(graph_ment, layout = "with_kk") +
+  geom_edge_link(color = my_pal[[5]]
+                 , alpha = .3) +
+  geom_node_point(aes(color = fun)#my_pal[[5]]
+                  , size = 8) +
+  geom_node_text(aes(label = name)
+                 , color = "white")+
+  theme.graph()
+
 
 
 #Interactive version
@@ -140,5 +165,49 @@ v <- 5*sqrt(ec)
 # Plot threejs plot of graph setting vertex size to v
 graphjs(graph_ment, vertex.size = v)
 
+
+### Example code
+# From previous steps
+#static_network <- ggplot(
+ # ggnetwork(graph_ment, arrow.gap = 0.01), 
+  #aes()) + 
+  #geom_edges() + 
+  #geom_nodes() + 
+  #theme_blank() 
+
+#interactive_network <- static_network + 
+ # geom_point_interactive(
+  #  aes(tooltip = name, data_id = R_user)
+  #)
+
+
+# Print the interactive network
+#girafe(code = print(interactive_network)) %>%
+  # Set girafe options
+ # girafe_options(
+    # Set hover options
+  #  opts_hover(css = "cursor: pointer; fill: red; stroke: red; r: 5pt"),
+    # Set tooltip options; give x-offset of 10 
+  #  opts_tooltip(offx = 10)
+  #)
+
+# From previous step
+#nd3 <- igraph_to_networkD3(graph_ment)
+
+# Render your D3.js network
+#forceNetwork(
+  # Define links from nd3 object
+ # Links = nd3$links, 
+  # Define nodes from nd3 object
+  #Nodes = nd3$nodes, 
+  # Specify the source column
+  #Source = "source", 
+  # Specify the target column
+  #Target = "target", 
+  #NodeID = "name",
+  #Group = "group",  
+  #legend = TRUE, 
+  #fontSize = 20
+#)
 
 
