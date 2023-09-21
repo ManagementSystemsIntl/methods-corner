@@ -33,6 +33,14 @@ h3 {
   font-size: 18px;
 }
 
+h4 {font-family: Corbel;
+  color: white;
+  top: 60%;
+  left: 50%;
+  font-size: 32px;
+  font-weight: bold;
+}
+
 p.caption{
 font-size: small;
 }

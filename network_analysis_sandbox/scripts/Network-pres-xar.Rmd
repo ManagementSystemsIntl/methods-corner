@@ -82,7 +82,7 @@ A set of relationships between ...
 ---
 class: left, top
 background-image: url("./network_analysis_sandbox/viz/mentor_R.png")
-background-position: 10% 75%
+background-position: 30% 75%
 background-size: 75%
 
 # What is a network?
@@ -117,7 +117,7 @@ background-position: 50% 80%
 background-size: 75%
 class: left, top
 
-## Relationships 
+## Connections 
 
 ---
 
@@ -127,8 +127,7 @@ background-position: 50% 90%
 background-size: 80%
 
 class: left, top
-## More relationships
-
+## More connections
 ---
 background-image: url("./network_analysis_sandbox/viz/shortest.png")
 background-position: 50% 70%
@@ -136,14 +135,14 @@ background-size: 80%
 
 class: left, top
 
-## More relationships
-
+## Even More connections
 ---
 class: left, top
 
 ## Interactive visualization
 
-```{r out.width='100%', echo=FALSE, fig.height=7, fig.width = 5, eval = require('networkD3')}
+### SEA Data Science Team mentor network
+```{r out.width='100%', echo=FALSE, fig.align = 'middle', out.height='100%', eval = require('networkD3')}
 
 #Render your D3.js network
 netd3 <- forceNetwork(
@@ -153,7 +152,7 @@ netd3 <- forceNetwork(
   Target = "target", 
   NodeID = "name",
   Group = "group",  
-  legend = TRUE, 
+  legend = FALSE, 
   fontSize = 20,
   opacity = .8
 )
@@ -184,61 +183,35 @@ We are parts of many social networks, and this is true of our activities and the
 - Interorganizational structures
 
 ---
-class: top, left, inverse, 
+class: top, center, middle, inverse, 
 
 # Shameless plug?
 
 
 
-.center[Join the Data Science Team on<br> Tuesday, September 26<br> 
-<br>
-at 10 am<br>
+#### Join the Data Science Team on<br> Tuesday, September 26<br> 
+#### at 10 am<br>
 
-for a presentation on network statistics and visualization using R
+#### for a presentation on network statistics and visualization using R
+#### If interested <br>
 
-<br>
-If interested <br>
-
-<br>
-Email bcalhoon@msi-inc.com
-]
----
-
+#### Email: bcalhoon@msi-inc.com
 
 ---
-background-image: url("./network_analysis_sandbox/viz/crowd.jpg")
+
+background-image: url("crowd.png")
 background-position: 50% 70%
-background-size: 80%
+background-size: cover
 class: center, bottom, inverse
 
 # We can be heroes!
 
 ---
-background-image:
-url("./network_analysis_sandbox/viz/social networking slide.png")
+background-image: url("social-networking-slide.png")
 background-size: contain
-class: top, center
+class: center, top
 
 # Activity time!
 
 ---
 
----
-
-class: center
-
-# Hand seals (印)
-
-Press `h` or `?` to see the possible ninjutsu you can use in remark.js.
-
-![](https://upload.wikimedia.org/wikipedia/commons/7/7e/Mudra-Naruto-KageBunshin.svg)
-
----
-
-class: center, middle
-
-# Thanks!
-
-Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
-
-The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](https://yihui.org/knitr/), and [R Markdown](https://rmarkdown.rstudio.com).
