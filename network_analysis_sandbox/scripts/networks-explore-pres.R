@@ -91,13 +91,17 @@ graph_tech <- graph_from_data_frame(edges_tech
 
 
 g_ment <- ggraph(graph_ment, layout = "with_kk") +
-  geom_edge_link(color = my_pal[[5]]
+  geom_edge_link(color = my_pal[[2]]
                  , alpha = .3) +
-  geom_node_point(aes(color = V(graph_ment)$R_user)#my_pal[[5]]
+  geom_node_point(aes(color = V(graph_ment)$R_user)
                   , size = 8) +
   geom_node_text(aes(label = name)
                  , color = "white")+
-  theme.graph()
+  labs(title = "SEA Data Science Team Mentoring Network"
+       , subtitle = "Highlighting R users")+
+  theme.graph()+
+  theme(plot.subtitle = element_text(color = "#CC6576")
+        , legend.position = "none")
   
 
 
@@ -159,6 +163,35 @@ plot(ego6,
      main = "Geodesic Distances from Person 6"
 )
 dev.off()
+
+##Shortest-path example
+ment.path <- shortest_paths(graph_ment, 
+                            from = V(graph_ment)[name=="17"], 
+                            to  = V(graph_ment)[name=="15"],
+                            output = "both") # both path nodes and edges
+
+# Generate edge color variable to plot the path:
+ecol <- rep("gray80", ecount(graph_ment))
+ecol[unlist(ment.path$epath)] <- my_pal[[7]]
+
+# Generate edge width variable to plot the path:
+ew <- rep(2, ecount(graph_ment))
+ew[unlist(ment.path$epath)] <- 4
+
+# Generate node color variable to plot the path:
+vcol <- rep("gray", vcount(graph_ment))
+vcol[unlist(ment.path$vpath)] <- "red"
+
+
+png("./network_analysis_sandbox/viz/shortest.png"
+    , width=8, height=6, units="in", res=300)
+short <- plot(graph_ment, vertex.color=vcol
+     , edge.color=ecol, 
+     edge.width=ew, edge.arrow.mode=0
+     , main = "Shortest path between nodes")
+dev.off()
+
+
 
 #identify the largest cliques in the mentor graph
 largest_cliques(graph_ment)
