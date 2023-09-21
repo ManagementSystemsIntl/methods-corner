@@ -167,9 +167,9 @@ netd3
 
 We are parts of many social networks, and this is true of our activities and the staff who work on them.
 
--- 
+--
 
-- Organizational development: **inter and intra organizational**
+- Organizational development: inter and intra organizational
 
 --
 
@@ -190,7 +190,7 @@ class: top, left, inverse,
 
 
 
-.center[Join the Data Science Team on<br> *Tuesday, September 26*<br> 
+.center[Join the Data Science Team on<br> Tuesday, September 26<br> 
 <br>
 at 10 am<br>
 
@@ -200,7 +200,7 @@ for a presentation on network statistics and visualization using R
 If interested <br>
 
 <br>
-Email *bcalhoon@msi-inc.com* 
+Email bcalhoon@msi-inc.com
 ]
 ---
 
@@ -215,7 +215,7 @@ class: center, bottom, inverse
 
 ---
 background-image:
-url(./network_analysis_sandbox/viz/social networking slide.png)
+url("./network_analysis_sandbox/viz/social networking slide.png")
 background-size: contain
 class: top, center
 
