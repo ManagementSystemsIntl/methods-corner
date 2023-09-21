@@ -142,7 +142,7 @@ class: left, top
 ## Interactive visualization
 
 ### SEA Data Science Team mentor network
-```{r out.width='100%', echo=FALSE, fig.align = 'middle', out.height='100%', eval = require('networkD3')}
+```{r out.width='100%', echo=FALSE, fig.align = 'top', out.height='100%', eval = require('networkD3')}
 
 #Render your D3.js network
 netd3 <- forceNetwork(
