@@ -1,7 +1,7 @@
 # Network activity script
 
 #read in the prep script and libraries
-source(here::here("./network_analysis_sandbox/prep.prep.R"))
+source(here::here("./network_analysis_sandbox/prep/prep.R"))
 
 #read in the dataframe
 df <- readxl::read_xlsx("./network_analysis_sandbox/data/networking activity data.xlsx")
@@ -14,20 +14,23 @@ g <- graph_from_data_frame(df
 gplot <- ggraph(g, layout = "with_kk") +
   geom_edge_link(color = my_pal[[2]]
                  , alpha = .3) +
-  geom_node_point(aes(color = V(g)$Table)
-                  , size = 8) +
+  geom_node_point(aes(color = "blue")
+                  , size = 14) +
   geom_node_text(aes(label = name)
-                 , color = "white")+
+                 , color = "white"
+                 , size = 4)+
   labs(title = "MSI's Network of Networking Day"
        , subtitle = "September 22, 2023")+
   theme.graph()
+
+gplot
 
 ggsave(gplot
        , filename  = "networkday.png"
        , path = "./network_analysis_sandbox/viz/"
        , height = 5
        , width = 7
-       , units = "in"))
+       , units = "in")
 
 #communities
 
