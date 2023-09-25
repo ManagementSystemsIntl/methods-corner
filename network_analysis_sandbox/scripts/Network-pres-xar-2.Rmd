@@ -1,6 +1,6 @@
 ---
 title: "Social Network Analysis"
-subtitle: "In 10 minutes"
+subtitle: "A brief how-to introduction"
 author: "Brian Calhoon"
 date: "`r Sys.Date()`"
 output:
@@ -33,15 +33,33 @@ style_mono_accent(
 class: top, left, inverse
 # Agenda
 
+--
+
 - What is a network?
 
- 
+--
+
 - Why are networks interesting?
 
+--
  
-- How does this relate to our work? 
+- The how-to part
+
+  - Key R libraries
+
+  - Setting up a graph object
+
+  - Analyzing centrality statistics
+
+  - Visualizing the network
 
 ---
+class: middle, center, inverse
+# What is a network?
+
+
+---
+
 class: left, top, inverse
 # What is a network?  
 
@@ -87,9 +105,14 @@ background-size: 75%
 
 # What is a network?
 ---
+class: center, middle, inverse
+
+# Why are networks interesting?
 
 
-# What makes networks interesting? 
+---
+class: top, left, inverse
+# Why are networks interesting? 
 
 --
 
@@ -110,6 +133,87 @@ background-size: 75%
 --
 
 - Humans...
+
+---
+
+class: top, left, inverse
+
+# The how-to part
+## Key R libraries
+
+There are a few core libraries that help with network analysis in R
+
+--
+
+.pull-left[The basics
+- igraph
+- ggraph
+- tidygraph
+]
+
+--
+
+.pull-right[A few extras that *may* help
+- tidyverse
+- ggiraph
+- ggnetwork
+- networkD3
+- threejs
+- visnetwork
+- flextable
+- sfnetworks
+]
+
+---
+class: top, left
+
+# The how-to part
+## Setting up a graph object
+Edges: df
+
+```{R echo = F}
+
+
+df <- data.frame(name = c("Steve", "Steve", "Steve", "Cheryl", "Stephanie", "Stephanie")
+                 , friend = c("Chris", "Cheryl", "Stephanie", "Chris", "Paulo", "Cheryl"))
+
+DT::datatable(df
+              , fillContainer = FALSE)
+
+```
+
+---
+class: top, left
+# The how-to part
+## Setting up a graph object
+Vertices: df_nodes
+
+```{R echo= F}
+df_nodes <- data.frame(name = c("Steve"
+                                , "Cheryl"
+                                , "Stephanie"
+                                , "Chris"
+                                , "Paulo")) 
+df_nodes <- df_nodes |>
+  mutate(team = case_when(name == "Steve" | name == "Chris" ~ "A", name == "Cheryl" | name == "Stephanie" ~ "B", name == "Paulo" ~ "C"))
+
+DT::datatable(df_nodes
+              , fillContainer = FALSE)
+
+```
+
+---
+class: top, left
+# Setting up a graph object
+Creating the graph object from the edges and vertices
+
+```{R}
+ graph_from_data_frame(  #<<
+  df, #edges are here
+                      vertices = df_nodes #nodes and their data are here
+                      , directed = FALSE) # this is an undirected network
+
+```
 
 ---
 background-image: url("./network_analysis_sandbox/viz/community.png")
