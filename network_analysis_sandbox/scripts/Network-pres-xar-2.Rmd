@@ -1,0 +1,217 @@
+---
+title: "Social Network Analysis"
+subtitle: "In 10 minutes"
+author: "Brian Calhoon"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [xaringan-themer.css, styles.css]
+    lib_dir: libs
+    self_contained: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE, warning=FALSE, echo=FALSE}
+options(htmltools.dir.version = FALSE)
+
+source(here::here("./network_analysis_sandbox/prep/prep.R"))
+source(here::here("./network_analysis_sandbox/scripts/networks-explore-pres.R"))
+
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+style_mono_accent(
+  base_color = "#003478",
+  header_font_google = google_font("Josefin Sans"),
+  text_font_google   = google_font("Montserrat", "300", "300i"),
+  code_font_google   = google_font("Fira Mono")
+)
+```
+class: top, left, inverse
+# Agenda
+
+- What is a network?
+
+ 
+- Why are networks interesting?
+
+ 
+- How does this relate to our work? 
+
+---
+class: left, top, inverse
+# What is a network?  
+
+--
+
+
+A set of relationships between ...
+
+
+--
+
+ - People
+
+--
+
+ - Organizations
+
+--
+
+ - Nations
+
+--
+
+ - Purchases on Amazon.com
+
+--
+
+ - Brain cells
+
+--
+
+ - Computers
+
+--
+
+ - Social media connections
+
+---
+class: left, top
+background-image: url("./network_analysis_sandbox/viz/mentor_R.png")
+background-position: 30% 75%
+background-size: 75%
+
+# What is a network?
+---
+
+
+# What makes networks interesting? 
+
+--
+
+- Connections
+
+--
+
+- Information flows - both formal and informal
+
+--
+
+- Same time, same place
+
+--
+
+- Birds of a feather, flock together
+
+--
+
+- Humans...
+
+---
+background-image: url("./network_analysis_sandbox/viz/community.png")
+background-position: 50% 80%
+background-size: 75%
+class: left, top
+
+## Connections 
+
+---
+
+
+background-image: url("./network_analysis_sandbox/viz/distances.png")
+background-position: 50% 90%
+background-size: 80%
+
+class: left, top
+## More connections
+---
+background-image: url("./network_analysis_sandbox/viz/shortest.png")
+background-position: 50% 70%
+background-size: 80%
+
+class: left, top
+
+## Even More connections
+---
+class: left, top
+
+## Interactive visualization
+
+### SEA Data Science Team mentor network
+```{r out.width='100%', echo=FALSE, fig.align = 'top', out.height='100%', eval = require('networkD3')}
+
+#Render your D3.js network
+netd3 <- forceNetwork(
+  Links = nd3$links, 
+  Nodes = nd3$nodes, 
+  Source = "source", 
+  Target = "target", 
+  NodeID = "name",
+  Group = "group",  
+  legend = FALSE, 
+  fontSize = 20,
+  opacity = .8
+)
+
+netd3
+
+```
+---
+
+# How does this relate to our work?
+
+We are parts of many social networks, and this is true of our activities and the staff who work on them.
+
+--
+
+- Organizational development: inter and intra organizational
+
+--
+
+- Policy reform
+
+--
+
+- Influence within teams
+
+--
+
+- Interorganizational structures
+
+---
+class: top, center, middle, inverse, 
+
+# Shameless plug?
+
+
+
+#### Join the Data Science Team on<br> Tuesday, September 26<br> 
+#### at 10 am<br>
+
+#### for a presentation on network statistics and visualization using R
+#### If interested <br>
+
+#### Email: bcalhoon@msi-inc.com
+
+---
+
+background-image: url("crowd.png")
+background-position: 50% 70%
+background-size: cover
+class: center, bottom, inverse
+
+# We can be heroes!
+
+---
+background-image: url("social-networking-slide.png")
+background-size: contain
+class: center, top
+
+# Activity time!
+
+---
+
