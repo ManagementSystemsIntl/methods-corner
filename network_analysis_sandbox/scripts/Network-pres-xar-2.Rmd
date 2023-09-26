@@ -135,10 +135,13 @@ class: top, left, inverse
 - Humans...
 
 ---
-
-class: top, left, inverse
+class: center, middle, inverse
 
 # The how-to part
+
+---
+class: top, left
+
 ## Key R libraries
 
 There are a few core libraries that help with network analysis in R
@@ -167,7 +170,6 @@ There are a few core libraries that help with network analysis in R
 ---
 class: top, left
 
-# The how-to part
 ## Setting up a graph object
 Edges: df
 
@@ -184,7 +186,6 @@ DT::datatable(df
 
 ---
 class: top, left
-# The how-to part
 ## Setting up a graph object
 Vertices: df_nodes
 
@@ -213,17 +214,18 @@ graph <-  graph_from_data_frame(  #<<
                       vertices = df_nodes #nodes and their data are here
                       , directed = FALSE) # this is an undirected network
 
-print(graph)
 ```
 
 ---
+
 class: top, left
 # Setting up a graph object
 Now we can plot the network using `ggraph`
 
-```{R warning = FALSE, fig.align = "right"}
+.pull-left[
+```{R warning = FALSE}
 
-ggraph(graph
+graph_plot <- ggraph(graph
             , layout = "with_kk") +
   geom_edge_diagonal(width = 1
                  , color = "grey"
@@ -235,11 +237,125 @@ ggraph(graph
   theme_graph()
 
 ```
+]
+
+.pull-right[
+```{R warning = FALSE,out.width = "80%"}
+
+graph_plot
+```
+]
 
 ---
-```{R warning = FALSE} 
+Now, let's load our dataset from the data science survey as a graph object. 
+
+```{R }
+#load mentor network data from files
+edges_mentor <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/edges_mentor.xlsx"))
+nodes_mentor <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/nodes_mentor.xlsx"))
+
+#add a column for R user to the nodes
+nodes_mentor <- nodes_mentor |>
+  mutate(R_user = case_when(grepl("R", software) ~ "R"
+                            , TRUE ~ "Other"))
+
+
+#load technical guidance network data from files
+edges_tech <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/edges_tech.xlsx"))
+nodes_tech <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/nodes_tech.xlsx"))
+
+#add a column for R user to the nodes
+nodes_tech <- nodes_tech |>
+  mutate(R_user = case_when(grepl("R", software) ~ "R"
+                            , TRUE ~ "Other"))
+
+#create two graph objects
+graph_ment <- graph_from_data_frame(edges_mentor
+                                    , directed = FALSE
+                                    , vertices = nodes_mentor)
+graph_tech <- graph_from_data_frame(edges_tech
+                                    , directed = FALSE
+                                    , vertices = nodes_tech)
+```
+
+---
+Now to calculate centrality statistics for the following
+
+**Density:** The ratio of the actual number of edges and the largest possible number of edges in the graph
+
+**Distance:** The distance between two or more nodes in a network.
+
+**Transitivity:** The probability that the adjacent vertices of a vertex are connected.
+
+**Betweenness:** Roughly the number of shortest paths going through a node. It helps identify gatekeepers in a network. 
+
+**Eigenvector centrality:** A measure of the relative influence of a node in a network based on the concept that connections to high-scoring nodes contribute more to the score of the node in question than equal connections to low-scoring nodes. 
+
+--
+
+### .center[**Let's get to it!**]
+
+---
+
+ 
+```{R}
+#Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality
+#calculate the network density
+density_ment <- edge_density(graph_ment)
+
+#calculate the mean_distance
+avg_dist_ment <- mean_distance(graph_ment, directed = FALSE)
+
+#calculate the betweeness
+b1 <- igraph::betweenness(graph_ment, directed = FALSE)
+between_ment <- mean(b1)
+
+#calculate the transitivity of the network
+trans_ment <- transitivity(graph_ment)
+
+#eigenvalues vector
+e1 <- eigen_centrality(graph_ment, directed =FALSE)$vector
+#calculate avg. eigenvalue of the network
+eigen_ment <- mean(e1)
 ```
 ---
+
+
+...Then we do this again for the technical guidance network, and we end up with ... 
+
+```{R echo = FALSE}
+
+network_table1
+```
+
+.center[So, how do we understand what this tells us?]
+---
+### Simulations are helpful here
+
+We can calculate each of the above statistics for N simulated networks
+
+```{R}
+#this simulates 1000 iterations of a graph with the same number of nodes and edge_density
+#set up a for loop 
+gl_tech <- vector('list', 1000)
+
+for(i in 1:1000){
+  gl_tech[[i]] <- erdos.renyi.game( #<<
+    n = gorder(graph_tech)
+    , p.or.m = edge_density(graph_tech)
+    , type = "gnp"
+  )
+}
+```
+
+So, we run each of the centrality statistics on 1,000 simulated "tech guidance" networks, and 1,000 simulated "mentoring" networks to give us a sense of what we would expect from similar networks.
+
+---
+### And the results are in
+
+```{r echo = FALSE}
+network_table2
+```
 
 ---
 background-image: url("./network_analysis_sandbox/viz/community.png")

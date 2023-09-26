@@ -373,3 +373,154 @@ d3 <- forceNetwork(
 saveNetwork(d3,
   "./network_analysis_sandbox/viz/d3-object.html")
 
+
+#Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality
+#calculate the network density
+density_ment <- edge_density(graph_ment)
+#calculate the mean_distance
+avg_dist_ment <- mean_distance(graph_ment, directed = FALSE)
+#calculate the betweeness
+b1 <- igraph::betweenness(graph_ment, directed = FALSE)
+between_ment <- mean(b1)
+#calculate the transitivity of the network
+trans_ment <- transitivity(graph_ment)
+#eigenvalues vector
+e1 <- eigen_centrality(graph_ment, directed =FALSE)$vector
+#calculate avg. eigenvalue of the network
+eigen_ment <- mean(e1)
+l <- c("Network", "Avg. Density", "Avg. Distance", "Avg. Transitivity", "Avg. Betweenness", "Avg. Eigenvector")
+m <- c("Mentorship", density_ment, avg_dist_ment, trans_ment, between_ment, eigen_ment)
+dat <- data.frame(l, m)
+dat1 <- pivot_wider(data = dat
+                    , names_from = l
+                    , values_from = m) |>
+  mutate(across(2:6, as.numeric))
+#graph statistics table
+network_table <- flextable(dat1) |>
+  set_header_labels(values = dat1) |> 
+  align(align = "center", part = "all") |>
+  colformat_double(digits = 2)
+#network_table
+
+#Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality
+#calculate the network density
+density_tech <- edge_density(graph_tech)
+
+#calculate the mean_distance
+avg_dist_tech <- mean_distance(graph_tech, directed = FALSE)
+
+#calculate the betweeness
+b2 <- igraph::betweenness(graph_tech, directed = FALSE)
+
+between_tech <- mean(b2)
+#calculate the transitivity of the network
+trans_tech <- transitivity(graph_tech)
+
+#eigenvalues vector
+e1_tech <- eigen_centrality(graph_tech, directed =FALSE)$vector
+
+#calculate avg. eigenvalue of the network
+eigen_tech <- mean(e1_tech)
+
+names <- c("Network", "Avg. Density", "Avg. Distance", "Avg. Transitivity", "Avg. Betweenness", "Avg. Eigenvector")
+values <- c("Tech guidance", density_tech, avg_dist_tech, trans_tech, between_tech, eigen_tech)
+
+dat_tech <- data.frame(names, values)
+
+dat1_tech <- pivot_wider(data = dat_tech
+                         , names_from = names
+                         , values_from = values) |>
+  mutate(across(2:6, as.numeric))
+
+dat2 <- bind_rows(dat1, dat1_tech)
+
+network_table1 <- flextable(dat2) |>
+  set_header_labels(values = names(dat2)) |>
+  align(align = "center", part = "all") |>
+  colformat_double(digits = 2)
+
+#network_table1
+
+#simulation of mentorship network 1000x
+gl <- vector('list', 1000)
+
+for(i in 1:1000){
+  gl[[i]] <- erdos.renyi.game(
+    n = gorder(graph_ment)
+    , p.or.m = edge_density(graph_ment)
+    , type = "gnp"
+  )
+}
+
+#Then use the gl object to calculate averages for each of the stats presented above on the original two networks.
+
+gl_ment_avg_density <- mean(unlist(lapply(gl, edge_density)))
+gl_ment_avg_dist <- mean(unlist(lapply(gl, mean_distance, directed = FALSE)))
+gl_ment_avg_between <- mean(unlist(lapply(gl, betweenness)))
+gl_ment_avg_trans <- mean(unlist(lapply(gl, transitivity)))
+
+#This one takes a few more steps 
+gl_eigen_ment <- do.call(rbind, lapply(gl, eigen_centrality, directed = FALSE)) |>
+  #do.call(rbind, .data) |>
+  data.frame() 
+
+gl_ment_avg_eigen <- mean(unlist(gl_eigen_ment$vector))
+
+
+####simulation of tech guidance network 1000x
+
+#this simulates 1000 iterations of a graph with the same number of nodes and edge_density
+#set up a for loop 
+gl_tech <- vector('list', 1000)
+
+for(i in 1:1000){
+  gl_tech[[i]] <- erdos.renyi.game(
+    n = gorder(graph_tech)
+    , p.or.m = edge_density(graph_tech)
+    , type = "gnp"
+  )
+}
+
+#Then use the gl_tech object to calculate averages for each of the stats presented above on the original two networks.
+
+gl_tech_avg_density <- mean(unlist(lapply(gl_tech, edge_density)))
+gl_tech_avg_dist <- mean(unlist(lapply(gl_tech, mean_distance, directed = FALSE)))
+gl_tech_avg_between <- mean(unlist(lapply(gl_tech, betweenness)))
+gl_tech_avg_trans <- mean(unlist(lapply(gl_tech, transitivity)))
+
+#This one takes a few more steps 
+gl_eigen_tech <- do.call(rbind, lapply(gl_tech, eigen_centrality, directed = FALSE)) |>
+  #do.call(rbind, .data) |>
+  data.frame() 
+
+gl_tech_avg_eigen <- mean(unlist(gl_eigen_tech$vector))
+
+#make a flextable
+names <- c("Network", "Avg. Density", "Avg. Distance", "Avg. Transitivity", "Avg. Betweenness", "Avg. Eigenvector")
+dat_ment <- c("Mentorship", density_ment, avg_dist_ment, trans_ment, between_ment, eigen_ment)
+sim_ment <- c("Simulated Mentorship", gl_ment_avg_density, gl_ment_avg_dist, gl_ment_avg_trans, gl_ment_avg_between, gl_ment_avg_eigen)
+dat_tech <- c("Tech Guidance", density_tech, avg_dist_tech, trans_tech, between_tech, eigen_tech)
+sim_tech <- c("Simulated Tech Guidance", gl_tech_avg_density, gl_tech_avg_dist, gl_tech_avg_trans, gl_tech_avg_between, gl_tech_avg_eigen)
+
+
+dat_all <- data.frame(names, dat_ment, sim_ment, dat_tech, sim_tech)
+
+dat_all1 <- t(dat_all) |>
+  data.frame()
+
+names(dat_all1) <- dat_all1[1,]
+
+dat_all2 <- dat_all1[2:5,] |>
+  mutate(across(2:6, as.numeric))
+#, Type = c("Mentorship", "Mentorship", "Technical", "Technical") 
+#)
+
+network_table2 <- flextable(dat_all2) |>
+  set_header_labels(values = names(dat_all2)) |>
+  align(align = "center", part = "all") |>
+  colformat_double(digits = 2) |>
+  italic(i = c(2,4)) |>
+  bold(i = c(1,3))
+
+network_table2
+
