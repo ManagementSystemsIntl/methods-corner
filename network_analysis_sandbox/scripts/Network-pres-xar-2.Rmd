@@ -358,37 +358,138 @@ network_table2
 ```
 
 ---
-background-image: url("./network_analysis_sandbox/viz/community.png")
-background-position: 50% 80%
-background-size: 75%
-class: left, top
+### Explanation
 
-## Connections 
+```{R fig.align = "center", echo = FALSE, warning = FALSE}
+
+gl.apls = unlist(lapply(gl, mean_distance, directed=FALSE))
+
+ggplot(data = as.data.frame(gl.apls)) +
+  geom_histogram(aes(x = gl.apls), bins = 25
+                 , fill = my_pal[[1]]
+                 , alpha = .4) +
+  geom_vline(xintercept = avg_dist_tech
+             , linewidth = 1
+             , linetype = "dashed"
+             , color = "red") +
+  annotate(x = avg_dist_tech + 1.2, y = 115, label = glue::glue("{round(avg_dist_tech, digits = 2)}, is the average distance \nbetween connections in the \ntech guidance network"), geom = "label", color = my_pal[[3]]) +
+  geom_segment(aes(x = avg_dist_tech + .6, y = 110, xend = avg_dist_tech +.05, yend = 95),
+               arrow = arrow(length = unit(0.25, "cm"))
+               , linewidth = 1
+               , color = my_pal[[4]])+
+  labs(y = "# of simulations"
+       , x = "Average distance between connections"
+       , title = "How does our tech guidance network \ncompare to similar networks?"
+       , subtitle = glue::glue("{mean(gl.apls < avg_dist_tech) * 100}", "% ", "of similar networks have a shorter average \ndistance between connections"))+
+  theme.plot()
+
+```
+---
+class: center, middle, inverse
+
+# Visualizations
+---
+## Identify communities within a network
+.pull-left[
+```{r}
+
+comm <- fastgreedy.community(graph_ment)
+
+```
+This is a hierarchical, bottom-up approach that tries to optimize modularity in a _greedy_ manner. It is regarded as a good first step in identifying communities. Other algorithms include:
+
+
+- edge.betweenness.community
+
+- walktrap.community
+
+- infomap.community
+
+- leading.eigenvector.community
+]
+
+.pull-right[
+```{r, warning = FALSE}
+
+plot(comm, graph_ment, main = "Communities")
+
+```
+]
 
 ---
 
+## Adding membership to the graph object
 
-background-image: url("./network_analysis_sandbox/viz/distances.png")
-background-position: 50% 90%
-background-size: 80%
+.pull-left[
+```{r}
 
-class: left, top
-## More connections
+#add the community memberships to the graph object
+V(graph_ment)$comm <- as.factor(membership(comm))
+
+```
+
+
+```{r warning = FALSE}
+plot1 <- ggraph(graph_ment
+       , layout = "with_kk") +
+  geom_edge_diagonal(width = 1
+                 , color = "grey"
+                 , alpha = .7) +
+  geom_node_point(aes(color = comm)
+                  , size = 16)+
+  geom_node_text(aes(label = name)
+                 , size = 5.5)+ 
+  theme_graph()
+
+```
+
+]
+
+.pull-right[
+```{r warning = FALSE, echo = FALSE}
+plot1
+```
+]
+
 ---
-background-image: url("./network_analysis_sandbox/viz/shortest.png")
-background-position: 50% 70%
-background-size: 80%
+## Visualize the network with more attributes
 
-class: left, top
+```{r}
+#add betweenness to the nodes
+V(graph_ment)$between <- betweenness(graph_ment)
 
-## Even More connections
+#add edge_betweenness to the edges
+E(graph_ment)$edge_between <- edge_betweenness(graph_ment)
+
+```
+
+```{r}
+plot2 <- ggraph(graph_ment
+       , layout = "with_kk") +
+  geom_edge_diagonal(aes(alpha = edge_between)
+                 , width = 1) +
+  geom_node_point(aes(color = comm
+                      , size = log(between)))+
+  geom_node_text(aes(label = name)
+                 , size = 5.5)+
+  labs(title = "SEA DST Mentor Network"
+       , subtitle = "Showing communities and node and edge betweenness")+
+  theme_graph()
+
+```
+
+
+---
+## The plot
+```{r warning = FALSE, echo = FALSE, fig.height = 8, fig.width = 6}
+plot2
+```
+
 ---
 class: left, top
-
-## Interactive visualization
 
 ### SEA Data Science Team mentor network
-```{r out.width='100%', echo=FALSE, fig.align = 'top', out.height='100%', eval = require('networkD3')}
+```{r out.width='100%', fig.align = 'top', out.height='100%', eval = require('networkD3')}
 
 #Render your D3.js network
 netd3 <- forceNetwork(
@@ -400,49 +501,17 @@ netd3 <- forceNetwork(
   Group = "group",  
   legend = FALSE, 
   fontSize = 20,
-  opacity = .8
+  opacity = 1
 )
-
-netd3
 
 ```
 ---
+## An interactive plot
 
-# How does this relate to our work?
+```{r}
+netd3
 
-We are parts of many social networks, and this is true of our activities and the staff who work on them.
-
---
-
-- Organizational development: inter and intra organizational
-
---
-
-- Policy reform
-
---
-
-- Influence within teams
-
---
-
-- Interorganizational structures
-
----
-class: top, center, middle, inverse, 
-
-# Shameless plug?
-
-
-
-#### Join the Data Science Team on<br> Tuesday, September 26<br> 
-#### at 10 am<br>
-
-#### for a presentation on network statistics and visualization using R
-#### If interested <br>
-
-#### Email: bcalhoon@msi-inc.com
-
+```
 ---
 
 background-image: url("crowd.png")
@@ -451,13 +520,4 @@ background-size: cover
 class: center, bottom, inverse
 
 # We can be heroes!
-
----
-background-image: url("social-networking-slide.png")
-background-size: contain
-class: center, top
-
-# Activity time!
-
----
 

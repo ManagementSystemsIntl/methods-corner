@@ -524,3 +524,36 @@ network_table2 <- flextable(dat_all2) |>
 
 network_table2
 
+#One example plotted to show what's happening
+gl.apls = unlist(lapply(gl_tech, mean_distance, directed=FALSE))
+
+ggplot(data = as.data.frame(gl.apls)) +
+  geom_histogram(aes(x = gl.apls), bins = 25
+                 , fill = my_pal[[1]]
+                 , alpha = .4) +
+  geom_vline(xintercept = avg_dist_ment
+             , linewidth = 1
+             , linetype = "dashed"
+             , color = "red") +
+  annotate(x = avg_dist_ment + 1.2, y = 150, label = glue::glue("{round(avg_dist_ment, digits = 2)}, is the average distance \nbetween connections \nin the mentoring network"), geom = "label", color = my_pal[[3]]) +
+  geom_segment(aes(x = avg_dist_ment + .6, y = 145, xend = avg_dist_ment +.05, yend = 138),
+               arrow = arrow(length = unit(0.25, "cm"))
+               , linewidth = 1
+               , color = my_pal[[4]])+
+  labs(y = "# of simulations"
+       , x = "Average distance between connections"
+       , title = "How does our tech guidance network compare to \nsimilarly structured networks?"
+       , subtitle = glue::glue("{mean(gl.apls < avg_dist_ment) * 100}", "% ", "of similar networks have a shorter average distance between \nconnections than the mentoring network"))+
+  theme.plot()
+
+
+ggraph(graph_ment
+      , layout = "with_kk") +
+  geom_edge_diagonal(width = 1
+                     , color = "grey"
+                     , alpha = .7) +
+  geom_node_point(aes(color = comm)
+                  , size = 16)+
+  geom_node_text(aes(label = name)
+                 , size = 5.5)+ 
+  theme_graph()
