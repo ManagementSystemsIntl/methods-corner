@@ -1,0 +1,130 @@
+---
+title: "Data Visualization: A How-to Resource"
+subtitle: "Noise and what to do about it"
+author: "Brian Calhoon"
+format: 
+  html:
+    code-fold: true
+    css: styles.css
+    toc: true
+editor: visual
+---
+
+# Data Viz hot-to reduce "noise" on a plot
+
+One of the challenges of visualizing data effectively is keeping a visualization simple. This requires selecting what is important to show and knowing what to eliminate. The "noise" is all of the extra junk on the chart that does not help communicate the message.
+
+Unfortunately, much of this is included in the default settings in Excel or other analysis tools, but we can get rid of it if we know how.
+
+```{r echo = F, warning = F, include = F}
+
+source(here::here("./Data Viz how-to/prep.R"))
+
+```
+
+## Example of "noise" and eliminating it
+
+We have the following dataset from our activity monitoring records.
+
+### Dataset
+
+```{r  warning = F}
+
+#to keep randomness the same every time
+set.seed(4)
+
+#make a dataframe
+data <- data.frame(id = rep(LETTERS[1:5], 10)
+                   , x = sample(1:100
+                                , size = 50
+                                , replace = T)
+                   , y = sample(1:100
+                                , size = 50
+                                , replace = T)
+                   , quarter = rep(dates, each = repetitions_per_date))
+
+DT::datatable(data 
+              , class = 'cell-border stripe')
+
+
+
+```
+
+<br>
+
+## Data viz
+
+::: panel-tabset
+So let's try to visualize it and make constant improvements.
+
+## First plot
+
+```{r warning = F}
+
+ggplot(data) +
+  geom_line(aes(x = quarter, y = y
+                , group = id, color = id))+
+    geom_point(aes(x = quarter, y = y
+                 , color = id)
+               , alpha = .4) +
+  labs(title = "USAID Activity performance"
+       , subtitle = "2021 - 2023")
+
+```
+
+## Even better plot
+
+```{r warning = F, message = F}
+
+ggplot(data) +
+   geom_point(aes(x = quarter, y = y
+                 , color = id)
+               , alpha = .4) +
+   geom_smooth(aes(x = quarter, y = y
+                  , color = id)
+              , se = FALSE)+
+  labs(title = "USAID Activity performance"
+       , subtitle = "2021 - 2023")
+
+
+```
+
+## Even more better plot
+
+```{r warning = F, message = F}
+ggplot(data) +
+  geom_point(aes(x = quarter, y = y
+                 , color = id)
+               , alpha = .4) +
+  geom_smooth(aes(x = quarter, y = y
+                  , color = id)
+              , se = FALSE)+
+  labs(title = "USAID Activity performance"
+       , subtitle = "2021 - 2023") +
+  theme.plot()
+
+
+```
+
+## Zooming in
+
+```{r warning = F, message = F}
+
+ggplot(data) +
+  geom_point(aes(x = quarter, y = y
+                 , color = id)
+             , alpha = .4) +
+  geom_smooth(aes(x = quarter, y = y
+                  , color = id)
+              , se = FALSE)+
+  gghighlight(id == "A"
+              , unhighlighted_params = list(color = "lightgray"
+                                            , alpha = .3)
+                          , use_direct_label = FALSE)+
+  labs(title = "USAID Activity performance"
+       , subtitle = "2021 - 2023") +
+  theme.plot()
+
+
+```
+:::

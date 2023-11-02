@@ -1,6 +1,6 @@
 ---
 title: "Social Network Analysis"
-subtitle: "In 10 minutes"
+subtitle: "A brief how-to introduction"
 author: "Brian Calhoon"
 date: "`r Sys.Date()`"
 output:
@@ -33,15 +33,33 @@ style_mono_accent(
 class: top, left, inverse
 # Agenda
 
+--
+
 - What is a network?
 
- 
+--
+
 - Why are networks interesting?
 
+--
  
-- How does this relate to our work? 
+- The how-to part
+
+  - Key R libraries
+
+  - Setting up a graph object
+
+  - Analyzing centrality statistics
+
+  - Visualizing the network
 
 ---
+class: middle, center, inverse
+# What is a network?
+
+
+---
+
 class: left, top, inverse
 # What is a network?  
 
@@ -87,9 +105,14 @@ background-size: 75%
 
 # What is a network?
 ---
+class: center, middle, inverse
+
+# Why are networks interesting?
 
 
-# What makes networks interesting? 
+---
+class: top, left, inverse
+# Why are networks interesting? 
 
 --
 
@@ -112,37 +135,391 @@ background-size: 75%
 - Humans...
 
 ---
-background-image: url("./network_analysis_sandbox/viz/community.png")
-background-position: 50% 80%
-background-size: 75%
-class: left, top
+class: center, middle, inverse
 
-## Connections 
+# The how-to part
+
+---
+class: top, left
+
+## Key R libraries
+
+There are a few core libraries that help with network analysis in R
+
+--
+
+.pull-left[The basics
+- `igraph`
+- `ggraph`
+- `tidygraph`
+]
+
+--
+
+.pull-right[A few extras that *may* help
+- `tidyverse`
+- `ggiraph`
+- `ggnetwork`
+- `networkD3`
+- `threejs`
+- `visnetwork`
+- `flextable`
+- `sfnetworks`
+]
+
+---
+class: top, left
+
+## Setting up a graph object
+**Edges: df**
+
+```{R echo = F}
+
+
+df <- data.frame(name = c("Steve", "Steve", "Steve", "Cheryl", "Stephanie", "Stephanie")
+                 , friend = c("Chris", "Cheryl", "Stephanie", "Chris", "Paulo", "Cheryl"))
+
+DT::datatable(df
+              , fillContainer = FALSE)
+
+```
+
+---
+class: top, left
+## Setting up a graph object
+**Vertices: df_nodes**
+
+```{R echo= F}
+df_nodes <- data.frame(name = c("Steve"
+                                , "Cheryl"
+                                , "Stephanie"
+                                , "Chris"
+                                , "Paulo")) 
+df_nodes <- df_nodes |>
+  mutate(team = case_when(name == "Steve" | name == "Chris" ~ "A", name == "Cheryl" | name == "Stephanie" ~ "B", name == "Paulo" ~ "C"))
+
+DT::datatable(df_nodes
+              , fillContainer = FALSE)
+
+```
+
+---
+class: top, left
+# Setting up a graph object
+Creating the graph object from the edges and vertices
+
+```{R}
+graph <-  graph_from_data_frame(  #<<
+  df, #edges are here
+                      vertices = df_nodes #nodes and their data are here
+                      , directed = FALSE) # this is an undirected network
+
+```
 
 ---
 
+class: top, left
+# Setting up a graph object
+Now we can plot the network using `ggraph`
 
-background-image: url("./network_analysis_sandbox/viz/distances.png")
-background-position: 50% 90%
-background-size: 80%
+.pull-left[
+```{R warning = FALSE}
 
-class: left, top
-## More connections
+graph_plot <- ggraph(graph
+            , layout = "with_kk") +
+  geom_edge_diagonal(width = 1
+                 , color = "grey"
+                 , alpha = .7) +
+  geom_node_point(aes(color = team)
+                  , size = 16)+
+  geom_node_text(aes(label = name)
+                 , size = 5.5)+ 
+  theme_graph()
+
+```
+]
+
+.pull-right[
+```{R warning = FALSE,out.width = "80%"}
+
+graph_plot
+```
+]
+
 ---
-background-image: url("./network_analysis_sandbox/viz/shortest.png")
-background-position: 50% 70%
-background-size: 80%
+Now, let's load our dataset from the data science survey as a graph object. 
 
-class: left, top
+```{R }
+#load mentor network data from files
+edges_mentor <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/edges_mentor.xlsx"))
+nodes_mentor <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/nodes_mentor.xlsx"))
 
-## Even More connections
+#add a column for R user to the nodes
+nodes_mentor <- nodes_mentor |>
+  mutate(R_user = case_when(grepl("R", software) ~ "R"
+                            , TRUE ~ "Other"))
+
+
+#load technical guidance network data from files
+edges_tech <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/edges_tech.xlsx"))
+nodes_tech <- readxl::read_xlsx(here::here("./network_analysis_sandbox/data/nodes_tech.xlsx"))
+
+#add a column for R user to the nodes
+nodes_tech <- nodes_tech |>
+  mutate(R_user = case_when(grepl("R", software) ~ "R"
+                            , TRUE ~ "Other"))
+
+#create two graph objects
+graph_ment <- graph_from_data_frame(edges_mentor
+                                    , directed = FALSE
+                                    , vertices = nodes_mentor)
+graph_tech <- graph_from_data_frame(edges_tech
+                                    , directed = FALSE
+                                    , vertices = nodes_tech)
+```
+
+---
+Now to calculate centrality statistics for the following
+
+**Density:** The ratio of the actual number of edges and the largest possible number of edges in the graph
+
+**Distance:** The distance between two or more nodes in a network.
+
+**Transitivity:** The probability that the adjacent vertices of a vertex are connected.
+
+**Betweenness:** Roughly the number of shortest paths going through a node. It helps identify gatekeepers in a network. 
+
+**Eigenvector centrality:** A measure of the relative influence of a node in a network based on the concept that connections to high-scoring nodes contribute more to the score of the node in question than equal connections to low-scoring nodes. 
+
+--
+
+### .center[**Let's get to it!**]
+
+---
+
+ 
+```{R}
+#Calculate some network statistics - density, mean distance, betweeness, transitivity, and eigenvector centrality
+#calculate the network density
+density_ment <- edge_density(graph_ment)
+
+#calculate the mean_distance
+avg_dist_ment <- mean_distance(graph_ment, directed = FALSE)
+
+#calculate the betweeness
+b1 <- igraph::betweenness(graph_ment, directed = FALSE)
+between_ment <- mean(b1)
+
+#calculate the transitivity of the network
+trans_ment <- transitivity(graph_ment)
+
+#eigenvalues vector
+e1 <- eigen_centrality(graph_ment, directed =FALSE)$vector
+#calculate avg. eigenvalue of the network
+eigen_ment <- mean(e1)
+```
+---
+
+
+...Then we do this again for the technical guidance network, and we end up with ... 
+
+<br>
+```{R echo = FALSE}
+
+network_table1
+```
+
+<br>
+
+.center[So, how do we understand what this tells us?]
+---
+### Simulations are helpful here
+
+`erdos.renyi.game()` allows us to create a random network based on the number of nodes and the density of an existing network.
+
+.pull-left[
+```{r}
+#Example similar network
+sim <- erdos.renyi.game(
+  n = gorder(graph_tech)
+  , p.or.m = edge_density(graph_tech)
+  , type = "gnp"
+)
+
+```
+]
+
+.pull-right[
+```{r}
+plot(sim)
+```
+]
+---
+We can calculate each of the above statistics for N simulated networks
+
+```{R}
+#this simulates 1000 iterations of a graph with the same number of nodes and edge_density
+#set up a for loop 
+gl_tech <- vector('list', 1000)
+
+for(i in 1:1000){
+  gl_tech[[i]] <- erdos.renyi.game( #<<
+    n = gorder(graph_tech)
+    , p.or.m = edge_density(graph_tech)
+    , type = "gnp"
+  )
+}
+```
+
+So, we run each of the centrality statistics on 1,000 simulated "tech guidance" networks, and 1,000 simulated "mentoring" networks to give us a sense of what we would expect from similar networks.
+
+---
+### And the results are in
+
+```{r echo = FALSE}
+network_table2
+```
+
+---
+### Explanation
+
+```{R fig.align = "center", echo = FALSE, warning = FALSE}
+
+gl.apls = unlist(lapply(gl, mean_distance, directed=FALSE))
+
+ggplot(data = as.data.frame(gl.apls)) +
+  geom_histogram(aes(x = gl.apls), bins = 25
+                 , fill = my_pal[[1]]
+                 , alpha = .4) +
+  geom_vline(xintercept = avg_dist_tech
+             , linewidth = 1
+             , linetype = "dashed"
+             , color = "red") +
+  annotate(x = avg_dist_tech + 1.2, y = 115, label = glue::glue("{round(avg_dist_tech, digits = 2)}, is the average distance \nbetween connections in the \ntech guidance network"), geom = "label", color = my_pal[[3]]) +
+  geom_segment(aes(x = avg_dist_tech + .6, y = 110, xend = avg_dist_tech +.05, yend = 95),
+               arrow = arrow(length = unit(0.25, "cm"))
+               , linewidth = 1
+               , color = "red")+
+  labs(y = "# of simulations"
+       , x = "Average distance between connections"
+       , title = "How does our tech guidance network \ncompare to similar networks?"
+       , subtitle = glue::glue("{mean(gl.apls < avg_dist_tech) * 100}", "% ", "of similar networks have a shorter average \ndistance between connections"))+
+  theme.plot()
+
+```
+---
+class: center, middle, inverse
+
+# Visualizations
+---
+## Identify communities within a network
+.pull-left[
+```{r}
+
+comm <- fastgreedy.community(graph_ment)
+
+```
+This is a hierarchical, bottom-up approach that tries to optimize modularity in a _greedy_ manner. It is regarded as a good first step in identifying communities. Other algorithms include:
+
+
+- edge.betweenness.community
+
+- walktrap.community
+
+- infomap.community
+
+- leading.eigenvector.community
+]
+
+.pull-right[
+```{r, warning = FALSE}
+
+plot(comm, graph_ment, main = "Communities")
+
+```
+]
+
+---
+
+## Adding membership to the graph object
+
+.pull-left[
+```{r}
+
+#add the community memberships to the graph object
+V(graph_ment)$comm <- as.factor(membership(comm))
+
+```
+
+
+```{r warning = FALSE}
+plot1 <- ggraph(graph_ment
+       , layout = "with_kk") +
+  geom_edge_diagonal(width = 1
+                 , color = "grey"
+                 , alpha = .7) +
+  geom_node_point(aes(color = comm)
+                  , size = 16)+
+  geom_node_text(aes(label = name)
+                 , size = 5.5)+ 
+  theme_graph()
+
+```
+
+]
+
+.pull-right[
+```{r warning = FALSE, echo = FALSE}
+plot1
+```
+]
+
+---
+## Visualize the network with more attributes
+
+```{r}
+#add betweenness to the nodes
+V(graph_ment)$between <- betweenness(graph_ment)
+
+#add edge_betweenness to the edges
+E(graph_ment)$edge_between <- edge_betweenness(graph_ment)
+
+```
+
+```{r}
+plot2 <- ggraph(graph_ment
+       , layout = "with_kk") +
+  geom_edge_diagonal(aes(alpha = edge_between)
+                 , width = 1) +
+  geom_node_point(aes(color = comm
+                      , size = log(between)))+
+  geom_node_text(aes(label = name)
+                 , size = 5.5)+
+  labs(title = "SEA DST Mentor Network"
+       , subtitle = "Showing communities and node and edge betweenness")+
+  theme_graph() +
+  theme(plot.title = element_text(family = "Corbel"
+                                  , size = 20
+                                  , color = my_pal[[2]])
+        , plot.subtitle = element_text(family = "Corbel"
+                                       , size = 16
+                                       , color = my_pal[[3]]))
+
+```
+
+
+---
+## The plot
+```{r warning = FALSE, echo = FALSE, fig.height = 6, fig.width = 8}
+plot2
+```
+
 ---
 class: left, top
-
-## Interactive visualization
 
 ### SEA Data Science Team mentor network
-```{r out.width='100%', echo=FALSE, fig.align = 'top', out.height='100%', eval = require('networkD3')}
+.pull-left[
+```{r out.width='100%', fig.align = 'top', out.height='100%', eval = require('networkD3')}
 
 #Render your D3.js network
 netd3 <- forceNetwork(
@@ -154,49 +531,18 @@ netd3 <- forceNetwork(
   Group = "group",  
   legend = FALSE, 
   fontSize = 20,
-  opacity = .8
+  opacity = 1
 )
 
+```
+]
+
+.pull-right[
+```{r echo = FALSE, warning=FALSE}
 netd3
 
 ```
----
-
-# How does this relate to our work?
-
-We are parts of many social networks, and this is true of our activities and the staff who work on them.
-
---
-
-- Organizational development: inter and intra organizational
-
---
-
-- Policy reform
-
---
-
-- Influence within teams
-
---
-
-- Interorganizational structures
-
----
-class: top, center, middle, inverse, 
-
-# Shameless plug?
-
-
-
-#### Join the Data Science Team on<br> Tuesday, September 26<br> 
-#### at 10 am<br>
-
-#### for a presentation on network statistics and visualization using R
-#### If interested <br>
-
-#### Email: bcalhoon@msi-inc.com
-
+]
 ---
 
 background-image: url("crowd.png")
@@ -205,13 +551,4 @@ background-size: cover
 class: center, bottom, inverse
 
 # We can be heroes!
-
----
-background-image: url("social-networking-slide.png")
-background-size: contain
-class: center, top
-
-# Activity time!
-
----
 

@@ -191,7 +191,7 @@ We will look at a series of centrality statistics to give us a sense of how easi
 
 **Betweenness:**
 
-**Eigenvector:**
+**Eigenvector centrality:** A measure of the influence of a node in a network. It's a relative score to all nodes in the network based on the concept that connections to high-scoring nodes contribute more to the score of the node in question than equal connections to low-scoring nodes.
 
 
 
@@ -355,17 +355,17 @@ gl.apls = unlist(lapply(gl, mean_distance, directed=FALSE))
 
 ggplot(data = as.data.frame(gl.apls)) +
   geom_histogram(aes(x = gl.apls), bins = 25
-                 , fill = my_pal[[11]]
+                 , fill = my_pal[[1]]
                  , alpha = .4) +
   geom_vline(xintercept = avg_dist_ment
              , linewidth = 1
              , linetype = "dashed"
-             , color = my_pal[[14]]) +
-  annotate(x = avg_dist_ment + 1.2, y = 150, label = glue::glue("{round(avg_dist_ment, digits = 2)}, is the average distance \nbetween connections \nin the mentoring network"), geom = "label", color = my_pal[[14]]) +
+             , color = my_pal[[2]]) +
+  annotate(x = avg_dist_ment + 1.2, y = 150, label = glue::glue("{round(avg_dist_ment, digits = 2)}, is the average distance \nbetween connections \nin the mentoring network"), geom = "label", color = my_pal[[3]]) +
   geom_segment(aes(x = avg_dist_ment + .6, y = 145, xend = avg_dist_ment +.05, yend = 138),
                   arrow = arrow(length = unit(0.25, "cm"))
                , linewidth = 1
-               , color = my_pal[[14]])+
+               , color = my_pal[[4]])+
   labs(y = "# of simulations"
        , x = "Average distance between connections"
        , title = "How does our mentorship network compare to \nsimilarly structured networks?"
