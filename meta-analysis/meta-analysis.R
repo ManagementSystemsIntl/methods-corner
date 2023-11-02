@@ -6,14 +6,17 @@ getwd()
 
 # Afg ---- 
 
-afg_full <- read_rds("Y:/Private/dkillian/AMELA/BPPS/BPPS analysis/data/prepared/BPPS prepared.rds") %>%
+afg_full <- read_rds("../BPPS analysis/data/prepared/BPPS prepared.rds") %>%
   mutate(study="Afghanistan")
 
 afg <- afg_full %>%
-  select(study, info, perception=USAID_perception_bin) %>%
+  select(study, 
+         info,
+         perception=USAID_perception_bin,
+         percption_ord=USAID_perception_ord) %>%
   na.omit()
 
-frq(afg$USAID_perception_bin)
+frq(afg$perception)
 
 names(afg)
 
@@ -44,7 +47,7 @@ frq(irq$USAID_performance)
   # group sizes
 
 tal <- irq %>%
-  group_by(info_treat, USAID_performance) %>%
+  group_by(info, perception) %>%
   tally()
 
 tal
@@ -127,7 +130,10 @@ wbg_full <- read_rds("../Palestinian Perception Study/data/prepared/Palestinian 
   mutate(study="WB-Gaza")
 
 wbg <- wbg_full %>%
-  select(study, info=info_trt, perception=usaid_perf_bin) %>%
+  select(study, 
+         info=info_trt, 
+         perception=usaid_perf_bin,
+         perception_ord=usaid_perf) %>%
   na.omit()
 
 head(wbg)
@@ -154,6 +160,8 @@ dat <- bind_rows(afg, irq, wbg) %>%
   remove_attributes("na.action")
 
 str(dat)
+
+frq(dat$study)
 
 ?brmsformula
 
@@ -298,6 +306,143 @@ s1 <- stan_glmer(TE|se(seTE) ~ 1 + (1|study),
 
 
 ?rma.mv
+
+
+
+# baggr binary ---- 
+
+library(baggr)
+
+tal <- dat %>%
+  group_by(study, info, perception) %>%
+  tally()
+
+tal
+
+dat %>%
+  group_by(study, info) %>%
+  tally()
+
+md <- data.frame(study=c("Afghanistan", "Iraq-crowdsource","Iraq-household","WB-Gaza"),
+                 a = c(1837, 396, 502, 696),
+                 n1i = c(3380, 629, 729, 1259),
+                 c = c(1699, 374, 533, 696),
+                 n2i = c(3353, 599, 750, 1309))
+
+md
+
+md_prepOR <- prepare_ma(md,
+                      effect="logOR",
+                      group="study")
+
+md_prepOR
+
+labbe(md_prepOR,
+      plot_model=T,
+      shade_se="or")
+
+?baggr
+
+md_OR <- baggr(md_prepOR, 
+            effect="Logarithm of odds ratio")
+md_OR
+
+forest_plot(md_OR)
+
+
+md_prepRR <- prepare_ma(md,
+                        effect="logRR",
+                        group="study")
+
+labbe(md_prepRR)
+
+md_rr <- baggr(md_prepRR,
+               effect="Logarithm of relative risk")
+
+summary(md_rr)
+md_rr
+
+forest_plot(md_rr,
+            show="both",
+            print="inputs")
+exp(.0596)
+exp(.0231)
+
+md_prepRD <- prepare_ma(md,
+                        effect="RD",
+                        group="study")
+
+md_prepRD
+
+md_rd <- baggr(md_prepRD,
+               effect="Risk difference")
+
+md_rd
+
+forest_plot(md_rd,
+            show="both",
+            print="inputs")
+
+# with Bangladesh
+
+.84*1177
+.8*1086
+
+md2 <- data.frame(study=c("Afghanistan", "Iraq-crowdsource","Iraq-household","WB-Gaza", "Bangladesh"),
+                 a = c(1837, 396, 502, 696, 989),
+                 n1i = c(3380, 629, 729, 1259, 1177),
+                 c = c(1699, 374, 533, 696, 869),
+                 n2i = c(3353, 599, 750, 1309, 1086))
+
+md2
+
+
+md2_prepRR <- prepare_ma(md2,
+                        effect="logRR",
+                        group="study")
+
+labbe(md2_prepRR,
+      plot_model=T,
+      shade_se="rr")
+
+md2_rr <- baggr(md2_prepRR,
+               effect="Logarithm of relative risk")
+
+summary(md2_rr)
+md2_rr
+
+forest_plot(md2_rr,
+            show="both",
+            print="inputs")
+exp(.0365)
+exp(.0281)
+
+md2_prepRD <- prepare_ma(md2,
+                        effect="RD",
+                        group="study")
+
+md2_prepRD
+
+md2_rd <- baggr(md2_prepRD,
+               effect="Risk difference")
+
+md2_rd
+
+forest_plot(md2_rd,
+            show="both",
+            print="inputs")
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
