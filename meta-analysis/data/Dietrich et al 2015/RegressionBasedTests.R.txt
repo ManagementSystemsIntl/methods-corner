@@ -1,0 +1,94 @@
+# Bangladesh Branding Project
+# Regression-Based Analyses
+# Matthew S. Winters
+# File Created On 26 May 2015
+
+library(foreign)
+library(car)
+library(MASS)
+
+# data <- read.dta("Branding_Bangladesh_November2015.dta")
+
+
+#####################
+# Adjustments #
+#####################
+
+data$money_us <- ifelse(data$money_new=="USA", 1, 0)
+
+data$conf_index <- data$military_17 + data$police_17 + data$justice_17 + 
+ data$local_govt_17 + data$poli_party_17 + data$govt_17 + data$vill_leader_17 - 7
+
+############
+# Analyses #
+############
+
+attach(data)
+
+# Recognize U.S. as Funder after Video
+fit.1 <- glm(money_us ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), family=binomial(link="logit"))
+summary(fit.1)
+nobs(fit.1)
+
+# Foreign Policy Questions
+fit.2 <- polr(as.factor(influence_us) ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), method="logistic")
+summary(fit.2)
+nobs(fit.2)
+
+fit.3 <- glm(trade_us ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), family=binomial(link="logit"))
+summary(fit.3)
+nobs(fit.3)
+
+fit.4 <- glm(unpko_us ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), family=binomial(link="logit"))
+summary(fit.4)
+nobs(fit.4)
+
+# Commercial Questions
+fit.5 <- polr(as.factor(cocacola) ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), method="logistic")
+summary(fit.5)
+nobs(fit.5)
+
+fit.6 <- polr(as.factor(apple) ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), method="logistic")
+summary(fit.6)
+nobs(fit.6)
+
+fit.7 <- polr(as.factor(products_us_count) ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), method="logistic")
+summary(fit.7)
+nobs(fit.7)
+
+# Domestic Government Legitimacy
+fit.8 <- polr(as.factor(govt_17) ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), method="logistic")
+summary(fit.8)
+nobs(fit.8)
+
+fit.9 <- polr(as.factor(local_govt_17) ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), method="logistic")
+summary(fit.9)
+nobs(fit.9)
+
+fit.10 <- polr(as.factor(conf_index) ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), method="logistic")
+summary(fit.10)
+nobs(fit.10)
+
+fit.11 <- polr(as.factor(tax_morale) ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), method="logistic")
+summary(fit.11)
+nobs(fit.11)
+
+fit.12 <- polr(as.factor(gcorrupt) ~ branded + female + age + edu_31 + minority + income_32 + present_lifestyle_2 +
+ tv_33 + as.factor(zila_code), method="logistic")
+summary(fit.12)
+nobs(fit.12)
+
+
+
+# End of File

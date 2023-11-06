@@ -7,20 +7,34 @@ getwd()
 # Afg ---- 
 
 afg_full <- read_rds("../BPPS analysis/data/prepared/BPPS prepared.rds") %>%
-  mutate(study="Afghanistan")
+  mutate(study="Afghanistan",
+         perception_ord = case_when(USAID_perception_ord > 3 ~ 1,
+                                    USAID_perception_ord < 3 ~ -1,
+                                    USAID_perception_ord == 3 ~ 0,
+                                    TRUE ~ NA_real_))
+#         USAID_perception_cen=USAID_perception_ord-3)
+
+frq(afg_full$perception_ord)
+names(afg_full)
+
+frq(afg_full$USAID_perception_ord)
+frq(afg_full$perception_ord)
 
 afg <- afg_full %>%
   select(study, 
          info,
          perception=USAID_perception_bin,
-         percption_ord=USAID_perception_ord) %>%
+         perception_ord) %>%
   na.omit()
 
 frq(afg$perception)
+frq(afg$percption_ord)
 
+
+head(afg)
 names(afg)
 
-frq(afg$)
+frq(afg$perception_ord)
 frq(afg$usaid_percep)
 
 afg_tal <- afg %>%
@@ -31,18 +45,28 @@ afg_tal
 
 # Iraq ---- 
 
-irq_full <- read_rds("../Iraq Perception Study/data/perf_merg.rds") 
+irq_full <- read_rds("../Iraq Perception Study/data/perf_merg.rds") %>%
+  mutate(perception_ord = case_when(USAID_perf_ord > 0 ~ 1,
+                                    USAID_perf_ord == 0 ~ 0,
+                                    USAID_perf_ord < 0 ~ -1,
+                                    TRUE ~ NA_real_))
 
 names(irq_full)
+frq(irq_full$USAID_perf_ord)
+frq(irq_full$perception_ord)
 
 irq <- irq_full %>%
   mutate(study = case_when(hh==1 ~ "Iraq - household",
                            TRUE ~ "Iraq - crowdsource")) %>%
-  select(study, info=info_treat, perception=USAID_performance) %>%
+  select(study, 
+         info=info_treat, 
+         perception=USAID_performance,
+         perception_ord) %>%
   na.omit()
 
 
 frq(irq$USAID_performance)
+frq(irq$perception_ord)
   
   # group sizes
 
@@ -127,16 +151,25 @@ perf9 <- stan_glmer(USAID_performance ~ seen_USAID + USAID_message + info_treat 
 getwd()
 
 wbg_full <- read_rds("../Palestinian Perception Study/data/prepared/Palestinian Perception Study - prepared.rds") %>%
-  mutate(study="WB-Gaza")
+  mutate(study="WB-Gaza",
+         perception_ord = case_when(usaid_perf_cen > 0 ~ 1,
+                                    usaid_perf_cen == 0 ~ 0,
+                                    usaid_perf_cen < 0 ~ -1,
+                                    TRUE ~ NA_real_))
+
+names(wbg_full)
+frq(wbg_full$usaid_perf_cen)
+frq(wbg_full$perception_ord)
 
 wbg <- wbg_full %>%
   select(study, 
          info=info_trt, 
          perception=usaid_perf_bin,
-         perception_ord=usaid_perf) %>%
+         perception_ord) %>%
   na.omit()
 
 head(wbg)
+frq(wbg$perception_ord)
 
 frq(wbg_full$usaid_perf_bin)
 
@@ -145,6 +178,36 @@ wbg_tal <- wbg %>%
   tally()
 
 wbg_tal
+
+# Bangladesh ---- 
+
+Y:\Private\dan.killian\AMELA\BPPS\background docs\Foreign aid, foreign policy, and domestic government legitimacy (Dietrich et al 2015)\dataverse
+
+bd_full <- read_dta("meta-analysis/data/Dietrich et al 2015/Branding_Bangladesh_November2015.dta") %>%
+  mutate(study="Bangladesh",
+         perception=ifelse(influence_us>0,1,0))
+
+names(bd_full)
+
+frq(bd_full$perception)
+frq(bd_full$influence_us)
+psych::describe(bd_full$influence_us)
+describeBy(bd_full$influence_us, bd_full$branded)
+describeBy(bd_full$perception, bd_full$branded)
+
+lm(perception ~ branded,
+   data=bd_full) %>%
+  summary()
+
+bd <- bd_full %>%
+  select(study, 
+         info=branded,
+         perception,
+         perception_ord=influence_us)
+
+head(bd)  
+map(bd, function(x) frq(x))
+lapply(bd, frq)
 
 # all ---- 
 
@@ -155,13 +218,16 @@ ThirdWave
 
 
 
-dat <- bind_rows(afg, irq, wbg) %>%
+dat <- bind_rows(afg, irq, wbg, bd) %>%
   as.data.frame() %>%
   remove_attributes("na.action")
 
 str(dat)
-
+head(dat)
 frq(dat$study)
+
+write_rds(dat, "meta-analysis/data/record level data.rds")
+write_csv(dat, "meta-analysis/data/record level data.csv")
 
 ?brmsformula
 
@@ -176,9 +242,29 @@ s1 <- stan_glmer(perception ~ info + (1|study),
 
 summary(s1, digits=3)
 
+s1_dat <- as.data.frame(s1)
+head(s1_dat)
+
+s1_gath <- s1_dat %>%
+  pivot_longer(cols=3:7,
+               names_to="study2") %>%
+  mutate(study=case_when(contains(str_sub(study2, ))
+
+?pivot_longer
+?str_sub
+?contains
+
 library(tidybayes)
 
-s1_draws <- spread_draws(s1, r_study[study,], b_Intercept) %>% 
+get_variables(s1)
+
+s1_draws <- spread_draws(s1, r_study[study,], b_Intercept) 
+
+frq(s1_draws$term)
+
+s1_draws <- spread_draws(s1, b[(Intercept)], b[term, study])
+
+%>% 
   mutate(b_Intercept = r_study + b_Intercept)
 
 head(s1_draws)
@@ -234,6 +320,262 @@ s2 <- stan_glmer(perception ~ (info|study),
                  data=dat)
 
 summary(s2, digits=3)
+
+
+s3 <- stan_glmer(perception ~ info + (info|study),
+                 cores=8,
+                 data=dat)
+
+summary(s3, digits=3)
+
+get_variables(s3)
+
+
+
+# logistic ---- 
+
+l2 <- brm(perception ~ info|study,
+          family=bernoulli(link="logit"),
+          backend="cmdstanr",
+          cores=8,
+          data=dat)
+
+saveRDS(l2, "meta-analysis/l2 percep info each study.rds")
+
+summary(l2)
+ranef(l2)
+exp(.49) / (1 + exp(.49))
+exp(.13) / (1 + exp(.13))
+
+mn <- dat %>%
+  summarise(mn=mean(perception))
+
+mn
+
+library(ggeffects)
+library(modelr)
+
+st <- c("Afghanistan",
+        "Bangladesh",
+        "Iraq - crowdsource",
+        "Iraq - household",
+        "WB-Gaza")
+
+st <- data.frame(frq(dat$study)) %>%
+  select(2) %>%
+  as.vector()
+st
+
+?distinct
+dat %>%
+  distinct(study)
+
+l2_pred <- dat %>%
+  data_grid(study=st,
+            info=c(0,1)) |> 
+  add_epred_draws(l2,
+                  ndraws=100) %>%
+  ungroup() %>%
+  group_by(info, .draw) %>%
+  mutate(indices=cur_group_id()) %>%
+  ungroup() 
+
+%>%
+  arrange(.draw)
+
+l2_pred
+dfrq(l2_pred$indices)
+frq(l2_pred$.draw)
+
+summ <- l2_pred %>%
+  group_by(study, info) %>%
+  summarise(pos=mean(.epred))
+
+summ
+
+ggplot(l2_pred, aes(info, .epred, color=study, group=indices)) +
+  geom_line(aes(color=study, group=indices), alpha=.3, size=.3) +
+  scale_color_viridis_d() +
+  scale_x_continuous(breaks=0:1,
+                     labels=c("Not\ntreated","Treated")) +
+  scale_y_continuous(labels=percent_format(accuracy=1),
+                     limits=c(0,1)) +
+#                     sec.axis = sec_axis(~.,
+#                                         breaks=end$brk, #c(.45,.3,.2,.08,.04),
+#                                         labels=end$lab)) +
+  theme(legend.position="none") +
+  labs(x="",
+       y="") 
+
+
+
+
+
+
+l3 <- brm(perception ~ 1 + info + (info|study),
+          family=bernoulli(link="logit"),
+          backend="cmdstanr",
+          cores=8,
+          data=dat)
+
+saveRDS("meta-analysis/l3 percep info by info study.rds")
+
+
+
+
+# ordered ---- 
+
+library(tidybayes)
+library(modelr)
+
+o1 <- brm(ordered(perception_ord) ~ 1 + info + (1|study),
+          family=cumulative,
+          backend="cmdstanr",
+          cores=8,
+          data=dat)
+
+saveRDS(o1, "meta-analysis/models/o1.rds")
+
+summary(o1)
+ranef(o1)
+
+o1_pred <- dat |>
+  data_grid(study=st,
+            info=0:1) |>
+  add_epred_draws(o1, 
+                  ndraws=100) |> #, n=100) |>
+  ungroup() |>
+  mutate(cat = factor(as.numeric(.category), labels=c("Negative","Neutral","Positive")))
+
+o1_pred
+
+frq(o1_pred$.category)
+frq(dat$perception_ord)
+
+o1_pred <- o1_pred %>%
+  group_by(.draw, cat) %>%
+  mutate(indices=cur_group_id()) %>%
+  ungroup()
+
+
+end <- data.frame(brk=c(.45,.28,.19,.07,.03),
+                  lab = c("Somewhat positive",
+                          "Very positive",
+                          "Neutral",
+                          "Somewhat negative",
+                          "Very negative"),
+                  color=viridis(5))
+
+end
+
+o <- ggplot(o1_pred, aes(info, .epred, color=cat)) +
+  geom_line(aes(group=indices), alpha=.3, size=.3) +
+  scale_color_viridis_d() +
+  scale_x_continuous(breaks=0:1,
+                     labels=c("Untreated","Treated")) +
+  scale_y_continuous(labels=percent_format(accuracy=1),
+                     limits=c(0,.8)) +
+#                     sec.axis = sec_axis(~.,
+#                                         breaks=end$brk, #c(.45,.3,.2,.08,.04),
+#                                         labels=end$lab)) +
+  #data=end)#, #c("Somewhat positive",
+  #         "Very positive",
+  #          "Neutral",
+  #          "Somewhat negative",
+  #         "Very negative"))) +
+  theme(legend.position="none") +
+  labs(x="",
+       y="") 
+#  geom_line(aes(x=usaid_famil, y=.value), size=4, color="pink")
+#  geom_textline(aes(label=cat), hjust=.75)
+
+o
+
+
+
+
+
+o2 <- brm(ordered(perception_ord) ~ (info|study),
+          family=cumulative,
+          backend="cmdstanr",
+          cores=8,
+          data=dat)
+
+summary(o2)
+ranef(o2)
+saveRDS(o2, "meta-analysis/models/o2 perception ord info within study.rds")
+
+?conditional_effects
+
+conditional_effects(o2, categorical=T)
+
+plot(conditional_effects(o3))
+
+get_variables(o2)
+
+
+o3 <- brm(ordered(perception_ord) ~ 1 + info + (info|study),
+          family=cumulative,
+          backend="cmdstanr",
+          cores=8,
+          data=dat)
+
+summary(o3)
+ranef(o3)
+saveRDS(o3, "meta-analysis/models/o3 perception ord info + info within study.rds")
+
+
+
+b1_pred <- dat %>%
+  data_grid(usaid_famil = c(0,1,2)) %>%
+  #add_fitted_draws(b1, n=100) %>%
+  add_epred_draws(b1, 
+                  ndraws=100) %>% #, n=100) %>%
+  ungroup() %>%
+  mutate(cat = factor(as.numeric(.category), labels=percept_key$perception_lab[1:5]))
+
+b1_pred
+
+
+b1_pred <- b1_pred %>%
+  group_by(.draw, cat) %>%
+  mutate(indices=cur_group_id()) %>%
+  ungroup()
+
+?cur_group_id
+
+end <- data.frame(brk=c(.45,.28,.19,.07,.03),
+                  lab = c("Somewhat positive",
+                          "Very positive",
+                          "Neutral",
+                          "Somewhat negative",
+                          "Very negative"),
+                  color=viridis(5))
+
+end
+
+b <- ggplot(b1_pred, aes(usaid_famil, .epred, color=cat)) +
+  geom_line(aes(group=indices), alpha=.3, size=.3) +
+  scale_color_viridis_d() +
+  scale_x_continuous(breaks=0:2,
+                     labels=c("Not\nfamiliar","Somewhat\nfamiliar","Very\nfamiliar")) +
+  scale_y_continuous(labels=percent_format(accuracy=1),
+                     limits=c(0,.5),
+                     sec.axis = sec_axis(~.,
+                                         breaks=end$brk, #c(.45,.3,.2,.08,.04),
+                                         labels=end$lab)) +
+  #data=end)#, #c("Somewhat positive",
+  #         "Very positive",
+  #          "Neutral",
+  #          "Somewhat negative",
+  #         "Very negative"))) +
+  theme(legend.position="none") +
+  labs(x="",
+       y="") 
+
+b
+
+
 
 
 

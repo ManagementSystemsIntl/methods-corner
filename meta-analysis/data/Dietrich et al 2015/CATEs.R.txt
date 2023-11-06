@@ -1,0 +1,147 @@
+
+# Statistical Significance Tests of Differences across Subgroups
+
+# Set Number of Sims
+n.sims <- 1000
+
+############################################################
+# U.S. Has Good Influence and COnfidence in Local Government
+
+### Repeated Use Quantities
+
+# Influence: Overall ATE in the Data 
+ate.infl <- mean(data$influence_us[data$branded==1], na.rm=T) - mean(data$influence_us[data$branded==0], na.rm=T)
+
+# Influence: Unobserved Potential Outcomes Based on the Estimated ATE
+y.i.0.infl <- ifelse(data$branded==0, data$influence_us, data$influence_us + ate.infl)
+y.i.1.infl <- ifelse(data$branded==1, data$influence_us, data$influence_us - ate.infl)
+
+# LG Confidence: Overall ATE in the Data
+ate.lg.conf <- mean(data$local_govt_17[data$branded==1], na.rm=T) - mean(data$local_govt_17[data$branded==0], na.rm=T)
+
+# LG Confidence: Unobserved Potential Outcomes Based on the Estimated ATE
+y.i.0.lg.conf <- ifelse(data$branded==0, data$local_govt_17, data$local_govt_17 + ate.lg.conf)
+y.i.1.lg.conf <- ifelse(data$branded==1, data$local_govt_17, data$local_govt_17 - ate.lg.conf)
+
+# Influence: CATEs for Previous Awareness
+cate.infl.aware <- mean(data$influence_us[data$branded==1 & data$previous_aware==1], na.rm=T) - 
+  mean(data$influence_us[data$branded==0 & data$previous_aware==1], na.rm=T)
+cate.infl.notaware <- mean(data$influence_us[data$branded==1 & data$previous_aware==0], na.rm=T) - 
+  mean(data$influence_us[data$branded==0 & data$previous_aware==0], na.rm=T)
+diff.cates.infl.aware <- cate.infl.aware - cate.infl.notaware
+
+# Influence: CATEs for Education
+cate.infl.highedu <- mean(data$influence_us[data$branded==1 & data$edu_31 >= 6], na.rm=T) - 
+  mean(data$influence_us[data$branded==0 & data$edu_31 >= 6], na.rm=T)
+cate.infl.lowedu <- mean(data$influence_us[data$branded==1 & data$edu_31 < 6], na.rm=T) - 
+  mean(data$influence_us[data$branded==0 & data$edu_31 < 6], na.rm=T)
+diff.cates.infl.edu <- cate.infl.highedu - cate.infl.lowedu
+
+# LG COnfidence: CATEs for Previous Use
+cate.lg.conf.user <- mean(data$local_govt_17[data$branded==1 & data$previous_use==1], na.rm=T) -
+  mean(data$local_govt_17[data$branded==0 & data$previous_use==1], na.rm=T)
+cate.lg.conf.nonuser <- mean(data$local_govt_17[data$branded==1 & data$previous_use==0], na.rm=T) -
+  mean(data$local_govt_17[data$branded==0 & data$previous_use==0], na.rm=T)
+diff.cates.lg.conf.user <- cate.lg.conf.user - cate.lg.conf.nonuser
+
+# LG COnfidence: CATEs for Politically Active
+cate.lg.conf.polactive <- mean(data$local_govt_17[data$branded==1 & data$active_politics_45 > 1], na.rm=T) -
+  mean(data$local_govt_17[data$branded==0 & data$active_politics_45 > 1], na.rm=T)
+cate.lg.conf.nonpolactive <- mean(data$local_govt_17[data$branded==1 & data$active_politics_45==1], na.rm=T) -
+  mean(data$local_govt_17[data$branded==0 & data$active_politics_45==1], na.rm=T)
+diff.cates.lg.conf.polactive <- cate.lg.conf.polactive - cate.lg.conf.nonpolactive
+
+# LG COnfidence: CATEs for Education
+cate.lg.conf.highedu <- mean(data$local_govt_17[data$branded==1 & data$edu_31 >= 6], na.rm=T) -
+  mean(data$local_govt_17[data$branded==0 & data$edu_31 >= 6], na.rm=T)
+cate.lg.conf.lowedu <- mean(data$local_govt_17[data$branded==1 & data$edu_31 < 6], na.rm=T) -
+  mean(data$local_govt_17[data$branded==0 & data$edu_31 < 6], na.rm=T)
+diff.cates.lg.conf.edu <- cate.lg.conf.highedu - cate.lg.conf.lowedu
+
+
+data.for.sims <- data.frame(cbind(y.i.0.infl, y.i.1.infl, y.i.0.lg.conf, y.i.1.lg.conf, 
+  data$previous_aware, data$previous_use, data$edu_31, data$active_politics_45))
+colnames(data.for.sims) <- c("y.i.0.infl", "y.i.1.infl", "y.i.0.lg.conf", "y.i.1.lg.conf",
+  "aware", "use", "edu", "polactive")
+
+attach(data.for.sims)
+
+
+### Influence by Awareness
+
+infl.aware.diff.cates.sims <- rep(NA, n.sims)
+for (i in 1:n.sims) {
+  t <- rbinom(n=length(y.i.0.infl), size=1, prob=0.5)
+  cate.high <- mean(y.i.0.infl[t==1 & aware==1], na.rm=T) - mean(y.i.1.infl[t==0 & aware==1], na.rm=T)
+  cate.low <- mean(y.i.0.infl[t==1 & aware==0], na.rm=T) - mean(y.i.1.infl[t==0 & aware==0], na.rm=T)
+  infl.aware.diff.cates.sims[i] <- cate.high - cate.low
+}
+
+mean(abs(infl.aware.diff.cates.sims) >= abs(diff.cates.infl.aware))
+
+### Influence by Education
+               
+infl.edu.diff.cates.sims <- rep(NA, n.sims)
+for (i in 1:n.sims) {
+  t <- rbinom(n=length(y.i.0.infl), size=1, prob=0.5)
+  cate.high <- mean(y.i.0.infl[t==1 & edu > 6], na.rm=T) - mean(y.i.1.infl[t==0 & edu > 6], na.rm=T)
+  cate.low <- mean(y.i.0.infl[t==1 & edu <= 6], na.rm=T) - mean(y.i.1.infl[t==0 & edu <= 6], na.rm=T)
+  infl.edu.diff.cates.sims[i] <- cate.high - cate.low
+}
+
+mean(abs(infl.edu.diff.cates.sims) >= abs(diff.cates.infl.edu))
+
+### LG Confidence by Use
+
+lg.conf.use.diff.cates.sims <- rep(NA, n.sims)
+for (i in 1:n.sims) {
+  t <- rbinom(n=length(y.i.0.lg.conf), size=1, prob=0.5)
+  cate.high <- mean(y.i.0.lg.conf[t==1 & use==1], na.rm=T) - mean(y.i.1.lg.conf[t==0 & use==1], na.rm=T)
+  cate.low <- mean(y.i.0.lg.conf[t==1 & use==0], na.rm=T) - mean(y.i.1.lg.conf[t==0 & use==0], na.rm=T)
+  lg.conf.use.diff.cates.sims[i] <- cate.high - cate.low
+}
+
+mean(abs(lg.conf.use.diff.cates.sims) >= abs(diff.cates.lg.conf.user))
+
+### LG Confidence by Politically Active
+
+lg.conf.polactive.diff.cates.sims <- rep(NA, n.sims)
+for (i in 1:n.sims) {
+  t <- rbinom(n=length(y.i.0.lg.conf), size=1, prob=0.5)
+  cate.high <- mean(y.i.0.lg.conf[t==1 & polactive > 1], na.rm=T) - mean(y.i.1.lg.conf[t==0 & polactive > 1], na.rm=T)
+  cate.low <- mean(y.i.0.lg.conf[t==1 & polactive==1], na.rm=T) - mean(y.i.1.lg.conf[t==0 & polactive==1], na.rm=T)
+  lg.conf.polactive.diff.cates.sims[i] <- cate.high - cate.low
+}
+
+mean(abs(lg.conf.polactive.diff.cates.sims) >= abs(diff.cates.lg.conf.polactive))
+
+### LG Confidence by Education
+
+lg.conf.edu.diff.cates.sims <- rep(NA, n.sims)
+for (i in 1:n.sims) {
+  t <- rbinom(n=length(y.i.0.lg.conf), size=1, prob=0.5)
+  cate.high <- mean(y.i.0.lg.conf[t==1 & edu > 6], na.rm=T) - mean(y.i.1.lg.conf[t==0 & edu > 6], na.rm=T)
+  cate.low <- mean(y.i.0.lg.conf[t==1 & edu <= 6], na.rm=T) - mean(y.i.1.lg.conf[t==0 & edu <= 6], na.rm=T)
+  lg.conf.edu.diff.cates.sims[i] <- cate.high - cate.low
+}
+
+mean(abs(lg.conf.edu.diff.cates.sims) >= abs(diff.cates.lg.conf.edu))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# End of File
