@@ -40,7 +40,7 @@ The most commonly used packages for visualizing spatial data are `ggplot2` - R's
 
 To get started, we need to load our packages.
 
-```{r libraries, echo = T, warning = FALSE, message = FALSE}
+```{r libraries, echo = T, warning = FALSE, message = FALSE }
 #run this line first if you have never used these packages before
 #install.packages(c("tidyverse", "sf", "tmap", "readr", "here"))
 
@@ -129,7 +129,7 @@ tmap_mode("plot") +
 
 ```{r ggplot2, message = FALSE, warning=FALSE}
 
-ggplot(mdg) +
+ggplot2::ggplot(mdg) +
   geom_sf() +
   geom_sf(data = cities_sf, color = "red")
 
@@ -196,12 +196,12 @@ yrange <- bbox_new$ymax - bbox_new$ymin # range of y values
   bbox_new[4] <- bbox_new[4] + (0.1 * yrange) # ymax - top
 
 #convert the bbox to a sf collection (sfc)
-bbox_new <- bbox_new |>  # take the bounding box ...
+bbox_new <- bbox_new |>  # take the bounding box
   st_as_sfc() # ... and make it a sf polygon
 
 
-ggplot(mdg) +
-  geom_sf() +
+ggplot2::ggplot() +
+  geom_sf(data = mdg) +
   geom_sf(data = cities_sf, color = "red") +
   ggrepel::geom_text_repel(data = cities_sf
                , aes(label = Name
