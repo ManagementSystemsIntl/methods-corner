@@ -176,8 +176,8 @@ font-size: small;
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(cities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2822ac74c07cdff8a1a2" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-2822ac74c07cdff8a1a2">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["Ambatondrazaka","Ambositra","Ambovombe-Androy","Antananarivo","Antsirabe","Antsiranana"],[47649,41078,114230,1275207,245592,131165],["Alaotra-Mangoro","Amoron'i Mania","Androy","Analamanga","Vakinankaratra","Diana"],["Toamasina","Fianarantsoa","Toliara","Antananarivo","Antananarivo","Antsiranana"],["Adm2","Adm2","Adm2","Adm0","Adm2","Adm1"],[-17.8237084,-20.5328149,-25.1781,-18.9100122,-19.871403,-12.2841],[48.4267188,47.2450521,46.0892,47.5255809,47.034667,49.2943],[11,39,32,54,46,29]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>Population<\/th>\n      <th>Region<\/th>\n      <th>Province<\/th>\n      <th>Captial<\/th>\n      <th>Latitude<\/th>\n      <th>Longitude<\/th>\n      <th>Number of Activities<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-cd7f31653357834b7f42" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-cd7f31653357834b7f42">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["Ambatondrazaka","Ambositra","Ambovombe-Androy","Antananarivo","Antsirabe","Antsiranana"],[47649,41078,114230,1275207,245592,131165],["Alaotra-Mangoro","Amoron'i Mania","Androy","Analamanga","Vakinankaratra","Diana"],["Toamasina","Fianarantsoa","Toliara","Antananarivo","Antananarivo","Antsiranana"],["Adm2","Adm2","Adm2","Adm0","Adm2","Adm1"],[-17.8237084,-20.5328149,-25.1781,-18.9100122,-19.871403,-12.2841],[48.4267188,47.2450521,46.0892,47.5255809,47.034667,49.2943],[11,39,32,54,46,29]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>Population<\/th>\n      <th>Region<\/th>\n      <th>Province<\/th>\n      <th>Captial<\/th>\n      <th>Latitude<\/th>\n      <th>Longitude<\/th>\n      <th>Number of Activities<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,6,7,8]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Now, for the administrative boundaries. Each of these are being read in using <code>st_read()</code> from the <code>sf</code> package. These are by default, spatial (sf) objects already.</p>
@@ -248,8 +248,8 @@ Geodetic CRS:  WGS 84</code></pre>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(cities_sf))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-88384b4a1daf1946a16e" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-88384b4a1daf1946a16e">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["Ambatondrazaka","Ambositra","Ambovombe-Androy","Antananarivo","Antsirabe","Antsiranana"],[47649,41078,114230,1275207,245592,131165],["Alaotra-Mangoro","Amoron'i Mania","Androy","Analamanga","Vakinankaratra","Diana"],["Toamasina","Fianarantsoa","Toliara","Antananarivo","Antananarivo","Antsiranana"],["Adm2","Adm2","Adm2","Adm0","Adm2","Adm1"],[11,39,32,54,46,29],[{"type":"Point","coordinates":[48.4267188,-17.8237084]},{"type":"Point","coordinates":[47.2450521,-20.5328149]},{"type":"Point","coordinates":[46.0892,-25.1781]},{"type":"Point","coordinates":[47.5255809,-18.9100122]},{"type":"Point","coordinates":[47.034667,-19.871403]},{"type":"Point","coordinates":[49.2943,-12.2841]}]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>Population<\/th>\n      <th>Region<\/th>\n      <th>Province<\/th>\n      <th>Captial<\/th>\n      <th>Number of Activities<\/th>\n      <th>geometry<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e6eafd7368c221688daf" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e6eafd7368c221688daf">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["Ambatondrazaka","Ambositra","Ambovombe-Androy","Antananarivo","Antsirabe","Antsiranana"],[47649,41078,114230,1275207,245592,131165],["Alaotra-Mangoro","Amoron'i Mania","Androy","Analamanga","Vakinankaratra","Diana"],["Toamasina","Fianarantsoa","Toliara","Antananarivo","Antananarivo","Antsiranana"],["Adm2","Adm2","Adm2","Adm0","Adm2","Adm1"],[11,39,32,54,46,29],[{"type":"Point","coordinates":[48.4267188,-17.8237084]},{"type":"Point","coordinates":[47.2450521,-20.5328149]},{"type":"Point","coordinates":[46.0892,-25.1781]},{"type":"Point","coordinates":[47.5255809,-18.9100122]},{"type":"Point","coordinates":[47.034667,-19.871403]},{"type":"Point","coordinates":[49.2943,-12.2841]}]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>Population<\/th>\n      <th>Region<\/th>\n      <th>Province<\/th>\n      <th>Captial<\/th>\n      <th>Number of Activities<\/th>\n      <th>geometry<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -291,25 +291,77 @@ Geodetic CRS:  WGS 84</code></pre>
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#the city names are long so we have to </span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># provide a bigger window to fit them</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>bbox_new <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(mdg)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>) <span class="sc">+</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(mdg) <span class="sc">+</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(cities_sf) <span class="sc">+</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> .<span class="dv">25</span>, <span class="at">col =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_text</span>(<span class="at">text =</span> <span class="st">"Name"</span>, <span class="at">auto.placement =</span> T) <span class="sc">+</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#tm_scale_bar(position = c("left", "bottom"), width = 0.15) +</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#tm_compass(position = c("right", "bottom"), size = 2) +</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Main Cities of</span><span class="sc">\n</span><span class="st">Madagascar"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># make a bigger window to fit them. This isn't part of the normal process</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#make an object with the current bounding box</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>bbox_new <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(mdg)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate the x and y ranges of the bbox</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>xrange <span class="ot">&lt;-</span> bbox_new<span class="sc">$</span>xmax <span class="sc">-</span> bbox_new<span class="sc">$</span>xmin <span class="co"># range of x values</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>yrange <span class="ot">&lt;-</span> bbox_new<span class="sc">$</span>ymax <span class="sc">-</span> bbox_new<span class="sc">$</span>ymin <span class="co"># range of y values</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#provide the new values for the 4 corners of the bbox</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  bbox_new[<span class="dv">1</span>] <span class="ot">&lt;-</span> bbox_new[<span class="dv">1</span>] <span class="sc">-</span> (<span class="fl">0.7</span> <span class="sc">*</span> xrange) <span class="co"># xmin - left</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  bbox_new[<span class="dv">3</span>] <span class="ot">&lt;-</span> bbox_new[<span class="dv">3</span>] <span class="sc">+</span> (<span class="fl">0.75</span> <span class="sc">*</span> xrange) <span class="co"># xmax - right</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  bbox_new[<span class="dv">2</span>] <span class="ot">&lt;-</span> bbox_new[<span class="dv">2</span>] <span class="sc">-</span> (<span class="fl">0.1</span> <span class="sc">*</span> yrange) <span class="co"># ymin - bottom</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  bbox_new[<span class="dv">4</span>] <span class="ot">&lt;-</span> bbox_new[<span class="dv">4</span>] <span class="sc">+</span> (<span class="fl">0.1</span> <span class="sc">*</span> yrange) <span class="co"># ymax - top</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#convert the bbox to a sf collection (sfc)</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>bbox_new <span class="ot">&lt;-</span> bbox_new <span class="sc">|&gt;</span>  <span class="co"># take the bounding box ...</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sfc</span>() <span class="co"># ... and make it a sf polygon</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">#now plot the map</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>) <span class="sc">+</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(mdg, <span class="at">bbox =</span> bbox_new) <span class="sc">+</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(cities_sf) <span class="sc">+</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> .<span class="dv">25</span>, <span class="at">col =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_text</span>(<span class="at">text =</span> <span class="st">"Name"</span>, <span class="at">auto.placement =</span> T) <span class="sc">+</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">#tm_scale_bar(position = c("left", "bottom"), width = 0.15) +</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">#tm_compass(position = c("right", "bottom"), size = 2) +</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Main Cities of</span><span class="sc">\n</span><span class="st">Madagascar"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="map-demo_files/figure-html/tmap%20middle-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#the city names are long so we have to </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># make a bigger window to fit them. This isn't part of the normal process</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#make an object with the current bounding box</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>bbox_new <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(mdg)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate the x and y ranges of the bbox</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>xrange <span class="ot">&lt;-</span> bbox_new<span class="sc">$</span>xmax <span class="sc">-</span> bbox_new<span class="sc">$</span>xmin <span class="co"># range of x values</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>yrange <span class="ot">&lt;-</span> bbox_new<span class="sc">$</span>ymax <span class="sc">-</span> bbox_new<span class="sc">$</span>ymin <span class="co"># range of y values</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#provide the new values for the 4 corners of the bbox</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  bbox_new[<span class="dv">1</span>] <span class="ot">&lt;-</span> bbox_new[<span class="dv">1</span>] <span class="sc">-</span> (<span class="fl">0.5</span> <span class="sc">*</span> xrange) <span class="co"># xmin - left</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  bbox_new[<span class="dv">3</span>] <span class="ot">&lt;-</span> bbox_new[<span class="dv">3</span>] <span class="sc">+</span> (<span class="fl">0.5</span> <span class="sc">*</span> xrange) <span class="co"># xmax - right</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  bbox_new[<span class="dv">2</span>] <span class="ot">&lt;-</span> bbox_new[<span class="dv">2</span>] <span class="sc">-</span> (<span class="fl">0.1</span> <span class="sc">*</span> yrange) <span class="co"># ymin - bottom</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  bbox_new[<span class="dv">4</span>] <span class="ot">&lt;-</span> bbox_new[<span class="dv">4</span>] <span class="sc">+</span> (<span class="fl">0.1</span> <span class="sc">*</span> yrange) <span class="co"># ymax - top</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#convert the bbox to a sf collection (sfc)</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>bbox_new <span class="ot">&lt;-</span> bbox_new <span class="sc">|&gt;</span>  <span class="co"># take the bounding box ...</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sfc</span>() <span class="co"># ... and make it a sf polygon</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mdg) <span class="sc">+</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>() <span class="sc">+</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> cities_sf, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  ggrepel<span class="sc">::</span><span class="fu">geom_text_repel</span>(<span class="at">data =</span> cities_sf</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>               , <span class="fu">aes</span>(<span class="at">label =</span> Name</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>                     , <span class="at">geometry =</span> geometry)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>               , <span class="at">stat =</span> <span class="st">"sf_coordinates"</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>               , <span class="at">min.segment.length =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">st_coordinates</span>(bbox_new)[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dv">1</span>], <span class="co"># min &amp; max of x values</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>           <span class="at">ylim =</span> <span class="fu">st_coordinates</span>(bbox_new)[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>),<span class="dv">2</span>]) <span class="sc">+</span> <span class="co"># min &amp; max of y values +</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Main Cities of</span><span class="sc">\n</span><span class="st">Madagascar"</span>) <span class="sc">+</span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="map-demo_files/figure-html/ggplot%20middle-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
