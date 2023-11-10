@@ -1,0 +1,80 @@
+---
+title: "How to make a map"
+author: "Brian Calhoon"
+format: 
+  html:
+    toc: true
+    code-fold: true
+    number-sections: true
+---
+<style>
+TOC {border-color: #133469;
+
+}
+
+body{font-family: Corbel;
+     font-size: 18px;
+     background-color: #FDFDFD;
+}
+
+h1{color: #133469; 
+}
+
+h2{color: #009CA6;
+}
+
+h3{color: #5482AB;
+}
+
+p.caption{
+font-size: small;
+}
+
+</style>
+---
+## Introduction
+
+Similar to QGIS, R provides an open-source interface to make maps. The most commonly used packages to handle spatial data are `sf` for vectors, `terra` for vectors and rasters, and `raster` for rasters. 
+
+The most commonly used packages for visualizing spatial data are `ggplot2` - R's most famous visualization package - and `tmap` which is designed specifically for visualizing spatial data. This demonstration will provide code for both packages, but I'm only going to talk through the `tmap` version using the same data that we used for the QGIS portion. 
+
+To get started, we need to load our packages.
+
+```{r libraries echo = T}
+#run this line first if you have never used these packages before
+#install.packages(c("tidyverse", "sf", "tmap", "writexl"))
+
+library(tidyverse) #install the core tidyverse packages including ggplot2
+library(sf) #provides tools to work with vector data 
+library(tmap) #for visualizing spatial data
+library(readr) #functions for reading external datasets 
+
+```
+
+## Read in the data
+
+For this exercise, the data is already saved in my directory so I'll read in the csv file with city names and locations, and then I'll read in the administrative boundaries.
+
+```{r cities}
+
+#It is a csv file so I use the read_csv function and provide the file path
+cities <- read_csv("./Map demo/data/Madagascar_Cities.csv"
+                   , show_col_types = FALSE)
+
+head(cities)
+```
+
+Now, for the administrative boundaries
+
+```{r admin boundaries}
+
+#This is only the country boundary
+mdg <- sf::st_read("./Map demo/data/shapefiles/mdg_admbnda_adm0_BNGRC_OCHA_20181031.shp")
+
+#This is the administrative level below the whole country 
+mdg1 <- sf::st_read("./Map demo/data/shapefiles/mdg_admbnda_adm1_BNGRC_OCHA_20181031.shp")
+
+#This is the administrative level below the previous one
+#districts?
+mdg2 <- sf::st_read(sf::st_read("./Map demo/data/shapefiles/mdg_admbnda_adm2_BNGRC_OCHA_20181031.shp"))
+```
