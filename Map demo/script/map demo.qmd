@@ -4,7 +4,7 @@ author: "Brian Calhoon"
 format: 
   html:
     toc: true
-    code-fold: true
+    code-fold: false
     number-sections: true
 ---
 <style>
@@ -40,15 +40,15 @@ The most commonly used packages for visualizing spatial data are `ggplot2` - R's
 
 To get started, we need to load our packages.
 
-```{r libraries echo = T}
+```{r libraries, echo = T, warning = FALSE, message = FALSE}
 #run this line first if you have never used these packages before
-#install.packages(c("tidyverse", "sf", "tmap", "writexl"))
+#install.packages(c("tidyverse", "sf", "tmap", "readr", "here"))
 
 library(tidyverse) #install the core tidyverse packages including ggplot2
 library(sf) #provides tools to work with vector data 
 library(tmap) #for visualizing spatial data
 library(readr) #functions for reading external datasets 
-
+library(here) #to better locate files not in working directory
 ```
 
 ## Read in the data
@@ -58,23 +58,113 @@ For this exercise, the data is already saved in my directory so I'll read in the
 ```{r cities}
 
 #It is a csv file so I use the read_csv function and provide the file path
-cities <- read_csv("./Map demo/data/Madagascar_Cities.csv"
+cities <- read_csv(here::here("./Map demo/data/Madagascar_Cities.csv")
                    , show_col_types = FALSE)
 
-head(cities)
+#Observe the first few rows of data
+DT::datatable(head(cities))
 ```
 
-Now, for the administrative boundaries
+Now, for the administrative boundaries. Each of these are being read in using `st_read()` from the `sf` package. These are by default, spatial (sf) objects already.
 
+::: panel-tabset
+
+## Country boundary
 ```{r admin boundaries}
 
 #This is only the country boundary
-mdg <- sf::st_read("./Map demo/data/shapefiles/mdg_admbnda_adm0_BNGRC_OCHA_20181031.shp")
+mdg <- st_read(here::here("./Map demo/data/shapefiles/mdg_admbnda_adm0_BNGRC_OCHA_20181031.shp"))
 
-#This is the administrative level below the whole country 
-mdg1 <- sf::st_read("./Map demo/data/shapefiles/mdg_admbnda_adm1_BNGRC_OCHA_20181031.shp")
-
-#This is the administrative level below the previous one
-#districts?
-mdg2 <- sf::st_read(sf::st_read("./Map demo/data/shapefiles/mdg_admbnda_adm2_BNGRC_OCHA_20181031.shp"))
 ```
+
+## Regional boundaries
+
+```{r regional boundaries}
+#This is the administrative level below the whole country 
+mdg1 <- st_read(here::here("./Map demo/data/shapefiles/mdg_admbnda_adm1_BNGRC_OCHA_20181031.shp"))
+
+```
+
+
+## district boundaries
+```{r district boundaries}
+#This is the administrative level below the previous one
+# maybe these are districts
+mdg2 <- st_read(here::here("./Map demo/data/shapefiles/mdg_admbnda_adm2_BNGRC_OCHA_20181031.shp"))
+
+```
+
+:::
+
+## Convert the cities to an sf object
+Remember that the cities object is a standard .csv with longitude and latitude columns, but it is not yet recognized as an sf object. Here is how to convert it to an sf object with a single geometry column and a crs.
+
+```{r convert}
+
+cities_sf <- cities |>
+  st_as_sf(coords = c("Longitude", "Latitude")
+           , crs = 4326)
+
+#observe the first few rows of data
+DT::datatable(head(cities_sf))
+```
+
+## Make the map
+
+::: panel-tabset
+
+## tmap
+
+```{r tmap start, message=FALSE, warning=FALSE}
+
+tmap_mode("plot") +
+  tm_shape(mdg) +
+  tm_polygons() +
+  tm_shape(cities_sf) +
+  tm_dots(col = "red")
+
+```
+
+## ggplot2
+
+```{r ggplot2, message = FALSE, warning=FALSE}
+
+ggplot(mdg) +
+  geom_sf() +
+  geom_sf(data = cities_sf, color = "red")
+
+```
+
+:::
+
+## Make the map better
+
+::: panel-tabset
+
+## tmap
+```{r tmap middle, message=FALSE, warning=FALSE}
+
+#the city names are long so we have to 
+# provide a bigger window to fit them
+bbox_new <- st_bbox(mdg)
+
+tmap_mode("plot") +
+  tm_shape(mdg) +
+  tm_polygons() +
+  tm_shape(cities_sf) +
+  tm_dots(size = .25, col = "red") +
+  tm_text(text = "Name", auto.placement = T) +
+  #tm_scale_bar(position = c("left", "bottom"), width = 0.15) +
+  #tm_compass(position = c("right", "bottom"), size = 2) +
+  tm_layout(title = "Main Cities of\nMadagascar")
+
+```
+
+## ggplot2
+
+```{r ggplot middle, message=FALSE, warning=FALSE}
+
+
+```
+
+:::
