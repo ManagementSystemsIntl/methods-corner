@@ -1,0 +1,23 @@
+unnamed-chunk-1	d
+unnamed-chunk-2	
+unnamed-chunk-3	freqs
+unnamed-chunk-4	p_x1	p_x2	params1	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
+unnamed-chunk-5	
+unnamed-chunk-6	jointy_x1	x1_111	x1_112	x1_121	x1_122	x1_211	x1_212	x1_221	x1_222
+unnamed-chunk-7	freqs1	jointy_x2	x2_111	x2_112	x2_121	x2_122	x2_211	x2_212	x2_221	x2_222
+unnamed-chunk-8	freqs1
+unnamed-chunk-9	
+unnamed-chunk-10	freqs1
+unnamed-chunk-11	freqs1
+unnamed-chunk-12	f_y1_c1	f_y1_c2	f_y2_c1	f_y2_c2	f_y3_c1	f_y3_c2	newfreqs	newfreqs_flex	x1_freqs	x2_freqs
+unnamed-chunk-13	pnew_x1	pnew_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
+unnamed-chunk-14	new	params1
+unnamed-chunk-15	freqs1	ll_1
+unnamed-chunk-16	params2
+unnamed-chunk-17	p_x1	p_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
+unnamed-chunk-18	jointy_x1	x1_111	x1_112	x1_121	x1_122	x1_211	x1_212	x1_221	x1_222
+unnamed-chunk-19	freqs2	jointy_x2	x2_111	x2_112	x2_121	x2_122	x2_211	x2_212	x2_221	x2_222
+unnamed-chunk-20	f_y1_c1	f_y1_c2	f_y2_c1	f_y2_c2	f_y3_c1	f_y3_c2	newfreqs	newfreqs_flex	x1_freqs	x2_freqs
+unnamed-chunk-21	pnew_x1	pnew_x2	y1_x1	y1_x2	y2_x1	y2_x2	y3_x1	y3_x2
+unnamed-chunk-22	new	params2
+unnamed-chunk-23	freqs2	ll_2

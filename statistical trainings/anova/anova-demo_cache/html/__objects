@@ -1,18 +1,19 @@
 unnamed-chunk-1	aov_ex	.anova-demo_cache/html/unnamed-chunk-1_5c2245eef3bd04d04ef669c64fdb5f89_meta
 unnamed-chunk-2	d	grp_a	grp_b	grp_c	grp_d	.anova-demo_cache/html/unnamed-chunk-2_407998b782ddef804a4850bd866c4836_meta
-unnamed-chunk-3	da
-unnamed-chunk-4	grp
-unnamed-chunk-5	g	grnd_mn	mns	N	n_g	.anova-demo_cache/html/unnamed-chunk-5_afd1d959bceefc6bc49de8629f23c3e5_meta
-unnamed-chunk-6	cols	d	grnd_mn	grp_a	grp_b	grp_c	mns	mns2
-unnamed-chunk-7	d	.anova-demo_cache/html/unnamed-chunk-7_7954c651efd78210da829c0241b4789d_meta
-unnamed-chunk-8	ssw
-unnamed-chunk-9	ssb	ssb_check	.anova-demo_cache/html/unnamed-chunk-9_a7495964af3c35cd3b61dc84f97c5345_meta
-unnamed-chunk-10	mns	sst	.anova-demo_cache/html/unnamed-chunk-10_0ffb6705ec3484b18e7bbed32df25c06_meta
-unnamed-chunk-11	aov_tab	.anova-demo_cache/html/unnamed-chunk-11_725fd8bd4a587d5c276617afcae43db4_meta
-unnamed-chunk-12	crit	fstat	p
-unnamed-chunk-13	y_rf
-unnamed-chunk-14	
-unnamed-chunk-15	
-unnamed-chunk-16	
-unnamed-chunk-17	
+unnamed-chunk-3	dens_y
+unnamed-chunk-4	dens_yx
+unnamed-chunk-5	d_grnd_mn	d_mns	g	N	n_g	.anova-demo_cache/html/unnamed-chunk-5_9259e87d93c1b253a69c7213efc411b5_meta
+unnamed-chunk-6	grp2_a	grp2_b	grp2_c	mns2	var_ex	var_ex_grnd_mn	var_ex_mns
+unnamed-chunk-7	cols
+unnamed-chunk-8	d	.anova-demo_cache/html/unnamed-chunk-8_2d295e07e6974dd6a167741f99804989_meta
+unnamed-chunk-9	ssw	ssw_check	.anova-demo_cache/html/unnamed-chunk-9_bc9da97f42512f6d639271a8004a85dc_meta
+unnamed-chunk-10	ssb	ssb_check	.anova-demo_cache/html/unnamed-chunk-10_ada61831cebd896268cc0ee731da20d9_meta
+unnamed-chunk-11	d_mns	sst	.anova-demo_cache/html/unnamed-chunk-11_11e9c9a6c86f428e98af282194b07006_meta
+unnamed-chunk-12	aov_tab	.anova-demo_cache/html/unnamed-chunk-12_775ad399beee6ddf8bde8d5f179ec666_meta
+unnamed-chunk-13	crit	fstat	p
+unnamed-chunk-14	y_rf
+unnamed-chunk-15	av
+unnamed-chunk-16	rg	.anova-demo_cache/html/unnamed-chunk-16_b7b4950f4bd45b33cab28942a6ad8491_meta
+unnamed-chunk-17	rg_flx	.anova-demo_cache/html/unnamed-chunk-17_c05e17f5df3a7a7a09681c7264c99033_meta
 unnamed-chunk-18	
+unnamed-chunk-19	

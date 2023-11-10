@@ -37,7 +37,7 @@ lapply(ie_packages, library, character.only=T)
 
 
 map_packages <- c("rgeoboundaries", "ggmap", "sf","rnaturalearth","rnaturalearthdata",
-                  "mapview", "spData", "spDataLarge", "tmap", "crsuggest")
+                  "mapview", "spData", "spDataLarge", "tmap", "crsuggest", "geodata", "terra")
 
 lapply(map_packages, library, character.only=T)
 
