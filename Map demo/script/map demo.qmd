@@ -119,7 +119,7 @@ DT::datatable(head(cities_sf))
 
 tmap_mode("plot") +
   tm_shape(mdg) +
-  tm_polygons() +
+  tm_polygons() + #for only the borders, use tm_borders()
   tm_shape(cities_sf) +
   tm_dots(size = .25, col = "red")
 
@@ -286,8 +286,8 @@ ggplot2::ggplot() +
 
 ```{r tmap interactive, warning = F, message = F}
 tmap_mode("view") +
-  tm_shape(mdg, bbox = bbox_new) +
-  tm_polygons() +
+  tm_shape(mdg) +
+  tm_borders() +
   tm_shape(cities_sf) +
   tm_dots(size = "Population", col = "red"
           , legend.size.is.portrait = TRUE) +
