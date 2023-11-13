@@ -223,6 +223,24 @@ Additionally, tmap provides a simple interface to go from a static map to an int
 
 ## tmap
 ```{r tmap final, warning = F, message = F}
+#the city names are long so we have to 
+# make a bigger window to fit them. This isn't part of the normal process
+#make an object with the current bounding box
+bbox_new <- st_bbox(mdg)
+
+#calculate the x and y ranges of the bbox
+xrange <- bbox_new$xmax - bbox_new$xmin # range of x values
+yrange <- bbox_new$ymax - bbox_new$ymin # range of y values
+
+#provide the new values for the 4 corners of the bbox
+  bbox_new[1] <- bbox_new[1] - (0.7 * xrange) # xmin - left
+  bbox_new[3] <- bbox_new[3] + (0.75 * xrange) # xmax - right
+  bbox_new[2] <- bbox_new[2] - (0.1 * yrange) # ymin - bottom
+  bbox_new[4] <- bbox_new[4] + (0.1 * yrange) # ymax - top
+
+#convert the bbox to a sf collection (sfc)
+bbox_new <- bbox_new |>  # take the bounding box ...
+  st_as_sfc() # ... and make it a sf polygon
 tmap_mode("plot") +
   tm_shape(mdg, bbox = bbox_new) +
   tm_polygons() +
