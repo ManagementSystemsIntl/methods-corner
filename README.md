@@ -36,5 +36,5 @@ Frequencies of the first South Sudan resilience panel survey
 [USAID evaluation trends](https://managementsystemsintl.github.io/methods-corner/white%20paper/ie-trends-tufte.html)  
 Count and quality of USAID evaluations over time
 
-[A tutorial on making a map in R](https://managementsystemsintl.github.io/methods-corner/Map%20demo/script/map%20demo.html)
+[A tutorial on making a map in R](https://managementsystemsintl.github.io/methods-corner/Map%20demo/script/map%20demo.html) <br>
 A brief tutorial on making a map in both tmap and ggplot2. It uses sf for working with vector data.
