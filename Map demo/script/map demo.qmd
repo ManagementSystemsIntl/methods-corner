@@ -301,3 +301,6 @@ tmap_mode("view") +
 
 ```
 :::
+
+## Additional Resources
+For those interested in mapping in R (or QGIS) there are many free resources available online. A great starting point for R is the online text book, [Geocomputation with R](https://r.geocompx.org/). If you would rather learn more in Python, [Geocomputation with Python](https://py.geocompx.org/) is a great resource.
