@@ -19,6 +19,12 @@ base_packages <- c("tidyverse", "easystats", "corrplot","DescTools","estimatr","
                    "ICC","openxlsx","readr","readxl","sjmisc","sjPlot","flextable", "sjstats","sjlabelled","skimr",
                    "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi", "kableExtra")
 
+# Install packages not yet installed
+installed_packages <- base_packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(base_packages[!installed_packages])
+}
+
 lapply(base_packages, library, character.only=T)
 
 viz_packages <- c("patchwork","gganimate","ggstatsplot","ggthemes","ggrepel","ggpubr","cowplot","ggdist","ggtext",
