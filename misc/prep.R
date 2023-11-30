@@ -25,7 +25,7 @@ viz_packages <- c("patchwork","gganimate","ggstatsplot","ggthemes","ggrepel","gg
                   "geomtextpath","ggfortify", "ggridges", "gghighlight")
 lapply(viz_packages, library, character.only=T)
 
-model_packages <- c("plm","estimatr")
+model_packages <- c("plm","estimatr", "lme4")
 lapply(model_packages, library, character.only=T)
 
 

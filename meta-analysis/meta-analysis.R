@@ -229,6 +229,13 @@ frq(dat$study)
 write_rds(dat, "meta-analysis/data/record level data.rds")
 write_csv(dat, "meta-analysis/data/record level data.csv")
 
+dat <- read_rds("meta-analysis/data/record level data.rds")
+
+names(dat)
+frq(dat$perception)
+frq(dat$info)
+frq(dat$study)
+
 ?brmsformula
 
 priors <- c(prior(normal(0,1), class=Intercept),
@@ -334,6 +341,30 @@ get_variables(s3)
 
 # logistic ---- 
 
+l1 <- brm(perception ~ info + (1|study),
+          family=bernoulli(link="logit"),
+          backend="cmdstanr",
+          cores=8,
+          data=dat)
+
+saveRDS(l1, "meta-analysis/l1 percep info across study.rds")
+
+summary(l1)
+ranef(l1)
+fixef(l1)
+se.ranef(l1)
+
+get_variables(l1)
+
+l1_mat <- as.data.frame(l1) 
+
+l1_out <- l1 %>%
+  spread_draws(b_Intercept, b_info, r_study[study, term])
+
+frq(l1_out$study)
+frq(l1_out$term)
+
+
 l2 <- brm(perception ~ info|study,
           family=bernoulli(link="logit"),
           backend="cmdstanr",
@@ -341,6 +372,23 @@ l2 <- brm(perception ~ info|study,
           data=dat)
 
 saveRDS(l2, "meta-analysis/l2 percep info each study.rds")
+
+load("meta-analysis/l2 percep info each study.rds")
+
+l2 <- read_rds("meta-analysis/l2 percep info each study.rds")
+
+get_variables(l2)
+
+l2_mat <- as.data.frame(l2) 
+
+l2_out <- l2 %>%
+  spread_draws(b_Intercept, r_study[study, term]) %>%
+  pivot_wider(names_from=term,
+              values_from=r_study) %>%
+  mutate(intercept=b_Intercept+Intercept)
+
+
+
 
 summary(l2)
 ranef(l2)
@@ -354,6 +402,7 @@ mn
 
 library(ggeffects)
 library(modelr)
+library(tidybayes)
 
 st <- c("Afghanistan",
         "Bangladesh",
@@ -363,7 +412,7 @@ st <- c("Afghanistan",
 
 st <- data.frame(frq(dat$study)) %>%
   select(2) %>%
-  as.vector()
+  as.data.frame()
 st
 
 ?distinct
@@ -371,10 +420,11 @@ dat %>%
   distinct(study)
 
 l2_pred <- dat %>%
-  data_grid(study=st,
+  data_grid(study=st$val,
             info=c(0,1)) |> 
   add_epred_draws(l2,
-                  ndraws=100) %>%
+                  ndraws=100,
+                  allow_new_levels=T) %>%
   ungroup() %>%
   group_by(info, .draw) %>%
   mutate(indices=cur_group_id()) %>%
