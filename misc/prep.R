@@ -38,10 +38,7 @@ if (any(installed_packages == FALSE)) {
 
 lapply(viz_packages, library, character.only=T)
 
-<<<<<<< HEAD
 model_packages <- c("plm","estimatr", "lme4")
-=======
-model_packages <- c("plm","estimatr")
 
 # Install packages not yet installed
 installed_packages <- model_packages %in% rownames(installed.packages())
@@ -49,7 +46,6 @@ if (any(installed_packages == FALSE)) {
   install.packages(model_packages[!installed_packages])
 }
 
->>>>>>> 7e6288d12207d7292725999cb9b131acea16e29b
 lapply(model_packages, library, character.only=T)
 
 
