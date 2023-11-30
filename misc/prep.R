@@ -29,28 +29,74 @@ lapply(base_packages, library, character.only=T)
 
 viz_packages <- c("patchwork","gganimate","ggstatsplot","ggthemes","ggrepel","ggpubr","cowplot","ggdist","ggtext",
                   "geomtextpath","ggfortify", "ggridges", "gghighlight")
+
+# Install packages not yet installed
+installed_packages <- viz_packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(viz_packages[!installed_packages])
+}
+
 lapply(viz_packages, library, character.only=T)
 
 model_packages <- c("plm","estimatr")
+
+# Install packages not yet installed
+installed_packages <- model_packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(model_packages[!installed_packages])
+}
+
 lapply(model_packages, library, character.only=T)
 
 
 bayes_packages <- c("rstan","rstanarm","brms","rethinking")
+
+# Install packages not yet installed
+installed_packages <- bayes_packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(bayes_packages[!installed_packages])
+}
+
 lapply(bayes_packages, library, character.only=T)
 
 ie_packages <- c("gsynth", "MatchIt", "did", "bacondecomp")
+
+# Install packages not yet installed
+installed_packages <- ie_packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(ie_packages[!installed_packages])
+}
 lapply(ie_packages, library, character.only=T)
 
 
 map_packages <- c("rgeoboundaries", "ggmap", "sf","rnaturalearth","rnaturalearthdata",
                   "mapview", "spData", "spDataLarge", "tmap", "crsuggest", "geodata", "terra")
 
+# Install packages not yet installed
+installed_packages <- map_packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(map_packages[!installed_packages])
+}
+
 lapply(map_packages, library, character.only=T)
 
 table_packages <- c("gt", "gtsummary", "gtExtras","flextable", "officer")
+# Install packages not yet installed
+installed_packages <- table_packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(table_packages[!installed_packages])
+}
+
 lapply(table_packages, library, character.only=T)
 
 miss_packages <- c("missForest","missMDA")
+
+# Install packages not yet installed
+installed_packages <- miss_packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(miss_packages[!installed_packages])
+}
+
 lapply(miss_packages,library, character.only=T)
 
 options(digits=3, scipen=6)
