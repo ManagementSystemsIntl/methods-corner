@@ -30,9 +30,11 @@ Weighted frequency output of the Palestian Perception Survey
 [Introduction to Causal Inference](https://managementsystemsintl.github.io/methods-corner/Introduction%20to%20Casual%20Inference/Introduction_to_Causal_Inference.html)  
 A gentle introduction to the field
 
-[South Sudan resilience](https://managementsystemsintl.github.io/methods-corner/South%20Sudan%20resilience/scripts/03%20South%20Sudan%20resilience%20panel%20survey%20-%20indicators.html)  
+[South Sudan resilience](https://managementsystemsintl.github.io/methods-corner/South%20Sudan%20resilience/scripts/03%20South%20Sudan%20resilience%20panel%20survey%20-%20indicators.html)\
 Frequencies of the first South Sudan resilience panel survey
 
 [USAID evaluation trends](https://managementsystemsintl.github.io/methods-corner/white%20paper/ie-trends-tufte.html)  
 Count and quality of USAID evaluations over time
 
+[A tutorial on making a map in R](https://managementsystemsintl.github.io/methods-corner/Map%20demo/script/map%20demo.html)\
+A brief tutorial on making a map in both tmap and ggplot2. This approache uses sf for working with vector data to make a static map and an interactive map. 

@@ -71,6 +71,15 @@ s <- sticker("hex sticker/pics/MSI viz collage 5.jpg",
              filename="hex sticker/stickers/MSI data science hex sticker v1.png")
 
 
+p <- ggplot(aes(x = mpg, y = wt), data = mtcars) + geom_point()
+p
+p <- p + theme_void() + theme_transparent()
+outfile <- tempfile(fileext=".png")
+sticker(p, package="hexSticker", filename=outfile)
+
+
+
+
 # v2 ---- 
 
 s <- sticker("hex sticker/pics/MSI viz collage 6.jpg",
