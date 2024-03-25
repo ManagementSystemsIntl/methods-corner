@@ -1,0 +1,30 @@
+---
+title: "Sampling: Design and Analysis"
+subtitle: "Sharon Lohr, Third Edition (2022)"
+author: "Dan Killian notes"
+toc: true
+number-sections: false
+format: html
+#  docx:
+#    reference-doc: USAID-report-template-02.docx
+editor: visual
+---
+
+```{r}
+{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+getwd()
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+library(here)
+source("../misc/prep.R")
+```
+
+## Simple Random Sampling
+
+## Systematic Random Sampling
+
+## Stratified Random Sampling
+
+## Cluster Sampling
+
+## 

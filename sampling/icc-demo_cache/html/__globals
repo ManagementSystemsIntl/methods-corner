@@ -1,0 +1,6 @@
+unnamed-chunk-1	head	here	read_rds
+unnamed-chunk-2	$	::	leb
+unnamed-chunk-3	%>%	group_by	leb	mean	n	PSU	round	summarise	tally	unlist
+unnamed-chunk-4	%>%	c	data.frame	flextable	mutate	psu_n	round
+unnamed-chunk-5	^
+unnamed-chunk-6	%>%	^	autofit	c	data.frame	flextable	rev	round	set_header_labels
