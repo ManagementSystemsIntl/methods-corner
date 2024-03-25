@@ -13,11 +13,19 @@
 
 # font_add_google("Source Sans Pro", "sans-serif")
 
+datapath <- "C:/Users/dan.killian/Documents/Palestinian Perception Study/2024 update/data"
+
+vizpath <- "C:/Users/dan.killian/Documents/Palestinian Perception Study/2024 update/viz"
+
+
+# PACKAGES ---- 
+
+# base ---- 
 
 base_packages <- c("tidyverse", "easystats", "corrplot","DescTools","estimatr","extrafont","janitor",
                    "reshape2", "haven", "broom","HH","Hmisc","plotrix","scales","sysfonts","foreign","car",
                    "ICC","openxlsx","readr","readxl","sjmisc","sjPlot","flextable", "sjstats","sjlabelled","skimr",
-                   "labelled", "texreg","psych","viridis","here","jtools","huxtable","stringi", "kableExtra")
+                   "labelled", "texreg","viridis","here","jtools","huxtable","stringi", "kableExtra", "psych", "knitr")
 
 # Install packages not yet installed
 installed_packages <- base_packages %in% rownames(installed.packages())
@@ -26,6 +34,8 @@ if (any(installed_packages == FALSE)) {
 }
 
 lapply(base_packages, library, character.only=T)
+
+# viz ---- 
 
 viz_packages <- c("patchwork","gganimate","ggstatsplot","ggthemes","ggrepel","ggpubr","cowplot","ggdist","ggtext",
                   "geomtextpath","ggfortify", "ggridges", "gghighlight")
@@ -38,6 +48,19 @@ if (any(installed_packages == FALSE)) {
 
 lapply(viz_packages, library, character.only=T)
 
+# survey ---- 
+
+survey_packages <- c("survey","sampling","SDAResources", "PracTools")
+
+installed_packages <- survey_packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(survey_packages[!installed_packages])
+}
+
+lapply(survey_packages, library, character.only=T)
+
+# model ---- 
+
 model_packages <- c("plm","estimatr", "lme4")
 
 # Install packages not yet installed
@@ -48,6 +71,7 @@ if (any(installed_packages == FALSE)) {
 
 lapply(model_packages, library, character.only=T)
 
+# bayes ---- 
 
 bayes_packages <- c("rstan","rstanarm","brms","rethinking")
 
@@ -59,7 +83,9 @@ if (any(installed_packages == FALSE)) {
 
 lapply(bayes_packages, library, character.only=T)
 
-ie_packages <- c("gsynth", "MatchIt", "did", "bacondecomp")
+# ie ---- 
+
+ie_packages <- c("gsynth", "MatchIt", "did", "bacondecomp", "plm", "qte")
 
 # Install packages not yet installed
 installed_packages <- ie_packages %in% rownames(installed.packages())
@@ -68,9 +94,11 @@ if (any(installed_packages == FALSE)) {
 }
 lapply(ie_packages, library, character.only=T)
 
+# map ---- 
 
 map_packages <- c("rgeoboundaries", "ggmap", "sf","rnaturalearth","rnaturalearthdata",
-                  "mapview", "spData", "spDataLarge", "tmap", "crsuggest", "geodata", "terra")
+                  "mapview", "spData", "spDataLarge", "tmap", "crsuggest", "geodata", 
+                  "terra", "blackmarbler", "raster", "exactextractr")
 
 # Install packages not yet installed
 installed_packages <- map_packages %in% rownames(installed.packages())
@@ -89,6 +117,8 @@ if (any(installed_packages == FALSE)) {
 
 lapply(table_packages, library, character.only=T)
 
+# missing ---- 
+
 miss_packages <- c("missForest","missMDA")
 
 # Install packages not yet installed
@@ -99,7 +129,9 @@ if (any(installed_packages == FALSE)) {
 
 lapply(miss_packages,library, character.only=T)
 
-options(digits=3, scipen=6)
+options(digits=3, scipen=8)
+
+# FORMATTING ---- 
 
 # set default
 base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
