@@ -40,5 +40,6 @@ Count and quality of USAID evaluations over time
 A brief tutorial on making a map in both tmap and ggplot2. This approach uses sf for working with vector data to make a static map and an interactive map. 
 
 [Using design effects to help plan survey sample sizes](https://github.com/ManagementSystemsIntl/methods-corner/sampling/icc%20demo.html)
+
 Illustration of how we might conduct complex survey sample size estimations using information from similar surveys
 
