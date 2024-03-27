@@ -4,7 +4,9 @@ title: "Using Intra-class correlation to plan for sample sizes"
 author: "Dan Killian"
 toc: true
 number-sections: false
-format: html
+format: 
+  html:
+    code-fold: true
 #  docx:
 #    reference-doc: USAID-report-template-02.docx
 editor: visual
@@ -17,6 +19,35 @@ knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, messa
 library(here)
 source("../misc/prep.R")
 ```
+
+### Sample sizes for simple and complex sampling
+
+There is simple random sampling and there is complex sampling. Let's explain how we get to each.
+
+```{r}
+
+n_rng <- (3.4 * 1.96^2 * .25) / (c(.02, .03, .05)^2 * .95)
+
+srs <- c((1.96^2*.25)/.05^2,
+         (1.96^2*.25)/.03^2,
+          (1.96^2*.25)/.02^2)
+
+
+out <- data.frame(margin=c("5%","3%", "2%"),
+                  srs=srs,
+                  complex=round(rev(n_rng), 0),
+                  scope=c("Overall sampling area", "One disaggregate", "Two disaggregates, nested"))
+flextable(out) %>% 
+  set_header_labels(
+                    margin="Margin of error",
+                    srs="Simple random sample",
+                    complex="Complex sample",
+                    scope="Geographic scope") %>%
+  autofit() 
+
+```
+
+How do we derive each type of sample size?
 
 ### Simple random sampling
 
