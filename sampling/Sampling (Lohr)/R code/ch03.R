@@ -21,11 +21,15 @@ table(agpop$region)  # number of counties in each stratum
 ### Proportional allocation
 
 popsize <- table(agpop$region)
+popsize
+
 propalloc <- 300*popsize/sum(popsize)
 propalloc
+
 # Round to nearest integer
 propalloc_int <- round(propalloc)
 propalloc_int
+
 sum(propalloc_int) # check that stratum sample sizes sum to 300
 
 ### Neyman allocation

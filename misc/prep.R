@@ -149,6 +149,23 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
 
 theme_set(base)
 
+base_ppt <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                           panel.grid.minor.y=element_blank(),
+                           plot.title=element_text(#face="bold",
+                             size=16, hjust=.5, family = "Source Sans Pro"),
+                           plot.subtitle = element_text(size=14, family="Source Sans Pro"),
+                           plot.caption=element_text(size=12, family="Source Sans Pro"),
+                           axis.title=element_text(size=14, family="Source Sans Pro"),
+                           axis.text=element_text(size=13, family="Source Sans Pro"),
+                           legend.text=element_text(size=12, family="Source Sans Pro"),
+                           strip.text=element_text(size=12, family="Source Sans Pro"),
+                           panel.border=element_blank(),
+                           axis.ticks = element_blank())
+
+
+
+
+
 faceted <- theme_bw() +
     theme(panel.grid.minor.x=element_blank(),
           panel.grid.minor.y=element_blank(),
@@ -174,6 +191,30 @@ facet_style <- function(){theme_bw() +
               legend.text=element_text(size=14, family="Source Sans Pro"),
               strip.text=element_text(size=14, family="Source Sans Pro"))
 }
+
+# colors ----
+
+color_names <- c("USAID_blue","USAID_red","rich_black","medium_blue","light_blue", "web_blue","dark_red","dark_gray","medium_gray","light_gray")
+
+color_id <- c("#002F6C", "#BA0C2F", "#212721", "#0067B9","#A7C6ED", "#205493","#651D32", "#6C6463", "#8C8985", "#CFCDC9")
+
+USAID_palette <- data.frame(color=color_names,
+                            id=color_id)
+
+USAID_palette
+
+usaid_blue <- "#002F6C"
+usaid_red <- "#BA0C2F"
+rich_black <- "#212721"
+medium_blue <- "#0067B9"
+light_blue <- "#A7C6ED"
+web_blue <- "#205493"
+dark_red <- "#651D32"
+dark_grey <- "#6C6463"
+medium_grey <- "#8C8985"
+light_grey <- "#CFCDC9"
+
+
 
 
 # read data
