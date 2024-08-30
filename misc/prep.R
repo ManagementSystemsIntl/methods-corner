@@ -25,7 +25,7 @@ vizpath <- "C:/Users/dan.killian/Documents/Palestinian Perception Study/2024 upd
 base_packages <- c("tidyverse", "easystats", "corrplot","DescTools","estimatr","extrafont","janitor",
                    "reshape2", "haven", "broom","HH","Hmisc","plotrix","scales","sysfonts","foreign","car",
                    "ICC","openxlsx","readr","readxl","sjmisc","sjPlot","flextable", "sjstats","sjlabelled","skimr",
-                   "labelled", "texreg","viridis","here","jtools","huxtable","stringi", "kableExtra", "psych", "knitr")
+                   "labelled", "texreg","viridis","here","jtools","huxtable","stringi", "kableExtra", "psych", "knitr", "fastDummies")
 
 # Install packages not yet installed
 installed_packages <- base_packages %in% rownames(installed.packages())

@@ -1,6 +1,12 @@
 # Libya GFA
 # ACLED
 
+library(zoo)
+
+# DATA IMPORT ---- 
+
+# 5-17
+
 d <- read_excel("data/ACLED/Libya GFA baseline/ACLED-Libya-2024-05-17.xlsx") %>%
   select(-region) %>%
   rename(region=admin1, district=admin2) %>%
@@ -32,13 +38,14 @@ frq(d$Event_Date)
 frq(d$date)
 frq(d$month)
 
-frq(d$Admin1)
-frq(d$Admin2)
+frq(d$region)
+frq(d$district)
 
 dists <- d %>%
-  distinct(Admin1)
+  distinct(district)
 
 dists
+
 write_csv(dists, "data/mapping/Libya/ACLED districts.csv")
 
 regdist <- read_csv("data/mapping/Libya/ACLED districts with region.csv")
@@ -50,7 +57,7 @@ adm2 <- d %>%
 
 adm2
 
-comb <- data.frame(adm1=dists$Admin1,
+comb <- data.frame(adm1=dists$district,
                    adm2=adm2$Admin2)
 
 getwd()
@@ -70,7 +77,29 @@ lib1_sf <- st_read("data/mapping/Libya/gadm/gadm41_LBY.gpkg",
 lib1_sf
 
 
+# 8-21 ---- 
 
+d <- read_excel("data/ACLED/Libya GFA baseline/ACLED-Libya-2024-8-21.xlsx") %>%
+  #select(-region) %>%
+  rename(region=Admin1, district=Admin2) %>%
+  mutate(date=as.Date(Event_Date),
+         year=year(date),
+         quarter=quarter(date),
+         qtr=as.yearqtr(date),
+         month=as.yearmon(date),
+         month_num=month(date),
+         qtr_date=ordered(paste(year, quarter,sep="-")),
+         mnth_date=as.Date(paste(year, month_num, "01", sep="-"))) %>%
+  #left_join(regdist) %>%
+  relocate(date, .after=Event_Date) %>%
+  relocate(year, .after=date) %>%
+  relocate(quarter, .after=year) %>%
+  relocate(qtr, .after=quarter) %>%
+  relocate(month, .after=qtr) %>%
+  relocate(qtr_date, .after=qtr) %>%
+  relocate(mnth_date, .after=qtr_date) %>%
+  #relocate(region, .before=district) %>%
+  filter(month!="Mar 2023") 
 
 
 # events fatalities
@@ -79,14 +108,14 @@ names(d)
 frq(d$event_type)
 
 qtrType <- d %>%
-  group_by(year, qtr_date, event_type) %>%
+  group_by(year, qtr_date, Event_Type) %>%
   summarise(events=n(),
-            fatalities=sum(fatalities)) %>%
+            fatalities=sum(Fatalities)) %>%
   as.data.frame() %>%
-  mutate(dths=ifelse(is.na(fatalities), 0, fatalities)) %>%
+  mutate(dths=ifelse(is.na(fatalities), 0, Fatalities)) %>%
          #qtr2=fortify.zoo(qtr)) %>%
   filter(year>2020,
-         event_type!="just") 
+         Event_Type!="just") 
 
 qtrType
 str(qtrType)
@@ -110,15 +139,15 @@ ggplot(qtrType, aes(qtr_date)) +
 
 
 monType <- d %>%
-  group_by(year, mnth_date, event_type) %>%
+  group_by(year, mnth_date, Event_Type) %>%
   summarise(events=n(),
-            fatalities=sum(fatalities)) %>%
+            fatalities=sum(Fatalities)) %>%
   as.data.frame() %>%
   mutate(dths=ifelse(is.na(fatalities), 0, fatalities)) %>%
   #qtr2=fortify.zoo(qtr)) %>%
   filter(year>2020,
-         mnth_date < as.Date("2024-4-01"),
-         event_type!="just") 
+         #mnth_date < as.Date("2024-4-01"),
+         Event_Type!="just") 
 
 head(monType)
 str(monType)
@@ -148,7 +177,7 @@ ggplot(monType, aes(mnth_date)) +
        y="") +
   annotate("text", x=as.Date("2022-01-01"), y=38, label="Events", color=usaid_blue) +
   annotate("text", x=as.Date("2022-01-01"), y=30, label="Fatalities", color=usaid_red) +
-  facet_wrap(~event_type) +
+  facet_wrap(~Event_Type) +
   faceted
 
 ggsave("viz/ACLED/Libya/ACLED type month.png",
@@ -251,10 +280,21 @@ ggsave("viz/ACLED/Libya/ACLED region month.png",
 
 
 
+# Libya mapping ---- 
 
+l0 <- read_rds("data/mapping/Libya/gadm/gadm41_LBY_0_pk.rds")
+l0
 
+l00 <- unwrap(l0) %>%
+  as.data.frame()
+l00
 
+l1 <- read_rds("data/mapping/Libya/gadm/gadm41_LBY_1_pk.rds")
 
+l11 <- l1 %>%
+  unwrap() %>%
+  as.data.frame()
 
+l11
 
             
