@@ -131,6 +131,8 @@ lapply(miss_packages,library, character.only=T)
 
 options(digits=3, scipen=8)
 
+options(brms.backend="cmdstanr")
+
 # FORMATTING ---- 
 
 # set default
