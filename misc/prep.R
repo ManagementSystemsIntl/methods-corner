@@ -58,7 +58,7 @@ lapply(model_packages, library, character.only=T)
 
 # bayes ---- 
 
-bayes_packages <- c("rstan","rstanarm","brms","rethinking", "tidybayes")
+bayes_packages <- c("cmdstanr", "rstan","rstanarm","brms","rethinking", "tidybayes", "baggr")
 
 # Install packages not yet installed
 installed_packages <- bayes_packages %in% rownames(installed.packages())
@@ -68,7 +68,22 @@ if (any(installed_packages == FALSE)) {
 
 lapply(bayes_packages, library, character.only=T)
 
+set_cmdstan_path("C:/Users/dan.killian/Documents/.cmdstan/cmdstan-2.35.0")
+
 options(brms.backend="cmdstanr")
+
+# indirect measurement ---- 
+
+indirect_packages <- c("rr", "RRreg", "list", "endorse")
+
+# Install packages not yet installed
+installed_packages <- indirect_packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(indirect_packages[!installed_packages])
+}
+
+lapply(indirect_packages, library, character.only=T)
+
 
 # ie ---- 
 
