@@ -58,17 +58,6 @@ lapply(model_packages, library, character.only=T)
 
 # bayes ---- 
 
-<<<<<<< HEAD
-# bayes_packages <- c("rstan","rstanarm","brms","rethinking")
-# 
-# # Install packages not yet installed
-# installed_packages <- bayes_packages %in% rownames(installed.packages())
-# if (any(installed_packages == FALSE)) {
-#   install.packages(bayes_packages[!installed_packages])
-# }
-# 
-# lapply(bayes_packages, library, character.only=T)
-=======
 bayes_packages <- c("cmdstanr", "rstan","rstanarm","brms","rethinking", "tidybayes", "baggr")
 
 # Install packages not yet installed
@@ -78,11 +67,10 @@ if (any(installed_packages == FALSE)) {
 }
 
 lapply(bayes_packages, library, character.only=T)
->>>>>>> f3beb8b157364a138edb715b6ed4cd1dec17e470
 
-set_cmdstan_path("C:/Users/dan.killian/Documents/.cmdstan/cmdstan-2.35.0")
-
-options(brms.backend="cmdstanr")
+# set_cmdstan_path("C:/Users/dan.killian/Documents/.cmdstan/cmdstan-2.35.0")
+# 
+# options(brms.backend="cmdstanr")
 
 # indirect measurement ---- 
 
@@ -110,18 +98,6 @@ lapply(ie_packages, library, character.only=T)
 
 # map ---- 
 
-<<<<<<< HEAD
-# map_packages <- c("rgeoboundaries", "ggmap", "sf","rnaturalearth","rnaturalearthdata",
-#                   "mapview", "spData", "spDataLarge", "tmap", "crsuggest", "geodata", "terra")
-# 
-# # Install packages not yet installed
-# installed_packages <- map_packages %in% rownames(installed.packages())
-# if (any(installed_packages == FALSE)) {
-#   install.packages(map_packages[!installed_packages])
-# }
-# 
-# lapply(map_packages, library, character.only=T)
-=======
 map_packages <- c("rgeoboundaries", "ggmap", "sf","rnaturalearth","rnaturalearthdata",
                   "mapview", "spData", "spDataLarge", "tmap", "crsuggest", "geodata", 
                   "terra", "blackmarbler", "raster", "exactextractr")
@@ -133,7 +109,8 @@ if (any(installed_packages == FALSE)) {
 }
 
 lapply(map_packages, library, character.only=T)
->>>>>>> f3beb8b157364a138edb715b6ed4cd1dec17e470
+
+# table ---- 
 
 table_packages <- c("gt", "gtsummary", "gtExtras","flextable", "officer")
 # Install packages not yet installed
