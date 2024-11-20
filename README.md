@@ -37,4 +37,8 @@ Frequencies of the first South Sudan resilience panel survey
 Count and quality of USAID evaluations over time
 
 [A tutorial on making a map in R](https://managementsystemsintl.github.io/methods-corner/Map%20demo/script/map%20demo.html)\
-A brief tutorial on making a map in both tmap and ggplot2. This approache uses sf for working with vector data to make a static map and an interactive map. 
+A brief tutorial on making a map in both tmap and ggplot2. This approach uses sf for working with vector data to make a static map and an interactive map. 
+
+[Using design effects to help plan survey sample sizes](https://managementsystemsintl.github.io/methods-corner/sampling/icc%20demo.html)  
+Illustration of how we might conduct complex survey sample size estimations using information from similar surveys
+

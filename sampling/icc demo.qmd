@@ -1,0 +1,222 @@
+---
+title: "Using Intra-class correlation to plan for sample sizes"
+#subtitle: "2023 Lebanon perception survey"
+author: "Dan Killian"
+toc: true
+number-sections: false
+format: 
+  html:
+    code-fold: true
+#  docx:
+#    reference-doc: USAID-report-template-02.docx
+editor: visual
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+library(here)
+source("../misc/prep.R")
+```
+
+### Sample sizes for simple and complex sampling
+
+There is simple random sampling and there is complex sampling. Let's explain how we get to each.
+
+```{r}
+
+n_rng <- (3.4 * 1.96^2 * .25) / (c(.02, .03, .05)^2 * .95)
+
+srs <- c((1.96^2*.25)/.05^2,
+         (1.96^2*.25)/.03^2,
+          (1.96^2*.25)/.02^2)
+
+
+out <- data.frame(margin=c("5%","3%", "2%"),
+                  srs=srs,
+                  complex=round(rev(n_rng), 0),
+                  scope=c("Overall sampling area", "One disaggregate", "Two disaggregates, nested"))
+flextable(out) %>% 
+  set_header_labels(
+                    margin="Margin of error",
+                    srs="Simple random sample",
+                    complex="Complex sample",
+                    scope="Geographic scope") %>%
+  autofit() 
+
+```
+
+How do we derive each type of sample size?
+
+### Simple random sampling
+
+Sample size calculation to achieve a given margin of error starts with assumptions of simple random sampling (SRS). A first statistics course establishes a 95% confidence interval around a sample mean, in which 95 out of 100 instances of a given experiment would contain the fixed population parameter.
+
+$$
+CI=\bar{x}\pm z\frac{s}{\sqrt{n}}
+$$
+
+Where *z* is the z-score for a given confidence level (most commonly 1.96 for a 95% confidence level), *s* is the sample standard deviation, and *n* is the sample size. Recognize the expression $\frac{s}{\sqrt{n}}$ as the standard deviation of the sample mean, or standard error.
+
+The above expression generates the confidence interval from a sample of data. If we're interested in planning our experiment to reach a desired benchmark margin of error, than we can drop the sample mean and set the margin of error *E* to the error calculation.
+
+$$
+E=z\frac{s}{\sqrt{n}}
+$$
+
+Knowing that we will set *E* to our desired benchmark, we rearrange terms to solve for the unknown *n*.
+
+$$
+\sqrt{n}=\frac{z*s}{E}
+$$
+
+$$
+n=\frac{z^2s^2}{E^2}
+$$
+
+Note that we can further simplify this expression if we use a proportion as the outcome of interest. Recall that the variance of a proportion *p* is $p*(1-p)$, which we can plug in for the value of $s^2$. This gives us something more tractable:
+
+$$
+n=\frac{z^2p(1-p)}{E^2}
+$$
+
+Furthermore, note that variance is maximized at $p=.5$, such that $p(1-p) = .5*.5=.25$. Maximizing the value of the numerator also maximizes the sample size calculation for any value of *p*. Therefore, we can assume $p=.5$ so as to calculate the upper bound of the needed sample size. Finally, we'll plug in $z=1.96$ to set a 95% confidence interval and $E=.05$ as our desired benchmark for margin of error. This lets us solve for n:
+
+$$
+n=\frac{1.96^2*.25}{.05^2}
+$$
+
+Which comes out to `r round((1.96^2*.25) / .05^2,0)`. This is a common sample size that is quoted for any simple random sample with a margin of error of 5%.
+
+### Cluster sampling
+
+A common problem is that the sample size based on simple random sampling is often quoted for the needed sample size for household surveys. But, household surveys typically involve a complex design that includes organizing the sampling frame by strata, and then sampling clusters at multiple stages (stratified, multi-stage, cluster sampling design).
+
+Sampling clusters reduces the geographic scope of data collection, relative to a simple random sample. However, this reduced scope comes at the cost of a degree of similarity within the sampled clusters that reduces the amount of effective information contained within the clusters. A simple random sample assumes statistical independence of each element in the sampling frame, but cluster sampling violates the assumption of independence.
+
+To adjust for the clustered nature of the data collection, we introduce the design effect *deff*. The design effect is the variance inflation factor that occurs as we move from simple random sampling to cluster sampling:
+
+$$
+Deff_p(\hat\theta)=\frac{var(\hat\theta_{cluster})}{var(\hat\theta_{srswo})}
+$$
+
+We can enter this adjustment directly into the sample size calculation:
+
+$$
+n=\frac{deff*z^2p(1-p)}{E^2}
+$$
+
+As a final step, we can adjust for non-response by taking the actual response rate in the denominator, which will adjust the sample size upward. This gives us:
+
+$$
+n=\frac{deff*z^2p(1-p)}{E^2r}
+$$
+
+where r is the response rate, which we'll set at 95%.
+
+We now need to estimate the design effect. We don't know the complex variance in the denominator of the expression for $Deff$, but we can can estimate $Deff$ through use of the intra-class correlation between clusters, $\rho$:
+
+$$
+D_{eff}=1+(\bar{b}-1)\rho
+$$
+
+where $\bar{b}$ is the average cluster sample size.
+
+We don't know the design effect or intra-class correlation for Lebanon, but we can look to other surveys. The Arab Barometer Wave 7 surveys in 2021-2022 included Lebanon, from which we can estimate the intra-class correlation and design effect.
+
+```{r include =F}
+#getwd()
+#here()
+
+leb <- read_rds(here("sampling/Lebanon sampling points Arab Barometer Wave 7.rds"))
+
+head(leb)
+
+```
+
+```{r}
+rho_out <- samplesize4surveys::ICC(leb$usg, leb$PSU)
+
+rho <- rho_out$ICC
+
+rho # .34
+
+```
+
+Based on the Wave 7 Arab Barometer survey, the cluster sample size averaged 5.1 and $\rho=$.34. From this we can estimate the design effect from this survey as $1+((5.1-1)*.34)$.
+
+```{r}
+
+psu_n <- leb %>%
+  group_by(PSU) %>%
+  tally() %>%
+  summarise(n=mean(n)) %>%
+  unlist() %>%
+  round(1)
+
+psu_n  
+
+deff_barom <- 1 + ((psu_n-1)*.34) %>% 
+  unlist() %>% 
+  round(1)
+
+deff_barom 
+```
+
+Cluster sampling in the Arab Barometer survey inflated the variance to 2.4 times the variance from a simple random sample. This inflation factor is kept manageable only by the fact that the sample size for each cluster is lower than normal.
+
+We can use this design effect from the Arab Barometer survey to inform our sample size projections for the prospective perception survey. Cluster sample sizes usually range from 8-16.
+
+```{r}
+deff_samp <- data.frame(psu_n=c(6,8,12,16,20)) %>%
+  mutate(deff= round(1 + (psu_n - 1) * .34, 1))
+
+flextable(deff_samp) 
+```
+
+We'll consider a cluster sample size of 8, with an estimated design effect of 3.4.
+
+This adjustment then enters the sample size expression, using a desired margin of error of three percent.
+
+$$
+n=\frac{3.4*1.96^2(.5*.5)}{.03^2*.95}
+$$
+
+Which gives a sample size of `r round((3.4*1.96^2*.25) / (.03^2*.95), 1) %>% comma()`.
+
+```{r}
+n_proj <- (3.4 * 1.96^2 * .25) / (.03^2 * .95)
+n_proj 
+```
+
+Using the design effect from the Wave 7 Arab Barometer survey for Lebanon, we need a sample of 3,820 in order to achieve a desired precision of a 3% margin of error.
+
+Let's provide a range of sample sizes, for margins of error of two, three, and five percent.
+
+```{r}
+n_rng <- (3.4 * 1.96^2 * .25) / (c(.02, .03, .05)^2 * .95)
+
+srs <- c((1.96^2*.25)/.05^2,
+         (1.96^2*.25)/.03^2,
+          (1.96^2*.25)/.02^2)
+
+
+out <- data.frame(margin=c("5%","3%", "2%"),
+                  srs=srs,
+                  complex=round(rev(n_rng), 0),
+                  scope=c("Overall sampling area", "One disaggregate", "Two disaggregates, nested"))
+flextable(out) %>% 
+  set_header_labels(
+                    margin="Margin of error",
+                    srs="Simple random sample",
+                    complex="Complex sample",
+                    scope="Geographic scope") %>%
+  autofit() 
+```
+
+MSI generally recommends a margin of error for a household survey of no less than five percent, which would require a sample size of 1,375 after incorporating the information about the clustering effect from the Wave 7 Arab Barometer Survey. To reach a desired margin of error of three percent, we need a sample of 3,819. To reach a desired margin of error of two percent, we need a sample of 8,593.
+
+### Conclusion
+
+The use of the intra-class correlation and design effect from the Arab Barometer survey suggests that villages in Lebanon tend to be more homogeneous than what is typically found in other countries. This higher level of homogeneity within villages requires the sampling of additional villages in order to reach a desired level of precision. MSI advises a precision of no less than five percent. This would require a sample of 1,375 and would be representative of the overall sampling area, but it may not be possible to meaningfully examined across any demographics of interest. A more desirable level of precision would be a margin of error of three percent, which would require a sample of 3,819. This would enable precise estimates at the overall level, as well as exploration of findings across a single disaggregate such as urban/rural locality, sex, age group, or education. If USAID would like to have the ability to meaningfully describe differences across more than one demographic (for example, sex within urban or rural locality), then MSI recommends an overall margin of error of two percent, which would require a sample size of 8, 593.
