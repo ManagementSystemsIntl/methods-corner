@@ -35,22 +35,20 @@ ggplot(mpg, aes(x=cty, y=hwy)) +
 
 ## Column 1
 
-### Row - Value boxes {height="25%"}
+### Row - Value boxes {height="35%"}
 
 ```{r}
-#height if rows only
-#value boxes use bootstrap icons
 #| label: calculate-value
 
 mpg <- mpg 
 
 lowest_mileage_cty <- mpg %>% 
-  filter(cty==min(cty)) %>% 
+  filter(cty == min(cty)) %>% 
   distinct(cty) %>% 
   pull()
 
 highest_mileage_cty <- mpg %>% 
-  filter(cty==max(cty)) %>% 
+  filter(cty == max(cty)) %>% 
   distinct(cty) %>% 
   pull()
 
@@ -61,34 +59,34 @@ rounded_mean_cty_mileage <- mpg %>%
 ```
 
 ```{r}
-#next you have to call out the values for the value box
-#to find icons and colors look up bootstrap icons and colors
 #| content: valuebox
 #| title: "Least efficient"
 #| icon: fuel-pump-fill
 #| color: danger
-list(value=paste(lowest_mileage_cty, "mpg"))
+list(value = paste(lowest_mileage_cty, "mpg"))
 
 ```
 
 ```{r}
-#next you have to call out the values for the value box
-#alternative approach
 #| content: valuebox
 #| title: "Most efficient"
-list(icon="fuel-pump",
-     color="success",
-     value=paste(highest_mileage_cty, "mpg"))
+#| icon: fuel-pump-fill
+#| color: success
+list(value = paste(highest_mileage_cty, "mpg"))
 
 ```
 
-::: {.valuebox icon="fuel-pump" color "secondary"} Average city mileage
 
-`{r} rounded_mean_cty_mileage` mpg 
+```{r}
+#| content: valuebox
+#| title: "Average city mileage"
+#| icon: fuel-pump-fill
+#| color: secondary
+list(value = paste(rounded_mean_cty_mileage, "mpg"))
 
-:::
+```
 
-### Row 2
+### Row 2 {height="65%"}
 
 ```{r}
 n_cars <- nrow(mpg)
