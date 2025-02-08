@@ -1,0 +1,120 @@
+---
+title: "Dashboard Example"
+format: 
+  dashboard:
+    orientation: columns
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(boot)
+```
+
+#  {.sidebar}
+
+Global level side bar in ymal that will stay for all pages. Page level side page would be page level heading \## {.sidebar} or add next to row and columns. Same with orientation and scrolling. Can also add scrolling: true to ymal or in a page level if you want to have more rows and cards on one page. Can also add {.tabset} next to row to show two different cars in one column instead of two.
+
+For code help: https://mine.quarto.pub/quarto-dashboards/2-dashboard-components
+
+# Page 1
+
+## Column 1
+
+Changing the orientation to columns will make the second level headings columns instead of rows To change heights: {height="30%"} To change width: {width="80%"} \### Row 1 To change layout to filling or flowing add: {.fill} or {.flow}
+
+### Row 2
+
+```{r}
+#| title: Highway vs. city mileage
+ggplot(mpg, aes(x=cty, y=hwy)) +
+  geom_point()
+```
+
+# Page 2
+
+## Column 1
+
+### Row - Value boxes {height="25%"}
+
+```{r}
+#height if rows only
+#value boxes use bootstrap icons
+#| label: calculate-value
+
+mpg <- mpg 
+
+lowest_mileage_cty <- mpg %>% 
+  filter(cty==min(cty)) %>% 
+  distinct(cty) %>% 
+  pull()
+
+highest_mileage_cty <- mpg %>% 
+  filter(cty==max(cty)) %>% 
+  distinct(cty) %>% 
+  pull()
+
+rounded_mean_cty_mileage <- mpg %>% 
+  summarize(round(mean(cty),2)) %>% 
+  pull()
+
+```
+
+```{r}
+#next you have to call out the values for the value box
+#to find icons and colors look up bootstrap icons and colors
+#| content: valuebox
+#| title: "Least efficient"
+#| icon: fuel-pump-fill
+#| color: danger
+list(value=paste(lowest_mileage_cty, "mpg"))
+
+```
+
+```{r}
+#next you have to call out the values for the value box
+#alternative approach
+#| content: valuebox
+#| title: "Most efficient"
+list(icon="fuel-pump",
+     color="success",
+     value=paste(highest_mileage_cty, "mpg"))
+
+```
+
+::: {.valuebox icon="fuel-pump" color "secondary"} Average city mileage
+
+`{r} rounded_mean_cty_mileage` mpg 
+
+:::
+
+### Row 2
+
+```{r}
+n_cars <- nrow(mpg)
+
+cat("title=", "Drive types of", n_cars, "cars")
+
+ggplot(mpg, aes(x=drv)) +
+  geom_bar()
+```
+
+```{r}
+#| output: false
+
+#add when you need to hide output
+
+ggplot(mpg, aes(x=drv)) +
+  geom_bar()
+```
+
+```{r}
+#| title: One cell = one card
+#| layout-ncol: 2
+
+ggplot(mpg, aes(x=cty, y=hwy)) +
+  geom_point()
+
+ggplot(mpg, aes(x=drv)) +
+  geom_bar()
+```
