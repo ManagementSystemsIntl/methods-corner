@@ -135,7 +135,7 @@ lapply(miss_packages,library, character.only=T)
 
 # FORMATTING ---- 
 
-options(digits=3, scipen=8)
+options(digits=3, scipen=6)
 
 # set default
 base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
