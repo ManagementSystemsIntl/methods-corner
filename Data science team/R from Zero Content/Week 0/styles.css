@@ -1,0 +1,73 @@
+<style>
+
+
+title {
+  font-family: Corbel;
+  color: #133469;
+    font-size: 32;
+}
+
+
+h1 {
+  font-family: Corbel;
+  color: #003478; 
+    font-size: 28px;
+}
+
+h2 {
+  font-family: Corbel;
+  color: #007C92;
+  font-size: 20px;
+}
+
+h3 {
+  font-family: Corbel;
+  color: #AC83B3;
+  font-size: 18px;
+}
+
+
+.box {
+  margin: 1em ;
+  border: 2px solid #009CA6;
+  border-left: 10px solid #009CA6; 
+  border-radius: 10px;
+}
+
+.box-header {
+  margin-left: 0em;
+  padding-left:  30px;
+  padding-top:  5px;
+  padding-bottom: 5px;
+  color: white;
+  text-indent: 0em;
+  background-color: #009CA6;
+  border-top-right-radius: 10px;
+  font-size: 1em;
+  font-weight: bold;
+  background-size: 40px;
+  background-repeat: no-repeat;
+  background-position: 15px center;
+      }
+
+.box-container {
+  padding-top: 5px;
+  padding-left: 10px;
+  color: #133469;
+  background-color: white;
+  border-bottom-right-radius: 10px;
+}
+
+.quarto-title-block .quarto-title-banner {
+  background-image: url(../viz/logo.png);
+  background-size: 120px;
+  background-position: left;
+  background-repeat: no-repeat;
+  padding-left: 10px;
+  background-origin: content-box;
+  font-family: Corbel;
+  color: #133469;
+    font-size: 32;
+}
+
+

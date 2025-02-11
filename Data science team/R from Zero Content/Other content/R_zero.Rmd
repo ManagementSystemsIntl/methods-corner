@@ -1,0 +1,466 @@
+---
+title: ""
+subtitle: "R from zero"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '5'
+    toc_float: yes
+---
+
+#### prep
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=10, fig.height=8, warning=FALSE, message=FALSE, cache=TRUE, error=T)
+```
+
+```{r echo=F, include=F}
+library(tidyverse)
+library(magrittr)
+library(psych)
+library(foreign)
+library(sjlabelled)
+library(sjmisc)
+library(HH)
+library(sjPlot)
+library(readxl)
+library(DescTools)
+library(janitor)
+library(skimr)
+library(xlsx)
+```
+
+```{r include=F}
+
+options(digits=3, scipen=6)
+
+# vertical and horizontal lines
+theme_set(theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                             panel.grid.minor.y=element_blank(),
+                             plot.title=element_text(face="bold",size=20, hjust=.5),
+                             axis.title=element_text(size=18),
+                             axis.text=element_text(size=16),
+                             legend.text=element_text(size=16),
+                             strip.text=element_text(size=16)))
+
+setwd("C:/Egnyte/Private/dkillian/R from zero")
+
+```
+
+## About R
+
+R represents an implementation of what is known as object-oriented programming. 
+
+This means that information can be stored as 'objects', and R code can act on these objects. 
+
+We create an object by using the assignment operator: <- 
+
+```{r}
+a <- 4
+a
+```
+
+```{r}
+b <- 1:3
+b
+```
+
+```{r}
+c <- letters[1:3]
+c
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+## Data types
+
+There are four primary types of data in r: 
+
+* character
+* integer
+* numeric
+* logical
+
+### Characters
+
+Character data holds string values. A string is information contained within a set of quotation marks. 
+
+```{r}
+char <- c("This is a string", "This is also a string", "Is this a string?")
+char
+
+```
+
+```{r}
+c
+```
+
+```{r}
+d <- c(3,2,a,b)
+d
+```
+```{r}
+e <- c(3,2,z,x)
+```
+R throws an error because z is not a string (there are no quotations around it) and z is not an object in the environment. Therefore, R cannot find z and cannot complete the operation. 
+
+```{r}
+e <- c(3,2,"z","x")
+e
+```
+
+R coerced the integers into characters so that all elements would be of the same type. 
+
+### integers
+
+Integers are real-valued numbers. 
+
+We create an integer using the suffix L. Otherwise, it will be numeric even if displayed as an integer. 
+
+```{r}
+str(b)
+```
+
+```{r}
+
+f <- c(1,2,3)
+str(f)
+
+```
+
+```{r}
+g <- c(1L, 2L, 3L)
+str(g)
+
+```
+
+```{r}
+toni <- c(1,5,3,2,5)
+toni
+```
+
+```{r}
+toni2 <- c(1,4,1:4,3,1)
+toni2
+```
+
+
+### numbers
+
+Numbers are an infinite collection of values along the real number line.  
+
+```{r}
+h <- c(1.1, 2.2, 3.3)
+str(h)
+
+
+```
+
+### logicals
+
+Logical data simply indicates whether or not a piece of information satisfies some condition. Logical data only takes on two values: True (T) or False (F). 
+
+```{r}
+a>2
+```
+
+```{r}
+b>2
+```
+
+```{r}
+c > 2
+```
+
+For some reason, R believes that strings are greater than 2. Be careful what you ask!
+
+```{r}
+sum(b<3)
+```
+
+#### Real world application: checking indices
+
+```{r}
+
+index <- 1:100
+
+var1 <- rnorm(100, 25,5)
+var2 <- rnorm(100, 50,10)
+
+
+dat1 <- data.frame(index, var1) 
+str(dat1)
+
+```
+
+```{r}
+dat2 <- data.frame(index, var2) 
+str(dat2)
+```
+
+```{r}
+dat1$index == dat2$index
+```
+
+```{r}
+sum(dat1$index==dat2$index)
+```
+
+```{r}
+dat2 <- arrange(dat2, desc(dat2$index))
+head(dat2)
+```
+
+```{r}
+sum(dat1$index==dat2$index)
+```
+
+## Data structures
+
+R stores data in four primary structures: vector, list, matrix, and data frame. 
+
+### vectors
+
+A vector is a list of elements, where all elements must be of the same type. 
+
+```{r}
+a
+```
+
+```{r}
+b
+```
+
+```{r}
+a + b
+```
+
+```{r}
+d
+```
+
+```{r}
+b + d
+```
+
+Try to assign data of different type to a vector: 
+
+```{r}
+i <- c(2, "a")
+str(i)
+```
+
+The result is coercion into a single data type. In this case, the 2 was converted to a character. 
+
+### lists
+
+A list is a vector that can hold multiple data types. 
+
+```{r}
+j <- as.list(c(2, "a"))
+str(j)
+```
+
+```{r}
+j[[1]]
+```
+
+```{r}
+j[2]
+```
+
+```{r}
+k <- list(1:10)
+k
+```
+
+```{r}
+l <- list(letters[1:10])
+l
+```
+
+```{r}
+m <- list(k,l)
+m[1]
+```
+
+
+#### matrices
+
+A matrix is a two dimensional collection of vectors (rows and columns). 
+
+```{r}
+n <- matrix(1:25, ncol=5)
+n
+```
+
+```{r}
+o <- matrix(1:25, ncol=5,byrow=T)
+o
+```
+
+As with vectors, the data in a matrix must all be of the same type. 
+
+Matrices can be used in calculations. 
+
+```{r}
+n + o
+```
+
+```{r}
+n * o
+```
+
+```{r}
+n %*% o
+```
+
+```{r}
+eigen(g)
+```
+
+
+### data frames
+
+A data frame is a matrix that can hold different types of data across columns (but not within columns). 
+
+Another way to think of a data frame is that it is a collection of lists, where each column is an element of the list. 
+
+A data frame is the object type we most often use for analysis. 
+
+```{r}
+dat_ex <- data.frame(a=rnorm(100, 25,10), b=1:100, c=rep(letters[1:25],4))
+dat_ex
+```
+
+
+## Factors
+
+Factors are numeric vectors that contain only pre-defined values (categories), and where each of these categories has a label.
+
+```{r}
+a <- sample(1:2, 100, replace=T)
+table(a)
+```
+
+```{r}
+a_f <- factor(a, labels=c("Male","Female"))
+table(a_f)
+```
+
+Note that the labels are just labels, the underlying representation is still 1 and 2.
+
+```{r}
+str(a_f)
+```
+
+
+Factors can sometimes cause trouble. More contemporary practice is to stick with an integer data type and add your own labels. 
+
+```{r}
+a_l <- a %>%
+  set_labels(labels=c("Male","Female"))
+str(a_l)
+```
+
+```{r}
+frq(a)
+```
+
+```{r}
+frq(a_f)
+```
+
+```{r}
+frq(a_l)
+```
+
+The underlying integers behind factor labels have no ordering. To establish an ordering, make an ordered factor. 
+
+```{r}
+ord <- sample(1:5, 100, replace=T)
+table(ord)
+```
+```{r}
+ord.labs <- c("Not at all","A little","Somewhat","Much","Completely")
+ord.fac <- ordered(ord, labels=ord.labs)
+table(ord.fac)
+```
+
+But again, you have to be careful not to accidentally jumble the underlying integers with the ordered labels. 
+
+To keep things more explicit, I would still stick with an integer variable with labels, rather than an ordered factor. 
+
+```{r}
+ord.l <- ord %>%
+  set_labels(labels=ord.labs)
+table(ord.l)
+
+```
+
+```{r}
+frq(ord.l)
+```
+
+When you're ready to dive into this sometimes-frustrating subject, start here: 
+
+* [forcats](https://forcats.tidyverse.org/) package in the tidyverse
+* [working with labelled data](https://cran.r-project.org/web/packages/sjlabelled/vignettes/labelleddata.html)
+* [wrangling categorical data in R](https://peerj.com/preprints/3163/)
+
+## Sub-setting
+
+You can cut up your objects into other objects. The base R way to do this is to use brackets. 
+
+### sub-setting vectors
+
+```{r}
+a <- rpois(5, 8)
+a
+```
+
+```{r}
+a[1:3]
+```
+
+```{r}
+a[c(1,4,2)]
+```
+
+```{r}
+a[-2]
+```
+
+```{r}
+a[a>9]
+```
+
+### sub-setting data frames
+
+Since data frames are two dimensional, you usually (but not always) need to specify both dimensions.
+
+```{r}
+str(dat1)
+```
+
+```{r}
+
+dat1_f <- dat1[1:5,2]
+str(dat1_f)
+
+```
+
+The comma within the bracket specifies rows and columns. 
+
+More contemporary practice uses what is referred to as the tidyverse. 
+
+Brian's demonstration.
+
+

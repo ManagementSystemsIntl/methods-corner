@@ -1,0 +1,161 @@
+---
+title: "From Zero to GitHero"
+title-block-banner: "#CACACA"
+format: 
+  html:
+    code-fold: false
+    css: styles.css
+    toc: true
+    embed-resources: true
+    smooth-scroll: true
+---
+
+# The Beginnings with Git
+
+In this section, we will cover creating a new repository in GitHub, connecting a repository to RStudio, the ins and outs of Git commands. These are the beginning steps in getting started with Git.
+
+# Creating a New Repository
+
+Follow the steps below to create a new repository on GitHub.
+
+1.  Go to [GitHub](https://github.com/) and log in to your account.
+
+2.  Click on the "+" sign in the top right corner and select "New repository".
+
+3.  Enter a name for your repository and a description (optional).
+
+4.  Select whether you want your repository to have a README file.
+
+5.  Choose whether you want your repository to be public or private.
+
+6.  Click on "Create repository".
+
+# Creating a New Project
+
+## Posit Cloud
+
+Follow the steps below to connect your GitHub repository to RStudio online.
+
+1.  When in your Posit Cloud account, click on your name in the top right corner. You will see a drop down menu with the option "Authentication".
+
+2.  Click on this then click on the "Enabled" button next to GitHub. You will be prompted to sign in to your GitHub account.
+
+3.  After you have connected your GitHub account, you will go back to your workspace and select the button that says "New Project".
+
+4.  Click on this button and you will see the option "New Project from Git Repository".
+
+5.  Click on this option and you will be prompted to enter the URL of the repository you want to clone.
+
+6.  Copy the URL at the top of your broswer when in the the repository you created on GitHub and paste it in the box. Click "OK".
+
+An example URL will look like:
+
+```         
+https://github.com/ManagementSystemsIntl/r-from-zero
+```
+
+Success! Now that your project is set up, you can start working on your analysis and commit your changes to GitHub.
+
+## RStudio Desktop Version
+
+When you have a repository you want to clone to your machine, you will create a new project in RStudio and connect it to the GitHub repository.
+
+1.  Open RStudio and click on "File" then "New Project" in the top left corner.
+
+2.  Select "Version Control" and then "Git".
+
+3.  Go to the repository you want to connect to on GitHub and click on the green "Code" button.
+
+4.  Copy the URL under HTTPS and paste it in the "Repository URL" box.
+
+5.  Choose a directory for your project and click "Create Project". We recommend to save all R projects in a folder on your desktop.
+
+6.  You may be prompted to enter your GitHub username and password. Enter them and click "Sign In".
+
+Success! Now that your project is set up, you can start working on your analysis and commit your changes to GitHub.
+
+# Creating a Personal Access Token
+
+When you are using Git with Posit Cloud, you will need to create a personal access token to authenticate your GitHub account. This is a security measure to protect your account. Follow the steps below to create a personal access token.
+
+1.  Go to your GitHub account and click on your profile picture in the top right corner.
+
+2.  Click on "Settings".
+
+3.  Click on "Developer settings" at the very bottom of the left pane.
+
+4.  Click on "Personal access tokens", then "Tokens (classic)".
+
+5.  Click on "Generate new token", then "Generate new token (classic).
+
+6.  Enter a name for your token and select the scopes you want to grant access to. We recommend scopes “repo”, “workflow”, “gist”, “user”, and "projects". If you’re not sure what scopes you need, you can start with these and adjust as needed.
+
+7.  Click on "Generate token".
+
+8.  Copy the token and save it in a secure place. You will need it to authenticate your GitHub account in RStudio when you push changes to GitHub. If you lose the token, you will need to create a new one so keep the browser open until it is stored in a secure place.
+
+> GitHub encourages the use of perishable tokens, with a default Expiration period of 30 days. Unless you have a specific reason to fight this, we recommend accepting this default.
+
+# A Few Things About Git
+
+## A Note on Committing
+
+When you make changes to your project, you will need to commit them to Git then push them to GitHub. This is like taking a snapshot of your project at a particular point in time.
+
+> If you are working with others, it is best to communicate with them about what you are doing and what you are committing. Git errors can be a pain to fix, so it's best to avoid them.
+
+To commit your changes, follow these steps:
+
+1.  Go to the "Git" pane in RStudio.
+
+2.  Check the box next to the files you want to commit.
+
+3.  A new window will open. Add an informative message about the change that was made.
+
+4.  Click on the "Commit" button.
+
+5.  Finally, click “Push” to send the changes to GitHub.
+
+6.  If you are working in Posit Cloud, on your first push in the project you will be prompted to enter your Github user name, then password. The password will be the personal access token you created earlier. 
+
+There are a few files that do *not* need to be committed to Git. These include .gitignore and .Rproj files. The .gitignore file tells Git which files to ignore when committing changes. The .Rproj file is specific to RStudio and should not be committed to Git.
+
+**Best practice is to pull at the beginning of your work session and commit then push your changes at the end of each work session.**
+
+## A Note on Commit Messages
+
+A general rule of thumb is to commit then push your changes often and write clear commit messages. This will make it easier to track your progress and collaborate with others.
+
+The expectation of a good commit message is that it contains a short summary of the change, followed by a blank line, and then an explanation of the change including what the change is, and why it is being made. For instance, if your commit adds graphs to a paper, then a commit message could be:
+
+```         
+Add graphs
+
+Graphs of unemployment and inflation added into Data section.
+```
+
+# Bonus Content
+
+::::: box
+::: box-header
+Project Organization
+:::
+
+::: box-container
+Now that you have set up your project, it's time to organize it properly. Here are the common folders you should include in your project:
+
+1.  Create a "data" folder to store your data files. You will want to create subfolders for each type of data, such as raw, prepared, and public.
+
+2.  Create a "scripts" folder to store your R scripts.
+
+3.  Create a "output" folder to store your plots, figures and tables. You will want to create subfolders for each type of relevant output (e.g., "viz","tables", "models").
+
+4.  Create a "background docs" folder to store any background documentation or literature reviews.
+
+5.  Create an "instruments" folder to store any instruments or questionnaires used in your project.
+
+6.  Create a "reports" folder to store any reports or presentations related to your project.
+
+This is the base structure of a project. You can add more folders as needed. For example, if you may need to include images, you can create an "images" folder.
+:::
+:::::

@@ -1,0 +1,344 @@
+---
+title: "R coding library"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '5'
+    toc_float: yes
+---
+
+```{r global_options}
+knitr::opts_chunk$set(fig.width=10, fig.height=8, warning=FALSE, message=FALSE, cache=TRUE, error=T,
+                      fig.height=8, fig.width=12)
+```
+
+```{r include=F}
+library(tidyverse)
+library(skimr)
+library(knitr)
+library(xlsx)
+library(readxl)
+library(vtree)
+library(DiagrammeR)
+library(DT)
+library(haven)
+```
+
+
+```{r include = F}
+
+options(digits=3, scipen=6)
+
+# vertical and horizontal lines
+theme_set(theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                             panel.grid.minor.y=element_blank(),
+                             plot.title=element_text(face="bold",size=16, hjust=.5),
+                             axis.title=element_text(size=14),
+                             axis.text=element_text(size=12),
+                             strip.text=element_text(size=12)))
+```
+
+## pivot data
+
+### string data in column names
+
+```{r}
+data("relig_income")
+relig_income
+```
+
+```{r}
+r2 <- pivot_longer(relig_income,
+                   -religion,
+                   names_to="income",
+                   values_to="count")
+
+r2
+```
+
+### numeric data in column names
+
+```{r}
+data(billboard)
+#head(billboard)
+datatable(billboard[1:6,1:6])
+```
+
+Artist and track stored in rows, week stored in columns, rank stored as values
+
+```{r}
+
+b2 <- pivot_longer(billboard,
+                   -(artist:date.entered),
+                   names_to="week",
+                   values_to="rank",
+                   values_drop_na=T) %>%
+  arrange(week, rank)
+
+datatable(b2)
+```
+
+Strip off 'wk' from week variable with names_prefix
+
+Convert week to integer with names_ptypes
+
+
+```{r}
+b3 <- pivot_longer(billboard,
+                   -(artist:date.entered),
+                   names_to="week",
+                   names_prefix="wk",
+                   names_ptypes=list(week=integer()),
+                   values_to="rank",
+                   values_drop_na=T) %>%
+  arrange(week, rank)
+
+head(b3)
+```
+
+### many variables in column names
+
+```{r}
+data(who)
+
+head(who)
+```
+
+New prefix is constant so ignore
+
+Second prefix sp/sn/ep/rel is a diagnosis
+
+Third prefix m/f is sex
+
+Fourth prefix is age range
+
+Use multiple values for names_to
+
+Use names_sep or names_pattern to match across variable namesin the columns
+
+```{r}
+w2 <- pivot_longer(who, 
+                   cols=new_sp_m014:newrel_f65, # cols 5:60
+                   names_to = c("diagnosis","sex","age_range"),
+                   names_pattern = "new_?(.*)_(.)(.*)",
+                   values_to = "count",
+                   names_ptypes=list(
+                     sex=factor(levels=c("m","f")),
+                     age_range=factor(levels=c("014","1524","2534", "3544","4554","5564","65"),
+                                      ordered=T)))
+
+head(w2)
+```
+
+### multiple observations per row
+
+```{r}
+family <- tribble(
+  ~family,  ~dob_child1,  ~dob_child2, ~gender_child1, ~gender_child2,
+       1L, "1998-11-26", "2000-01-29",             1L,             2L,
+       2L, "1996-06-22",           NA,             2L,             NA,
+       3L, "2002-07-11", "2004-04-05",             2L,             2L,
+       4L, "2004-10-10", "2009-08-27",             1L,             1L,
+       5L, "2000-12-05", "2005-02-28",             2L,             1L,
+)
+family <- family %>% mutate_at(vars(starts_with("dob")), parse_date)
+family
+```
+
+Family is the id, there are two variables (dob and gender) that repeat across two children (child1 and child2 after underscore). 
+
+```{r}
+family %>% 
+  pivot_longer(
+    -family, 
+    names_to = c(".value", "child"), 
+    names_sep = "_", 
+    values_drop_na = TRUE
+  )
+```
+
+Note the use of the 'sentinel' of '.value' in the names_to field. Per the documentation for values_to: "If names_to is a character containing the special '.value' sentinel, this value will be ignored, and the name of the value column will be derived from part of the existing column names."
+
+So, since the sentinel is in the first position, 'dob' and 'gender' become value columns. And since 'child' is in the second position, that becomes a key column.  
+
+### MSI use case: employment data from a census table
+
+```{r}
+emp <- readxl::read_excel("data/pivot/Bangladesh 2018 employment, by division.xlsx")
+
+head(emp)
+```
+
+This use case follows the example of multiple variables in columns. 
+
+First prefix is male/female/total
+
+Second prefix is rural/urban/city corp
+
+However, note that the final three columns don't fit the pattern and need to be removed. (Play around with the columns included and see the results.)
+
+
+```{r}
+emp2 <- emp[,1:11]
+
+emp2L <- pivot_longer(emp2,
+                      cols=male_rural:total_citycorp,
+                      names_to = c("sex","area"),
+                      names_sep = "_",
+                      values_to = "count")
+
+head(emp2L)
+```
+
+### MSI use case: household roster data
+
+```{r}
+roster <- read_csv("data/pivot/hh roster.csv")
+str(roster)
+```
+
+There are 12 variables (B1-B13 but skipping variable 2 which was the hh member name), and variables for up to 13 hh members (1-13 after the underscore). So, this use case follows the pattern of repeating observations per row. 
+
+The 12 household roster variables: 
+
+```{r}
+key <- read_csv("data/pivot/hh roster key.csv")
+hh_names <- unlist(key[,2])
+key
+```
+
+The objective is to pivot the 12 roster variables into long form, and allow for repeating rows for each household member. 
+
+```{r}
+hh <- roster %>%
+  pivot_longer(
+    cols=B1_1:B13_13,
+    names_to=c(".value", "mid"),
+    names_sep="_",
+    values_drop_na=T) %>%
+  select(-B1) %>% 
+  set_names(., nm=c("m1", hh_names))
+
+head(hh)  
+```
+
+We dropped B1 because this was the hh member id, but this was already created when we specified "mid" in the names_to column. 
+
+We now have a dataset where the household identifier (m1) repeats across household members (mid). 
+
+
+## Draw flow diagram based on CONSORT guidelines
+
+MSI empirical studies, especially any studies flowing from specific evaluation designs such as RCTs, diff in diffs, regression discontinuity, etc,  will usually benefit from a flow diagram showing the partitioning of the study data into the major disaggregates of interest.
+
+The following code creates a flow diagram based on the [CONSORT](http://www.consort-statement.org/) guidelines for randomized controlled trials in medicine.  
+
+```{r}
+build <- build.data.frame(c("e","r","g","a"),
+                          list(1,1,"A",1,55),
+                          list(1,1,"B",1,83),
+                          list("A",0,31),
+                          list(1,0,NA,NA,122))
+build
+```
+
+```{r results='asis'}
+CONSORT_flow_ex1 <- vtree(build,
+      keep=list(e="1",
+                r="1",
+                a="1"),
+      horiz=F,
+      plain=T,
+      showvarnames=F,
+      labelnode=list(e=c("Eligible"=1),
+                     r=c("Randomized"=1), 
+                     a=c("Analyzed"=1)),
+      title="Assessed for eligibility",
+      height=600,
+      width=400)
+
+# grVizToPNG(CONSORT_flow_ex1,
+#            height=600,
+#            width=300,
+#            folder="viz/")
+```
+
+```{r, out.height='40%', out.width='40%'}
+knitr::include_graphics("viz/CONSORT_flow_ex1.png")
+```
+
+
+A more complex example. 
+
+```{r}
+FakeRCT
+```
+
+```{r results='asis'}
+CONSORT_flow_ex2 <- vtree(FakeRCT,
+                          vars = "eligible randomized group followup analyzed",
+                          plain=TRUE,
+                          follow=list(eligible="Eligible",
+                                      randomized="Randomized",
+                                      followup="Followed up"),
+                          horiz=FALSE,
+                          showvarnames=FALSE,
+                          title="Assessed for eligibility",
+                          summary="id \nid: %list% %noroot%",
+                          height=600,
+                          width=400)
+```
+
+
+```{r results='asis'}
+# grVizToPNG(CONSORT_flow_ex2,
+#            height=700,
+#            width=600,
+#            folder="viz/")
+```
+
+```{r, out.height='60%', out.width='60%'}
+knitr::include_graphics("viz/CONSORT_flow_ex2.png")
+```
+
+More explanation and examples may be found in the vtree [vignette](https://cran.r-project.org/web/packages/vtree/vignettes/vtree.html). 
+
+
+
+
+
+
+
+
+
+
+
+## Split data frame and save individual files
+
+```{r}
+file.remove("data/split save/BEAN.csv")
+file.remove("data/split save/FOREST.csv")
+file.remove("data/split save/MANATEE.csv")
+file.remove("data/split save/PACE.csv")
+file.remove("data/split save/POP.csv")
+
+```
+
+```{r}
+list.files("data/split save/")
+```
+
+```{r}
+mentor <- read_csv("data/split save/MENTOR with indices.csv")
+
+mentor_split <- split(mentor, mentor$cohort)
+
+map(names(mentor_split), function(x) 
+  write_csv(mentor_split[[x]], path=paste("data/split save/", x, ".csv", sep="")))
+
+```
+```{r}
+list.files("data/split save/")
+```
+
