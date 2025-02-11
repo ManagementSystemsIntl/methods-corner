@@ -1,0 +1,128 @@
+---
+title: "R From Zero: Session 2"
+subtitle: "Breakout Groups"
+author: "Brian Calhoon"
+date: "5/13/2021"
+output: 
+  html_document:
+    toc: true
+    toc_depth: '5'
+    toc_float: yes
+---
+<style>
+#TOC {border-color: #133469;
+
+}
+
+body{font-family: Gill Sans MT;
+     font-size: 18px;
+     background-color: #FDFDFD;
+}
+
+h1{color: #133469; 
+}
+
+h2{color: #009CA6;
+}
+
+h3{color: #5482AB;
+}
+
+</style>
+---
+
+
+```{r global_options, include = FALSE}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(fig.width=10, fig.height=8, warning=FALSE, message=FALSE, cache=TRUE, error=T)
+
+```
+
+```{r packages, include = FALSE}
+#packages
+library(extrafont)
+library(extrafontdb)
+library(gapminder)
+library(tidyverse)
+library(readxl)
+```
+
+```{r object from week 2}
+
+dt <- read_xlsx("C:/Users/brian.calhoon/Documents/R From Zero/Week 2/datatest.xlsx")
+
+dt
+```
+
+## Breakout Groups
+There are 2 Breakout Groups 
+
+More than 1 group can do each question in the event that we have more than 2 groups. If we have four groups, Dan and Melanie will have their groups work on Breakout Group1 and Brian and Jacob will have their groups work on Breakout Group 2. 
+
+Breakout Group 1 = Melanie and Dan
+
+Breakout Group 2 = Jacob and Brian
+
+### Breakout Group 1
+Question 1: Which team has the highest mean test score in Round 1? in Round 2? Which team had the largest improvement in scores? 
+
+```{r challenge 1}
+dt
+
+dt5 <- dt %>%
+  group_by(Team) %>%
+  summarize(avg_score1 = mean(Score_Round1)
+            , avg_score2 = mean(Score_Round2)) %>% 
+  arrange(desc(avg_score1))
+
+dt5 #Lions had the highest score in Round 1
+
+arrange(dt5, desc(avg_score2)) #Bears had the highest score in Round 2
+
+dt6 <- dt5 %>% 
+  mutate(change_scores = avg_score2 - avg_score1) %>% 
+  arrange(desc(change_scores))
+
+dt6 #The Bears did the least bad from avg_score1 to avg_score2
+```
+
+What does the output show you?
+
+Feel free to make plot if time.
+
+### Breakout Group 2
+Question 2: What percent of participants have "yes" for `In_person`? Use `recode()` to calculate a mean for your answer. Then, which group of `In_person`, had the highest average score for each round?
+
+```{r yes to 1}
+
+dt
+
+#Recode the yeses and the nos to 0s and 1s
+
+dt1 <- dt #this is just so we don't alter the original dataset
+
+dt1$In_person <- recode(dt$In_person
+  ,"No" = 0
+  , "Yes" = 1)
+
+dt1
+
+#Then, take a mean of that column.
+mean(dt1$In_person) #Approximately 64% of participants were In_person
+
+#Group by the In_person variable and create summary statistics
+dt_group <- dt %>%
+  group_by(In_person) %>%
+  summarize(avg_score1 = mean(Score_Round1)
+            , avg_score2 = mean(Score_Round2))
+
+dt_group #The Yeses scored higher the first time and the nos scored higher the second time
+```
+
+
+What did we do? We used `recode()` to tell R that it should change the values "No" and "Yes" to the numbers 0 and 1 in the In_person column. Note, that here we used the $ to call a specific column of the `dt` object. 
+
+With this operation, we are not altering the entire object, only the `In_person` column. That is why we have the `dt$In_person` on the left side of the assignment operator (`<-`), and then we have it again on the right side of it.
+
+Feel free to make a plot if time.

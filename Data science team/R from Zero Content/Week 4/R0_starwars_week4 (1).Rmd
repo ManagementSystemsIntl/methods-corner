@@ -1,0 +1,335 @@
+---
+title: "R From Zero: Session 4"
+subtitle: "Starwars"
+author: "Brian Calhoon"
+date: "4/28/2021"
+output: 
+  html_document:
+    toc: true
+    toc_depth: '5'
+    toc_float: yes
+---
+Welcome to the 4th and final week of the R From Zero course. This session will be a chance to practice what the skills you've learned this past month. 
+
+**Purpose:** To use what we've learned to analyze and manipulate a Star Wars dataset to make a custom data visualization and share it with the class.  
+
+## Summary of last week
+Last week we learned about data structures and generated our own data frames. Simulating data is useful for several reasons: 1) you can test out a function on a small dataset so that we can understand what the function is doing before we apply it to our actual dataset; 2) you can mock up an example of product to show your team or client to help explain why your project should be done in a certain way; 3) you can ask others - in a public forum or within MSI - for help without having to share a dataset that you might not be allowed to share. 
+
+```{r global_options, include = FALSE}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(fig.width=10, fig.height=8, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo = TRUE)
+
+```
+
+```{r fonts, include = FALSE}
+#These libraries are not for the class, but for myself
+library(showtext)
+library(gfonts)
+library(ggplot2)
+```
+
+```{r formatting, include = FALSE}
+
+# display to three decimal points, scientific notation displays at around six digits
+options(digits=3, scipen=6)
+
+# requires showtext package
+showtext_auto()
+
+# requires gfonts package
+use_pkg_gfont("open-sans")
+
+# graphic style
+theme_set(theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                             panel.grid.minor.y=element_blank(),
+                             plot.title=element_text(face="bold",size=18, hjust=.5, family = "sans"),
+                             plot.subtitle = element_text(size=16, family="sans"),
+                             plot.caption=element_text(size=12, family="sans"),
+                             axis.title=element_text(size=16, family="sans"),
+                             axis.text=element_text(size=14, family="sans"),    
+                             legend.text=element_text(size=14, family="sans"),
+                             strip.text=element_text(size=14, family="sans"))) 
+
+# for single graphs, I have recently come to like borderless
+nobord <- theme(panel.border=element_blank(),
+                axis.ticks = element_blank())
+
+
+```
+
+Here's an example of a simulated data frame.
+
+```{r summary of last week}
+
+#We set the seed so that the randomly generated numbers are locked in and reproduceable.
+set.seed(123)  ## for reproducibility
+
+#I used n as an easy way to tell it how many rows to generate. Then I don't have to type in the number in each place where I want it. This makes editing easier.
+n <- 6
+
+#I named the data frame dat. The first column is named "id" and the values in id will be 1 through n (or 6) 
+dat <- data.frame(id=1:n   
+                  
+                  #The second column is "date." It is a date column that runs a daily sequence of dates from Jan. 1, 2021 through Jan. 6, 2021.
+                  , date=seq.Date(as.Date("2021-01-01"), as.Date("2021-01-06"), "day")
+                  
+                  #The third column is "group." It uses rep() to replicate the letters 3 times each. The subsetting of [1:2] means it takes the first and second letters of the alphabet (a and b) and inserts them 3 times each (A, B, A, B, A, B) 
+                  , group=rep(LETTERS[1:2], n/2)
+                  
+                  #The fourth column is "age." The sample() function samples from the range 18:45, and provides n (6) elements in the column.  
+                  , age=sample(18:45, n)
+                  
+                  #The fifth column is "type." The paste() function pastes in the elements passed to it. In this case the text "type" and the values 1:n to make each cell "type n"
+                  , type=factor(paste("type", 1:n))
+                  
+                  #The sixth column is "x." The runif() function generates random deviates of the uniform distribution. It generates n (6) elements
+                  , x=runif(n))
+
+dat #We look at the object in the console
+
+
+```
+
+For this week, we'll be using the Starwars dataset that is included in the tidyverse library. For further reading on the tidyverse and each of the libraries go to https://www.tidyverse.org/packages/.  
+
+Since the dataset is already included in the library, there's not much to do other than type the name of it into your script.
+
+```{r starwars}
+
+library(tidyverse) #Installs the libraries of the tidyverse: tibble, tidyr, readr, purrr, dplyr, stringr, ggplot2, and forcats
+
+
+#assign the data to an object
+dat <- starwars 
+
+#what kind of data do we have
+glimpse(starwars)
+
+```
+
+We know that there's 87 rows and 14 columns. It tells us a lot about the different characters in Star Wars, including height, mass, hair color, skin color, eye color, birth year, sex, gender, homeworld, species, films, vehicles, and starships. 
+
+We're going to use tools from the dplyr library to analyze the dataset.
+
+## The big six functions in dplyr
+
+The dplyr library is our primary libary for data manipulation. We're going to learn six primary functions from this package - `select()`, `filter()`, `arrange()`, `group_by()`, `summarize()`, and `mutate()`. These six functions can do a lot of your data analysis. 
+
+We're going to use them to zoom in further on the Star Wars dataset. Before we do, let's go over the pipe operator ` %>% ` since you'll see it a lot.
+
+### The pipe operator
+
+All dplyr functions take a data frame as the first argument. Rather than forcing the user to either save intermediate objects or nest functions, dplyr provides the `%>%` operator. 
+
+`x %>% f(y)` is the same as writing `f(x, y)`
+
+Basically, the value to the left of the ` %>% ` is "piped" into whatever follows it to the right or on the next line. You can use the pipe to write multiple operations that you can read left-to-right, top-to-bottom (reading the pipe operator as “then”).
+
+### The select() function
+
+The `select()` function operates on the columns of a data frame. It is useful when you have a dataset with a lot of columns when you only need a few columns. It will select only those columns that it is instructed to. 
+
+Here's how `select()` works to select only the name, homeworld, and species columns. 
+
+```{r selecting}
+
+#You can select by column name.
+dat1 <- dat %>%
+  select(name, homeworld, species)
+
+#You can make the same selection by column number. This selects columns 1, 10, and 11. 
+dat1 <- dat %>%
+  select(1,10:11) 
+
+dat1
+
+#You can also select which columns you do not want
+dat1 <- dat %>%
+  select(-2:-9, -12, -13, -14)
+
+dat1
+
+```
+
+### The filter() function
+
+`filter()` allows you to select a subset of rows in a data frame. Like all single verbs, the first argument is the data frame. The second and subsequent arguments refer to variables within that data frame, selecting rows where the expression is TRUE.
+
+Here's `filter()` in action.
+
+```{r filtering}
+
+#Filter for all cases where gender is feminine.
+starwars %>%
+  filter(gender == "feminine")
+
+#You can add multiple arguments to your filter
+
+#Filter for all cases where gender is feminine and species is human
+starwars %>%
+  filter(gender == "feminine"
+         , species == "Human")
+
+```
+
+### The arrange() function
+
+`arrange()` works similarly to the previous two functions except that instead of filtering or selecting rows, it reorders them. It takes a data frame, and a set of column names (or more complicated expressions) to order by. If you provide more than one column name, each additional column will be used to break ties in the values of preceding columns.
+
+`arrange()` reorders values from lowest to highest. To reorder values from highest to lowest use the `desc()` function inside of `arrange(desc())`.
+
+```{r arranging}
+
+#height from smallest to largest
+starwars %>%
+  arrange(height)
+
+#height from largest to smallest
+starwars %>%
+  arrange(desc(height))
+
+```
+
+
+### The mutate() function
+
+`mutate()` adds a new column to a data frame.
+
+```{r mutating}
+
+#This add a column tall where the value is TRUE when height > 170 and FALSE when it is not.
+dat2 <- starwars %>%
+  mutate(tall = height > 170)
+
+dat2
+
+```
+
+### The group_by() and summarize() functions
+
+`summarize` collapses a dataframe to a single row. It is not that useful without its partner `group_by`.  
+
+`group_by` will group the data based on a column or columns, and then this grouping is piped, ` %>% ` into `summarize()` to make a single row for each grouping.
+
+Think `group_by()` then `summarize()`. It's very common, and you'll do it over and over.
+
+```{r grouping and summarizing}
+
+#I want to know which planet has the tallest average height
+dat_height <- dat %>% 
+  group_by(homeworld) %>% 
+  summarize(avg_height = mean(height)) %>% 
+  
+  #Now I want to order the data by highest to lowest avg_height. Note the pipe from above continues to the arrange() below
+  arrange(desc(avg_height))
+
+#I want to know how many members of each species inhabit each home world
+dat_home <- dat %>%
+  group_by(homeworld, species) %>%
+  summarize(count = n())
+
+```
+
+## Star Wars Challenge
+
+Now it's your turn. With your group, use the tools we've learned over the past four weeks to manipulate and visualize some aspect of Star Wars that is interesting to you. Have some fun with it. 
+
+Here's an example.
+
+```{r starwars example}
+
+#Look at the data
+glimpse(starwars)
+
+#Where do the tallest and heaviest characters come from in the galaxy?
+
+#There are 49 homeworlds
+unique(starwars$homeworld) #this lists all unique items in the homeworld column
+
+#where do most of the characters live
+planets <- starwars %>% 
+  group_by(homeworld) %>%
+  summarize(count = n()) %>% 
+  arrange(desc(count)) %>% 
+  na.omit() #Let's get rid of missing values here
+
+planets #most of the characters come from Naboo (11) and Tatooine (10) and then Alderaan, Coruscant, and Kamino have 3 each.
+
+starwars1 <- starwars %>% 
+  select(height, mass, homeworld) %>% #select the columns that I need
+  filter(homeworld %in% planets$homeworld[1:5]) %>% #This finds rows that contain items 1:5 in the planets data frame that we created above
+  # filter(homeworld == "Tatooine" # commenting out hard coding as this is fraught and should be avoided if we have created a reference object
+  #        | homeworld == "Naboo"
+  #        | homeworld == "Alderaan"
+  #        | homeworld == "Coruscant"
+  #        | homeworld == "Kamino") %>%
+  group_by(homeworld) %>%  #grouping by homeworld
+  summarize(height_avg = mean(height, na.rm = TRUE) #calculating average height, removing missing values
+            , mass_avg = mean(mass, na.rm = TRUE)) #calculating average mass, removing missing values
+
+library(ggrepel) #including this to push labels to the side
+
+ggplot(starwars1
+       , aes(mass_avg, height_avg, color = homeworld)) + 
+  geom_point(alpha = .5) + #I made a scatter plot
+  geom_label_repel(aes(label = homeworld)) + #I used the homeworld as my label
+  ggtitle("Where is the origin of the largest Star Wars Charactors") +
+    labs(x = "Average Mass"
+         , y = "Average Height")
+
+```
+
+### What the class developed together
+
+```{r}
+
+dat <- starwars
+
+head(dat)
+
+#select birth year, sex, homeworld, species
+dat1 <- dat %>% 
+  select(birth_year, sex, homeworld, species) 
+  
+
+dat1
+
+#What is the data? How do I know the details of it? Type ? and then any function or built in data set name such as ?starwars 
+?starwars
+
+#summary of our dataset
+summary(dat1)
+
+#Grouping by species. Using the dat1 object from above to create dat2
+dat2 <- dat1 %>% 
+  group_by(species) %>%
+  summarize(avg_bby = mean(birth_year)
+            , obs = n()) %>%  #shows number of observations
+  na.omit() #this removes observations where there are any missing values
+
+#dat3 is dat2, but arranged by descending avg_bby
+dat3 <- dat2 %>% 
+  arrange(desc(avg_bby))
+
+#Make a bar plot of dat3
+plot <- ggplot(dat3
+       , aes(x = reorder(species, avg_bby) #reorder sorts the categorical variable (species) by the numeric variable (avg_bby)
+             , y = avg_bby
+             , fill=species)) + #this colors in the bars by species
+  geom_col() + #The geometry is columns (or bars)
+  #scale_y_log10()+ #We scaled the y axis at one point, and then we tried it without the scaling by adding the #
+  scale_y_continuous(breaks = seq(0, 1000, 100)) + #The tick marks on the y axis were odd so we told it to put a tick mark every 100 years starting with 0 and ending with 1000
+  coord_flip() + #We rotated it to be horizontal bars
+  geom_text(aes(label = avg_bby, hjust = 1)) + #We added numbers to the end of the bars
+  labs(x = "Species"
+          , y = "Birth Year Before Battle of Yarvin") + #the x and y axes needed better labels 
+  ggtitle("Avg. Birth Year by Species ") + #A Title
+  theme_classic() + #This is a built in R theme that removed grid lines and set the fonts
+  theme(legend.position = "none") # We removed the legend since it didn't add anything
+
+#This is our plot
+plot
+
+```

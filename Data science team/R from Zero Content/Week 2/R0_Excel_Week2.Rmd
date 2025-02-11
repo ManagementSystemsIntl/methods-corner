@@ -1,0 +1,312 @@
+---
+title: "R From Zero: Session 2"
+subtitle: "Reading an Excel file"
+author: "Brian Calhoon"
+date: "4/14/2021"
+output: 
+  html_document:
+    toc: true
+    toc_depth: '5'
+    toc_float: yes
+---
+This is the guide to walk us through week 2 of the R From 0 course. 
+
+```{r global_options, include = FALSE}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(fig.width=10, fig.height=8, warning=FALSE, message=FALSE, cache=TRUE, error=T)
+
+```
+
+```{r fonts, include = FALSE}
+#These libraries are not for the class, but for myself
+library(showtext)
+library(gfonts)
+library(ggplot2)
+```
+
+```{r formatting, include = FALSE}
+
+# display to three decimal points, scientific notation displays at around six digits
+options(digits=3, scipen=6)
+
+# requires showtext package
+showtext_auto()
+
+# requires gfonts package
+use_pkg_gfont("open-sans")
+
+# graphic style
+theme_set(theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                             panel.grid.minor.y=element_blank(),
+                             plot.title=element_text(face="bold",size=18, hjust=.5, family = "sans"),
+                             plot.subtitle = element_text(size=16, family="sans"),
+                             plot.caption=element_text(size=12, family="sans"),
+                             axis.title=element_text(size=16, family="sans"),
+                             axis.text=element_text(size=14, family="sans"),    
+                             legend.text=element_text(size=14, family="sans"),
+                             strip.text=element_text(size=14, family="sans"))) 
+
+# for single graphs, I have recently come to like borderless
+nobord <- theme(panel.border=element_blank(),
+                axis.ticks = element_blank())
+
+
+```
+
+## Summary of last week
+
+Last week, we installed packages, then activated them using the library(), and then we created our first charts using the gapminder dataset.
+
+To install the packages for the first time (and only the first time) we have to run this code, install.packages(c("gapminder", "ggplot2", "dplyr")). 
+
+The gollowing ggplot code generates a basic chart.
+  
+
+```{r summary of last week}
+
+library(gapminder)
+library(ggplot2)
+library(dplyr)
+
+dat <- gapminder
+
+ggplot(data = dat
+       , aes(x = lifeExp, y = gdpPercap, color = continent, size = pop)) + 
+  geom_point(alpha = .3)
+
+```
+Here are some simple ways to make the chart a little clearer and more appealing.
+
+All we have to do is add two more lines of code, and the visualization starts to look a lot better.
+```{r customizations}
+
+ggplot(data = dat
+       , aes(x = lifeExp, y = gdpPercap, color = continent, size = pop)) + 
+  geom_point(alpha = .3)+
+  scale_y_log10() +
+  facet_wrap(~continent)
+
+```
+
+With one more line of code, we can show the linear relationship within each continent.
+
+```{r customization 2}
+ggplot(data = dat
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , color = continent
+             , size = pop)) + 
+  geom_point(alpha = .3)+
+  scale_y_log10() +
+  facet_wrap(~continent) +
+  geom_smooth(method = "lm")
+```
+Now, onto to this week's lesson!
+
+**Purpose:** By the end of this lesson you will have learned to read an Excel workbook in R, to understand the data types that we see, and to manipulate the data.
+
+The libraries needed for this week are ggplot2, dplyr, and readxl. The easiest way to activate all of these is to type `library(tidyverse)`. Of course you can load them all separately as well.
+
+Make sure that you already did the `install.packages("library")` on any libraries that you're planning to use. 
+
+```{r libraries}
+
+library(tidyverse)
+library(readxl)
+```
+
+## Reading an Excel file
+It's probably safe to say that we all work in Excel and share documents in Excel. Since it's so common, let's learn how to use R to work with an existing Excel document.
+
+R is capable of reading data in any format that I can think of, but the user has to know what the format of the file is and where the file is stored (locally, a remote server, or online). 
+
+We're going to use the file called "datatest.xlsx" as our example. Please save this file to your machine and copy the filepath. For example, I saved it here on my local harddrive. "C:\Users\brian.calhoon\Documents\R-0Course\Week 2\datatest.xlsx". 
+
+It may be helpful to type `getwd()` into your Console. It will tell you the working directory of your session, and you could simply save the file there.  
+
+In R, we have to flip the \ to a / and wrap "" around the filepath. So, it looks like this: "C:/Users/brian.calhoon/Documents/R-0Course/Week 2/datatest.xlsx". 
+
+Type the code below, but change the filepath (everything before the "datatest.xlsx") to the correct filepath to get to where you saved the document.
+
+```{r read dataset}
+
+getwd()
+
+read_xlsx("datatest.xlsx")
+
+```
+
+What happened? It shows the file, but there is no new object to interact with.
+
+```{r assign .xlsx document to an object}
+
+test <- read_xlsx("datatest.xlsx")
+
+```
+
+### What data types are we working with?
+
+Let's look closer at `test`. We're going to do this in 3 ways, `glimpse()`, `str()`, and `head()`. Let's observe the differences in each of the outputs.
+
+Same as last week.
+```{r data types and structures}
+glimpse(test)
+```
+
+This is base R version of examining an object's structure, and it requires no installation of a helper library.
+```{r str}
+str(test)
+```
+
+This is an easy way to see the first 6 rows of an object (first 6 rows is the default). 
+```{r head}
+head(test)
+
+```
+
+By adding the n argument you can adjust the number of rows that you see. This shows the first 20 rows.
+```{r head 2}
+head(test, n = 20)
+```
+
+We know there 5 columns with 33 rows of data. 
+
+How is `str(test)` different? 
+
+What are the abbreviated labels, `chr` and `dbl`? These are the data classes or data types. 
+For some additional background, the primary data types that you will encounter are: 
+
+* Logical -  `yes` or `no` or `TRUE` or `FALSE`
+* Numeric -  `12.3`, `14.99`, `54`
+* Integer -  `1`, `2456`, `39999`, `89`
+* Double - `45.8976`, `3.14`, `.987843`
+* Character - `"ball"`, `"a"`, `"2"`, `"This is a pencil."`
+* Complex - `7+4x`
+
+To look at the data class of single column we can use `class()` and use the $ symbol to call only that single row. It looks like this.
+```{r class}
+
+class(test$Name)
+
+```
+
+R makes it very easy to calculate summary statistics. If we want to see the min/max, mean, median, and first and third quartiles, we simply pass the object to `summary()`.
+
+```{r summary statistics}
+
+summary(test)
+
+```
+So, R recognized that the first 3 columns are character columns, and it cannot calculate summary statistics of these words. Instead, it tells us about the class of the column - character. It also recognized that columns 4 and 5 are numeric (dbl) and it found the min/max, mean, median, and quartiles. This gives us a fairly good sense of what is in the data.
+
+The 3rd column, In_person, is listed as a class character, and we know from looking at the data above that it is a binary yes/no response. Another useful skill is knowing how to convert binary choices to 0s and 1s so that we can calculate summary statistics.
+
+In R, this is quite simple.
+
+```{r yes to 1}
+
+test$In_person <- recode(test$In_person
+  ,"No" = 0
+  , "Yes" = 1)
+
+test
+```
+
+What did we do? We used `recode()` to tell R that it should change the values "No" and "Yes" to the numbers 0 and 1 in the In_person column. Note, that here we used the $ to call a specific column of the `test` object. 
+
+With this operation, we are not altering the entire object, only the `In_person` column. That is why we have the `test$In_person` on the left side of the assignment operator (`<-`), and then we have it again on the right side of it.
+
+Now, let's run `summary(test)` again to see what happens.
+
+```{r summaries again}
+
+summary(test)
+
+```
+Now, let's explore the test scores.
+
+## Calculate and create new columns
+
+First, let's find the change from Round 1 to Round 2 so we can see where positive and negative change occurred. Then, let's arrange the data in descending order by the Change column.
+
+To link these lines of code together we'll use pipes, ` %>%`.
+
+
+```{r change in scores}
+
+test2 <- test %>%
+  mutate(change = Score_Round2 - Score_Round1) %>%
+  arrange(desc(change))
+
+test2
+```
+
+This created a new column called change where it shows absolute change. Oddly, only 7 scores were higher in round 2 than in round 1. Note, that I called this object test2. If I make a mistake on test2, it doesn't really affect much since test2 iteself is built on test.
+
+Here's what happened. `mutate()` is the dplyr function to create a new column. We named the new column `change` and said that it equals the value in `Score_Round2` `-` the value in `Score_Round1`. So, it applies formula to each of the rows and shows the result in `change`.
+
+We used `arrange(desc(test2))` to organize the data in descending order of the `change` column.
+
+Now, let's add a column for percent change. 
+
+```{r percent change in scores}
+
+test3 <- test2 %>%
+  mutate(percent_change = (change/Score_Round1)*100) %>%
+  arrange(desc(percent_change))
+
+test3  
+```  
+
+We called this object test3. Similar to before, we changed the object name so I know that it is built off of test2.
+
+## Summarize data
+We've created new columns, but we haven't yet reduced columns or rows. This is just as important. 
+
+What is the average score of Score_Round1 for those who were in person? And for those were not in person?
+```{r summarize}
+
+test4 <- test3 %>%
+  group_by(In_person) %>%
+  summarize(Avg_score1 = mean(Score_Round1))
+
+test4
+```
+
+In this example, we used the `group_by()` and `summarize()` syntax. You should get used to this as it's a super useful combination in R. In this example, it turns out that those who are In_person (the 1s), score nearly 4 points higher than those who were not in person. Of course, we're not testing if this is statistically significant or just noise.
+
+With summarize, everything is deleted except the specific columns mentioned in the `group_by()` and then whatever `summarize()` is being calculated.
+
+## Breakout Groups
+There are 2 Challenges below. 
+
+### Challenge Question 1
+Challenge Question 1: Which team has the highest mean test score in Round 1? in Round 2? Which team had the highest improvement? 
+
+```{r challenge 1}
+
+test5 <- test3 %>%
+  group_by(Team) %>%
+  summarize(avg_score1 = mean(Score_Round1)
+            , avg_score2 = mean(Score_Round2))
+
+arrange(test5, desc(avg_score2))
+```
+
+What does the output show you?
+
+### Challenge Question 2
+Challenge Question 2: Which team improved the most from Round 1 to Round 2?
+
+```{r Breakout Group 2}
+
+test6 <- test3 %>%
+  group_by(Team) %>%
+  summarize(avg_change = mean(change))
+
+arrange(test6, desc(avg_change))
+
+```
+
+What does the output show you?

@@ -1,0 +1,103 @@
+---
+title: "Cohort 1 Week 4 Output"
+subtitle: "Starwars"
+author: "Brian Calhoon"
+date: "4/28/2021"
+output: 
+  html_document:
+    toc: true
+    toc_depth: '5'
+    toc_float: yes
+
+---
+<style>
+#TOC {border-color: #133469;
+
+}
+
+body{font-family: Gill Sans MT;
+     font-size: 18px;
+     background-color: #FDFDFD;
+}
+
+h1{color: #133469; 
+}
+
+h2{color: #009CA6;
+}
+
+h3{color: #5482AB;
+}
+
+</style>
+---
+
+**Purpose:** To use what we've learned to analyze and manipulate a Star Wars dataset to make a custom data visualization and share it with the class.  
+
+```{r global_options, include = FALSE}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(fig.width=10, fig.height=8, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo = TRUE)
+
+```
+
+```{r packages, include = FALSE}
+#These libraries are for fonts
+library(extrafont)
+library(extrafontdb)
+library(tidyverse)
+
+```
+
+### What the class developed together
+
+```{r}
+
+dat <- starwars
+
+head(dat)
+
+#select birth year, sex, homeworld, species
+dat1 <- dat %>% 
+  select(birth_year, sex, homeworld, species) 
+  
+
+dat1
+
+#What is the data? How do I know the details of it? Type ? and then any function or built in data set name such as ?starwars 
+?starwars
+
+#summary of our dataset
+summary(dat1)
+
+#Grouping by species. Using the dat1 object from above to create dat2
+dat2 <- dat1 %>% 
+  group_by(species) %>%
+  summarize(avg_bby = mean(birth_year)
+            , obs = n()) %>%  #shows number of observations
+  na.omit() #this removes observations where there are any missing values
+
+#dat3 is dat2, but arranged by descending avg_bby
+dat3 <- dat2 %>% 
+  arrange(desc(avg_bby))
+
+#Make a bar plot of dat3
+plot <- ggplot(dat3
+       , aes(x = reorder(species, avg_bby) #reorder sorts the categorical variable (species) by the numeric variable (avg_bby)
+             , y = avg_bby
+             , fill=species)) + #this colors in the bars by species
+  geom_col() + #The geometry is columns (or bars)
+  #scale_y_log10()+ #We scaled the y axis at one point, and then we tried it without the scaling by adding the #
+  scale_y_continuous(breaks = seq(0, 1000, 100)) + #The tick marks on the y axis were odd so we told it to put a tick mark every 100 years starting with 0 and ending with 1000
+  coord_flip() + #We rotated it to be horizontal bars
+  geom_text(aes(label = avg_bby, hjust = 1)) + #We added numbers to the end of the bars
+  labs(x = "Species"
+          , y = "Birth Year Before Battle of Yarvin") + #the x and y axes needed better labels 
+  ggtitle("Avg. Birth Year by Species ") + #A Title
+  theme_classic() + #This is a built in R theme that removed grid lines and set the fonts
+  theme(legend.position = "none") # We removed the legend since it didn't add anything
+
+#This is our plot
+plot
+
+```
