@@ -1,5 +1,5 @@
 # Du Bois Visualization Challenge
-# Week 1
+# Week 2
 
 # first, install base and viz packages
 # not all are needed here but good to have 
@@ -49,37 +49,54 @@ dark_grey <- "#6C6463"
 medium_grey <- "#8C8985"
 light_grey <- "#CFCDC9"
 
-# now we can start with the week 1 challenge
+# now we can start with the week 2 challenge
 
-# create an object of week 1 data
-d <- read.csv("week 1 data.csv")
+# create an object of week 2 data
+d2 <- read.csv("week 2 data.csv")
 
 # view dataset
-view(d)
+view(d2)
 
 # view names of dataset
-names(d)
+names(d2)
 
-# rename variables of dataset
-d <- d %>% 
-  rename(year="Year", value="Land.Value..Dollars.")
+# rename variables and add labels dataset
+d2 <- d2 %>%
+  rename("year"=Date, "acres"=Land) %>%
+  mutate(year = set_variable_labels(year, label = "Year"),
+         acres = set_variable_labels(acres, label = "Land Owned (acres)"))
 
-# create a ggplot of week 1 data
-ggplot(d, aes(year, value)) + 
+# create new variables for log and square root
+d2 <- d2 %>%
+  as.tibble() %>%
+  mutate(ln_acre=log(acres),
+         scale=sqrt(ln_acre))
+
+# create a ggplot of week 2 data
+ggplot(d2, aes(year, acres)) + 
+  stat_smooth(color=usaid_blue,
+              alpha=.8) +
   geom_point(color=usaid_blue,
-             size=2.4) + 
-  geom_line(color=usaid_blue,
-            alpha=.7) +
-  scale_y_continuous(label=dollar_format(scale=.000001, suffix="M"),
+             size=1.8,
+             alpha=.6) + 
+  scale_x_continuous(breaks=seq(1875, 1900, 5)) +
+  scale_y_continuous(breaks=seq(3e5, 1e6, 1e5),
+                     labels=label_comma(scale=.001,
+                                        suffix="K"),
                      sec.axis=dup_axis()) + 
   labs(x="",
        y="",
-       title="Value of land owned by African-Americans in Georgia",
-       caption="This is my awesome figure\nChallenge 1")
+       title="Acres of land owned by African-Americans in Georgia",
+       caption="This is my awesome figure\nChallenge 2")
 
 # save the ggplot
-ggsave(here("week 1 viz.png"),
+ggsave(here("week 2 viz.png"),
        device="png",
        type="cairo",
        height=5,
        width=8)
+
+
+
+
+
