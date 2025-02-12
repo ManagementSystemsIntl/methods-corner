@@ -66,12 +66,6 @@ d2 <- d2 %>%
   mutate(year = set_variable_labels(year, label = "Year"),
          acres = set_variable_labels(acres, label = "Land Owned (acres)"))
 
-# create new variables for log and square root
-d2 <- d2 %>%
-  as.tibble() %>%
-  mutate(ln_acre=log(acres),
-         scale=sqrt(ln_acre))
-
 # create a ggplot of week 2 data
 ggplot(d2, aes(year, acres)) + 
   stat_smooth(color=usaid_blue,
