@@ -1,0 +1,721 @@
+---
+title: ""
+subtitle: "Introduction to the R tidyverse"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '5'
+    toc_float: yes
+---
+
+#### prep
+
+Set global options
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=10, fig.height=8, warning=FALSE, message=FALSE, cache=TRUE, error=T)
+```
+
+Load packages
+
+```{r echo=F, include=F}
+library(tidyverse)
+library(magrittr)
+```
+
+Set parameters such as significant digits in output and the default style of graphs. 
+
+```{r include=F}
+
+options(digits=3, scipen=6)
+
+# vertical and horizontal lines
+theme_set(theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                             panel.grid.minor.y=element_blank(),
+                             plot.title=element_text(face="bold",size=20, hjust=.5),
+                             axis.title=element_text(size=18),
+                             axis.text=element_text(size=16),
+                             legend.text=element_text(size=16),
+                             strip.text=element_text(size=16)))
+
+```
+
+## The four verbs
+
+There are five primary operations used for data manipulation in the tidyverse
+
+- filter: subsets rows
+
+- select: subsets columns
+
+- arrange: reorders rows by single or multiple columns / variables
+
+- mutate: create a new variable from within the object you are working in
+
+Filter and arrange affect observations (rows). 
+
+Select and mutate affect variables (columns). 
+
+Summarize manipulates observations based on the value of a variable or variables. 
+
+To start we need to install the base tools allow us to manipulate data. This includes: dplyr, ggplot2, and tidyr. 
+
+```{r}
+# install.packages("dplyr")
+# install.packages("ggplot2")
+```
+
+Note that since these packages have already been installed, we've commented the lines above so they don't actually run. 
+
+Now we load them into the current script so R knows to use them
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+We also need a data set. For this lesson, we'll use the gapminder data that goes with the DataCamp Introduction to the Tidyverse course.
+
+There are many ways to pull data into your environment. We'll cover two ways here: reading in data from your local files or calling data stored in an R package.  
+
+When the data is stored in our local files, we can call the file using the appropriate file path. First, set your home working directory, and then call the file name. 
+
+Set a working directory and load in the data set. 
+
+```{r}
+setwd("C:/Egnyte/Private/dkillian/R training/2. Intro to tidyverse")
+
+dat <- read.delim("gapminder.txt")
+```
+
+The gapminder data that we manually downloaded from the DataCamp website is a tab delimited file (.txt). We read in this data with the function 'read.delim'. 
+
+Note that this isn't common - most often you will be reading in an Excel file, a Comma Separated Values (CSV) file, or a file from another statistical analysis package such as SPSS or Stata. There are specific commands to call data from your local files for each type of file (read_excel, read.csv, read_spss, read_stata, etc). 
+
+The other way to pull data into our environment that we'll cover here is to call data stored in an R package. In our case, the package we want is called the Gapminder package. 
+
+install.packages("gapminder")
+
+Now we can load the package into our global environment.
+
+```{r}
+library(gapminder)
+```
+
+Once the package is loaded, we can call any objects that may be stored in one of our loaded packages. The gapminder package includes the gapminder data set. We can load in data from a package through the function 'data'. 
+
+```{r}
+data(gapminder)
+```
+
+Note that objects stored in a package have dedicated names. You would need to take a look at the documentation of your pacakge to identify the specific name of the object you want to call. 
+
+Sometimes we may want to make our object names more concise. We can create a duplicate object with the name we want and remove the original. 
+
+```{r}
+dat <- gapminder
+rm(gapminder)
+```
+
+Get to know the data you'll be working with. 
+
+```{r}
+names(dat)
+```
+
+Now let's take a look at the first few rows of our data. 
+
+```{r}
+head(dat)
+```
+
+We can look at some of the properties of our data using glimpse()
+
+```{r}
+glimpse(dat)
+```
+
+Now, let's use the verbs in the dplyr package.
+
+### Filter
+
+Filter takes a subset of rows of a data set. How might we do this in base R? 
+
+```{r}
+subset(dat, dat$year==1987)
+```
+
+```{r}
+dat[dat$year==1987,]
+```
+
+The tidyverse way of doing it is a little more intuitive and conversational. 
+
+```{r}
+filter(dat, year==1987)
+```
+
+To fully embrace the tidyverse way of doing things, we need to introduce the piping operator (%>%). 
+
+The %>% means that we take whatever is before and use it as an input to what follows. Using the piping operator with the previous operation, we would write:
+
+```{r}
+dat %>%
+  filter(year == 1987)
+```
+
+(Note that we used two equals signs (==) and no quotations around an integer. If we want to filter for text we need to use "".)
+
+Syntactically, we can think of the piping operator as communicating "then". Describing the previous operation, we could say: 
+
+"Take the object 'dat' and then filter it for the year 1987."
+
+It's a stylistic convention to start a new line after the piping operator to maintain clean and readable code, where each line is a specific operation. 
+
+Let's filter by country. 
+
+```{r}
+dat %>%
+  filter(country == "Belgium")
+```
+
+We can combine these two searches with a comma. We want only observations where the year is 1987 and the country is Belgium.
+
+```{r}
+dat %>%
+  filter(year == 1987, 
+         country == "Belgium")
+```
+
+As with the piping operator, it's a stylistic convention to start a new line after a comma within a function to maintain clean and readable code, where each line is a specific operation within the function. 
+
+Note that R tries to help you maintain clean code through indentation. Use the starting place of each line to help you keep track of where you are in your code. 
+
+Also note that we have printed a subset of data in the console, but we don't have any further control over that data. What if we wanted to analyze data only from 1987? 
+
+In this case, assign the output of the operation to another object and work with the new object.
+
+```{r}
+dat_87 <- dat %>%
+  filter(year==1987)
+```
+
+Compare the two objects in your global environment. The object 'dat' consists of 1,704 observations of 6 variables. The object 'dat_87' consists of 142 observations of 6 variables. 
+
+
+### Select
+
+We can use select to retain only certain variables. How would we do this in base R? 
+
+```{r}
+dat[,c("country", "year", "gdpPercap")]
+```
+
+The tidyverse way:
+
+```{r}
+dat2 <- dat %>%
+  select(country, year, gdpPercap)
+```
+
+Notice how nothing printed to the console, because our command was to create a new object. To print the contents of the new object, simply call it. 
+
+```{r}
+dat2
+```
+
+If you don't want to retain a variable you can also (de)select it.
+
+```{r}
+dat_not_lifeExp <- dat %>%
+  select(-lifeExp)
+names(dat_not_lifeExp)
+```
+
+You can also select based on column number (1,2,3,4,5) or (de)select (-4).
+
+```{r}
+
+dat_not_lifeExp2 <- dat %>%
+  select(1:3,5:6)
+names(dat_not_lifeExp2)
+```
+
+```{r}
+dat_not_lifeExp3 <- dat %>%
+  select(-4)
+names(dat_not_lifeExp3)
+```
+
+### Arrange
+
+We commonly need to sort our data. Arrange does this in the tidyverse, while in base we use 'order' in conjunction with subsetting brackets.
+
+```{r}
+dat_ord <- dat[order(dat$gdpPercap),]
+head(dat_ord)
+```
+
+```{r}
+dat_ord <- dat[order(-dat$gdpPercap),]
+head(dat_ord)
+```
+
+The tidyverse way: 
+
+```{r}
+dat_ord2 <- dat %>%
+  arrange(gdpPercap)
+
+head(dat2)
+```
+
+The default is ascending (lowest to highest).
+
+To do this in descending (highest to lowest) order we type.
+
+```{r}
+dat_ord_desc <- dat %>%
+  arrange(desc(gdpPercap))
+
+head(dat_ord_desc)
+```
+
+### Mutate
+
+What if we want to use the data to create a new variable or change an existing variable? 
+
+In base R:
+
+```{r}
+dat$pop_thsnds <- dat$pop/1000 
+head(dat)
+```
+
+In the tidyverse, we use the mutate verb. The grammar is the same.
+
+```{r}
+dat2 <- dat %>%
+  mutate(pop = pop/1000000)
+
+head(dat2)
+```
+
+Now the pop variable is different. To avoid overwriting the existing variable, assign a new name. 
+
+```{r}
+dat2 <- dat %>%
+  mutate(pop_millions = pop/1000000)
+
+head(dat2)
+```
+
+If we want a GDP variable added, then we do this.
+
+```{r}
+dat2 <- dat %>%
+  mutate(gdp = gdpPercap * pop)
+
+head(dat2)
+```
+
+## Combining verbs
+### Filter and arrange
+
+
+We can combine these verbs using the %>%. If we want to look at results 
+from only 1987 in descending order based on gdpPercap, we type:
+```{r}
+dat %>%
+  filter(year == 1987) %>%
+  arrange(desc(gdpPercap))
+ 
+```
+
+Now, we can put all of these verbs together to arrange only 1987 by descending value of gdp.
+
+```{r}
+dat %>%
+  mutate(gdp = gdpPercap * pop) %>%
+  filter(year == 1987) %>%
+  arrange(desc(gdp))
+```
+
+### Group_by and summarize
+
+- group_by: collapse observations around categorical variables in your data
+
+- summarize: perform descriptive operations on the data
+
+
+#### Summarize
+How would we return the average, minimum, and maximum population for our data?
+
+```{r}
+
+ dat %>%
+  summarize(avgpop = mean(pop, na.rm =TRUE)
+            , minpop = min(pop, na.rm =TRUE)
+            , maxpop = max(pop, na.rm =TRUE))
+```
+
+The base R equivalent:
+```{r}
+
+summary(dat$pop)
+
+```
+
+Like the base command, summary(), summarize() collapses our data to a single row based on the functions we have specified. So we go from this:
+
+```{r}
+dat %>% 
+  filter(country == "Afghanistan") %>% 
+  head()
+```
+
+To this:
+```{r}
+ dat %>%
+  filter(country == "Afghanistan") %>%
+  summarize(avgpop = mean(pop, na.rm =TRUE)
+            , minpop = min(pop, na.rm =TRUE)
+            , maxpop = max(pop, na.rm =TRUE))
+```
+
+And in base:
+```{r}
+summary(dat$pop[dat$country == "Afghanistan"])
+```
+
+The real value of summarize() in generating statistics is that it can easily be paired with other functions. 
+
+Let's revisit our GDP variable. 
+```{r}
+dat %>%
+  mutate(gdp = gdpPercap * pop) %>%
+  filter(country == "Belgium") %>% # now we can combine this to get summary stats
+  summarize(min.gdp = min(gdp, na.rm = TRUE)
+            , max.gdp = max(gdp, na.rm = TRUE)
+            , avg.gdp = mean(gdp, na.rm = TRUE)
+            , median.gdp = median(gdp, na.rm = TRUE))
+
+```
+
+#### Group_by
+We may want to look at data by certain categories so we can generate group statistics.
+
+Let's look at the mean population by continent. 
+
+```{r}
+dat %>% 
+  group_by(continent) %>% 
+  summarize(mean.pop = mean(pop, na.rm = TRUE))
+
+```
+
+Bring in the base
+```{r}
+sapply(split(dat$pop, dat$continent), mean)
+```
+The base approach uses the split() function, which divides the column dat$pop by the variable dat$continent. We then use the base sapply() function to calculation the mean for each group. Let's break this apart. 
+```{r}
+splits <- split(dat$pop #select the variable we want to summarize
+                , dat$continent # select the group variable
+                )
+```
+This gives us the splits object, which is still kind of cumbersome
+```{r}
+glimpse(splits)
+```
+It's a list!
+```{r}
+head(splits[1][[1]])
+```
+To the get the mean in base
+```{r}
+sapply(splits #specify the data
+       , mean) # specify the function
+```
+
+Our data set doesn't have any missing, so let's add some and take a look at other summarize() features.
+
+```{r}
+dat.withna <- as.data.frame(map_at(dat, .at = c(4:7),  function(x) {x[sample(c(TRUE, NA), prob = c(0.8, 0.2), size = length(x), replace = TRUE)]}))
+
+dat.withna %>% 
+  group_by(continent) %>% 
+  summarize(missings = sum(is.na(pop))
+            , observations = n())
+```
+
+Note that how you specify items in group_by affects output
+```{r}
+dat %>% 
+  group_by(year, continent) %>% 
+  summarize(mean.pop = mean(pop)) %>% 
+  head(n = 10)
+```
+
+compared to 
+```{r}
+dat %>% 
+  group_by(continent, year) %>% 
+  summarize(mean.pop = mean(pop)) %>% 
+  head(n = 10)
+
+```
+
+## Reshaping data
+In both analysis and cleaning, we often need to reshape our data. This will become more important as we move into complex visualization. 
+
+The tidyverse has a few functions for reshaping the data, but as of March 19, 2019 (yeah, things change all the time!), the two main functions are:
+
+- pivot_long
+- pivot_wide
+
+However, we are going to focus on the legacy functions:
+
+- spread()
+- gather()
+
+### Spread
+In many cases, we want to go from wide to long; for example, to have column names become column values. Spread() is the tidyverse approach to this. 
+
+First, let's create a long data set
+```{r}
+dat.long <- dat %>% 
+  group_by(year, continent) %>% 
+  summarize(mean.pop = mean(pop, na.rm = TRUE))
+
+head(dat.long)
+```
+Ok, now let's spread this long data into a wide format
+
+There are two standard inputs to the spread() function:
+- The column that contains variable names is "key"
+- The column that contains values you are collapsing into columns is "value"
+```{r}
+dat.wide <- dat.long %>%  
+  spread(key = continent 
+         , value = mean.pop)
+
+dat.wide
+```
+Not very tidy.
+
+This can be combined with other functions to create new variables.
+```{r}
+dat.wide.2 <- dat.long %>%  
+    spread(continent, mean.pop) %>% 
+    ungroup() %>% # we need to include this since spread turns "year" into a grouping variable
+    mutate(world.pop = rowSums(select(., c(Africa, Americas, Asia, Europe, Oceania))))
+
+dat.wide.2
+
+```
+
+##Gather
+Similar to spread(), gather() also uses the key and value commands, but instead transforms the data from wide to long. Using the function without naming columns is a helpful way to see how it (and many other functions) work.
+
+```{r}
+dat.wide %>% 
+  gather(key
+         , value)
+```
+Cool. This is not all that helpful as our entire data set has been collapsed into two columns, but it does show how "key" refers to names and "value" to the associated observations.
+
+Let's try gather() again
+```{r}
+dat.long.2 <- dat.wide %>% 
+    gather(key = continent # we'll name our key column "continent"
+           , value = population
+           , -year) # remove this from the "key"
+
+dat.long.2
+
+```
+Let's take a look at another example
+```{r}
+dat %>% 
+  select(-country) %>% 
+  gather(key = variable
+         , value = value
+         , -year
+         , -continent)
+```
+
+##Using gather(), spread(), and summarize()
+
+```{r}
+dat.wide.3 <-  dat %>% 
+  group_by(continent, year) %>% 
+  summarize(mean.life = mean(lifeExp, na.rm = TRUE)) %>% 
+  spread(key = year # our columns
+         , value = mean.life # row values
+         )
+
+dat.wide.3
+
+```
+And on to gather(). What if we want to find the year and continent that saw the largest value for each variable?
+
+```{r}
+dat %>% 
+    select(-country) %>% 
+    gather(key = variable
+           , value = value
+           , -year
+           , -continent) %>% 
+  group_by(variable) %>%  
+  filter(value == max(value))
+
+
+```
+
+```{r}
+
+```
+
+## Tidy data and visualization
+
+this provides a nifty little line graph using ggplot2
+
+ggplot(by_continent_annual, aes(x = year, y = avgpop, color = continent)) +
+  geom_line(size = 1)
+  
+  
+## Thinking more about relational data
+
+Let's put together a toy dataset. 
+
+Let's say we're interested in student test scores at the level of teacher and grade. 
+
+This dataset will consist of the average of a battery of test scores, and the standard deviation of that average, for 6 students across three grades and two teachers. 
+
+```{r}
+?rep
+```
+
+
+```{r}
+school <- rep(1:2, each=2)
+school
+```
+
+```{r}
+size <- rep(c("Small","Large"), each=2)
+size
+```
+
+```{r}
+section <- rep(c("a","b"),2)
+section
+```
+
+```{r}
+teacher <- 1:4
+teacher
+```
+
+```{r}
+set.seed(38)
+math <- round(rnorm(4, 85, 12),0)
+math
+```
+
+```{r}
+science <- round(rnorm(4, 78, 12),0)
+science
+```
+
+
+```{r}
+#stnd.dev <- round(rnorm(4, 5, 2),1)
+#stnd.dev
+```
+
+```{r}
+d1 <- data.frame(school, size, section, math, science)
+d1
+```
+
+In terms of relational data theory, this data frame is in denormalized form, in that we put it together in a form that is ready for immediate analysis. Again using ideas from relational data theory, we would say that the variables school and section are key variables, in that the combination of school and section uniquely identify the rows. The variable size would be considered as derived, in that it is merely an attribute of school. The variables math and science are 'payload' variables in that they hold data values. 
+
+Another way to think of the data is not in terms of analysis but in terms of storage. For storing this data, we don't want to record data twice.. all columns should be key or payload. To accomplish this, we store the data in two separate tables. 
+
+```{r}
+d2a <- data.frame(school=1:2, size=c("Small","Large"))
+d2a
+```
+
+```{r}
+d2b <- data.frame(school, section, math, science) 
+d2b
+```
+
+Because size is only a function of school, we store it separately with the key variable of school. 
+
+Congratulations! You have just created a relational database. A relational database is a collection of tables that have defined relations to one another. 
+
+If we wanted to create a data format for analysis, we can manipulate the tables of our database to extract the information we need to execute the analysis we want to do. 
+
+In relational databases, different tables of data can be merged through what are known as 'joins'. 
+
+Suppose we want to take our database of two tables and get to the data in denormalized form (our object d1). We would take the object d2b and merge in the table d21. 
+
+We can do this using the most common join, which would be a left join. 
+
+```{r}
+?left_join
+```
+
+A left join of objects x,y return all rows from x, and all columns from x and y. It's a way of adding variables to an object, so long as the two objects share some key variable to match on. In our example, x would be our object d2b and y would be our object d2a. 
+
+Let's create a new object, d1_2, that is exactly the same as the object d1. 
+
+Remember that the piping operator takes what is on the left hand side of the operator (x, d2b) and applies the verb (join) on the right hand side (y, d2a). 
+
+```{r}
+d1_2 <- d2b %>%
+  left_join(d2a)
+d1_2
+```
+
+Let's make it match the object d1 exactly: 
+
+```{r}
+d1_2 <- d2b %>%
+  left_join(d2a) %>%
+  select(school, size, section, math, science) %>%
+  arrange(school, size)
+d1_2
+```
+
+```{r}
+d1
+```
+
+```{r}
+all.equal(d1, d1_2)
+```
+
+A right join does the exact same thing as a left join, but with the order reversed. 
+
+```{r}
+d1_2r <- d2b %>%
+  right_join(d2a) %>%
+  select(school, size, section, math, science) %>%
+  arrange(school, size)
+d1_2r
+```
+
+```{r}
+all.equal(d1, d1_2r)
+```
+
+
+
+
+  

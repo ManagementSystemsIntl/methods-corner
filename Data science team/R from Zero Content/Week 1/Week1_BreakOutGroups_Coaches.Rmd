@@ -1,0 +1,416 @@
+---
+title: "R From Zero: Session 1"
+subtitle: "Breakout Guides"
+author: "Brian Calhoon"
+date: "5/6/2021"
+output: 
+  html_document:
+    toc: true
+    toc_depth: '5'
+    toc_float: yes
+---
+<style>
+#TOC {border-color: #133469;
+
+}
+
+body{font-family: Gill Sans MT;
+     font-size: 18px;
+     background-color: #FDFDFD;
+}
+
+h1{color: #133469; 
+}
+
+h2{color: #009CA6;
+}
+
+h3{color: #5482AB
+}
+
+</style>
+---
+
+```{r global_options, include = FALSE}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(fig.width=10, fig.height=8, warning=F, message=F, cache=T, error=T, echo = T)
+
+```
+
+```{r fonts, include = FALSE}
+#Load libraries
+library(extrafont)
+library(extrafontdb)
+library(gapminder)
+library(ggplot2)
+library(dplyr)
+```
+
+
+
+## Breakout Groups
+
+Now it's your turn to practice visualizing data in R. We will break into groups, each one with a coach, who will guide you through this first plot in R. Each group has a slightly different challenge question using the same object that we created above, `dat`. The products developed will be shared after the course.
+
+Remember, `dat` is an object consisting of the gapminder dataset.
+
+An additional note:
+
+Play around with the built in themes available
+
+* theme_bw()
+* theme_classic()
+* theme_void()
+* theme_minimal()
+* theme_dark()
+
+`theme_` will also show you an auto fill list.
+
+### Breakout Group 1
+
+Challenge Question 1: How has life expectancy changed over time? Create a visualization that helps us observe this change.
+
+```{r Breakout Group 1}
+
+dat <- gapminder
+
+#To get started, here's a very basic plot. 
+ggplot(dat
+       , aes(x = year, y = lifeExp)) +
+  geom_point()
+```
+
+Does it look like points are best way to represent this?
+
+Maybe a line graph would show change in time more effectively
+
+Will colors help? What column would colors be based on?
+
+Introduce geom_line() here as lines are good for showing change over time. This also requires the introduction of the by = argument.
+
+```{r add in geom_line}
+
+ggplot(dat
+       , aes(x = year, y = lifeExp, by = country, color = continent)) +
+  geom_line() 
+
+
+#Does it need a title? Here's an example with a title. They can call it whatever they want.
+  ggplot(dat
+       , aes(x = year, y = lifeExp, by = country, color = continent)) +
+  geom_line() +
+  ggtitle("Life Expectancy Over Time")+
+  theme_void() #N.B. Theme void may not make the most sense
+
+  
+#What if you want to make it less busy. Use a facet_wrap()!
+  ggplot(dat
+       , aes(x = year, y = lifeExp, by = country, color = continent)) +
+  geom_line() +
+  facet_wrap(~continent) +
+  ggtitle("Life Expectancy Over Time") +
+  theme_bw()
+
+#What happens if you add a geom_point() after the geom_line()? What happens if you put the geom_point() before a geom_line()? 
+  
+#The geoms layer on top of each other. This is important to remember when making visualizations and adding features and labels.
+
+
+```
+
+### Breakout Group 2
+Challenge Question 2: How can we easily address the outliers in the first chart that we made?
+
+```{r Breakout Group 2}
+
+dat <- gapminder
+
+#The first chart
+ggplot(data = dat
+       , aes(x = lifeExp, y = gdpPercap)) +
+  geom_point()
+
+#So, here we are again. Do we want to add colors or something else to help? 
+
+#this is the plot that we finished with
+ggplot(data = dat
+       , aes(x = lifeExp, y = gdpPercap, color = continent, size = pop)) + 
+  geom_point(alpha = .3)
+
+#The y axis has a few outliers way at the top. We could drop them, but why throw out data?
+
+#We could scale the y axis and see what happens.
+
+ggplot(data = dat
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , color = continent
+             , size = pop)) + 
+  geom_point(alpha = .3) +
+  scale_y_log10()
+
+#The log10 function transformed the y axis. So each multiple of 10 now only corresponds to an increase in 1 on the transformed scale. This makes it easier to visualize the vertical #spread of the data.
+
+#What do you want to call it
+
+ggplot(data = dat
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , color = continent
+             , size = pop)) + 
+  geom_point(alpha = .3) +
+  scale_y_log10() +
+  ggtitle("This is my title")
+
+#If time, you could add a simple linear line using geom_smooth() to help a viewer understand #the relationship.
+
+ggplot(data = dat
+       , aes(x = lifeExp
+             , y = gdpPercap)) + 
+  geom_point(alpha = .3) +
+  scale_y_log10() +
+  geom_smooth(method = "lm") +
+  ggtitle("This is my title")
+
+#But why did we drop the colors and size? Try it with the colors .
+
+plot <- ggplot(data = dat
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , color = continent
+             , size = pop)) + 
+  geom_point(alpha = .3) +
+  scale_y_log10() +
+  geom_smooth(method = "lm") +
+  ggtitle("This is my title")
+
+#Any thoughts about this? 
+
+#Let's add a theme to it
+plot + theme_minimal()
+```
+
+### Breakout Group 3
+Challenge Question 3: Our first chart has a lot of data in one graph. How can we break it  into multiple charts based on one of the variables?
+
+```{r Breakout Group 3}
+
+dat <- gapminder
+
+#R makes it easy to produce multiple charts without having repeat the same process over and #over.
+
+#The first chart
+ggplot(data = dat
+       , aes(x = lifeExp, y = gdpPercap)) +
+  geom_point()
+
+#So, here we are again. Do we want to add colors or something else to help? 
+
+#this is the plot that we finished with
+ggplot(data = dat
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , color = continent
+             , size = pop)) + 
+  geom_point(alpha = .3)
+
+#If we keep the same variables on the x and y axis. What are some ways that make sense to group this data? Hint: we've already done it with color and size.
+
+#Faceting a ggplot chart is a simple way to do this. Let's test out faceting by some of the variables to see what works best.
+
+ggplot(data = dat
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , color = continent
+             , size = pop)) + 
+  geom_point(alpha = .3) +
+  facet_wrap(~ country)
+
+#What do you think? Make sure you hit the zoom button to see the whole thing.
+
+#What's another variable that might work. Hint: continent or year. Both options are below.
+
+ggplot(data = dat
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , color = continent
+             , size = pop)) + 
+  geom_point(alpha = .3) +
+  facet_wrap(~ continent)
+
+  
+ggplot(data = dat
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , color = continent
+             , size = pop)) + 
+  geom_point(alpha = .3) +
+  facet_wrap(~ year)
+
+#What should we title this chart?  
+ggplot(data = dat
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , color = continent
+             , size = pop)) + 
+  geom_point(alpha = .3) +
+  facet_wrap(~ continent) +
+  ggtitle("This is my title")
+
+#What do you think of this? It is much better.
+
+#If time, add in a dplyr filter to select only one continent. Mention the pipe, but don't #dwell on it.
+
+dat2 <- dat %>% 
+  filter(continent == "Africa")
+
+#take a look and notice how it only shows observations where the continent is Africa
+glimpse(dat2)
+
+#Then using the new object we just plug it into the data part of the ggplot formula. There's no more need to facet by continent, but you could facet by country (second example below) if you want.
+
+ggplot(data = dat2
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , size = pop)) + 
+  geom_point(alpha = .3) +
+  ggtitle("This is my title")
+
+ggplot(data = dat2
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , size = pop)) + 
+  geom_point(alpha = .3) +
+  facet_wrap(~ country) +
+  ggtitle("This is my title") +
+  theme_classic() #adding theme classic
+
+#You may want to consider adding colors as well
+
+ggplot(data = dat2
+       , aes(x = lifeExp
+             , y = gdpPercap
+             , size = pop
+             , color = country)) + 
+  geom_point(alpha = .3) +
+  facet_wrap(~ country) +
+  ggtitle("This is my title") +
+  theme_classic()+ #adding theme classic
+  theme(legend.position = "none") #The colors make it prettier but the legend is not needed
+```
+
+### Breakout Group 4
+
+Challenge Question 4: How can we show change over time in population by continent?
+
+```{r Breakout Group 4}
+
+dat <- gapminder
+
+#Let's create a new object called dat3
+dat3 <- dat %>%
+  group_by(continent, year) %>%
+  summarize(avg_pop = mean(pop))
+
+#What happened to dat3? What happened to dat?
+
+#Now we have a avg_pop for each continent for each year in our dataset. 
+
+#Let's plot our change over time. What type of graph should we make?
+ggplot(dat3
+       , aes(x = year
+             , y = avg_pop)) +
+  geom_line() #Yikes!
+
+#What happened? There's a scaling problem, and there's no coloring.
+
+#Let's try grouping it with the by argument
+ggplot(dat3
+       , aes(x = year
+             , y = avg_pop
+             , color = continent)) +
+  geom_line() +
+  scale_y_log10()
+
+#What should the title be?
+ggplot(dat3
+       , aes(x = year
+             , y = avg_pop
+             , color = continent)) +
+  geom_line() +
+  scale_y_log10() +
+  ggtitle("This is my title")
+
+#What if we want to look at the change in separate charts by one of the variables
+
+#add a facet_wrap(~continent)
+ggplot(dat3
+       , aes(x = year
+             , y = avg_pop
+             , color = continent)) +
+  geom_line() +
+  scale_y_log10() +
+  facet_wrap(~continent) +
+  ggtitle("This is my title")
+
+ggplot(dat3
+       , aes(x = year
+             , y = avg_pop
+             , color = continent)) +
+  geom_line() +
+  scale_y_log10() +
+  facet_wrap(~continent) +
+  ggtitle("This is my title") +
+  theme_bw()
+
+
+
+```
+
+### Bonus: Interactive Exploratory Data Analysis
+
+```{r libraries for interactivity}
+
+#If these libraries are not already installed on your computer you will need to install.packages() first
+
+library(plotly) #Creates interactive charts
+library(crosstalk) #connects tables and charts dynamically (i.e., they talk to each other)
+library(DT) # An R interface to the JavaScript library DataTables
+```
+
+What if we want to identify which observations are the outliers simply by selecting observations on at the plot?
+
+With a few adjustments to our code and some libraries designed for creating interactive graphics, we generate a plot where we can select points that dynamically interact with a table (i.e., it will update to show the data for the points selected in the chart). Test it out by selecting the outliers at the top of the chart to see what countries they are.
+
+Here it goes. 
+
+```{r}
+
+#This is our dataset
+dat <- gapminder
+
+#This is used for highlighting data. It creates an object of class crosstalk::SharedData.
+m1 <- highlight_key(dat)
+
+#Make our ggplot from class, but we're using m1 instead of dat
+p1 <- ggplot(m1, 
+            aes(x = lifeExp
+                , y = gdpPercap
+                , color = continent
+                , size = pop))+
+  geom_point(alpha = .3) + #added a little bit of transparency
+  ggtitle("GDP Per Capita by Life Expectancy") +
+  labs(x = "Life Expectancy"
+       , y = "GDP Per Capita") +
+  theme_classic()
+
+#Makes an interactive plot
+p2 <- highlight(ggplotly(p1), "plotly_selected")
+
+#We want the plot to talk to the table so we connect them via the crosstalk package's bscol() function. Then, DT generates a javascript friendly table to "talk" with selections on the plot.
+crosstalk::bscols(p2, DT::datatable(m1), widths = 12, height = 300)
+
+```
+
+Test out the selection tools provided on the chart by placing your cursor over it and then make a selection and see what happens.

@@ -1,0 +1,434 @@
+---
+title: "R From Zero: Session 3"
+subtitle: "Data Structures"
+author: "Brian Calhoon"
+date: "4/21/2021"
+output: 
+  html_document:
+    toc: true
+    toc_depth: '5'
+    toc_float: yes
+---
+This is the guide to walk us through week 3 of the R From 0 course.
+
+## Summary of last week
+Last week we loaded an xlsx file into our R Studio environment before cleaning one column of data - converting it from "yes/no" to "1/0," and we manipulated the data frame by creating new objects that contained the original dataset + some new columns. 
+
+```{r global_options}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(fig.width=10, fig.height=8, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo = TRUE)
+
+```
+
+```{r fonts, include = FALSE}
+#These libraries are not for the class, but for myself
+library(showtext)
+library(gfonts)
+library(ggplot2)
+```
+
+```{r formatting, include = FALSE}
+
+# display to three decimal points, scientific notation displays at around six digits
+options(digits=3, scipen=6)
+
+# requires showtext package
+showtext_auto()
+
+# requires gfonts package
+use_pkg_gfont("open-sans")
+
+# graphic style
+theme_set(theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                             panel.grid.minor.y=element_blank(),
+                             plot.title=element_text(face="bold",size=18, hjust=.5, family = "sans"),
+                             plot.subtitle = element_text(size=16, family="sans"),
+                             plot.caption=element_text(size=12, family="sans"),
+                             axis.title=element_text(size=16, family="sans"),
+                             axis.text=element_text(size=14, family="sans"),    
+                             legend.text=element_text(size=14, family="sans"),
+                             strip.text=element_text(size=14, family="sans"))) 
+
+# for single graphs, I have recently come to like borderless
+nobord <- theme(panel.border=element_blank(),
+                axis.ticks = element_blank())
+
+
+```
+
+```{r summary week 2}
+library(tidyverse)
+library(readxl)
+
+test <- read_xlsx("datatest.xlsx") 
+
+#Convert the In_person column to integers
+test$In_person <- recode(test$In_person
+  ,"No" = 0
+  , "Yes" = 1)
+
+#Create a new column for the change in scores from Round 1 to Round 2
+test2 <- test %>%
+  mutate(change = Score_Round2 - Score_Round1) %>%
+  arrange(desc(change))
+
+#Create a new column to show percent change from round 1 to round 2 
+test3 <- test2 %>%
+  mutate(percent_change = (change/Score_Round1)*100) %>%
+  arrange(desc(percent_change))
+
+test3
+
+#Create some summaries by groups
+test4 <- test3 %>%
+  group_by(In_person) %>% 
+  summarize(Avg_score1 = mean(Score_Round1))
+
+test4
+
+#Create Team specific average scores
+test5 <- test3 %>%
+  group_by(Team) %>%
+  summarize(avg_score1 = mean(Score_Round1)
+            , avg_score2 = mean(Score_Round2))
+
+arrange(test5, desc(avg_score2)) #Arrange by descending avg_score2
+
+#Create Team specific average change in scores
+test6 <- test3 %>%
+  group_by(Team) %>%
+  summarize(avg_change = mean(change))
+
+arrange(test6, desc(avg_change)) #Arrange by descending avg_change
+
+```
+
+**Purpose:** After this course you will understand the primary data structures in R and be able to generate your own dataset. 
+
+## Data structures
+
+The primary data structures in R are vectors, lists, matrices, and data frames. They all basically begin as a vector. The idea isn't to master what the data structures are, but it is helpful to recognize them because R's error messages will reference them so understanding what they are will help you understand how to make code work.
+
+### Vectors 
+
+What is a vector? A vector is the most basic data structure in R. A vector can only contain a single data type. It can be any of logical, integer, double, character, complex or raw, but an atomic vector cannot mix and match types.
+
+```{r vectors}
+
+a <- c(10, 14, 27, 99)
+
+a
+
+b <- c("MSI", "Chemonics", "QED", "Encompass", "USAID")
+
+b
+
+d <- rnorm(1:10)
+
+d
+
+```
+
+### Lists
+
+A list is a vector that can have multiple data types.
+
+```{r lists}
+
+a <- list(10, "red", 74, "blue")
+
+class(a)
+
+a
+
+b <- list("MSI", "Chemonics", "QED", "Encompass", "USAID")
+
+typeof(b)
+
+b
+
+d <- list(rnorm(1:10), LETTERS[1:10])
+
+d
+
+xlist <- list(a = mtcars$mpg, b = sample(1:45, 22), values = names(iris))
+
+xlist
+
+```
+
+### Matrices
+
+A matrix is a vector with dimensions - it has rows and columns. As with a vector, the elements of a matrix must be of the same data type.
+
+```{r matrices 3}
+
+m <- matrix(1:4, nrow = 2, ncol = 2) # a 2x2 matrix
+
+m
+
+dim(m) #shows that it is 2 rows x 2 columns
+
+m2 <- matrix(c(2,3,4,5,6,7), nrow = 3, ncol = 2)
+
+m2 #note that it is filled column-wise
+
+typeof(m2[1])
+
+typeof(m2)
+
+```
+You can also make a matrix by binding together vectors of the same data type. Here's the same example done two ways. The first, binds on columns and uses `cbind()`. The second binds on rows and uses `rbind()`.
+
+```{r matrices 2}
+
+x <- 6:8
+y <- 9:11
+
+cbind(x,y)
+
+rbind(x,y)
+
+```
+### Data frames
+
+This is what we use for most everything in R and for statistics. It is a list of lists where each list is the same length (i.e., it is a "rectangular list").
+
+When you read in an excel file you create a data frame. Almost any file that you import to R will be a data frame.
+
+A data frame can contain many types of data. We have been working with data frames in R in each of the previous two classes. Now we'll make our own from scratch.
+
+## Generate a data frame in R
+
+Why would we do this? 
+
+* To test out a function on a small dataset so that we can understand what is happening before we apply it to a large dataset 
+* To develop an example of how something could work it is often useful to be able to show someone. 
+* To ask a question on a public forum. Since we can't share our USAID, it is good to know how to do this to post a reproducible example on Stack Overflow or even internally within MSI.
+
+R makes this easy. We'll do this first the manual way, and then we'll generate a few examples of random datasets.
+
+### Making a data frame manually
+
+The first approach is to type in all the data that you want. We first create the variables which are just lists, in this case we just named them a, b, c, and d. Then we join them with `data.frame()` which puts them together in a data frame.
+
+```{r manual method}
+
+# Create a, b, c, d variables
+a <- c(10,20,30,40)
+b <- c('book', 'pen', 'textbook', 'pencil_case')
+c <- c(TRUE,FALSE,TRUE,FALSE)
+d <- c(2.5, 8, 10, 7)
+
+# Join the variables to create a data frame
+df <- data.frame(a,b,c,d)
+
+df
+
+nrow(df)
+
+ncol(df)
+```
+
+### Using R to make data frames easier
+
+
+The following functions generate random numbers or letters and can be used to populate a fake data frame. This is not an exhaustive list. 
+
+* `1:10` generates a vector of all numbers 1 through 10
+* `rnorm()` generates a normal distrubution
+* `runif()` generates a uniform distribution
+* `sample()` takes a sample of a range. First argument provides the upper and lower limits, and the second argument tells you how many numbers are in the sample
+* `sample()` can also take `LETTERS` as its first argument to produce letters
+* `seq()` generates a more complex sequence of numbers where the user can define the interval
+* `list()` generates a list
+
+Test out the following examples
+
+```{r random data generation}
+
+1:10
+
+rnorm(10)  
+
+runif(10)      
+
+sample(1:100, 10)      
+
+sample(LETTERS, 10)  
+
+seq(45, 50, by = .67)
+
+list("a", "Omaha", "77", "Omaha", "Omaha", "On 3", 457)
+
+list("a", 1:10, sample(LETTERS, 10))
+
+```
+
+Similar to the previous example, you could assign each of these vectors to a value and join them as a data frame. 
+
+```{r making a data frame}
+
+x1 <- rnorm(10)  
+
+x2 <- runif(10)      
+
+x3 <- sample(1:100, 10)      
+
+x4 <- sample(LETTERS, 10) 
+
+df <- data.frame(x1, x2, x3, x4)
+
+df
+
+```
+
+One thing to note is that each time you run `rnorm`, `runif`, or `sample` it generates a new random selection of 10 numbers or letters. To generate a random sampling that doesn't change with each iteration R uses the `set.seed()` function. 
+
+`set.seed()` sets the starting number used to generate a sequence of random numbers – it ensures that you get the same result if you start with that same seed each time you run the same process. For example, if I use the sample() function immediately after setting a seed, I will always get the same sample.
+
+```{r generating data}
+
+set.seed(4)
+
+y1 <- sample(1:54000, 5)
+
+y2 <- sample(LETTERS, 5)
+
+y3 <- c("Brian", "Bryan", "Bryon", "Bryin", "Bri") #This is not random
+
+y4 <- runif(5)
+
+df3 <- data.frame(y1, y2, y3, y4)
+
+df3
+
+```
+
+We may need specific types of data in our fake dataset such as dates. Entering dates can be tedious so we can tell R to sequence through a range of dates by day using the `seq.Date()` function. 
+
+
+The `group` variable is randomly assigning A and B by only selecting from the 1st and 2nd letters of the alphabet.
+
+The `age` variable is sampling randomly from between 18 and 45.
+
+We created a `type` that is just cycling through the numbers 1 through 6.
+
+The `x` variable uses the `runif()` that we saw ealier.
+
+```{r data frame}
+
+set.seed(123)  ## for reproducibility
+n <- 6
+dat <- data.frame(id=1:n 
+                  , date=seq.Date(as.Date("2021-01-01"), as.Date("2021-01-06"), "day")
+                  , group=rep(LETTERS[1:2], n/2)
+                  , age=sample(18:45, n)
+                  , type=factor(paste("type", 1:n))
+                  , x=runif(n))
+
+dat 
+
+
+```
+
+## Breakout Challenge
+
+Create a data frame with 5 columns of data. One column should be binary, one column should be dates, one should be numeric, one should provide a grouping, and one is for you to decide.
+
+Here's an example, though any data frame that meets the criteria above is correct. Don't forget to `set.seed()` so that others can reproduce your example.
+
+```{r challenge}
+
+set.seed(47)
+n = 9 #I chose 9 rows
+
+df <- data.frame( team= rep(c("Cubs", "White Sox", "Brewers"), n/3)
+                 , score = sample(3:9, n, replace = TRUE)
+                 , date = c(rep(as.Date("2021-04-01"), 3), rep(as.Date("2021-04-02"), 3), rep(as.Date("2021-04-03"), 3))
+                 , outcome = c("win", "loss", "loss", "loss", "win", "win", "win", "loss", "loss")
+                 , attendance = sample(15000:50000, n))
+
+
+
+df
+
+```
+
+Now, we've got our dataset. Make a chart that includes multiple geometries such as `geom_point()`. `geom_line()`, or `geom_bar()`.
+
+This first chart example is not very good. It's an example of a chart that is not very useful. However, it does use the `ggrepel` library which is a good tool to understand because it helps move data labels out of the way of data in a chart.
+
+```{r df chart}
+
+ggplot(df
+       , aes(x = date, y = score, color = team)) +
+  geom_point() +
+  geom_label(aes(label = outcome))
+
+#Oops, the labels are in the way. Let's move the labels
+
+library(ggrepel) #this library shifts labels away from points on charts
+
+plot <- ggplot(df
+       , aes(x = date, y = score, color = team)) +
+  geom_point() +
+  geom_label_repel(aes(label = outcome)) #geom_label_repel is from the ggrepel library
+
+plot +
+  ggtitle("Win or loss by runs scored")
+
+```
+
+I didn't like that first attempt. So, I'm going to manipulate the data to provide a better example.
+
+```{r data manipulating}
+
+df1 <- df %>%
+  group_by(team, outcome) %>%
+  summarize(sum_score = sum(score))
+
+df1
+
+```
+
+So, the White Sox and the Brewers scored more runs in their losses than their wins, and the Cubs scored the same amount of runs.
+
+I made a bar plot below to show the number of runs scored by each team in wins and losses. Then, I added a horizontal bar to show the average number of runs scored in all games.
+
+```{r chart 2}
+
+#This makes a basic plot that shows the sums of scores in wins/losses
+plot1 <- ggplot(df1, aes(x = team, y = sum_score, fill = outcome)) +
+  geom_bar(position="dodge", stat = "identity")
+
+plot1
+
+#Now add some labels to the bars
+
+plot2 <- plot1 +
+  geom_text(aes(label = sum_score
+                , y = sum_score -1) 
+            , position = position_dodge(.9) 
+            , color = "white")
+
+plot2
+
+#Now add a horizontal line to show the average score of all games
+
+plot3 <- plot2 +
+  geom_hline(yintercept = mean(df1$sum_score)
+             , color = "#8C8985"
+             , size = 1)
+
+plot3
+
+#Now, make the colors more accessible
+
+plot3 + 
+  scale_fill_manual(values = c("#002F6C", "#BA0C2F"))
+
+
+
+```
